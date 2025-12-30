@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador de Ícones PWA - ATESTEME</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 40px;
+      background: #f3f4f6;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #8B27FF;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: #6b7280;
+      margin-bottom: 30px;
+    }
+    .icons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .icon-item {
+      text-align: center;
+      padding: 20px;
+      background: #f9fafb;
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
+    }
+    .icon-item:hover {
+      border-color: #8B27FF;
+      background: #faf5ff;
+    }
+    canvas {
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 10px;
+    }
+    .size-label {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 10px;
+    }
+    button {
+      background: #8B27FF;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    button:hover {
+      background: #6B1FBF;
+      transform: translateY(-1px);
+    }
+    .download-all {
+      background: linear-gradient(135deg, #8B27FF 0%, #A855F7 100%);
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 30px 0;
+      box-shadow: 0 4px 12px rgba(139, 39, 255, 0.3);
+      transition: all 0.3s;
+    }
+    .download-all:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(139, 39, 255, 0.4);
+    }
+    .instructions {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 30px;
+    }
+    .instructions h3 {
+      color: #1e40af;
+      margin-top: 0;
+    }
+    .instructions ol {
+      margin-left: 20px;
+      color: #1e3a8a;
+    }
+    .instructions li {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Gerador de Ícones PWA</h1>
+    <p class="subtitle">ATESTEME - Plataforma de Educação Digital</p>
+    
+    <button class="download-all" onclick="downloadAll()">📦 Baixar Todos os Ícones</button>
+    
+    <div class="icons-grid" id="iconsGrid"></div>
+    
+    <div class="instructions">
+      <h3>📋 Instruções de Instalação</h3>
+      <ol>
+        <li>Clique em "Baixar Todos os Ícones" acima</li>
+        <li>Extraia os ícones na pasta <code>/public/icons/</code> do projeto</li>
+        <li>Os ícones serão automaticamente reconhecidos pelo manifest.json</li>
+        <li>Teste a instalação do PWA no navegador (Chrome/Edge)</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+    const iconsGrid = document.getElementById('iconsGrid');
+
+    function drawIcon(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      const scale = size / 512;
+      
+      // Limpa o canvas
+      ctx.clearRect(0, 0, size, size);
+      
+      // Gradiente de fundo roxo
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#8B27FF');
+      gradient.addColorStop(1, '#6B1FBF');
+      
+      // Fundo com bordas arredondadas
+      const radius = size * 0.225; // 115/512 = 0.225
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.roundRect(0, 0, size, size, radius);
+      ctx.fill();
+      
+      // Letra A estilizada
+      ctx.fillStyle = 'white';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+      ctx.shadowBlur = 8 * scale;
+      ctx.shadowOffsetY = 4 * scale;
+      
+      // Triângulo do A
+      ctx.beginPath();
+      ctx.moveTo(size * 0.5, size * 0.195); // Topo
+      ctx.lineTo(size * 0.742, size * 0.742); // Direita baixo
+      ctx.lineTo(size * 0.664, size * 0.742); // Ajuste direita
+      ctx.lineTo(size * 0.625, size * 0.645); // Ponto direito da barra
+      ctx.lineTo(size * 0.375, size * 0.645); // Ponto esquerdo da barra
+      ctx.lineTo(size * 0.336, size * 0.742); // Ajuste esquerda
+      ctx.lineTo(size * 0.258, size * 0.742); // Esquerda baixo
+      ctx.closePath();
+      ctx.fill();
+      
+      // Barra horizontal do A (em roxo)
+      ctx.fillStyle = '#8B27FF';
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+      ctx.fillRect(size * 0.391, size * 0.547, size * 0.219, size * 0.059);
+      
+      // Círculo decorativo no topo
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      ctx.arc(size * 0.5, size * 0.234, size * 0.029, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Linhas decorativas
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = 'white';
+      const lineHeight = size * 0.008;
+      const lineRadius = size * 0.004;
+      
+      // Linha esquerda
+      ctx.beginPath();
+      ctx.roundRect(size * 0.273, size * 0.684, size * 0.078, lineHeight, lineRadius);
+      ctx.fill();
+      
+      // Linha direita
+      ctx.beginPath();
+      ctx.roundRect(size * 0.648, size * 0.684, size * 0.078, lineHeight, lineRadius);
+      ctx.fill();
+      
+      ctx.globalAlpha = 1;
+      
+      // Texto ATESTEME (apenas para ícones grandes)
+      if (size >= 192) {
+        ctx.font = `bold ${size * 0.094}px Arial, sans-serif`;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('ATESTEME', size * 0.5, size * 0.879);
+      }
+    }
+
+    function downloadIcon(canvas, size) {
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `icon-${size}x${size}.png`;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    function downloadAll() {
+      sizes.forEach((size, index) => {
+        setTimeout(() => {
+          const canvas = document.getElementById(`canvas-${size}`);
+          downloadIcon(canvas, size);
+        }, index * 300); // Delay entre downloads
+      });
+    }
+
+    // Cria os canvases
+    sizes.forEach(size => {
+      const item = document.createElement('div');
+      item.className = 'icon-item';
+      
+      const label = document.createElement('div');
+      label.className = 'size-label';
+      label.textContent = `${size}x${size}`;
+      
+      const canvas = document.createElement('canvas');
+      canvas.id = `canvas-${size}`;
+      canvas.width = size;
+      canvas.height = size;
+      canvas.style.width = '100px';
+      canvas.style.height = '100px';
+      
+      const button = document.createElement('button');
+      button.textContent = 'Baixar';
+      button.onclick = () => downloadIcon(canvas, size);
+      
+      item.appendChild(label);
+      item.appendChild(canvas);
+      item.appendChild(button);
+      iconsGrid.appendChild(item);
+      
+      // Desenha o ícone
+      drawIcon(canvas, size);
+    });
+  </script>
+</body>
+</html>

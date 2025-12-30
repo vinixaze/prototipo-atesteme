@@ -1,0 +1,309 @@
+/* =================================
+   MOBILE RESPONSIVENESS UTILITIES
+   ================================= */
+
+/* Mobile-first responsive containers */
+.container-responsive {
+  @apply w-full px-4 sm:px-6 md:px-8 lg:px-12;
+}
+
+/* Responsive text sizes */
+.text-responsive-xs {
+  @apply text-xs sm:text-sm;
+}
+
+.text-responsive-sm {
+  @apply text-sm sm:text-base;
+}
+
+.text-responsive-base {
+  @apply text-base sm:text-lg;
+}
+
+.text-responsive-lg {
+  @apply text-lg sm:text-xl md:text-2xl;
+}
+
+.text-responsive-xl {
+  @apply text-xl sm:text-2xl md:text-3xl;
+}
+
+.text-responsive-2xl {
+  @apply text-2xl sm:text-3xl md:text-4xl;
+}
+
+/* Responsive paddings */
+.p-responsive {
+  @apply p-4 sm:p-6 md:p-8;
+}
+
+.px-responsive {
+  @apply px-4 sm:px-6 md:px-8;
+}
+
+.py-responsive {
+  @apply py-4 sm:py-6 md:py-8;
+}
+
+/* Responsive gaps */
+.gap-responsive {
+  @apply gap-3 sm:gap-4 md:gap-6;
+}
+
+/* Responsive grid columns */
+.grid-responsive-1-2 {
+  @apply grid grid-cols-1 sm:grid-cols-2;
+}
+
+.grid-responsive-1-3 {
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.grid-responsive-1-4 {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
+}
+
+/* Responsive flex direction */
+.flex-responsive-col {
+  @apply flex flex-col sm:flex-row;
+}
+
+/* Responsive button sizes */
+.btn-responsive {
+  @apply h-10 sm:h-12 px-4 sm:px-6 text-sm sm:text-base;
+}
+
+/* Responsive icon sizes */
+.icon-responsive-sm {
+  @apply w-4 h-4 sm:w-5 sm:h-5;
+}
+
+.icon-responsive-md {
+  @apply w-5 h-5 sm:w-6 sm:h-6;
+}
+
+.icon-responsive-lg {
+  @apply w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8;
+}
+
+/* Mobile-only utilities */
+.mobile-only {
+  @apply block sm:hidden;
+}
+
+.desktop-only {
+  @apply hidden sm:block;
+}
+
+/* Responsive card */
+.card-responsive {
+  @apply rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8;
+}
+
+/* Responsive spacing */
+.space-y-responsive {
+  @apply space-y-3 sm:space-y-4 md:space-y-6;
+}
+
+.space-x-responsive {
+  @apply space-x-2 sm:space-x-3 md:space-x-4;
+}
+
+/* Mobile safe area */
+.mobile-safe-padding {
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Responsive max-width */
+.max-w-responsive {
+  @apply max-w-full sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg xl:max-w-screen-xl;
+}
+
+/* Touch-friendly button */
+.btn-touch {
+  @apply min-h-[44px] min-w-[44px]; /* Apple HIG recommendation */
+}
+
+/* Mobile-optimized table */
+.table-mobile {
+  @apply block sm:table overflow-x-auto;
+}
+
+.table-mobile thead {
+  @apply hidden sm:table-header-group;
+}
+
+.table-mobile tbody {
+  @apply block sm:table-row-group;
+}
+
+.table-mobile tr {
+  @apply block sm:table-row border-b sm:border-b-0 mb-4 sm:mb-0;
+}
+
+.table-mobile td {
+  @apply block sm:table-cell text-right sm:text-left;
+}
+
+.table-mobile td:before {
+  @apply sm:content-none font-bold float-left;
+}
+
+/* Modal responsive */
+.modal-responsive {
+  @apply fixed inset-0 sm:inset-auto sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2;
+  @apply w-full sm:w-auto sm:max-w-lg;
+  @apply h-full sm:h-auto sm:max-h-[90vh];
+  @apply rounded-none sm:rounded-2xl;
+}
+
+/* Stack on mobile */
+.stack-mobile {
+  @apply flex flex-col sm:flex-row;
+}
+
+/* Full width on mobile */
+.full-mobile {
+  @apply w-full sm:w-auto;
+}
+
+/* Responsive sidebar */
+@media (max-width: 1023px) {
+  .sidebar-mobile {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .sidebar-mobile.open {
+    transform: translateX(0);
+  }
+}
+
+/* Hide scrollbar on mobile but keep functionality */
+.scrollbar-mobile-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-mobile-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar utility class */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile navigation fix */
+@supports (padding: max(0px)) {
+  .mobile-nav-safe {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Prevent text selection on mobile (for buttons/interactive elements) */
+.no-select-mobile {
+  @apply sm:select-auto select-none;
+}
+
+/* Smooth scroll for mobile */
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Mobile-friendly hover (only on desktop) */
+@media (hover: hover) and (pointer: fine) {
+  .hover-desktop-only:hover {
+    /* Hover styles only applied on desktop */
+  }
+}
+
+/* Touch feedback */
+.touch-feedback {
+  @apply active:scale-95 transition-transform;
+}
+
+/* Responsive border radius */
+.rounded-responsive {
+  @apply rounded-xl sm:rounded-2xl md:rounded-3xl;
+}
+
+/* Mobile header height */
+.mobile-header-offset {
+  @apply pt-14 sm:pt-16 md:pt-20;
+}
+
+/* Responsive aspect ratio containers */
+.aspect-mobile-square {
+  @apply aspect-square sm:aspect-video;
+}
+
+/* Mobile-optimized inputs */
+.input-mobile {
+  @apply text-base; /* Prevents zoom on iOS */
+  @apply h-12 sm:h-10; /* Larger touch target on mobile */
+}
+
+/* Responsive z-index */
+.z-mobile-nav {
+  z-index: 9999;
+}
+
+.z-mobile-overlay {
+  z-index: 9998;
+}
+
+.z-mobile-modal {
+  z-index: 9997;
+}
+
+/* Mobile-friendly dropdown */
+.dropdown-mobile {
+  @apply fixed sm:absolute;
+  @apply bottom-0 sm:bottom-auto sm:top-full;
+  @apply left-0 sm:left-auto;
+  @apply right-0 sm:right-0;
+  @apply rounded-t-2xl sm:rounded-2xl;
+  @apply max-h-[70vh] sm:max-h-96;
+}
+
+/* Responsive image */
+.img-responsive {
+  @apply w-full h-auto object-cover;
+}
+
+/* Mobile card stack */
+.card-stack-mobile > * + * {
+  @apply mt-3 sm:mt-4;
+}
+
+/* Responsive overflow */
+.overflow-mobile {
+  @apply overflow-x-auto;
+}
+
+/* Mobile bottom sheet */
+.bottom-sheet {
+  @apply fixed inset-x-0 bottom-0 rounded-t-3xl transform transition-transform duration-300;
+}
+
+.bottom-sheet.closed {
+  transform: translateY(100%);
+}
+
+/* Responsive container queries (for supported browsers) */
+@container (min-width: 640px) {
+  .container-sm\:text-lg {
+    font-size: 1.125rem;
+  }
+}

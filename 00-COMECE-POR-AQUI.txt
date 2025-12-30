@@ -1,0 +1,155 @@
+═══════════════════════════════════════════════════════════════════════
+                    🎯 COMECE POR AQUI - ATESTEME 🎯
+═══════════════════════════════════════════════════════════════════════
+
+Olá! Bem-vindo ao projeto ATESTEME! 👋
+
+Este arquivo vai te guiar para o documento certo baseado no seu perfil.
+
+═══════════════════════════════════════════════════════════════════════
+
+❓ QUAL É O SEU PERFIL?
+
+┌───────────────────────────────────────────────────────────────────┐
+│ 🟢 INICIANTE - Nunca programei / Primeira vez com projetos assim │
+└───────────────────────────────────────────────────────────────────┘
+
+   👉 ABRA: COMECE-AQUI.txt
+   
+   Depois leia:
+   1. LEIA-ME-PRIMEIRO.md
+   2. PASSO-A-PASSO-VISUAL.md
+   3. FAQ.md (quando tiver dúvidas)
+
+
+┌───────────────────────────────────────────────────────────────────┐
+│ 🟡 INTERMEDIÁRIO - Já usei npm, Git, fiz alguns projetos         │
+└───────────────────────────────────────────────────────────────────┘
+
+   👉 ABRA: GUIA-RAPIDO.md
+   
+   Depois leia:
+   1. COMANDOS.md (referência)
+   2. README.md (detalhes técnicos)
+   3. CHECKLIST-DEPLOY.md (antes de publicar)
+
+
+┌───────────────────────────────────────────────────────────────────┐
+│ 🔵 AVANÇADO - Sou desenvolvedor, só me dê o essencial            │
+└───────────────────────────────────────────────────────────────────┘
+
+   👉 EXECUTE:
+   
+   npm install && npm run dev
+   
+   Depois consulte:
+   - README.md (documentação técnica)
+   - COMANDOS.md (referência rápida)
+
+═══════════════════════════════════════════════════════════════════════
+
+⚡ AÇÃO IMEDIATA (QUALQUER PERFIL)
+
+Para rodar o projeto AGORA MESMO:
+
+1. Abra o terminal (VS Code: Ctrl + ')
+2. Execute: npm install
+3. Execute: npm run dev
+4. Abra: http://localhost:5173
+
+═══════════════════════════════════════════════════════════════════════
+
+📚 TODOS OS DOCUMENTOS DISPONÍVEIS
+
+Para iniciantes:
+  📄 COMECE-AQUI.txt              ← Visual e amigável
+  📄 LEIA-ME-PRIMEIRO.md          ← Visão geral
+  📄 INICIO-RAPIDO.md             ← Tutorial passo a passo
+  📄 PASSO-A-PASSO-VISUAL.md      ← Tutorial super detalhado
+
+Para todos os níveis:
+  📄 GUIA-RAPIDO.md               ← 3 passos para tudo
+  📄 FAQ.md                       ← Perguntas frequentes
+  📄 COMANDOS.md                  ← Referência de comandos
+
+Para avançados:
+  📄 README.md                    ← Doc técnica completa
+  📄 RESUMO-EXECUTIVO.txt         ← Overview técnico
+
+Navegação:
+  📄 INDICE-DOCUMENTACAO.md       ← Índice de tudo
+  📄 DOCUMENTACAO-COMPLETA.md     ← Guia de navegação
+
+Antes de deploy:
+  📄 CHECKLIST-DEPLOY.md          ← Lista de verificação
+
+═══════════════════════════════════════════════════════════════════════
+
+✅ VOCÊ INSTALOU?
+
+Antes de começar, verifique se tem:
+
+  [ ] Node.js (v18+)     → https://nodejs.org
+  [ ] Git                → https://git-scm.com
+  [ ] VS Code            → https://code.visualstudio.com
+
+Teste no terminal:
+  
+  node --version    (deve mostrar v18 ou superior)
+  npm --version     (deve mostrar 9 ou superior)
+  git --version     (deve mostrar 2.x)
+
+═══════════════════════════════════════════════════════════════════════
+
+🎯 OBJETIVO FINAL
+
+Após seguir os guias, você terá:
+
+  ✅ Projeto rodando localmente
+  ✅ Conhecimento para fazer alterações
+  ✅ (Opcional) Site publicado no Vercel
+  ✅ (Opcional) App instalável no celular
+
+═══════════════════════════════════════════════════════════════════════
+
+💡 DICA IMPORTANTE
+
+NÃO TENTE LER TODOS OS DOCUMENTOS!
+
+Escolha o caminho adequado ao seu perfil:
+  
+  🟢 Iniciante     → COMECE-AQUI.txt
+  🟡 Intermediário → GUIA-RAPIDO.md
+  🔵 Avançado      → npm install && npm run dev
+
+═══════════════════════════════════════════════════════════════════════
+
+🚀 PRÓXIMO PASSO
+
+Escolha AGORA qual documento abrir:
+
+  [ ] Sou iniciante       → COMECE-AQUI.txt
+  [ ] Sou intermediário   → GUIA-RAPIDO.md
+  [ ] Sou avançado        → README.md
+  
+  [ ] Quero rodar AGORA   → Execute: npm install && npm run dev
+
+═══════════════════════════════════════════════════════════════════════
+
+📞 PRECISA DE AJUDA?
+
+Dúvidas? Procure em:
+  
+  1. FAQ.md (Ctrl + F para buscar)
+  2. COMANDOS.md (Seção Problemas)
+  3. Google: "seu erro" + "vite" ou "react"
+
+═══════════════════════════════════════════════════════════════════════
+
+🎉 PRONTO!
+
+Você está a 5 minutos de ter a plataforma ATESTEME rodando!
+
+Escolha seu guia e comece agora! 🚀
+
+═══════════════════════════════════════════════════════════════════════

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PWA Test - ATESTEME</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 40px 20px;
+      background: #f3f4f6;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #8B27FF;
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+
+    .test-section {
+      margin: 30px 0;
+      padding: 20px;
+      background: #f9fafb;
+      border-radius: 12px;
+      border-left: 4px solid #8B27FF;
+    }
+
+    .test-section h2 {
+      color: #374151;
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    .test-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      margin: 8px 0;
+      background: white;
+      border-radius: 8px;
+      border: 2px solid #e5e7eb;
+    }
+
+    .test-item.pass {
+      border-color: #10b981;
+      background: #ecfdf5;
+    }
+
+    .test-item.fail {
+      border-color: #ef4444;
+      background: #fef2f2;
+    }
+
+    .test-item.warning {
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+
+    .status-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .status-icon.pass {
+      background: #10b981;
+      color: white;
+    }
+
+    .status-icon.fail {
+      background: #ef4444;
+      color: white;
+    }
+
+    .status-icon.warning {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .test-label {
+      flex: 1;
+      color: #374151;
+      font-weight: 500;
+    }
+
+    .test-value {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    button {
+      background: #8B27FF;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin: 10px 10px 10px 0;
+    }
+
+    button:hover {
+      background: #6B1FBF;
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      background: #d1d5db;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .code-block {
+      background: #1f2937;
+      color: #10b981;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 12px 0;
+      overflow-x: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+    }
+
+    .info-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 20px 0;
+      color: #1e3a8a;
+    }
+
+    .success-box {
+      background: #ecfdf5;
+      border-left: 4px solid #10b981;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 20px 0;
+      color: #065f46;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 PWA Test Dashboard</h1>
+    <p class="subtitle">Verificação completa da configuração PWA da ATESTEME</p>
+
+    <button onclick="runAllTests()">🚀 Executar Todos os Testes</button>
+    <button onclick="testInstall()">📱 Testar Instalação</button>
+    <button onclick="testOffline()">🔌 Simular Offline</button>
+    <button onclick="clearCache()">🗑️ Limpar Cache</button>
+
+    <!-- Service Worker -->
+    <div class="test-section">
+      <h2>1. Service Worker</h2>
+      <div id="sw-tests"></div>
+    </div>
+
+    <!-- Manifest -->
+    <div class="test-section">
+      <h2>2. Manifest</h2>
+      <div id="manifest-tests"></div>
+    </div>
+
+    <!-- APIs -->
+    <div class="test-section">
+      <h2>3. APIs do Navegador</h2>
+      <div id="api-tests"></div>
+    </div>
+
+    <!-- Network -->
+    <div class="test-section">
+      <h2>4. Status de Rede</h2>
+      <div id="network-tests"></div>
+    </div>
+
+    <!-- Resultados -->
+    <div id="results"></div>
+  </div>
+
+  <script>
+    // Função para criar item de teste
+    function createTestItem(label, status, value = '') {
+      const statusClass = status ? 'pass' : (status === null ? 'warning' : 'fail');
+      const statusIcon = status ? '✓' : (status === null ? '!' : '✗');
+      
+      return `
+        <div class="test-item ${statusClass}">
+          <div class="status-icon ${statusClass}">${statusIcon}</div>
+          <div class="test-label">${label}</div>
+          ${value ? `<div class="test-value">${value}</div>` : ''}
+        </div>
+      `;
+    }
+
+    // Testa Service Worker
+    async function testServiceWorker() {
+      const container = document.getElementById('sw-tests');
+      let html = '';
+
+      // Verifica suporte
+      const supported = 'serviceWorker' in navigator;
+      html += createTestItem('Suporte a Service Worker', supported);
+
+      if (supported) {
+        // Verifica registro
+        const registration = await navigator.serviceWorker.getRegistration();
+        html += createTestItem('Service Worker Registrado', !!registration);
+
+        if (registration) {
+          // Estado do Service Worker
+          const state = registration.active ? registration.active.state : 'none';
+          html += createTestItem('Estado', state === 'activated', state);
+
+          // Scope
+          html += createTestItem('Scope', true, registration.scope);
+        }
+      }
+
+      container.innerHTML = html;
+    }
+
+    // Testa Manifest
+    async function testManifest() {
+      const container = document.getElementById('manifest-tests');
+      let html = '';
+
+      try {
+        const response = await fetch('/manifest.json');
+        const manifest = await response.json();
+
+        html += createTestItem('Manifest acessível', response.ok);
+        html += createTestItem('Nome da aplicação', !!manifest.name, manifest.short_name);
+        html += createTestItem('Start URL', !!manifest.start_url, manifest.start_url);
+        html += createTestItem('Display mode', manifest.display === 'standalone', manifest.display);
+        html += createTestItem('Theme color', !!manifest.theme_color, manifest.theme_color);
+        html += createTestItem('Ícones', manifest.icons && manifest.icons.length > 0, `${manifest.icons?.length || 0} ícones`);
+        
+        // Verifica ícones
+        if (manifest.icons) {
+          for (const icon of manifest.icons) {
+            const iconResponse = await fetch(icon.src);
+            html += createTestItem(`Ícone ${icon.sizes}`, iconResponse.ok, icon.src);
+          }
+        }
+      } catch (error) {
+        html += createTestItem('Manifest acessível', false, error.message);
+      }
+
+      container.innerHTML = html;
+    }
+
+    // Testa APIs
+    function testAPIs() {
+      const container = document.getElementById('api-tests');
+      let html = '';
+
+      // APIs importantes para PWA
+      const apis = {
+        'Cache API': 'caches' in window,
+        'Fetch API': 'fetch' in window,
+        'Notifications': 'Notification' in window,
+        'Push Manager': 'PushManager' in window,
+        'Background Sync': 'sync' in (navigator.serviceWorker?.register() || {}),
+        'IndexedDB': 'indexedDB' in window,
+        'LocalStorage': 'localStorage' in window,
+      };
+
+      for (const [name, supported] of Object.entries(apis)) {
+        html += createTestItem(name, supported);
+      }
+
+      container.innerHTML = html;
+    }
+
+    // Testa Network
+    function testNetwork() {
+      const container = document.getElementById('network-tests');
+      let html = '';
+
+      html += createTestItem('Online', navigator.onLine);
+      html += createTestItem('Conexão', true, navigator.connection?.effectiveType || 'desconhecido');
+      html += createTestItem('Downlink', true, navigator.connection?.downlink ? `${navigator.connection.downlink} Mbps` : 'N/A');
+
+      container.innerHTML = html;
+    }
+
+    // Executa todos os testes
+    async function runAllTests() {
+      const results = document.getElementById('results');
+      results.innerHTML = '<div class="info-box">⏳ Executando testes...</div>';
+
+      await testServiceWorker();
+      await testManifest();
+      testAPIs();
+      testNetwork();
+
+      results.innerHTML = '<div class="success-box">✅ Todos os testes executados! Verifique os resultados acima.</div>';
+    }
+
+    // Testa instalação
+    function testInstall() {
+      if ('beforeinstallprompt' in window || window.matchMedia('(display-mode: standalone)').matches) {
+        alert('✅ PWA instalável ou já instalado!');
+      } else {
+        alert('❌ PWA não está instalável neste momento. Verifique os requisitos (HTTPS, manifest, service worker).');
+      }
+    }
+
+    // Simula offline
+    function testOffline() {
+      const results = document.getElementById('results');
+      results.innerHTML = `
+        <div class="info-box">
+          <strong>💡 Como testar offline:</strong><br><br>
+          1. Abra DevTools (F12)<br>
+          2. Vá na aba "Network"<br>
+          3. Mude para "Offline" no dropdown<br>
+          4. Recarregue a página<br>
+          5. A página offline.html deve aparecer
+        </div>
+      `;
+    }
+
+    // Limpa cache
+    async function clearCache() {
+      if ('caches' in window) {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map(name => caches.delete(name)));
+        alert(`✅ ${cacheNames.length} cache(s) limpo(s)!`);
+        window.location.reload();
+      } else {
+        alert('❌ Cache API não disponível');
+      }
+    }
+
+    // Monitora mudanças de conexão
+    window.addEventListener('online', () => {
+      testNetwork();
+      document.getElementById('results').innerHTML = '<div class="success-box">🌐 Conexão restaurada!</div>';
+    });
+
+    window.addEventListener('offline', () => {
+      testNetwork();
+      document.getElementById('results').innerHTML = '<div class="info-box">🔌 Você está offline!</div>';
+    });
+
+    // Executa testes ao carregar
+    window.addEventListener('load', () => {
+      runAllTests();
+    });
+  </script>
+</body>
+</html>
