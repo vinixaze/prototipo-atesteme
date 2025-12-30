@@ -119,7 +119,7 @@ export default function NiveisTab({
               41/48
             </div>
             <div className="text-[13px] font-medium text-white/90">
-              Estrelas recebidas
+              Estrelas Recebidas
             </div>
           </div>
         </div>

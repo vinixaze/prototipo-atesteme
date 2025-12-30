@@ -347,13 +347,13 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
             </div>
           </div>
 
-          {/* 3º Lugar */}
-          <div className="flex flex-col items-center mt-9 sm:mt-12 group">
+          {/* 3º Lugar - Mesmo tamanho do 2º lugar */}
+          <div className="flex flex-col items-center mt-6 sm:mt-8 group">
             <div className="relative mb-2 sm:mb-4">
-              <div className="w-12 h-12 sm:w-18 sm:h-18 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white text-base sm:text-xl font-bold shadow-lg ring-2 sm:ring-4 ring-orange-200 ring-offset-1 sm:ring-offset-2 group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 sm:w-20 sm:h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white text-lg sm:text-2xl font-bold shadow-xl ring-2 sm:ring-4 ring-orange-200 ring-offset-1 sm:ring-offset-2 group-hover:scale-110 transition-transform">
                 {rankingData[rankingCategory][2].avatar}
               </div>
-              <div className="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 w-6 h-6 sm:w-9 sm:h-9 bg-gradient-to-br from-orange-500 to-orange-700 rounded-full flex items-center justify-center text-white text-xs sm:text-base font-bold shadow-md">
+              <div className="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 w-7 h-7 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-500 to-orange-700 rounded-full flex items-center justify-center text-white text-xs sm:text-base font-bold shadow-lg">
                 3
               </div>
             </div>

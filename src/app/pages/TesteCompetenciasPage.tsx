@@ -273,6 +273,20 @@ export default function TesteCompetenciasPage({
   const [userPowerUps, setUserPowerUps] = useState<any[]>([]);
   const [usedShield, setUsedShield] = useState(false);
   const [eliminatedOptions, setEliminatedOptions] = useState<string[]>([]);
+  const [showCookiesBanner, setShowCookiesBanner] = useState(false);
+
+  // Verificar se já aceitou cookies
+  useEffect(() => {
+    const cookiesAccepted = localStorage.getItem('cookies-accepted');
+    if (!cookiesAccepted) {
+      setShowCookiesBanner(true);
+    }
+  }, []);
+
+  const handleAcceptCookies = () => {
+    localStorage.setItem('cookies-accepted', 'true');
+    setShowCookiesBanner(false);
+  };
 
   // Initialize all steps as future, except the first one as current
   const [stepStatuses, setStepStatuses] = useState<{ status: 'future' | 'current' | 'correct' | 'incorrect' | 'answered' | 'skipped' }[]>(
@@ -543,6 +557,40 @@ export default function TesteCompetenciasPage({
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Banner de Cookies/LGPD - Compacto */}
+      {showCookiesBanner && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 border-t-2 border-[#8B27FF] shadow-2xl">
+          <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
+              <Shield className="w-5 h-5 text-[#8B27FF] flex-shrink-0" />
+              <p className="text-sm text-gray-700 dark:text-gray-300">
+                Utilizamos cookies para melhorar sua experiência. Ao continuar, você concorda com nossa{' '}
+                <button 
+                  onClick={() => navigateTo('privacy')}
+                  className="text-[#8B27FF] hover:underline font-semibold"
+                >
+                  Política de Privacidade
+                </button>
+                {' '}e{' '}
+                <button 
+                  onClick={() => navigateTo('terms')}
+                  className="text-[#8B27FF] hover:underline font-semibold"
+                >
+                  Termos de Uso
+                </button>
+                .
+              </p>
+            </div>
+            <button
+              onClick={handleAcceptCookies}
+              className="px-6 py-2 bg-[#8B27FF] hover:bg-[#7B1FE8] text-white rounded-lg font-bold text-sm transition-all shadow-md hover:shadow-lg whitespace-nowrap"
+            >
+              Aceitar
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <TestHeader
         categoryBadge={currentQuestionData.category}

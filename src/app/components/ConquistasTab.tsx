@@ -62,9 +62,9 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
         <div 
           className="relative bg-gradient-to-r from-[#F0ABFC] to-[#E879F9] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
-          {/* Ícone decorativo - Raio */}
+          {/* Ícone decorativo - Raio - Centralizado verticalmente */}
           <Zap 
-            className="absolute top-3 right-3 w-[45px] h-[45px] text-white opacity-50 transition-all duration-300 group-hover:scale-110"
+            className="absolute top-1/2 right-3 -translate-y-1/2 w-[45px] h-[45px] text-white opacity-50 transition-all duration-300 group-hover:scale-110"
             strokeWidth={2}
             fill="white"
             fillOpacity={0.3}

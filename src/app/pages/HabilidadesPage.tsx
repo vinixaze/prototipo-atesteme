@@ -170,46 +170,45 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
 
         <main className="flex-1 overflow-auto">
           <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-6">
-            {/* Header */}
-            <div>
-              <h1 className="text-3xl text-[#8B27FF] mb-2">Competências Digitais</h1>
-              <p className="text-gray-600 dark:text-gray-400">
-                Desenvolva suas competências nas 5 áreas do letramento digital
-              </p>
-            </div>
-
-            {/* Botão Noções Básicas - CTA Destacado */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="relative bg-gradient-to-br from-purple-50 via-white to-purple-100 dark:from-gray-800 dark:via-gray-800 dark:to-gray-700 rounded-3xl p-6 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer overflow-hidden"
-              onClick={() => {
-                navigateTo('nocoes-basicas');
-              }}
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#8B27FF]/10 rounded-full blur-3xl" />
-              <div className="absolute bottom-0 left-0 w-40 h-40 bg-purple-400/10 rounded-full blur-3xl" />
-              
-              <div className="relative z-10">
-                <div className="flex gap-4 mb-3">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-[#8B27FF] rounded-full flex items-center justify-center shadow-lg">
-                      <ClipboardList className="w-6 h-6 text-white" strokeWidth={1.5} />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xl mb-1 dark:text-gray-200">Noções Básicas</h3>
-                  </div>
-                </div>
-                <p className="text-xs text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
-                  Conteúdos básicos de informática, internet e vida digital. Recomendado antes do Nível 01.
+            {/* Header com Noções Básicas ao lado (Desktop) */}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+              <div className="flex-1">
+                <h1 className="text-3xl text-[#8B27FF] mb-2">Competências Digitais</h1>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Desenvolva suas competências nas 5 áreas do letramento digital
                 </p>
-                <button className="bg-[#8B27FF] hover:bg-[#7B1FE8] text-white px-6 py-2.5 rounded-2xl transition-all shadow-md hover:shadow-lg hover:scale-105 active:scale-95 text-sm">
-                  Iniciar
-                </button>
               </div>
-            </motion.div>
+              
+              {/* Bloco Noções Básicas - Pequeno e externo (Desktop) - Esticado mais à esquerda */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="relative bg-gradient-to-br from-purple-50 via-white to-purple-100 dark:from-gray-800 dark:via-gray-800 dark:to-gray-700 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden w-full md:w-auto md:min-w-[240px] md:max-w-[280px]"
+                onClick={() => {
+                  navigateTo('nocoes-basicas');
+                }}
+              >
+                <div className="absolute top-0 right-0 w-20 h-20 bg-[#8B27FF]/10 rounded-full blur-2xl" />
+                
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="flex-shrink-0">
+                      <div className="w-8 h-8 bg-[#8B27FF] rounded-full flex items-center justify-center shadow-md">
+                        <ClipboardList className="w-4 h-4 text-white" strokeWidth={1.5} />
+                      </div>
+                    </div>
+                    <h3 className="text-sm font-bold dark:text-gray-200">Noções Básicas</h3>
+                  </div>
+                  <p className="text-[10px] text-gray-700 dark:text-gray-300 mb-2 leading-tight">
+                    Conteúdos básicos recomendados antes do Nível 01.
+                  </p>
+                  <button className="bg-[#8B27FF] hover:bg-[#7B1FE8] text-white px-4 py-1.5 rounded-lg transition-all shadow-sm hover:shadow-md text-xs font-semibold w-full">
+                    Iniciar
+                  </button>
+                </div>
+              </motion.div>
+            </div>
 
             {/* Search and Filter */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">

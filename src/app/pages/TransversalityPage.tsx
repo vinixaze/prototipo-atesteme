@@ -822,60 +822,82 @@ export default function TransversalityPage({
           {/* Coluna de Filtros */}
           <div className="lg:col-span-2 space-y-6">
             {/* Filtro 1 - Tipo de Filtro */}
-            <FilterDropdown
-              id="filterType"
-              label="Tipo de Filtro"
-              icon={Tag}
-              placeholder="Selecione o tipo de filtro..."
-              options={filterTypeOptions}
-              value={selectedFilters.filterType}
-              onSelect={(value) => handleFilterSelect('filterType', value)}
-              required
-            />
+            <div>
+              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                Tipo de Filtro <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={selectedFilters.filterType}
+                onChange={(e) => handleFilterSelect('filterType', e.target.value)}
+                className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
+              >
+                <option value="">Selecione...</option>
+                {filterTypeOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             {/* Fluxo A - Componente Curricular */}
             {selectedFilters.filterType === 'curricular' && (
               <>
                 <div ref={curricularRef}>
-                  <FilterDropdown
-                    id="curricular"
-                    label="Componente Curricular"
-                    icon={Book}
-                    placeholder="Selecione o componente..."
-                    options={curricularOptions}
+                  <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                    Componente Curricular <span className="text-red-500">*</span>
+                  </label>
+                  <select
                     value={selectedFilters.curricular || ''}
-                    onSelect={(value) => handleFilterSelect('curricular', value)}
-                    required
-                  />
+                    onChange={(e) => handleFilterSelect('curricular', e.target.value)}
+                    className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
+                  >
+                    <option value="">Selecione...</option>
+                    {curricularOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label} {option.count && `(${option.count})`}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 {selectedFilters.curricular && componentOptions[selectedFilters.curricular] && (
                   <div ref={componentRef}>
-                    <FilterDropdown
-                      id="component"
-                      label="Componente"
-                      icon={Lightbulb}
-                      placeholder="Selecione o componente..."
-                      options={componentOptions[selectedFilters.curricular]}
+                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                      Componente <span className="text-red-500">*</span>
+                    </label>
+                    <select
                       value={selectedFilters.component || ''}
-                      onSelect={(value) => handleFilterSelect('component', value)}
-                      required
-                    />
+                      onChange={(e) => handleFilterSelect('component', e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
+                    >
+                      <option value="">Selecione...</option>
+                      {componentOptions[selectedFilters.curricular].map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label} {option.count && `(${option.count})`}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 )}
 
                 {selectedFilters.component && thematicOptions[selectedFilters.component] && (
                   <div ref={thematicRef}>
-                    <FilterDropdown
-                      id="thematic"
-                      label="Temática"
-                      icon={Lightbulb}
-                      placeholder="Selecione a temática..."
-                      options={thematicOptions[selectedFilters.component]}
+                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                      Temática <span className="text-red-500">*</span>
+                    </label>
+                    <select
                       value={selectedFilters.thematic || ''}
-                      onSelect={(value) => handleFilterSelect('thematic', value)}
-                      required
-                    />
+                      onChange={(e) => handleFilterSelect('thematic', e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
+                    >
+                      <option value="">Selecione...</option>
+                      {thematicOptions[selectedFilters.component].map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label} {option.count && `(${option.count})`}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 )}
 
@@ -917,16 +939,21 @@ export default function TransversalityPage({
             {selectedFilters.filterType === 'bncc' && (
               <>
                 <div ref={bnccTypeRef}>
-                  <FilterDropdown
-                    id="bnccType"
-                    label="Tipo de Habilidade BNCC"
-                    icon={CheckSquare}
-                    placeholder="Selecione o tipo..."
-                    options={bnccTypeOptions}
+                  <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                    Tipo de Habilidade BNCC <span className="text-red-500">*</span>
+                  </label>
+                  <select
                     value={selectedFilters.bnccType || ''}
-                    onSelect={(value) => handleFilterSelect('bnccType', value)}
-                    required
-                  />
+                    onChange={(e) => handleFilterSelect('bnccType', e.target.value)}
+                    className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
+                  >
+                    <option value="">Selecione...</option>
+                    {bnccTypeOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label} {option.count && `(${option.count})`}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 {selectedFilters.bnccType && (

@@ -66,11 +66,16 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
   const [daysRemaining, setDaysRemaining] = useState(0);
   const [testeCompetenciasCompleted, setTesteCompetenciasCompleted] = useState(false);
   const [showParentalControl, setShowParentalControl] = useState(false);
+  const [showNocoesBasicasBanner, setShowNocoesBasicasBanner] = useState(true);
 
   // Verificar se o teste de competências foi concluído
   useEffect(() => {
     const completed = localStorage.getItem('testeCompetenciasCompleted') === 'true';
     setTesteCompetenciasCompleted(completed);
+    
+    // Verificar se o banner de noções básicas foi fechado
+    const nocoesBasicasClosed = localStorage.getItem('nocoesBasicasBannerClosed') === 'true';
+    setShowNocoesBasicasBanner(!nocoesBasicasClosed);
     
     // Debug: mostrar no console
     console.log('Dashboard - Teste completado?', completed);
@@ -213,6 +218,11 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
 
   const colors = getModuleColors();
 
+  // Scroll para o topo quando a página carregar
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex pt-20 md:pt-24">
       <Sidebar
@@ -221,7 +231,6 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
         currentPage="dashboard"
         onNavigate={handleNavigate}
         isAdmin={userRole === 'admin'}
-        onLogout={onLogout}
       />
 
       <div className="flex-1 flex flex-col min-w-0 pt-16">
@@ -235,7 +244,7 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
         />
 
         <main className="flex-1 overflow-auto">
-          <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-12 py-8 pb-6 space-y-6">
+          <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-12 py-2 md:py-4 pb-6 space-y-6">
             
             {/* 1. BANNER ROXO DE BOAS-VINDAS (Topo) */}
             {showWelcomeBanner && (
@@ -303,35 +312,46 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
             )}
 
             {/* 2. BANNER BRANCO COM BLUR - NOÇÕES BÁSICAS */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl p-6 shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-200/50 dark:border-gray-700/50"
-            >
-              {/* Animated background effects */}
-              <div className="absolute inset-0 opacity-30">
-                <motion.div 
-                  className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#F3E5F5] to-[#E1BEE7] rounded-full blur-3xl"
-                  animate={{ 
-                    x: [0, 30, 0],
-                    y: [0, -20, 0],
-                    scale: [1, 1.1, 1]
-                  }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.div 
-                  className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-[#E1BEE7] to-[#F3E5F5] rounded-full blur-3xl"
-                  animate={{ 
-                    x: [0, -20, 0],
-                    y: [0, 20, 0],
-                    scale: [1, 1.2, 1]
-                  }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                />
-              </div>
+            {showNocoesBasicasBanner && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl p-6 shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-200/50 dark:border-gray-700/50"
+              >
+                {/* Animated background effects */}
+                <div className="absolute inset-0 opacity-30">
+                  <motion.div 
+                    className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#F3E5F5] to-[#E1BEE7] rounded-full blur-3xl"
+                    animate={{ 
+                      x: [0, 30, 0],
+                      y: [0, -20, 0],
+                      scale: [1, 1.1, 1]
+                    }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <motion.div 
+                    className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-[#E1BEE7] to-[#F3E5F5] rounded-full blur-3xl"
+                    animate={{ 
+                      x: [0, -20, 0],
+                      y: [0, 20, 0],
+                      scale: [1, 1.2, 1]
+                    }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                </div>
 
-              <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <button
+                  onClick={() => {
+                    setShowNocoesBasicasBanner(false);
+                    localStorage.setItem('nocoesBasicasBannerClosed', 'true');
+                  }}
+                  className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-200/50 dark:bg-gray-700/50 backdrop-blur-sm hover:bg-gray-300/50 dark:hover:bg-gray-600/50 flex items-center justify-center transition-all hover:scale-110 hover:rotate-90 duration-300 z-20"
+                >
+                  <X className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                </button>
+
+                <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 flex-1 w-full">
                   <div className="w-12 h-12 bg-gradient-to-br from-[#F3E5F5] to-[#E1BEE7] backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
                     <ClipboardList className="w-6 h-6 text-[#7B1FA2]" />
@@ -353,6 +373,7 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                 </button>
               </div>
             </motion.div>
+            )}
 
             {/* 3. SEÇÃO HORIZONTAL: NÍVEL + PROGRESSO/GRÁFICO + LOGO */}
             <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] gap-6 items-stretch">

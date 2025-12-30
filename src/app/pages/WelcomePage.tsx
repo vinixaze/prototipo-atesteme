@@ -97,9 +97,9 @@ export default function WelcomePage({
         transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
         className="w-full max-w-[90vw] lg:max-w-[1600px] relative z-10"
       >
-        {/* Logo/Brand with Glow Effect */}
+        {/* Logo/Brand with Glow Effect - Espaçamento reduzido ao topo */}
         <motion.div
-          className="flex justify-center mb-6"
+          className="flex justify-center mb-2 md:mb-3 pt-2 md:pt-4"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -112,7 +112,7 @@ export default function WelcomePage({
             <img
               src={logoImage}
               alt="AtesteMe Logo"
-              className="relative h-28 w-auto object-contain drop-shadow-[0_12px_48px_rgba(139,39,255,0.6)]"
+              className="relative h-24 md:h-28 w-auto object-contain drop-shadow-[0_12px_48px_rgba(139,39,255,0.6)]"
             />
           </div>
         </motion.div>

@@ -1,11 +1,16 @@
-import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Eye, EyeOff, Download, X } from "lucide-react";
 import backgroundImage from "../../assets/934760553d44b42ec1dd098296a4a1143272299c.png";
 import logoImage from "../../assets/bd6e15ee05cd5d9957a2d399e18c0693a6190505.png";
 
 interface LoginPageProps {
   onLogin?: (name: string) => void;
   navigateTo: (page: string) => void;
+}
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
 export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
@@ -15,6 +20,48 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showInstallBanner, setShowInstallBanner] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+
+  // Detectar prompt de instalação PWA
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      const installEvent = e as BeforeInstallPromptEvent;
+      setDeferredPrompt(installEvent);
+      
+      // Verificar se já foi mostrado antes
+      const hasSeenBanner = localStorage.getItem('pwa-install-banner-shown');
+      if (!hasSeenBanner) {
+        setShowInstallBanner(true);
+      }
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === 'accepted') {
+      localStorage.setItem('pwa-install-banner-shown', 'true');
+    }
+
+    setDeferredPrompt(null);
+    setShowInstallBanner(false);
+  };
+
+  const handleDismissInstall = () => {
+    setShowInstallBanner(false);
+    localStorage.setItem('pwa-install-banner-shown', 'true');
+  };
 
   const validateEmail = (value: string) => {
     if (!value) {
@@ -78,23 +125,53 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
 
   return (
     <div className="min-h-screen w-screen overflow-x-hidden flex items-center justify-center relative dark:bg-gray-900">
-      {/* Imagem de Fundo - Tela Cheia */}
+      {/* Barra de Instalação PWA - Fina no topo (similar a aviso de cookie) */}
+      {showInstallBanner && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#8B27FF] to-[#A855F7] text-white shadow-lg">
+          <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2 flex-1 min-w-0">
+              <Download className="w-4 h-4 flex-shrink-0" />
+              <p className="text-sm font-medium truncate">
+                Instale o ATESTEME para acesso rápido e experiência completa
+              </p>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <button
+                onClick={handleInstallClick}
+                className="px-3 py-1 bg-white text-[#8B27FF] rounded-lg text-sm font-bold hover:bg-white/90 transition-colors whitespace-nowrap"
+              >
+                Instalar
+              </button>
+              <button
+                onClick={handleDismissInstall}
+                className="w-6 h-6 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Imagem de Fundo - Tela Cheia - Posicionada mais à esquerda */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0 bg-cover"
         style={{
           backgroundImage: `url(${backgroundImage})`,
+          backgroundPosition: 'left center',
         }}
       />
 
       {/* Overlay escuro */}
       <div className="absolute inset-0 bg-black/30 dark:bg-black/60" />
 
-      {/* Logo Atesteme - Centro Esquerda (Desktop) */}
-      <div className="absolute left-[8%] top-1/2 -translate-y-1/2 z-10 hidden lg:block">
+      {/* Logo Atesteme - Centro Esquerda (Desktop) - Ajustado para cima e mais à esquerda */}
+      <div className="absolute left-[4%] top-[20%] z-10 hidden lg:block">
         <img
           src={logoImage}
           alt="Atesteme Logo"
           className="w-[400px] h-auto drop-shadow-2xl"
+          style={{ objectPosition: 'left center' }}
         />
       </div>
 
