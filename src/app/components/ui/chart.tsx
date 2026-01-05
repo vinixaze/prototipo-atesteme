@@ -61,9 +61,13 @@ function ChartContainer({
         {...props}
       >
         <ChartStyle id={chartId} config={config} />
-        <RechartsPrimitive.ResponsiveContainer>
-          {children}
-        </RechartsPrimitive.ResponsiveContainer>
+        <div className="w-full overflow-x-auto">
+          <div className="min-w-[300px]">
+            <RechartsPrimitive.ResponsiveContainer>
+              {children}
+            </RechartsPrimitive.ResponsiveContainer>
+          </div>
+        </div>
       </div>
     </ChartContext.Provider>
   );

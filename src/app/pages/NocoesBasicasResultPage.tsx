@@ -224,6 +224,36 @@ export default function NocoesBasicasResultPage({
                   </div>
                 </div>
 
+                {/* Mobile compact icons (icons only, names below) */}
+                <div className="flex items-center justify-between gap-2 mb-4 md:hidden">
+                  <div className="flex-1 flex flex-col items-center text-center px-2">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: categoryColor }}>
+                      {(() => {
+                        const Icon = categoryIcon || Layers;
+                        return <Icon className="w-5 h-5 text-white" strokeWidth={2} />;
+                      })()}
+                    </div>
+                    <span className="text-xs mt-2 font-medium text-gray-700 dark:text-gray-200">{category}</span>
+                  </div>
+
+                  <div className="flex-1 flex flex-col items-center text-center px-2">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: categoryColor }}>
+                      {(() => {
+                        const Icon = competencyIcon || Target;
+                        return <Icon className="w-5 h-5 text-white" strokeWidth={2} />;
+                      })()}
+                    </div>
+                    <span className="text-xs mt-2 font-medium text-gray-700 dark:text-gray-200">{competency}</span>
+                  </div>
+
+                  <div className="flex-1 flex flex-col items-center text-center px-2">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-purple-500">
+                      <BookOpen className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-xs mt-2 font-medium text-gray-700 dark:text-gray-200">BNCC</span>
+                  </div>
+                </div>
+
                 {/* Cabeçalho da Questão */}
                 <div className="mb-4">
                   <div className="flex items-center gap-2 mb-2">
@@ -238,7 +268,7 @@ export default function NocoesBasicasResultPage({
                 </div>
 
                 {/* Respostas */}
-                <div className="space-y-2">
+                <div className="space-y-2 hidden md:block">
                   <div className="flex items-start gap-2">
                     <span className="text-gray-600 dark:text-gray-400">Sua resposta:</span>
                     <span
@@ -429,6 +459,32 @@ export default function NocoesBasicasResultPage({
                   );
                 })}
               </div>
+
+              {/* User answer, correct answer and justification (for mobile popup) */}
+              {results[challengePopup.index] && (
+                <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <div className="mb-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Sua resposta:</span>
+                    <div className="font-medium text-gray-900 dark:text-gray-100">
+                      {results[challengePopup.index].userAnswer}. {results[challengePopup.index].options?.find((o: any) => o.letter === results[challengePopup.index].userAnswer)?.text}
+                    </div>
+                  </div>
+
+                  <div className="mb-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Resposta correta:</span>
+                    <div className="font-medium text-green-700 dark:text-green-400">
+                      {results[challengePopup.index].correctAnswer}. {results[challengePopup.index].options?.find((o: any) => o.letter === results[challengePopup.index].correctAnswer)?.text}
+                    </div>
+                  </div>
+
+                  <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-950 border-l-4 border-blue-500 dark:border-blue-600 rounded">
+                    <div className="text-blue-700 dark:text-blue-400 font-medium text-sm">💡 Justificativa:</div>
+                    <p className="text-blue-800 dark:text-blue-300 text-sm mt-1 leading-relaxed">
+                      {explanations[challengePopup.index] || 'Justificativa não disponível para este desafio.'}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </motion.div>
         </div>

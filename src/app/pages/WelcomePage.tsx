@@ -1,4 +1,5 @@
 import { motion } from "motion/react";
+import React from "react";
 import { useEffect } from "react";
 import {
   Sparkles,
@@ -9,6 +10,7 @@ import {
   Zap,
   Star,
 } from "lucide-react";
+// @ts-expect-error: Image asset not found in dev environment, placeholder used for type safety.
 import logoImage from "../../assets/bd6e15ee05cd5d9957a2d399e18c0693a6190505.png";
 
 interface WelcomePageProps {
@@ -29,7 +31,7 @@ export default function WelcomePage({
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-50 flex items-center justify-center p-6 sm:p-8 md:p-12 lg:p-16 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-50 flex items-center justify-center p-6 sm:p-8 md:p-12 lg:p-16 relative overflow-hidden md:overflow-auto">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Large Circle Top Right */}
@@ -99,7 +101,7 @@ export default function WelcomePage({
       >
         {/* Logo/Brand with Glow Effect - Espaçamento reduzido ao topo */}
         <motion.div
-          className="flex justify-center mb-2 md:mb-3 pt-2 md:pt-4"
+          className="flex justify-center mb-2 md:mb-3 -mt-6 md:-mt-8"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -112,8 +114,12 @@ export default function WelcomePage({
             <img
               src={logoImage}
               alt="AtesteMe Logo"
-              className="relative h-24 md:h-28 w-auto object-contain drop-shadow-[0_12px_48px_rgba(139,39,255,0.6)]"
+              className="relative h-24 md:h-28 w-auto object-contain drop-shadow-[0_12px_48px_rgba(139,39,255,0.6)] -mt-8"
             />
+            <p className="mt-1 text-xs sm:text-sm text-gray-500 text-center tracking-wide">
+              Plataforma de Educação Digital
+            </p>
+
           </div>
         </motion.div>
 
@@ -146,66 +152,97 @@ export default function WelcomePage({
               Bem-vindo(a){userName ? `, ${userName}` : ""}!
             </h2>
             <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-6">
-              Sua jornada de transformação digital começa agora
+              Sua jornada de aprendizagem digital começa agora!
             </p>
 
-            {/* Primary Action Button - Enhanced - Movido para aqui */}
-            <motion.button
-              whileHover={{ scale: 1.02, y: -4 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={onStartQuiz}
-              className="w-full bg-gradient-to-r from-[#8B27FF] via-[#A855F7] to-[#8B27FF] bg-[length:200%_100%] text-white py-4 sm:py-5 md:py-6 rounded-2xl shadow-[0_8px_32px_rgba(139,39,255,0.4)] hover:shadow-[0_12px_48px_rgba(139,39,255,0.5)] transition-all duration-300 group relative overflow-hidden"
-            >
-              {/* Animated Shine Effect */}
-              <motion.div
-                animate={{
-                  x: ["-100%", "100%"],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"
-              />
 
-              {/* Animated Background */}
-              <motion.div
-                animate={{
-                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                }}
-                transition={{
-                  duration: 5,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                className="absolute inset-0 bg-gradient-to-r from-[#A855F7] via-[#8B27FF] to-[#A855F7] bg-[length:200%_100%] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              />
-
-              {/* Button Content */}
-              <div className="relative flex items-center justify-center gap-3 sm:gap-4">
-                <div className="w-8 sm:w-10 h-8 sm:h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-                  <Target className="w-5 sm:w-6 h-5 sm:h-6" />
+            {/* Primary Action: desktop full-width CTA (image style) and mobile compact CTA */}
+            <div className="w-full text-center mb-6">
+              {/* Mobile ONLY */}
+              <button
+                onClick={onStartQuiz}
+                className="w-full md:hidden flex items-center gap-3 bg-[#8B27FF] text-white px-4 py-3 rounded-2xl hover:bg-[#6B1FBF] transition-colors"
+              >
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20 flex-shrink-0">
+                  <Sparkles className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-lg sm:text-xl md:text-2xl font-bold">
-                  Iniciar Teste de Competências
-                </span>
-                <ChevronRight className="w-5 sm:w-6 h-5 sm:h-6 group-hover:translate-x-1 transition-transform" />
+
+                <div className="flex-1 text-center">
+                  <span className="text-lg font-bold leading-tight block">
+                    Teste de Competências
+                  </span>
+                  <div className="mt-1 inline-flex items-center justify-center gap-2 text-sm font-semibold">
+                    <span>Iniciar</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </div>
+                </div>
+              </button>
+              {/* Desktop ONLY */}
+              <button
+                onClick={onStartQuiz}
+                className="
+                  hidden md:flex
+                  w-full
+                  justify-center
+                  bg-gradient-to-r from-[#8B27FF] to-[#A855F7]
+                  text-white
+                  px-10 py-8
+                  rounded-2xl
+                  hover:opacity-95
+                  transition-all
+                "
+              >
+                <div className="flex items-center gap-6 text-left">
+                  {/* Ícone à esquerda */}
+                  <Target className="w-10 h-10 text-white opacity-95" />
+
+                  {/* Textos */}
+                  <div className="flex flex-col">
+                    <span className="text-3xl font-bold leading-tight">
+                      Teste suas competências digitais
+                    </span>
+
+                    <span className="mt-2 text-sm font-semibold tracking-widest opacity-90 block text-center">
+                      INICIAR &gt;
+                    </span>
+
+                  </div>
+                </div>
+              </button>
+
+
+
+
+
+
+            </div>
+          </div>
+
+          {/* Main Description with Icons */}
+          <div className="mb-8 sm:mb-10 space-y-4 bg-gradient-to-r from-purple-50/50 to-transparent p-5 sm:p-6 rounded-2xl border-l-4 border-[#8B27FF]">
+            <div className="flex items-start gap-3 sm:gap-4">
+              <div className="w-7 sm:w-8 h-7 sm:h-8 bg-[#8B27FF] rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Star className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
               </div>
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
+                O{" "}
+                <span className="font-bold text-[#8B27FF]">
+                  Teste de Competências Digitais
+                </span>{" "}
+                vai identificar suas habilidades atuais
+              </p>
+            </div>
 
-              {/* Stats Bar */}
-              <div className="relative flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 mt-3 sm:mt-4 text-sm text-purple-100">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                  <span>Rápido e intuitivo</span>
-                </div>
-                <div className="w-1 h-1 bg-white/40 rounded-full hidden sm:block" />
-                <div className="flex items-center gap-1.5">
-                  <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                  <span>Diagnóstico completo</span>
-                </div>
+            <div className="flex items-start gap-3 sm:gap-4">
+              <div className="w-7 sm:w-8 h-7 sm:h-8 bg-[#8B27FF] rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Zap className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
               </div>
-            </motion.button>
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                São apenas alguns minutos que farão toda diferença na sua
+                jornada de aprendizado. Você receberá um diagnóstico completo
+                das suas competências digitais!
+              </p>
+            </div>
           </div>
 
           {/* Feature Cards Grid */}
@@ -255,34 +292,7 @@ export default function WelcomePage({
               </p>
             </motion.div>
           </div>
-
-          {/* Main Description with Icons */}
-          <div className="mb-8 sm:mb-10 space-y-4 bg-gradient-to-r from-purple-50/50 to-transparent p-5 sm:p-6 rounded-2xl border-l-4 border-[#8B27FF]">
-            <div className="flex items-start gap-3 sm:gap-4">
-              <div className="w-7 sm:w-8 h-7 sm:h-8 bg-[#8B27FF] rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Star className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
-              </div>
-              <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
-                O{" "}
-                <span className="font-bold text-[#8B27FF]">
-                  Teste de Competências Digitais
-                </span>{" "}
-                vai identificar suas habilidades atuais
-              </p>
-            </div>
-
-            <div className="flex items-start gap-3 sm:gap-4">
-              <div className="w-7 sm:w-8 h-7 sm:h-8 bg-[#8B27FF] rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Zap className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
-              </div>
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-                São apenas alguns minutos que farão toda diferença na sua
-                jornada de aprendizado. Você receberá um diagnóstico completo
-                das suas competências digitais!
-              </p>
-            </div>
-          </div>
-
+          
           {/* Subtle Skip Link - Very Low Emphasis */}
           <div className="mt-6 sm:mt-8 text-center">
             <button

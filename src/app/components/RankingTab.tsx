@@ -46,11 +46,11 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
 
       {/* Modal de Informações */}
       {showInfo && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={() => setShowInfo(false)}
         >
-          <div 
+          <div
             className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full p-5 max-h-[80vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
@@ -73,7 +73,7 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                   <span className="text-lg">🌐</span>
                   <span className="font-bold text-sm text-purple-900 dark:text-purple-300">Ranking de Rede</span>
                 </div>
-                
+
                 <div className="space-y-1.5 pl-2">
                   <div className="flex items-center gap-2 p-2 bg-white dark:bg-gray-700 rounded-lg">
                     <div className="w-6 h-6 bg-gradient-to-br from-[#8B27FF] to-[#A855F7] rounded-md flex items-center justify-center text-white text-xs font-bold">1</div>
@@ -110,7 +110,7 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                   <span className="text-lg">🏫</span>
                   <span className="font-bold text-sm text-purple-900 dark:text-purple-300">Ranking de Escola</span>
                 </div>
-                
+
                 <div className="space-y-1.5 pl-2">
                   <div className="flex items-center gap-2 p-2 bg-white dark:bg-gray-700 rounded-lg">
                     <div className="w-6 h-6 bg-gradient-to-br from-[#8B27FF] to-[#A855F7] rounded-md flex items-center justify-center text-white text-xs font-bold">1</div>
@@ -137,7 +137,7 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                   <span className="text-lg">👥</span>
                   <span className="font-bold text-sm text-purple-900 dark:text-purple-300">Ranking de Turma</span>
                 </div>
-                
+
                 <div className="space-y-1.5 pl-2">
                   <div className="flex items-center gap-2 p-2 bg-white dark:bg-gray-700 rounded-lg">
                     <div className="w-6 h-6 bg-gradient-to-br from-[#8B27FF] to-[#A855F7] rounded-md flex items-center justify-center text-white text-xs font-bold">1</div>
@@ -162,11 +162,11 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
 
       {/* Modal de Informações do Aluno */}
       {selectedUser && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedUser(null)}
         >
-          <div 
+          <div
             className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-sm w-full p-6"
             onClick={(e) => e.stopPropagation()}
           >
@@ -232,59 +232,61 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
       )}
 
       {/* Category Selector */}
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide items-center">
+      <div className="flex gap-2 mb-3 overflow-x-auto pb-2 scrollbar-hide items-center">
         <div className="flex gap-2">
           <button
             onClick={() => setRankingCategory('turma')}
             className={`
-              flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all font-semibold shadow-md flex-shrink-0 text-sm sm:text-base
-              ${rankingCategory === 'turma'
+        flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all font-semibold shadow-md flex-shrink-0 text-sm sm:text-base
+        ${rankingCategory === 'turma'
                 ? 'bg-gradient-to-r from-[#8B27FF] to-[#A855F7] text-white shadow-lg shadow-purple-300 scale-105'
                 : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-400'
               }
-            `}
+      `}
           >
             <span className="text-lg sm:text-xl">👥</span>
             <span>Turma</span>
           </button>
+
           <button
             onClick={() => setRankingCategory('escola')}
             className={`
-              flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all font-semibold shadow-md flex-shrink-0 text-sm sm:text-base
-              ${rankingCategory === 'escola'
+        flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all font-semibold shadow-md flex-shrink-0 text-sm sm:text-base
+        ${rankingCategory === 'escola'
                 ? 'bg-gradient-to-r from-[#8B27FF] to-[#A855F7] text-white shadow-lg shadow-purple-300 scale-105'
                 : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-400'
               }
-            `}
+      `}
           >
             <span className="text-lg sm:text-xl">🏫</span>
             <span>Escola</span>
           </button>
+
           <button
             onClick={() => setRankingCategory('rede')}
             className={`
-              flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all font-semibold shadow-md flex-shrink-0 text-sm sm:text-base
-              ${rankingCategory === 'rede'
+        flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all font-semibold shadow-md flex-shrink-0 text-sm sm:text-base
+        ${rankingCategory === 'rede'
                 ? 'bg-gradient-to-r from-[#8B27FF] to-[#A855F7] text-white shadow-lg shadow-purple-300 scale-105'
                 : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-400'
               }
-            `}
+      `}
           >
             <span className="text-lg sm:text-xl">🌐</span>
             <span>Rede</span>
           </button>
         </div>
-        
-        {/* Nome da Escola - Aparece apenas no ranking de Escola */}
+
+        {/* Desktop — Escola */}
         {rankingCategory === 'escola' && rankingData.escola.length > 0 && (
-          <div className="hidden sm:flex items-center gap-2 ml-auto px-4 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl border-2 border-purple-200 dark:border-purple-700">
+          <div className="hidden sm:flex items-center ml-auto px-4 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl border-2 border-purple-200 dark:border-purple-700">
             <span className="text-sm font-semibold text-purple-600 dark:text-purple-400">
               {rankingData.escola[0].schoolName || 'Escola Municipal Castro Alves'}
             </span>
           </div>
         )}
-        
-        {/* Nome da Escola e Turma - Aparece apenas no ranking de Turma */}
+
+        {/* Desktop — Turma */}
         {rankingCategory === 'turma' && rankingData.turma.length > 0 && (
           <div className="hidden sm:flex items-center gap-2 ml-auto">
             <div className="px-4 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl border-2 border-purple-200 dark:border-purple-700">
@@ -300,6 +302,39 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
           </div>
         )}
       </div>
+      {/* Contexto do Ranking - Mobile */}
+      <div className="sm:hidden mb-4 px-3">
+        {rankingCategory === 'escola' && rankingData.escola.length > 0 && (
+          <div className="
+            w-full text-center text-sm font-semibold
+            text-purple-700 dark:text-purple-300
+            bg-gradient-to-r from-purple-50 to-pink-50
+            dark:from-purple-900/30 dark:to-pink-900/30
+            border border-purple-200 dark:border-purple-700
+            rounded-xl px-4 py-2
+            truncate
+          ">
+            🏫 {rankingData.escola[0].schoolName || 'Escola Municipal Castro Alves'}
+          </div>
+        )}
+
+        {rankingCategory === 'turma' && rankingData.turma.length > 0 && (
+          <div className="
+            w-full text-center text-sm font-semibold
+            text-gray-700 dark:text-gray-200
+            bg-gradient-to-r from-purple-50 via-pink-50 to-orange-50
+            dark:from-purple-900/30 dark:via-pink-900/30 dark:to-orange-900/30
+            border border-purple-200 dark:border-purple-700
+            rounded-xl px-4 py-2
+            truncate
+          ">
+            🏫 {rankingData.turma[0].schoolName || 'Escola Municipal Castro Alves'}
+            <span className="mx-1 text-gray-400">•</span>
+            👥 {rankingData.turma[0].turma || '8ºA'}
+          </div>
+        )}
+      </div>
+
 
       {/* Pódio Visual */}
       <div className="mb-8 px-2">
@@ -373,11 +408,11 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
       <div className="space-y-3">
         {rankingData[rankingCategory].map((user, index) => {
           const isTop3 = user.position <= 3;
-          const positionGradient = 
+          const positionGradient =
             user.position === 1 ? 'from-yellow-400 to-yellow-600' :
-            user.position === 2 ? 'from-gray-300 to-gray-500' :
-            user.position === 3 ? 'from-orange-400 to-orange-600' :
-            'from-purple-100 to-purple-200';
+              user.position === 2 ? 'from-gray-300 to-gray-500' :
+                user.position === 3 ? 'from-orange-400 to-orange-600' :
+                  'from-purple-100 to-purple-200';
 
           return (
             <div
@@ -391,7 +426,7 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
               `}
             >
               {/* Barra decorativa lateral */}
-              <div 
+              <div
                 className={`absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b ${positionGradient}`}
               />
 
@@ -422,8 +457,8 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                   className={`
                     flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center text-white text-lg sm:text-2xl font-bold shadow-lg
                     transition-transform hover:rotate-6 hover:scale-110
-                    ${user.isCurrentUser 
-                      ? 'bg-gradient-to-br from-[#8B27FF] via-[#A855F7] to-[#C084FC] ring-2 sm:ring-4 ring-purple-300' 
+                    ${user.isCurrentUser
+                      ? 'bg-gradient-to-br from-[#8B27FF] via-[#A855F7] to-[#C084FC] ring-2 sm:ring-4 ring-purple-300'
                       : 'bg-gradient-to-br from-gray-400 via-gray-500 to-gray-600'
                     }
                   `}
@@ -460,7 +495,7 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                       </span>
                     )}
                   </div>
-                  
+
                   {/* Stats Grid */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 sm:gap-3">
                     {/* Nível e Progresso */}
@@ -470,7 +505,7 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                         <span className="text-[10px] sm:text-xs font-semibold text-purple-900 dark:text-purple-300">Nível {user.level}</span>
                       </div>
                       <div className="h-1 sm:h-1.5 bg-purple-200 dark:bg-purple-800 rounded-full overflow-hidden">
-                        <div 
+                        <div
                           className="h-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-full transition-all duration-500"
                           style={{ width: `${user.levelProgress}%` }}
                         />
@@ -482,7 +517,7 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                     <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/30 dark:to-yellow-800/30 rounded-md sm:rounded-lg p-1.5 sm:p-2 border border-yellow-200 dark:border-yellow-700">
                       <div className="flex items-center gap-1 sm:gap-1.5 mb-0.5">
                         <Coins className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-600 dark:text-yellow-400" />
-                        <span className="text-[10px] sm:text-xs font-semibold text-yellow-900 dark:text-yellow-300 truncate">Digcoins</span>
+                        <span className="text-[10px] sm:text-xs font-semibold text-yellow-900 dark:text-yellow-300 truncate">Pontos</span>
                       </div>
                       <p className="text-sm sm:text-base font-bold text-yellow-700 dark:text-yellow-300">{user.digcoins}</p>
                     </div>

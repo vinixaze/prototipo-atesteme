@@ -188,8 +188,8 @@ export default function QuizResultPage({ navigateTo, testData, previousPage }: Q
                     : 'border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-950'
                 }`}
               >
-                {/* Container dos cards informativos */}
-                <div className="space-y-4 mb-4">
+                {/* Container dos cards informativos - Hidden on mobile */}
+                <div className="space-y-4 mb-4 hidden md:block">
                   {/* Primeira linha: Botão Ver Desafio (100%) */}
                   <div className="flex justify-end">
                     <motion.button
@@ -274,6 +274,51 @@ export default function QuizResultPage({ navigateTo, testData, previousPage }: Q
                   </div>
                 </div>
 
+                {/* Mobile: Icons only inside card with button */}
+                <div className="md:hidden flex items-center gap-2 mb-4">
+                  {/* Icon Área */}
+                  <div className="flex-1 flex flex-col items-center gap-1.5">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: categoryColor }}>
+                      {(() => {
+                        const Icon = categoryIcon || Layers;
+                        return <Icon className="w-4 h-4 text-white" strokeWidth={2} />;
+                      })()}
+                    </div>
+                  </div>
+
+                  {/* Icon Competência */}
+                  <div className="flex-1 flex flex-col items-center gap-1.5">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: categoryColor }}>
+                      {(() => {
+                        const Icon = competencyIcon || Target;
+                        return <Icon className="w-4 h-4 text-white" strokeWidth={2} />;
+                      })()}
+                    </div>
+                  </div>
+
+                  {/* Icon BNCC */}
+                  <div className="flex-1 flex flex-col items-center gap-1.5">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-purple-500">
+                      <BookOpen className="w-4 h-4 text-white" strokeWidth={2} />
+                    </div>
+                  </div>
+
+                  {/* Ver Desafio Button */}
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      console.log('Botão clicado - Question:', questions[index]);
+                      console.log('Options:', questions[index]?.options);
+                      setChallengePopup({ isOpen: true, question: questions[index], index });
+                    }}
+                    className="px-3 py-2 bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800 hover:from-purple-100 hover:to-purple-200 dark:hover:from-purple-800 dark:hover:to-purple-700 border border-purple-200 dark:border-purple-700 rounded-lg transition-all shadow-sm hover:shadow-md flex items-center gap-1.5"
+                  >
+                    <Eye className="w-3.5 h-3.5 text-[#8B27FF] dark:text-[#C084FC]" strokeWidth={2} />
+                    <span className="text-[10px] font-semibold text-[#8B27FF] dark:text-[#C084FC] whitespace-nowrap">Ver</span>
+                  </motion.button>
+                </div>
+
                 {/* Cabeçalho da Questão */}
                 <div className="mb-4">
                   <div className="flex items-center gap-2 mb-2">
@@ -288,7 +333,7 @@ export default function QuizResultPage({ navigateTo, testData, previousPage }: Q
                 </div>
 
                 {/* Respostas */}
-                <div className="space-y-2">
+                <div className="space-y-2 hidden md:block">
                   <div className="flex items-start gap-2">
                     <span className="text-gray-600 dark:text-gray-400">Sua resposta:</span>
                     <span
@@ -521,6 +566,25 @@ export default function QuizResultPage({ navigateTo, testData, previousPage }: Q
                 <div className="bg-blue-50 dark:bg-blue-950 border-l-4 border-blue-500 dark:border-blue-600 rounded-lg p-4">
                   <h3 className="text-xs uppercase font-bold text-blue-700 dark:text-blue-400 mb-2">💡 Explicação</h3>
                   <p className="text-blue-900 dark:text-blue-300 leading-relaxed">{challengePopup.question.explanation}</p>
+                </div>
+              )}
+
+              {/* User answer & correct answer for popup */}
+              {results[challengePopup.index] && (
+                <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <div className="mb-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Sua resposta:</span>
+                    <div className="font-medium text-gray-900 dark:text-gray-100">
+                      {results[challengePopup.index].userAnswer}. {results[challengePopup.index].options?.find((o: any) => o.letter === results[challengePopup.index].userAnswer)?.text}
+                    </div>
+                  </div>
+
+                  <div className="mb-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Resposta correta:</span>
+                    <div className="font-medium text-green-700 dark:text-green-400">
+                      {results[challengePopup.index].correctAnswer}. {results[challengePopup.index].options?.find((o: any) => o.letter === results[challengePopup.index].correctAnswer)?.text}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

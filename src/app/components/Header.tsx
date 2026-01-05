@@ -185,7 +185,7 @@ export default function Header({
           <div className="flex items-center gap-3">
             <button
               onClick={onMenuClick}
-              className="p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+              className="hidden md:inline-flex p-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
             >
               <Menu className="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
@@ -264,7 +264,7 @@ export default function Header({
                       <div>
                         <p className="text-sm text-white/90">Saldo Total</p>
                         <p className="text-2xl font-bold text-white">
-                          1247 Digcoins
+                          1247 Pontos
                         </p>
                       </div>
                     </div>

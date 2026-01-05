@@ -750,7 +750,7 @@ const mockContents: Content[] = [
   },
 
   // ===== CONTEÚDOS NÍVEL 5 =====
-  
+
   // COMUNICAÇÃO E COLABORAÇÃO - Interagir - Nível 5
   {
     id: '13-5',
@@ -971,8 +971,8 @@ export default function ConteudosPage({ navigateTo, filterData, userRole }: Cont
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <Sidebar 
-        isOpen={sidebarOpen} 
+      <Sidebar
+        isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         currentPage="conteudos"
         onNavigate={(page) => {
@@ -994,7 +994,7 @@ export default function ConteudosPage({ navigateTo, filterData, userRole }: Cont
             Espaço de Aprendizagem
           </h1>
           <h2 className="text-2xl text-gray-800 dark:text-gray-200 mb-2">
-            Conteúdos de Estudo
+            Conteúdo para você estudar
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-400">
             Explore materiais organizados por competências e níveis
@@ -1011,7 +1011,7 @@ export default function ConteudosPage({ navigateTo, filterData, userRole }: Cont
             {categories.map((category) => {
               const Icon = category.icon;
               const isActive = selectedCategory === category.name;
-              
+
               return (
                 <motion.button
                   key={category.name}
@@ -1021,18 +1021,29 @@ export default function ConteudosPage({ navigateTo, filterData, userRole }: Cont
                   }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className={`flex-1 min-w-[160px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl transition-all font-semibold text-sm ${
-                    isActive
+                  className={`flex-1 min-w-[120px] md:min-w-[160px] 
+                    flex flex-col md:flex-row 
+                    items-center justify-center 
+                    gap-1 md:gap-2 
+                    px-3 py-3 rounded-xl 
+                    transition-all font-semibold text-sm
+                    ${isActive
                       ? 'text-white shadow-lg'
                       : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                  }`}
+                    }`}
                   style={{
                     backgroundColor: isActive ? category.color : 'transparent',
                   }}
                 >
-                  <Icon className="w-4 h-4" />
-                  <span className="hidden md:inline">{category.name}</span>
+                  {/* Ícone */}
+                  <Icon className="w-5 h-5 md:w-4 md:h-4" />
+
+                  {/* Texto */}
+                  <span className="text-[11px] leading-tight text-center md:text-sm">
+                    {category.name}
+                  </span>
                 </motion.button>
+
               );
             })}
           </div>
@@ -1083,9 +1094,9 @@ export default function ConteudosPage({ navigateTo, filterData, userRole }: Cont
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredContents.map((content, index) => {
             // Ícone baseado no formato
-            const formatIcon = content.format === 'Vídeo' ? Play : 
-                               content.format === 'Site' ? Globe : 
-                               FileText;
+            const formatIcon = content.format === 'Vídeo' ? Play :
+              content.format === 'Site' ? Globe :
+                FileText;
             const FormatIcon = formatIcon;
 
             return (
@@ -1101,7 +1112,7 @@ export default function ConteudosPage({ navigateTo, filterData, userRole }: Cont
                 className="group bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-2xl transition-all overflow-hidden border border-gray-100 dark:border-gray-700"
               >
                 {/* Header do Card com Cor da Categoria */}
-                <div 
+                <div
                   className="h-2"
                   style={{ backgroundColor: currentCategory?.color }}
                 />
@@ -1109,11 +1120,11 @@ export default function ConteudosPage({ navigateTo, filterData, userRole }: Cont
                 <div className="p-6">
                   {/* Badge de Formato */}
                   <div className="flex items-center gap-2 mb-3">
-                    <div 
+                    <div
                       className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
-                      style={{ 
+                      style={{
                         backgroundColor: `${currentCategory?.color}15`,
-                        color: currentCategory?.color 
+                        color: currentCategory?.color
                       }}
                     >
                       <FormatIcon className="w-3.5 h-3.5" />
@@ -1154,13 +1165,13 @@ export default function ConteudosPage({ navigateTo, filterData, userRole }: Cont
             animate={{ opacity: 1, scale: 1 }}
             className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-16 text-center"
           >
-            <div 
+            <div
               className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6"
               style={{ backgroundColor: `${currentCategory?.color}15` }}
             >
               {currentCategory?.icon && (
-                <currentCategory.icon 
-                  className="w-12 h-12" 
+                <currentCategory.icon
+                  className="w-12 h-12"
                   style={{ color: currentCategory.color }}
                 />
               )}

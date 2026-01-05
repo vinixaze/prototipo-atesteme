@@ -39,8 +39,8 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
 
   // Definir quantas missões mostrar inicialmente
   const initialMissionsCount = 6;
-  const displayedAchievements = showAllMissions 
-    ? achievements 
+  const displayedAchievements = showAllMissions
+    ? achievements
     : achievements.slice(0, initialMissionsCount);
 
   return (
@@ -48,8 +48,7 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
       <div className="mb-6 sm:mb-8">
         <h2 className="text-[28px] font-bold text-[#333] dark:text-gray-200 mb-3">Suas Missões</h2>
         <p className="text-[15px] text-[#666] dark:text-gray-400 mb-2">
-          Desbloqueie missões conforme avança na sua jornada de aprendizado digital
-        </p>
+          Desenvolva suas competências nos eixos da BNCC Computação/Letramento Digita        </p>
         <div className="flex items-center gap-2 text-sm text-[#8B27FF] dark:text-[#A855F7]">
           <Medal className="w-4 h-4" />
           <span className="font-semibold">Cada missão concede uma medalha que adiciona pontos ao seu perfil!</span>
@@ -59,17 +58,17 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
       {/* SEÇÃO 2 - SUAS MISSÕES */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         {/* CARD 1 - MISSÕES (Rosa Claro) */}
-        <div 
+        <div
           className="relative bg-gradient-to-r from-[#F0ABFC] to-[#E879F9] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
           {/* Ícone decorativo - Raio - Centralizado verticalmente */}
-          <Zap 
+          <Zap
             className="absolute top-1/2 right-3 -translate-y-1/2 w-[45px] h-[45px] text-white opacity-50 transition-all duration-300 group-hover:scale-110"
             strokeWidth={2}
             fill="white"
             fillOpacity={0.3}
           />
-          
+
           {/* Conteúdo */}
           <div className="relative z-10">
             <div className="text-[44px] font-bold text-white leading-none mb-1">
@@ -82,23 +81,23 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
         </div>
 
         {/* CARD 2 - BLOQUEADAS (Cinza) */}
-        <div 
+        <div
           className="relative bg-gradient-to-r from-[#9CA3AF] to-[#6B7280] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
           {/* Ícone decorativo - Cadeado com Raio dentro */}
           <div className="absolute top-3 right-3 w-[45px] h-[45px]">
-            <Lock 
+            <Lock
               className="w-[45px] h-[45px] text-white opacity-50 transition-all duration-300 group-hover:scale-110"
               strokeWidth={2}
             />
-            <Zap 
+            <Zap
               className="absolute top-[60%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[16px] h-[16px] text-white opacity-80"
               strokeWidth={2.5}
               fill="white"
               fillOpacity={0.4}
             />
           </div>
-          
+
           {/* Conteúdo */}
           <div className="relative z-10">
             <div className="text-[44px] font-bold text-white leading-none mb-1">
@@ -111,15 +110,15 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
         </div>
 
         {/* CARD 3 - MEDALHAS (Dourado/Amarelo) */}
-        <div 
+        <div
           className="relative bg-gradient-to-r from-[#FFD700] to-[#FFA500] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
           {/* Ícone decorativo - Award/Medalha */}
-          <Award 
+          <Award
             className="absolute top-3 right-3 w-[50px] h-[50px] text-white opacity-50 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
             strokeWidth={2}
           />
-          
+
           {/* Conteúdo */}
           <div className="relative z-10">
             <div className="text-[44px] font-bold text-white leading-none mb-1">
@@ -137,14 +136,14 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
         {displayedAchievements.map((achievement, index) => {
           const AchIcon = achievement.icon;
           const isUnlocked = achievement.unlocked;
-          
+
           return (
             <div
               key={achievement.id}
               className={`
                 relative rounded-2xl p-6 text-center transition-all duration-300
-                ${isUnlocked 
-                  ? 'bg-white dark:bg-gray-800 border-2 shadow-lg hover:-translate-y-2 hover:shadow-2xl cursor-pointer group' 
+                ${isUnlocked
+                  ? 'bg-white dark:bg-gray-800 border-2 shadow-lg hover:-translate-y-2 hover:shadow-2xl cursor-pointer group'
                   : 'bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 shadow-sm opacity-60 hover:opacity-70'
                 }
               `}
@@ -158,14 +157,14 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
                 <div
                   className={`
                     relative w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-300
-                    ${isUnlocked 
-                      ? 'shadow-lg group-hover:scale-110 group-hover:rotate-6' 
+                    ${isUnlocked
+                      ? 'shadow-lg group-hover:scale-110 group-hover:rotate-6'
                       : 'shadow-sm'
                     }
                   `}
                   style={{
-                    backgroundColor: isUnlocked 
-                      ? achievement.color + '20' 
+                    backgroundColor: isUnlocked
+                      ? achievement.color + '20'
                       : '#E5E7EB',
                   }}
                 >
@@ -178,10 +177,10 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
                       </div>
                     </>
                   )}
-                  
+
                   {isUnlocked ? (
-                    <AchIcon 
-                      className="w-10 h-10 group-hover:scale-110 transition-transform duration-300" 
+                    <AchIcon
+                      className="w-10 h-10 group-hover:scale-110 transition-transform duration-300"
                       style={{ color: achievement.color }}
                       strokeWidth={1.5}
                     />
@@ -192,7 +191,7 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
               </div>
 
               {/* Title com gradiente para desbloqueadas */}
-              <h4 
+              <h4
                 className={`
                   text-lg mb-2 font-bold transition-all duration-300
                   ${isUnlocked ? 'group-hover:scale-105' : 'text-gray-500'}
@@ -212,8 +211,8 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
               {/* Medalha e Pontos - Informação de Recompensa */}
               <div className={`
                 flex items-center justify-center gap-2 px-3 py-2 rounded-lg mb-3
-                ${isUnlocked 
-                  ? 'bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border border-yellow-200 dark:border-yellow-800' 
+                ${isUnlocked
+                  ? 'bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border border-yellow-200 dark:border-yellow-800'
                   : 'bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
                 }
               `}>

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Filter, Search, ChevronDown, Check, X, Tag, Book, Lightbulb, Calendar, CheckSquare, Clock, ArrowRight, RotateCcw } from 'lucide-react';
+import React from "react";
+import { Filter, Search, ChevronDown, Check, X, Tag, Book, Lightbulb, Calendar, CheckSquare, Clock, ArrowRight, RotateCcw, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
@@ -34,8 +35,42 @@ export default function TransversalityPage({
   onLogout,
 }: TransversalityPageProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [searchHistory, setSearchHistory] = useState<any[]>([]);
-  
+  const [searchHistory, setSearchHistory] = useState<any[]>([
+    {
+      date: new Date(Date.now() - 86400000),
+      filters: { filterType: 'curricular', curricular: 'portugues' },
+      label: 'Português - Interpretação de Texto',
+    },
+    {
+      date: new Date(Date.now() - 172800000),
+      filters: { filterType: 'bncc', bnccType: 'geral' },
+      label: 'Habilidade BNCC Geral',
+    },
+    {
+      date: new Date(Date.now() - 259200000),
+      filters: { filterType: 'curricular', curricular: 'matematica' },
+      label: 'Matemática - Álgebra',
+    },
+    {
+      date: new Date(Date.now() - 345600000),
+      filters: { filterType: 'curricular', curricular: 'ciencias' },
+      label: 'Ciências - Matéria e Energia',
+    },
+    {
+      date: new Date(Date.now() - 432000000),
+      filters: { filterType: 'bncc', bnccType: 'computacao' },
+      label: 'Habilidade BNCC Computação',
+    },
+    {
+      date: new Date(Date.now() - 518400000),
+      filters: { filterType: 'curricular', curricular: 'historia' },
+      label: 'História - Brasil Colônia',
+    },
+  ]);
+  const [showModal, setShowModal] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+  const totalSteps = 3;
+
   // Estado dos filtros selecionados
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
     filterType: '',
@@ -43,7 +78,7 @@ export default function TransversalityPage({
 
   // Estado dos dropdowns abertos
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  
+
   // Estado de busca dentro dos dropdowns
   const [searchTerms, setSearchTerms] = useState<Record<string, string>>({});
 
@@ -379,7 +414,7 @@ export default function TransversalityPage({
   const handleFilterSelect = (filterName: keyof SelectedFilters, value: string) => {
     setSelectedFilters((prev) => {
       const newFilters: SelectedFilters = { ...prev, [filterName]: value };
-      
+
       // Limpar filtros dependentes
       if (filterName === 'filterType') {
         return { filterType: value };
@@ -396,7 +431,7 @@ export default function TransversalityPage({
       if (filterName === 'thematic') {
         delete newFilters.year;
       }
-      
+
       return newFilters;
     });
     setOpenDropdown(null);
@@ -408,7 +443,7 @@ export default function TransversalityPage({
       const newCodes = currentCodes.includes(code)
         ? currentCodes.filter((c) => c !== code)
         : [...currentCodes, code];
-      
+
       return { ...prev, bnccCodes: newCodes };
     });
   };
@@ -428,9 +463,18 @@ export default function TransversalityPage({
     const componentLabel = selectedFilters.curricular && selectedFilters.component
       ? componentOptions[selectedFilters.curricular]?.find((o) => o.value === selectedFilters.component)?.label
       : '';
-    const thematicLabel = selectedFilters.component && selectedFilters.thematic
-      ? thematicOptions[selectedFilters.component]?.find((o) => o.value === selectedFilters.thematic)?.label
-      : '';
+    const thematicLabel =
+      selectedFilters.component && selectedFilters.thematic
+        ? thematicOptions[selectedFilters.component]
+          ?.find((o) => o.value === selectedFilters.thematic)
+          ?.label
+        : undefined;
+
+    const safeThematicLabel: string =
+      thematicLabel && thematicLabel.trim() !== ''
+        ? thematicLabel
+        : 'a temática selecionada';
+
 
     // Mapear categoria de competência baseada no componente curricular
     const categoryMap: Record<string, { category: string; color: string; competency: string }> = {
@@ -471,52 +515,56 @@ export default function TransversalityPage({
     // Criar questão baseada no tipo de filtro
     if (selectedFilters.filterType === 'curricular') {
       return {
+        fromPage: 'transversalidade',
+
         category: categoryInfo.category,
         categoryColor: categoryInfo.color,
         competency: categoryInfo.competency,
-        level: selectedFilters.year === 'EF6' || selectedFilters.year === 'EF7' ? 'Básico' : 
-               selectedFilters.year === 'EF8' || selectedFilters.year === 'EF9' ? 'Intermediário' : 'Avançado',
-        totalQuestions: 1,
+
         questions: [
           {
             id: 1,
-            text: `[${curricularLabel} - ${componentLabel}] ${thematicLabel}: Qual das alternativas abaixo melhor representa o uso adequado desta competência no contexto educacional?`,
+            text: `[${curricularLabel} - ${componentLabel}] ${safeThematicLabel
+              }: Qual alternativa representa melhor essa competência?`,
+
             options: [
               {
                 letter: 'A',
-                text: `Aplicar ${thematicLabel?.toLowerCase()} apenas em contextos teóricos sem prática`,
+                text: `Aplicar ${safeThematicLabel
+                  .toLowerCase()} apenas de forma teórica`,
+                isCorrect: false,
               },
               {
                 letter: 'B',
-                text: `Utilizar ${thematicLabel?.toLowerCase()} de forma integrada com ferramentas digitais para melhorar a compreensão`,
+                text: `Integrar ${safeThematicLabel
+                  .toLowerCase()} com tecnologias digitais`,
+                isCorrect: true,
               },
               {
                 letter: 'C',
-                text: 'Ignorar completamente as novas metodologias de ensino',
+                text: 'Ignorar metodologias digitais',
+                isCorrect: false,
               },
               {
                 letter: 'D',
-                text: 'Aplicar métodos tradicionais sem considerar o contexto digital',
-              },
-              {
-                letter: 'E',
-                text: 'Manter as práticas pedagógicas sem atualização tecnológica',
+                text: 'Usar tecnologia sem intencionalidade pedagógica',
+                isCorrect: false,
               },
             ],
-            correctAnswer: 'B',
-            explanation: `A alternativa correta demonstra a integração adequada de ${thematicLabel?.toLowerCase()} com tecnologias digitais, promovendo uma aprendizagem mais significativa e contextualizada no ambiente educacional do ${selectedFilters.year}, alinhada com as competências de ${categoryInfo.category} da BNCC.`,
-            category: categoryInfo.category,
-            categoryColor: categoryInfo.color,
-            competency: categoryInfo.competency,
+
+            explanation: `A alternativa correta demonstra o uso adequado da competência no contexto educacional.`,
+
             transversality: {
               curricular: curricularLabel,
               component: componentLabel,
-              thematic: thematicLabel,
+              thematic: safeThematicLabel
+              ,
               year: selectedFilters.year,
             },
           },
         ],
       };
+
     } else {
       // Fluxo BNCC
       const bnccTypeLabel = bnccTypeOptions.find((o) => o.value === selectedFilters.bnccType)?.label || '';
@@ -571,11 +619,11 @@ export default function TransversalityPage({
 
   const handleSearch = () => {
     setIsSearching(true);
-    
+
     // Simular busca
     setTimeout(() => {
       setIsSearching(false);
-      
+
       // Salvar no histórico
       const newHistory = {
         date: new Date(),
@@ -583,12 +631,12 @@ export default function TransversalityPage({
         label: getSearchLabel(),
       };
       setSearchHistory([newHistory, ...searchHistory.slice(0, 4)]);
-      
+
       // Criar dados da questão baseados nos filtros
       const questionData = createQuestionFromFilters();
-      
+
       // Navegar para a tela de questão isolada
-      navigateTo('single-question', questionData);
+      navigateTo('quiz', questionData);
     }, 800);
   };
 
@@ -621,7 +669,7 @@ export default function TransversalityPage({
       if (!selectedFilters.curricular || !selectedFilters.component || !selectedFilters.thematic || !selectedFilters.year) {
         return true; // Ainda não completou todos os filtros, não mostrar aviso
       }
-      
+
       // Exemplo: algumas combinações específicas não têm questões
       // Aqui você pode adicionar lógica para verificar combinações sem questões
       if (selectedFilters.curricular === 'educacao-fisica' && selectedFilters.component === 'esportes') {
@@ -630,21 +678,21 @@ export default function TransversalityPage({
       if (selectedFilters.curricular === 'arte' && selectedFilters.component === 'artes-visuais') {
         return false;
       }
-      
+
       // Por padrão, tem questões disponíveis
       return true;
     }
-    
+
     if (selectedFilters.filterType === 'bncc') {
       // Só verificar se TODOS os filtros obrigatórios estão preenchidos
       if (!selectedFilters.bnccType || !selectedFilters.bnccCodes || selectedFilters.bnccCodes.length === 0) {
         return true; // Ainda não completou todos os filtros, não mostrar aviso
       }
-      
+
       // Todas as opções BNCC têm questões por enquanto
       return true;
     }
-    
+
     return true;
   };
 
@@ -655,195 +703,55 @@ export default function TransversalityPage({
     );
   };
 
-  // Componente de Dropdown customizado
-  const FilterDropdown = ({
-    id,
-    label,
-    icon: Icon,
-    placeholder,
-    options,
-    value,
-    onSelect,
-    required = false,
-  }: {
-    id: string;
-    label: string;
-    icon: any;
-    placeholder: string;
-    options: FilterOption[];
-    value: string;
-    onSelect: (value: string) => void;
-    required?: boolean;
-  }) => {
-    const isOpen = openDropdown === id;
-    const searchTerm = searchTerms[id] || '';
-    const filteredOptions = filterOptions(options, searchTerm);
-    const selectedOption = options.find((opt) => opt.value === value);
-
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        className={`relative bg-[#F9F7FF] dark:bg-gray-800 border-2 rounded-2xl p-6 transition-all duration-300 ${
-          isOpen
-            ? 'border-[#8B27FF] shadow-lg shadow-purple-500/20'
-            : value
-            ? 'border-[#8B27FF] shadow-md'
-            : 'border-[#E8E0FF] dark:border-gray-700'
-        } hover:border-[#8B27FF] hover:shadow-lg hover:shadow-purple-500/15`}
-      >
-        {/* Label */}
-        <div className="flex items-center gap-2 mb-3">
-          <Icon className="w-5 h-5 text-[#8B27FF]" strokeWidth={2} />
-          <span className="text-sm font-semibold text-[#6B1FBF] dark:text-purple-400 uppercase tracking-wide">
-            {label}
-            {required && <span className="text-red-500 ml-1">*</span>}
-          </span>
-        </div>
-
-        {/* Select Button */}
-        <button
-          onClick={() => setOpenDropdown(isOpen ? null : id)}
-          className={`w-full h-14 bg-white dark:bg-gray-700 border-2 rounded-xl px-5 flex items-center justify-between transition-all duration-200 ${
-            isOpen
-              ? 'border-[#8B27FF] shadow-md shadow-purple-500/10'
-              : 'border-gray-200 dark:border-gray-600 hover:border-[#8B27FF]'
-          }`}
-        >
-          <span className={selectedOption ? 'text-gray-900 dark:text-gray-100 font-medium' : 'text-gray-400 dark:text-gray-500 italic'}>
-            {selectedOption ? selectedOption.label : placeholder}
-          </span>
-          <ChevronDown
-            className={`w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform duration-200 ${
-              isOpen ? 'rotate-180' : ''
-            }`}
-          />
-        </button>
-
-        {/* Dropdown */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: -10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -10 }}
-              transition={{ duration: 0.2 }}
-              className="absolute top-full left-0 w-full mt-2 bg-white dark:bg-gray-700 border-2 border-[#E8E0FF] dark:border-gray-600 rounded-xl shadow-2xl shadow-purple-500/20 z-50 overflow-hidden"
-            >
-              {/* Search Input */}
-              <div className="sticky top-0 bg-white dark:bg-gray-700 p-3 border-b border-gray-100 dark:border-gray-600">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Buscar..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerms({ ...searchTerms, [id]: e.target.value })}
-                    className="w-full h-10 pl-10 pr-4 border border-gray-200 dark:border-gray-600 rounded-lg text-sm bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#8B27FF] focus:border-transparent"
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                </div>
-              </div>
-
-              {/* Options List */}
-              <div className="max-h-80 overflow-y-auto p-2">
-                {filteredOptions.length > 0 ? (
-                  filteredOptions.map((option) => (
-                    <button
-                      key={option.value}
-                      onClick={() => onSelect(option.value)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-150 ${
-                        value === option.value
-                          ? 'bg-[#E8E0FF] dark:bg-purple-900/30 text-[#6B1FBF] dark:text-purple-300 font-medium'
-                          : 'hover:bg-[#F9F7FF] dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200'
-                      }`}
-                    >
-                      {value === option.value && (
-                        <Check className="w-4 h-4 text-[#8B27FF]" strokeWidth={2.5} />
-                      )}
-                      <span className="flex-1 text-left text-[15px]">{option.label}</span>
-                      {option.count && (
-                        <span className="bg-[#F3E8FF] dark:bg-purple-900/50 text-[#8B27FF] dark:text-purple-300 text-xs font-bold px-2.5 py-1 rounded-full">
-                          {option.count}
-                        </span>
-                      )}
-                    </button>
-                  ))
-                ) : (
-                  <div className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">
-                    Nenhuma opção encontrada
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
-    );
-  };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
-      <Header
-        userName={userName || 'Professor'}
-        onLogout={onLogout}
-        onMenuClick={() => setSidebarOpen(true)}
-        navigateTo={navigateTo}
-      />
-
-      <Sidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        currentPage={currentPage}
-        onNavigate={navigateTo}
-      />
-
-      <div className="max-w-5xl mx-auto px-4 py-8 md:px-6 md:py-12">
-        {/* Header da Página */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 md:p-10 mb-8"
-        >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#8B27FF] to-[#B855FF] rounded-2xl flex items-center justify-center">
-              <Filter className="w-6 h-6 text-white" strokeWidth={2.5} />
-            </div>
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">Transversalidade</h1>
-          </div>
-          <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed max-w-3xl">
-            Encontre questões específicas navegando pelos componentes curriculares, temáticas e habilidades BNCC
-          </p>
-        </motion.div>
-
-        {/* Container Principal */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Coluna de Filtros */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Filtro 1 - Tipo de Filtro */}
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <div className="space-y-6">
             <div>
-              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-                Tipo de Filtro <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={selectedFilters.filterType}
-                onChange={(e) => handleFilterSelect('filterType', e.target.value)}
-                className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
-              >
-                <option value="">Selecione...</option>
-                {filterTypeOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Selecione o Tipo de Filtro</h3>
+              <p className="text-gray-600 dark:text-gray-400">Escolha como deseja buscar as questões de transversalidade</p>
             </div>
 
-            {/* Fluxo A - Componente Curricular */}
-            {selectedFilters.filterType === 'curricular' && (
-              <>
-                <div ref={curricularRef}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {filterTypeOptions.map((option) => (
+                <motion.button
+                  key={option.value}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    handleFilterSelect('filterType', option.value);
+                    setCurrentStep(2);
+                  }}
+                  className={`p-8 rounded-2xl border-2 transition-all text-left ${selectedFilters.filterType === option.value
+                    ? 'border-[#8B27FF] bg-purple-50 dark:bg-purple-900/20'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-[#8B27FF] bg-white dark:bg-gray-800'
+                    }`}
+                >
+                  <h4 className="font-bold text-lg text-gray-900 dark:text-white mb-2">{option.label}</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {option.value === 'curricular'
+                      ? 'Navegue por componentes curriculares e temáticas específicas'
+                      : 'Selecione habilidades baseadas nos códigos da BNCC'}
+                  </p>
+                </motion.button>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 2:
+        if (selectedFilters.filterType === 'curricular') {
+          return (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Componente Curricular e Temática</h3>
+                <p className="text-gray-600 dark:text-gray-400">Selecione o componente, matéria e tema específico</p>
+              </div>
+
+              <div className="space-y-4">
+                {/* Componente Curricular */}
+                <div>
                   <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
                     Componente Curricular <span className="text-red-500">*</span>
                   </label>
@@ -862,7 +770,7 @@ export default function TransversalityPage({
                 </div>
 
                 {selectedFilters.curricular && componentOptions[selectedFilters.curricular] && (
-                  <div ref={componentRef}>
+                  <div>
                     <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
                       Componente <span className="text-red-500">*</span>
                     </label>
@@ -882,7 +790,7 @@ export default function TransversalityPage({
                 )}
 
                 {selectedFilters.component && thematicOptions[selectedFilters.component] && (
-                  <div ref={thematicRef}>
+                  <div>
                     <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
                       Temática <span className="text-red-500">*</span>
                     </label>
@@ -900,321 +808,346 @@ export default function TransversalityPage({
                     </select>
                   </div>
                 )}
-
-                {selectedFilters.thematic && (
-                  <div ref={yearRef}>
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="bg-[#F9F7FF] dark:bg-gray-800 border-2 border-[#E8E0FF] dark:border-gray-700 rounded-2xl p-6"
-                    >
-                      <div className="flex items-center gap-2 mb-4">
-                        <Calendar className="w-5 h-5 text-[#8B27FF]" strokeWidth={2} />
-                        <span className="text-sm font-semibold text-[#6B1FBF] dark:text-purple-400 uppercase tracking-wide">
-                          Ano Escolar<span className="text-red-500 ml-1">*</span>
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-4 sm:grid-cols-7 gap-3">
-                        {yearOptions.map((year) => (
-                          <button
-                            key={year.value}
-                            onClick={() => handleYearSelect(year.value)}
-                            className={`h-16 rounded-xl font-bold text-lg transition-all duration-200 ${
-                              selectedFilters.year === year.value
-                                ? 'bg-[#8B27FF] text-white border-2 border-[#8B27FF] shadow-lg shadow-purple-500/30'
-                                : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-600 hover:border-[#8B27FF]'
-                            }`}
-                          >
-                            {year.label}
-                          </button>
-                        ))}
-                      </div>
-                    </motion.div>
-                  </div>
-                )}
-              </>
-            )}
-
-            {/* Fluxo B - Habilidades BNCC */}
-            {selectedFilters.filterType === 'bncc' && (
-              <>
-                <div ref={bnccTypeRef}>
-                  <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-                    Tipo de Habilidade BNCC <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    value={selectedFilters.bnccType || ''}
-                    onChange={(e) => handleFilterSelect('bnccType', e.target.value)}
-                    className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
-                  >
-                    <option value="">Selecione...</option>
-                    {bnccTypeOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label} {option.count && `(${option.count})`}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {selectedFilters.bnccType && (
-                  <div ref={bnccCodesRef}>
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="bg-[#F9F7FF] dark:bg-gray-800 border-2 border-[#E8E0FF] dark:border-gray-700 rounded-2xl p-6"
-                    >
-                      <div className="flex items-center gap-2 mb-4">
-                        <CheckSquare className="w-5 h-5 text-[#8B27FF]" strokeWidth={2} />
-                        <span className="text-sm font-semibold text-[#6B1FBF] dark:text-purple-400 uppercase tracking-wide">
-                          Habilidades Relacionadas<span className="text-red-500 ml-1">*</span>
-                        </span>
-                      </div>
-
-                      <div className="space-y-2 max-h-96 overflow-y-auto">
-                        {bnccCodeOptions.map((code) => (
-                          <button
-                            key={code.value}
-                            onClick={() => handleBnccCodeToggle(code.value)}
-                            className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all duration-150 ${
-                              selectedFilters.bnccCodes?.includes(code.value)
-                                ? 'bg-[#E8E0FF] dark:bg-purple-900/30 border-2 border-[#8B27FF]'
-                                : 'bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:bg-[#F9F7FF] dark:hover:bg-gray-600'
-                            }`}
-                          >
-                            <div
-                              className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-colors ${
-                                selectedFilters.bnccCodes?.includes(code.value)
-                                  ? 'bg-[#8B27FF] border-[#8B27FF]'
-                                  : 'border-gray-300 dark:border-gray-500'
-                              }`}
-                            >
-                              {selectedFilters.bnccCodes?.includes(code.value) && (
-                                <Check className="w-4 h-4 text-white" strokeWidth={3} />
-                              )}
-                            </div>
-                            <span className="font-mono text-sm font-medium text-gray-700 dark:text-gray-200">
-                              {code.label}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    </motion.div>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-
-          {/* Coluna Lateral - Resumo */}
-          <div className="lg:col-span-1">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="sticky top-24 bg-white dark:bg-gray-800 border-2 border-[#E8E0FF] dark:border-gray-700 rounded-2xl p-6 shadow-lg"
-            >
-              <h3 className="text-xl font-bold text-[#6B1FBF] dark:text-purple-400 mb-4">Sua Seleção</h3>
-
-              <div className="space-y-3 mb-6">
-                {selectedFilters.filterType && (
-                  <div className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-[#8B27FF] mt-0.5 flex-shrink-0" strokeWidth={2.5} />
-                    <div className="text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">Tipo:</span>{' '}
-                      <span className="font-medium text-gray-900 dark:text-gray-100">
-                        {filterTypeOptions.find((o) => o.value === selectedFilters.filterType)?.label}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {selectedFilters.curricular && (
-                  <div className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-[#8B27FF] mt-0.5 flex-shrink-0" strokeWidth={2.5} />
-                    <div className="text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">Disciplina:</span>{' '}
-                      <span className="font-medium text-gray-900 dark:text-gray-100">
-                        {curricularOptions.find((o) => o.value === selectedFilters.curricular)?.label}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {selectedFilters.component && (
-                  <div className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-[#8B27FF] mt-0.5 flex-shrink-0" strokeWidth={2.5} />
-                    <div className="text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">Componente:</span>{' '}
-                      <span className="font-medium text-gray-900 dark:text-gray-100">
-                        {componentOptions[selectedFilters.curricular!]?.find((o) => o.value === selectedFilters.component)?.label}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {selectedFilters.thematic && (
-                  <div className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-[#8B27FF] mt-0.5 flex-shrink-0" strokeWidth={2.5} />
-                    <div className="text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">Temtica:</span>{' '}
-                      <span className="font-medium text-gray-900 dark:text-gray-100">
-                        {thematicOptions[selectedFilters.component!]?.find((o) => o.value === selectedFilters.thematic)?.label}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {selectedFilters.year && (
-                  <div className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-[#8B27FF] mt-0.5 flex-shrink-0" strokeWidth={2.5} />
-                    <div className="text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">Ano:</span>{' '}
-                      <span className="font-medium text-gray-900 dark:text-gray-100">{selectedFilters.year}</span>
-                    </div>
-                  </div>
-                )}
-
-                {selectedFilters.bnccType && (
-                  <div className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-[#8B27FF] mt-0.5 flex-shrink-0" strokeWidth={2.5} />
-                    <div className="text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">Tipo BNCC:</span>{' '}
-                      <span className="font-medium text-gray-900 dark:text-gray-100">
-                        {bnccTypeOptions.find((o) => o.value === selectedFilters.bnccType)?.label}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {selectedFilters.bnccCodes && selectedFilters.bnccCodes.length > 0 && (
-                  <div className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-[#8B27FF] mt-0.5 flex-shrink-0" strokeWidth={2.5} />
-                    <div className="text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">Códigos:</span>{' '}
-                      <span className="font-medium text-gray-900 dark:text-gray-100">
-                        {selectedFilters.bnccCodes.length} selecionado(s)
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {!selectedFilters.filterType && (
-                  <p className="text-sm text-gray-400 dark:text-gray-500 italic">
-                    Nenhum filtro selecionado ainda
-                  </p>
-                )}
               </div>
-
-              {selectedFilters.filterType && (
-                <button
-                  onClick={clearFilters}
-                  className="w-full px-4 py-2 border-2 border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-50 dark:hover:bg-red-950 transition-colors font-medium text-sm flex items-center justify-center gap-2"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  Limpar Filtros
-                </button>
-              )}
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Botão de Busca */}
-        <motion.div
-          ref={searchButtonRef}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-8 space-y-4"
-        >
-          {/* Aviso de sem questões disponíveis */}
-          {isSearchEnabled() && !hasQuestionsAvailable() && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-200 dark:border-amber-800 rounded-2xl p-6"
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <X className="w-6 h-6 text-white" strokeWidth={2.5} />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-bold text-amber-900 dark:text-amber-300 mb-2">
-                    Nenhuma questão disponível
-                  </h3>
-                  <p className="text-amber-800 dark:text-amber-400 leading-relaxed">
-                    No há questões cadastradas para a combinação de filtros selecionada. 
-                    Por favor, tente outra seleção ou entre em contato para solicitar a criação de questões para esta categoria.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Botão de busca */}
-          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 flex items-center justify-end gap-4">
-            <button
-              onClick={handleSearch}
-              disabled={!isSearchEnabled() || isSearching || !hasQuestionsAvailable()}
-              className={`px-8 py-4 rounded-xl font-bold text-lg flex items-center gap-3 transition-all duration-250 ${
-                isSearchEnabled() && !isSearching && hasQuestionsAvailable()
-                  ? 'bg-[#8B27FF] text-white hover:bg-[#6B1FBF] hover:-translate-y-1 shadow-lg shadow-purple-500/30 hover:shadow-2xl hover:shadow-purple-500/40'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-              }`}
-            >
-              {isSearching ? (
-                <>
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                  >
-                    <Search className="w-5 h-5" />
-                  </motion.div>
-                  Buscando...
-                </>
-              ) : (
-                <>
-                  <Search className="w-5 h-5" />
-                  Procurar Questão
-                  <ArrowRight className="w-5 h-5" />
-                </>
-              )}
-            </button>
-          </div>
-        </motion.div>
-
-        {/* Histórico de Buscas */}
-        {searchHistory.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mt-12"
-          >
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center gap-2">
-              <Clock className="w-6 h-6 text-[#8B27FF]" />
-              Histórico
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {searchHistory.map((item, index) => (
-                <motion.button
-                  key={index}
-                  whileHover={{ y: -4 }}
-                  className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 hover:border-[#8B27FF] hover:shadow-lg transition-all text-left"
-                >
-                  <div className="flex items-start gap-3 mb-3">
-                    <Clock className="w-5 h-5 text-gray-400 mt-0.5" />
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">{item.label}</h3>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {new Date(item.date).toLocaleDateString('pt-BR')}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-xs text-[#8B27FF] font-medium hover:underline">
-                    Buscar novamente →
-                  </div>
-                </motion.button>
-              ))}
             </div>
-          </motion.div>
-        )}
+          );
+        } else {
+          return (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Habilidades BNCC</h3>
+                <p className="text-gray-600 dark:text-gray-400">Selecione o tipo de habilidade BNCC desejado</p>
+              </div>
+
+              <div className="space-y-4">
+                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                  Tipo de Habilidade BNCC <span className="text-red-500">*</span>
+                </label>
+                <select
+                  value={selectedFilters.bnccType || ''}
+                  onChange={(e) => handleFilterSelect('bnccType', e.target.value)}
+                  className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
+                >
+                  <option value="">Selecione...</option>
+                  {bnccTypeOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label} {option.count && `(${option.count})`}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          );
+        }
+
+      case 3:
+        if (selectedFilters.filterType === 'curricular') {
+          return (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Ano Escolar</h3>
+                <p className="text-gray-600 dark:text-gray-400">Selecione o ano ou série desejado</p>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-[#F9F7FF] dark:bg-gray-800 border-2 border-[#E8E0FF] dark:border-gray-700 rounded-2xl p-6"
+              >
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {yearOptions.map((year) => (
+                    <button
+                      key={year.value}
+                      onClick={() => handleYearSelect(year.value)}
+                      className={`h-16 rounded-xl font-bold text-lg transition-all duration-200 ${selectedFilters.year === year.value
+                        ? 'bg-[#8B27FF] text-white border-2 border-[#8B27FF] shadow-lg shadow-purple-500/30'
+                        : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-600 hover:border-[#8B27FF]'
+                        }`}
+                    >
+                      {year.label}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          );
+        } else {
+          return (
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Códigos BNCC</h3>
+                <p className="text-gray-600 dark:text-gray-400">Selecione um ou mais códigos de habilidades</p>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-[#F9F7FF] dark:bg-gray-800 border-2 border-[#E8E0FF] dark:border-gray-700 rounded-2xl p-6"
+              >
+                <div className="space-y-2 max-h-96 overflow-y-auto">
+                  {bnccCodeOptions.map((code) => (
+                    <button
+                      key={code.value}
+                      onClick={() => handleBnccCodeToggle(code.value)}
+                      className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all duration-150 ${selectedFilters.bnccCodes?.includes(code.value)
+                        ? 'bg-[#E8E0FF] dark:bg-purple-900/30 border-2 border-[#8B27FF]'
+                        : 'bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:bg-[#F9F7FF] dark:hover:bg-gray-600'
+                        }`}
+                    >
+                      <div
+                        className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-colors ${selectedFilters.bnccCodes?.includes(code.value)
+                          ? 'bg-[#8B27FF] border-[#8B27FF]'
+                          : 'border-gray-300 dark:border-gray-500'
+                          }`}
+                      >
+                        {selectedFilters.bnccCodes?.includes(code.value) && (
+                          <Check className="w-4 h-4 text-white" strokeWidth={3} />
+                        )}
+                      </div>
+                      <span className="font-mono text-sm font-medium text-gray-700 dark:text-gray-200">
+                        {code.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          );
+        }
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
+      <Sidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        currentPage="transversalidade"
+        onNavigate={navigateTo}
+      />
+
+      <div className="flex-1 flex flex-col min-w-0 pt-20">
+        <Header
+          onMenuClick={() => setSidebarOpen(!sidebarOpen)}
+          userName={userName || 'Professor'}
+          navigateTo={navigateTo}
+          onLogout={() => navigateTo('login')}
+        />
+
+        <main className="flex-1 overflow-auto">
+          <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-6">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <h1 className="text-3xl text-[#8B27FF] mb-2">Transversalidade</h1>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Encontre questões por componentes curriculares, temáticas e habilidades BNCC
+                </p>
+              </div>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  setShowModal(true);
+                  setCurrentStep(1);
+                  setSelectedFilters({ filterType: '' });
+                }}
+                className="flex items-center gap-2 bg-gradient-to-r from-[#8B27FF] to-[#A855F7] hover:from-[#7B1FE8] hover:to-[#9D3FFF] text-white px-6 py-3 rounded-xl transition-all shadow-lg"
+              >
+                <Sparkles className="w-5 h-5" />
+                Buscar Questões
+              </motion.button>
+            </div>
+
+
+            {/* Modal com Steps */}
+            <AnimatePresence>
+              {showModal && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-4"
+                  onClick={() => setShowModal(false)}
+                >
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    onClick={(e) => e.stopPropagation()}
+                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                  >
+                    {/* Header do Modal */}
+                    <div className="sticky top-0 bg-gradient-to-r from-[#8B27FF] to-[#A855F7] px-8 py-6 flex items-center justify-between z-50">
+                      <div>
+                        <h2 className="text-2xl font-bold text-white mb-2">Buscar Questões de Transversalidade</h2>
+                        <div className="flex gap-2">
+                          {[1, 2, 3].map((step) => (
+                            <div
+                              key={step}
+                              className={`h-2 rounded-full transition-all ${step === currentStep
+                                ? 'bg-white w-8'
+                                : step < currentStep
+                                  ? 'bg-purple-300 w-6'
+                                  : 'bg-purple-200 w-4'
+                                }`}
+                            />
+                          ))}
+                        </div>
+                        <p className="text-purple-100 text-sm mt-2">
+                          Passo {currentStep} de {totalSteps}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => setShowModal(false)}
+                        className="w-10 h-10 rounded-xl bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors"
+                      >
+                        <X className="w-6 h-6" />
+                      </button>
+                    </div>
+
+                    {/* Conteúdo do Step */}
+                    <div className="p-8">
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={currentStep}
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          {renderStep()}
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
+
+                    {/* Footer do Modal */}
+                    <div className="sticky bottom-0 bg-gray-50 dark:bg-gray-700/50 px-8 py-6 flex gap-4 border-t border-gray-200 dark:border-gray-700">
+                      <button
+                        onClick={() => {
+                          if (currentStep > 1) {
+                            setCurrentStep(currentStep - 1);
+                          } else {
+                            setShowModal(false);
+                          }
+                        }}
+                        className="flex items-center gap-2 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors font-medium"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                        {currentStep === 1 ? 'Cancelar' : 'Voltar'}
+                      </button>
+
+                      <div className="flex-1" />
+
+                      <button
+                        onClick={() => {
+                          if (currentStep < totalSteps) {
+                            if (currentStep === 1 && selectedFilters.filterType) {
+                              setCurrentStep(currentStep + 1);
+                            } else if (
+                              currentStep === 2 &&
+                              ((selectedFilters.filterType === 'curricular' &&
+                                selectedFilters.curricular &&
+                                selectedFilters.component &&
+                                selectedFilters.thematic) ||
+                                (selectedFilters.filterType === 'bncc' && selectedFilters.bnccType))
+                            ) {
+                              setCurrentStep(currentStep + 1);
+                            }
+                          } else {
+                            handleSearch();
+                          }
+                        }}
+                        disabled={
+                          currentStep === 1
+                            ? !selectedFilters.filterType
+                            : currentStep === 2
+                              ? selectedFilters.filterType === 'curricular'
+                                ? !selectedFilters.curricular ||
+                                !selectedFilters.component ||
+                                !selectedFilters.thematic
+                                : !selectedFilters.bnccType
+                              : selectedFilters.filterType === 'curricular'
+                                ? !selectedFilters.year
+                                : !(
+                                  selectedFilters.bnccCodes &&
+                                  selectedFilters.bnccCodes.length > 0
+                                )
+                        }
+                        className={`flex items-center gap-2 px-8 py-3 rounded-xl font-bold text-lg transition-all ${currentStep === totalSteps
+                          ? isSearching
+                            ? 'bg-gray-400 dark:bg-gray-600 text-white cursor-not-allowed'
+                            : 'bg-[#8B27FF] text-white hover:bg-[#6B1FBF] hover:-translate-y-1 shadow-lg shadow-purple-500/30'
+                          : 'bg-[#8B27FF] text-white hover:bg-[#6B1FBF] hover:-translate-y-1 shadow-lg shadow-purple-500/30'
+                          } disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0`}
+                      >
+                        {isSearching ? (
+                          <>
+                            <motion.div
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 1, repeat: Infinity }}
+                            >
+                              <Search className="w-5 h-5" />
+                            </motion.div>
+                            Buscando...
+                          </>
+                        ) : currentStep === totalSteps ? (
+                          <>
+                            <Search className="w-5 h-5" />
+                            Procurar Questão
+                            <ArrowRight className="w-5 h-5" />
+                          </>
+                        ) : (
+                          <>
+                            Próximo
+                            <ChevronRight className="w-5 h-5" />
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+
+            {/* Histórico de Buscas */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mt-16"
+            >
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+                Histórico de Buscas
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {searchHistory.map((item, index) => (
+                  <motion.button
+                    key={index}
+                    whileHover={{ y: -4 }}
+                    className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 hover:border-[#8B27FF] hover:shadow-lg transition-all text-left"
+                  >
+                    <div className="flex items-start gap-3 mb-3">
+                      <Clock className="w-5 h-5 text-gray-400 mt-0.5" />
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">{item.label}</h3>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {new Date(item.date).toLocaleDateString('pt-BR')}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="text-xs text-[#8B27FF] font-medium hover:underline">
+                      Buscar novamente →
+                    </div>
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </main>
       </div>
     </div>
   );

@@ -22,7 +22,8 @@ import AcessibilidadePage from "./pages/AcessibilidadePage";
 import PerfilPage from "./pages/PerfilPage";
 import TransversalityPage from "./pages/TransversalityPage";
 import SingleQuestionPage from "./pages/SingleQuestionPage";
-import PWAManager from "./components/PWAManager";
+// Temporarily disabled to isolate Invalid Hook Call during dev
+// import PWAManager from "./components/PWAManager";
 
 type Page =
   | "login"
@@ -90,8 +91,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen">
-      {/* PWA Manager - Gerencia instalação, updates e offline */}
-      <PWAManager />
+      {/* PWA Manager temporarily disabled for debugging Invalid Hook Call */}
+      {/* <PWAManager /> */}
 
       {currentPage === "login" && (
         <LoginPage onLogin={handleLogin} navigateTo={navigateTo} />

@@ -1,4 +1,5 @@
 import { LayoutDashboard, Target, TrendingUp, FileText, X, FileCheck, HelpCircle, Eye, Settings, BookOpen, GitBranch } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -15,11 +16,32 @@ export default function Sidebar({
   onNavigate,
   isAdmin,
 }: SidebarProps) {
+  const [showMore, setShowMore] = useState(false);
+
+  // Prevent background scrolling when mobile modal is open
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (showMore) {
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [showMore]);
+
+  // Safety: ensure scroll is restored on unmount
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
   const menuItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { id: 'habilidades', icon: Target, label: 'Habilidades' },
     { id: 'progresso', icon: TrendingUp, label: 'Progresso' },
-    { id: 'conteudos', icon: FileText, label: 'Conteúdos' },
+    { id: 'conteudo', icon: FileText, label: 'Conteúdo' },
     { id: 'plano-aula', icon: BookOpen, label: 'Plano de Aula' },
     { id: 'transversality', icon: GitBranch, label: 'Transversalidade' },
     { id: 'exames', icon: FileCheck, label: 'Exames' },
@@ -31,10 +53,10 @@ export default function Sidebar({
 
   return (
     <>
-      {/* Overlay */}
+      {/* Overlay (only for md and up) */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
+          className="hidden md:block fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
           onClick={onClose}
         />
       )}
@@ -49,6 +71,7 @@ export default function Sidebar({
           w-[280px] z-50 flex flex-col
           transition-transform duration-300 ease-in-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+          hidden md:flex
         `}
       >
         {/* Close Button */}
@@ -74,18 +97,16 @@ export default function Sidebar({
                   className={`
                     w-full flex items-center gap-3 px-4 py-3 rounded-xl
                     transition-all duration-200
-                    ${
-                      currentPage === item.id
-                        ? 'bg-[#A855F7] dark:bg-[#8B27FF] text-white shadow-lg dark:shadow-purple-900/50'
-                        : 'text-white/80 hover:bg-white/10 dark:hover:bg-gray-800 hover:text-white'
+                    ${currentPage === item.id
+                      ? 'bg-[#A855F7] dark:bg-[#8B27FF] text-white shadow-lg dark:shadow-purple-900/50'
+                      : 'text-white/80 hover:bg-white/10 dark:hover:bg-gray-800 hover:text-white'
                     }
                   `}
                 >
                   <item.icon className="w-5 h-5 text-white" strokeWidth={1.5} />
                   <span
-                    className={`text-white ${
-                      currentPage === item.id ? 'font-bold' : ''
-                    }`}
+                    className={`text-white ${currentPage === item.id ? 'font-bold' : ''
+                      }`}
                   >
                     {item.label}
                   </span>
@@ -114,6 +135,68 @@ export default function Sidebar({
           </div>
         </nav>
       </aside>
+
+      {/* Mobile bottom nav */}
+      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 md:hidden z-50 w-[92%] bg-white/95 dark:bg-gray-900/95 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-lg px-4 py-2 flex items-center justify-around">
+        <button onClick={() => onNavigate?.('dashboard')} className="flex flex-col items-center gap-1 text-[#8B27FF] dark:text-[#C084FC]">
+          <LayoutDashboard className="w-6 h-6 text-current" />
+        </button>
+        <button onClick={() => onNavigate?.('habilidades')} className="flex flex-col items-center gap-1 text-[#8B27FF] dark:text-[#C084FC]">
+          <Target className="w-6 h-6 text-current" />
+        </button>
+        <button onClick={() => onNavigate?.('progresso')} className="flex flex-col items-center gap-1 text-[#8B27FF] dark:text-[#C084FC]">
+          <TrendingUp className="w-6 h-6 text-current" />
+        </button>
+        <button onClick={() => setShowMore(true)} className="flex flex-col items-center gap-1 text-[#8B27FF] dark:text-[#C084FC]">
+          <HelpCircle className="w-6 h-6 text-current" />
+        </button>
+      </div>
+
+      {/* Mobile More Modal */}
+      {showMore && (
+        <div className="fixed inset-0 z-[90] flex items-end md:hidden pointer-events-auto">
+          <div className="absolute inset-0 bg-black/40 z-[80]" onClick={() => setShowMore(false)} />
+          <div className="w-full bg-white dark:bg-gray-800 rounded-t-2xl p-4 shadow-2xl z-[90] relative">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-lg font-bold">Outros</h3>
+              <button onClick={() => setShowMore(false)} className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="grid grid-cols-1 gap-3">
+              <button type="button" onClick={() => { setShowMore(false); onNavigate?.('plano-aula'); }} className="w-full flex items-center gap-3 text-left p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                <BookOpen className="w-5 h-5 text-[#8B27FF] dark:text-[#C084FC]" />
+                <span className="text-[#8B27FF] dark:text-[#C084FC]">Plano de Aula</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowMore(false);
+                  onNavigate?.('conteudo');
+                }}
+                className="w-full flex items-center gap-3 text-left p-3 bg-gray-50 dark:bg-gray-900 rounded-lg"
+              >
+                <FileText className="w-5 h-5 text-[#8B27FF] dark:text-[#C084FC]" />
+                <span className="text-[#8B27FF] dark:text-[#C084FC]">
+                  Conteúdo
+                </span>
+              </button>
+
+              <button type="button" onClick={() => { setShowMore(false); onNavigate?.('transversality'); }} className="w-full flex items-center gap-3 text-left p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                <GitBranch className="w-5 h-5 text-[#8B27FF] dark:text-[#C084FC]" />
+                <span className="text-[#8B27FF] dark:text-[#C084FC]">Transversalidade</span>
+              </button>
+              <button type="button" onClick={() => { setShowMore(false); onNavigate?.('exames'); }} className="w-full flex items-center gap-3 text-left p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
+                <FileCheck className="w-5 h-5 text-[#8B27FF] dark:text-[#C084FC]" />
+                <span className="text-[#8B27FF] dark:text-[#C084FC]">Exames</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* lock body scroll when modal open (mobile) via effect */}
+
     </>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import React from "react";
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { motion, AnimatePresence } from 'motion/react';
@@ -37,7 +38,7 @@ interface PlanoAula {
   categoria: string;
   categoriaColor: string;
   data: string;
-  status: 'planejado' | 'em-andamento' | 'concluido';
+  
 }
 
 interface FormData {
@@ -111,7 +112,6 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
       categoria: 'INFORMAÇÕES E DADOS',
       categoriaColor: '#FFD700',
       data: '2025-01-15',
-      status: 'planejado',
     },
     {
       id: 2,
@@ -123,7 +123,6 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
       categoria: 'PROTEÇÃO E SEGURANÇA',
       categoriaColor: '#4CAF50',
       data: '2025-01-20',
-      status: 'em-andamento',
     },
     {
       id: 3,
@@ -135,7 +134,6 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
       categoria: 'CRIAÇÃO DE CONTEÚDO',
       categoriaColor: '#FF9800',
       data: '2025-01-10',
-      status: 'concluido',
     },
   ]);
 
@@ -750,66 +748,6 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
               </motion.button>
             </div>
 
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
-                    <Calendar className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                      {planos.filter(p => p.status === 'planejado').length}
-                    </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Planejados</p>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center">
-                    <Clock className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                      {planos.filter(p => p.status === 'em-andamento').length}
-                    </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Em Andamento</p>
-                  </div>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
-                    <CheckCircle2 className="w-6 h-6 text-green-600 dark:text-green-400" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                      {planos.filter(p => p.status === 'concluido').length}
-                    </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Concluídos</p>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-
             {/* Planos de Aula List */}
             <div className="space-y-4">
               {planos.map((plano, index) => (
@@ -827,7 +765,6 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
                         <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                           {plano.titulo}
                         </h3>
-                        {getStatusBadge(plano.status)}
                       </div>
                       <p className="text-gray-600 dark:text-gray-400 mb-3">
                         {plano.descricao}

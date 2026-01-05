@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
+import React from "react";
 import { Eye, EyeOff, Download, X } from "lucide-react";
+// @ts-expect-error: Image asset not found in dev environment, placeholder used for type safety.
 import backgroundImage from "../../assets/934760553d44b42ec1dd098296a4a1143272299c.png";
+// @ts-expect-error: Image asset not found in dev environment, placeholder used for type safety.
 import logoImage from "../../assets/bd6e15ee05cd5d9957a2d399e18c0693a6190505.png";
 
 interface LoginPageProps {
@@ -29,7 +32,7 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
       e.preventDefault();
       const installEvent = e as BeforeInstallPromptEvent;
       setDeferredPrompt(installEvent);
-      
+
       // Verificar se já foi mostrado antes
       const hasSeenBanner = localStorage.getItem('pwa-install-banner-shown');
       if (!hasSeenBanner) {
@@ -158,22 +161,28 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
         className="absolute inset-0 bg-cover"
         style={{
           backgroundImage: `url(${backgroundImage})`,
-          backgroundPosition: 'left center',
+          backgroundPosition: '100%',
         }}
       />
 
       {/* Overlay escuro */}
       <div className="absolute inset-0 bg-black/30 dark:bg-black/60" />
 
-      {/* Logo Atesteme - Centro Esquerda (Desktop) - Ajustado para cima e mais à esquerda */}
-      <div className="absolute left-[4%] top-[20%] z-10 hidden lg:block">
+      {/* Logo Atesteme - Desktop */}
+      <div className="absolute left-[4%] top-[20%] z-10 hidden lg:flex flex-col items-center">
         <img
           src={logoImage}
           alt="Atesteme Logo"
-          className="w-[400px] h-auto drop-shadow-2xl"
-          style={{ objectPosition: 'left center' }}
+          className="block w-[400px] h-auto drop-shadow-2xl"
         />
+
+        <span className="-mt-[6px] w-full text-center text-white/90 text-lg font-medium leading-none tracking-wide drop-shadow-lg">
+          Plataforma da Educação Digital
+        </span>
       </div>
+
+
+
 
       {/* Card de Login Flutuante */}
       <div className="relative z-20 w-full max-w-[520px] px-4 lg:absolute lg:right-[3%] lg:top-1/2 lg:-translate-y-1/2 lg:px-0 mt-32 lg:mt-0">
@@ -208,10 +217,9 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
                   placeholder:text-gray-400
                   transition-all duration-200
                   outline-none
-                  ${
-                    emailError
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-[#8B27FF] focus:shadow-[0_0_0_4px_rgba(139,39,255,0.1)]"
+                  ${emailError
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-[#8B27FF] focus:shadow-[0_0_0_4px_rgba(139,39,255,0.1)]"
                   }
                 `}
               />
@@ -244,10 +252,9 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
                     placeholder:text-gray-400
                     transition-all duration-200
                     outline-none
-                    ${
-                      passwordError
-                        ? "border-red-500"
-                        : "border-gray-300 focus:border-[#8B27FF] focus:shadow-[0_0_0_4px_rgba(139,39,255,0.1)]"
+                    ${passwordError
+                      ? "border-red-500"
+                      : "border-gray-300 focus:border-[#8B27FF] focus:shadow-[0_0_0_4px_rgba(139,39,255,0.1)]"
                     }
                   `}
                 />
@@ -286,10 +293,9 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
               className={`
                 w-full h-12 rounded-3xl text-white text-sm sm:text-base font-bold
                 transition-all duration-200 mt-4 sm:mt-6
-                ${
-                  isLoading
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-[#8B27FF] hover:bg-[#7B1FE8] hover:-translate-y-0.5 shadow-[0_2px_8px_rgba(139,39,255,0.3)] hover:shadow-[0_4px_16px_rgba(139,39,255,0.4)] active:scale-[0.98]"
+                ${isLoading
+                  ? "bg-gray-300 cursor-not-allowed"
+                  : "bg-[#8B27FF] hover:bg-[#7B1FE8] hover:-translate-y-0.5 shadow-[0_2px_8px_rgba(139,39,255,0.3)] hover:shadow-[0_4px_16px_rgba(139,39,255,0.4)] active:scale-[0.98]"
                 }
               `}
             >
@@ -366,15 +372,21 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
           </div>
         </div>
       </div>
-
-      {/* Logo Mobile - Topo */}
-      <div className="absolute top-6 sm:top-8 left-1/2 -translate-x-1/2 lg:hidden z-10">
+      {/* Logo Mobile */}
+      <div className="absolute top-20 sm:top-24 left-1/2 -translate-x-1/2 lg:hidden z-10 flex flex-col items-center">
         <img
           src={logoImage}
           alt="Atesteme Logo"
-          className="w-[180px] sm:w-[250px] h-auto drop-shadow-lg"
+          className="block w-[180px] sm:w-[250px] h-auto drop-shadow-lg"
         />
+
+        <span className="-mt-[4px] text-white/90 text-sm sm:text-base font-medium leading-none tracking-wide text-center drop-shadow">
+          Plataforma da Educação Digital
+        </span>
       </div>
+
+
+
 
       {/* Links de Rodapé Desktop - Embaixo da Logo */}
       <div className="absolute left-[8%] bottom-6 z-10 hidden lg:block">

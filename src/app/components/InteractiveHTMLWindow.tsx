@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import RotateScreenHint from './RotateScreenHint';
 
 interface InteractiveHTMLWindowProps {
@@ -13,6 +13,8 @@ export default function InteractiveHTMLWindow({
   showRotateHint = false 
 }: InteractiveHTMLWindowProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isFinalized, setIsFinalized] = useState(false);
 
   useEffect(() => {
     if (iframeRef.current) {
@@ -37,14 +39,47 @@ export default function InteractiveHTMLWindow({
           <div className="w-3 h-3 rounded-full bg-green-500"></div>
         </div>
         <span className="text-sm font-medium text-gray-700 ml-2">{title}</span>
+
+        {/* Mobile controls: expand / finalize */}
+        <div className="ml-auto flex items-center gap-2 md:hidden">
+          {!isExpanded && (
+            <button
+              onClick={() => setIsExpanded(true)}
+              className="text-sm px-3 py-1 bg-[#8B27FF] text-white rounded-lg"
+            >
+              Expandir
+            </button>
+          )}
+          {isExpanded && (
+            <>
+              <button
+                onClick={() => {
+                  // finalizar mantém iframe carregado
+                  setIsFinalized(true);
+                  setIsExpanded(false);
+                }}
+                className="text-sm px-3 py-1 bg-green-600 text-white rounded-lg"
+              >
+                Finalizar
+              </button>
+              <button
+                onClick={() => setIsExpanded(false)}
+                className="text-sm px-3 py-1 bg-gray-200 text-gray-800 rounded-lg"
+              >
+                Fechar
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Iframe com o HTML */}
-      <div className="bg-white rounded-xl overflow-hidden shadow-inner">
+      {/* Mantemos o iframe montado sempre; em mobile podemos torná-lo 'expandido' via classes */}
+      <div className={`bg-white rounded-xl overflow-hidden shadow-inner ${isExpanded ? 'fixed inset-0 z-50 bg-black/80 p-6 flex items-center justify-center' : ''}`}>
         <iframe
           ref={iframeRef}
-          className="w-full border-0"
-          style={{ minHeight: '600px', height: '100%' }}
+          className={`w-full border-0 ${isExpanded ? 'h-full rounded-xl' : ''}`}
+          style={{ minHeight: isExpanded ? '100vh' : '600px', height: isExpanded ? '100%' : '100%' }}
           title={title}
           sandbox="allow-scripts allow-same-origin"
         />

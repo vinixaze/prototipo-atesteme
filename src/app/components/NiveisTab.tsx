@@ -17,6 +17,8 @@ import {
   PlayCircle,
   CheckCircle2,
   Sparkles,
+  Layers,
+  Award,
 } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 
@@ -360,42 +362,48 @@ export default function NiveisTab({
                               <div className="flex flex-col sm:flex-row flex-wrap gap-2 mb-3">
                                 {/* Card Área */}
                                 <div 
-                                  className="rounded-lg px-2.5 py-2 flex items-center gap-2 w-full sm:w-auto"
+                                  className="rounded-lg px-2 py-1.5 md:px-2.5 md:py-2 flex items-center gap-1.5 md:gap-2 w-full sm:w-auto"
                                   style={{
                                     backgroundColor: comp.categoryColor,
                                   }}
                                 >
                                   <div 
-                                    className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 bg-white/20"
+                                    className="w-5 h-5 md:w-6 md:h-6 rounded flex items-center justify-center flex-shrink-0 bg-white/20"
                                   >
-                                    <span className="text-white text-xs font-bold">A</span>
+                                    <Layers className="text-white w-3.5 h-3.5 md:w-4 md:h-4" strokeWidth={2} />
                                   </div>
-                                  <div className="flex-1 min-w-0">
-                                    <p className="text-[10px] uppercase font-semibold leading-none mb-1 text-white/90">Área</p>
-                                    <p className="text-xs text-white font-medium leading-tight truncate">
+                                  <div className="flex-1 min-w-0 hidden md:block">
+                                    <p className="text-[8px] md:text-[10px] uppercase font-semibold leading-none mb-0.5 text-white/90">Área</p>
+                                    <p className="text-[8px] md:text-xs text-white font-medium leading-tight truncate">
                                       {comp.category}
                                     </p>
                                   </div>
+                                  <p className="md:hidden text-[8px] text-white font-medium leading-tight truncate">
+                                    {comp.category.split(' ')[0]}
+                                  </p>
                                 </div>
 
                                 {/* Card Competência */}
                                 <div 
-                                  className="rounded-lg px-2.5 py-2 flex items-center gap-2 w-full sm:w-auto"
+                                  className="rounded-lg px-2 py-1.5 md:px-2.5 md:py-2 flex items-center gap-1.5 md:gap-2 w-full sm:w-auto"
                                   style={{
                                     backgroundColor: comp.categoryColor,
                                   }}
                                 >
                                   <div 
-                                    className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 bg-white/20"
+                                    className="w-5 h-5 md:w-6 md:h-6 rounded flex items-center justify-center flex-shrink-0 bg-white/20"
                                   >
-                                    <span className="text-white text-xs font-bold">C</span>
+                                    <Award className="text-white w-3.5 h-3.5 md:w-4 md:h-4" strokeWidth={2} />
                                   </div>
-                                  <div className="flex-1 min-w-0">
-                                    <p className="text-[10px] uppercase font-semibold leading-none mb-1 text-white/90">Competência</p>
-                                    <p className="text-xs text-white font-medium leading-tight">
+                                  <div className="flex-1 min-w-0 hidden md:block">
+                                    <p className="text-[8px] md:text-[10px] uppercase font-semibold leading-none mb-0.5 text-white/90">Competência</p>
+                                    <p className="text-[8px] md:text-xs text-white font-medium leading-tight">
                                       {comp.title}
                                     </p>
                                   </div>
+                                  <p className="md:hidden text-[8px] text-white font-medium leading-tight line-clamp-1">
+                                    {comp.title.length > 25 ? comp.title.substring(0, 22) + '...' : comp.title}
+                                  </p>
                                 </div>
                               </div>
                               
@@ -428,10 +436,10 @@ export default function NiveisTab({
                                       <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200">{comp.completedDate}</span>
                                     </div>
                                     
-                                    {/* Time Spent */}
-                                    <div className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
-                                      <Clock className="w-4 h-4 text-cyan-500 flex-shrink-0" />
-                                      <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200">{comp.timeSpent}</span>
+                                    {/* Time Spent - Single Line */}
+                                    <div className="flex items-center gap-1.5 px-2.5 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600 whitespace-nowrap">
+                                      <Clock className="w-3.5 h-3.5 md:w-4 md:h-4 text-cyan-500 flex-shrink-0" />
+                                      <span className="text-[10px] md:text-xs font-medium text-gray-700 dark:text-gray-200">{comp.timeSpent}</span>
                                     </div>
                                     
                                     {/* Digcoins Earned */}

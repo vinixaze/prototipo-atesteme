@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import React from "react";
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { CompetencyTimer } from '../components/CompetencyTimer';
@@ -55,6 +56,7 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [selectedCompetency, setSelectedCompetency] = useState<any>(null);
   const [showBlockedModal, setShowBlockedModal] = useState(false);
+  const [showNocoes, setShowNocoes] = useState(true);
 
   const categories: Category[] = [
     {
@@ -161,8 +163,8 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
       />
 
       <div className="flex-1 flex flex-col min-w-0 pt-20">
-        <Header 
-          onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} 
+        <Header
+          onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
           userName="Usuário"
           navigateTo={navigateTo}
           onLogout={() => navigateTo('login')}
@@ -170,62 +172,55 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
 
         <main className="flex-1 overflow-auto">
           <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-6">
-            {/* Header com Noções Básicas ao lado (Desktop) */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-              <div className="flex-1">
-                <h1 className="text-3xl text-[#8B27FF] mb-2">Competências Digitais</h1>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Desenvolva suas competências nas 5 áreas do letramento digital
-                </p>
+            {/* Header + Card Noções Básicas */}
+            <div className="flex flex-col lg:flex-row gap-6 mb-8 items-start">
+
+              {/* ESQUERDA — TÍTULO (70%) */}
+              <div className="w-full lg:w-[70%]">
+                <h1 className="text-3xl md:text-4xl font-semibold text-[#8B27FF] mb-2">
+                  Competências Digitais
+                </h1>
+                <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
+                  Desenvolva suas competências nos eixos da BNCC Computação/Letramento Digita  </p>
               </div>
-              
-              {/* Bloco Noções Básicas - Pequeno e externo (Desktop) - Esticado mais à esquerda */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="relative bg-gradient-to-br from-purple-50 via-white to-purple-100 dark:from-gray-800 dark:via-gray-800 dark:to-gray-700 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden w-full md:w-auto md:min-w-[240px] md:max-w-[280px]"
-                onClick={() => {
-                  navigateTo('nocoes-basicas');
-                }}
-              >
-                <div className="absolute top-0 right-0 w-20 h-20 bg-[#8B27FF]/10 rounded-full blur-2xl" />
-                
-                <div className="relative z-10">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="flex-shrink-0">
-                      <div className="w-8 h-8 bg-[#8B27FF] rounded-full flex items-center justify-center shadow-md">
-                        <ClipboardList className="w-4 h-4 text-white" strokeWidth={1.5} />
+
+              {/* Noções Básicas panel (desktop only, closable) */}
+              {showNocoes && (
+                <div className="hidden lg:block w-full lg:w-[50%] relative">
+                  <div className="bg-[#F3E8FF]/60 dark:bg-gray-800/60 backdrop-blur-md border border-purple-200 dark:border-gray-700/40 rounded-2xl p-6 shadow-sm">
+                    <button type="button" onClick={() => setShowNocoes(false)} className="absolute top-3 right-3 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                      <X className="w-4 h-4 text-gray-600 dark:text-gray-200" />
+                    </button>
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-[#F3E8FF] flex items-center justify-center">
+                        <Award className="w-6 h-6 text-[#8B27FF]" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Noções Básicas</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Conteúdo muito recomendado antes do Nível 01</p>
+                        <div className="mt-4">
+                          <button
+                            type="button"
+                            onClick={() => navigateTo('nocoes-basicas')}
+                            className="px-4 py-2 rounded-xl bg-[#8B27FF] text-white hover:bg-[#7B1FE8] transition-all"
+                          >
+                            Começar
+                          </button>
+                        </div>
                       </div>
                     </div>
-                    <h3 className="text-sm font-bold dark:text-gray-200">Noções Básicas</h3>
                   </div>
-                  <p className="text-[10px] text-gray-700 dark:text-gray-300 mb-2 leading-tight">
-                    Conteúdos básicos recomendados antes do Nível 01.
-                  </p>
-                  <button className="bg-[#8B27FF] hover:bg-[#7B1FE8] text-white px-4 py-1.5 rounded-lg transition-all shadow-sm hover:shadow-md text-xs font-semibold w-full">
-                    Iniciar
-                  </button>
                 </div>
-              </motion.div>
+              )}
+
             </div>
 
-            {/* Search and Filter */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
-              <div className="flex flex-col md:flex-row gap-4">
-                {/* Search */}
-                <div className="flex-1 relative">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Digite o nome da competência"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B27FF] focus:border-transparent bg-gray-50 dark:bg-gray-700 dark:text-gray-200 transition-all"
-                  />
-                </div>
 
-                {/* Filter by Area */}
+
+            {/* Search and Filter (Filter moved above search) */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
+              <div className="flex flex-col gap-4">
+                {/* Filter by Area (moved above) */}
                 <div className="md:w-72">
                   <select
                     value={selectedArea}
@@ -239,6 +234,18 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
                     <option>PROTEÇÃO E SEGURANÇA</option>
                     <option>RESOLUÇÃO DE PROBLEMAS</option>
                   </select>
+                </div>
+
+                {/* Search */}
+                <div className="flex-1 relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Digite o nome da competência"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-12 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B27FF] focus:border-transparent bg-gray-50 dark:bg-gray-700 dark:text-gray-200 transition-all"
+                  />
                 </div>
               </div>
             </div>
@@ -298,147 +305,143 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
                           else if (category.color === '#E91E63') buttonGradient = 'linear-gradient(135deg, #F48FB1 0%, #AD1457 100%)';
 
                           return (
-                          <motion.div
-                            key={compIndex}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={categoryInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                            transition={{ 
-                              duration: 0.4, 
-                              delay: compIndex * 0.08,
-                              ease: [0.4, 0, 0.2, 1]
-                            }}
-                            whileHover={{ 
-                              y: -8,
-                              scale: 1.02,
-                              transition: { duration: 0.1 }
-                            }}
-                            className={`relative rounded-[20px] shadow-[0_4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all duration-100 overflow-hidden group cursor-pointer ${
-                              isFailed 
-                                ? 'bg-white dark:bg-gray-800 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)]' 
-                                : 'bg-white dark:bg-gray-800 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)]'
-                            }`}
-                            onClick={() => 
-                              isFailed 
-                                ? handleShowBlockedModal(comp.title, category.name, category.color, comp.icon, category.icon)
-                                : handleStartQuiz(comp.title, category.name, category.color, comp.icon, category.icon)
-                            }
-                          >
-                            {/* Formas coloridas que descem no hover */}
-                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none overflow-hidden">
-                              {/* Círculo grande */}
-                              <motion.div
-                                initial={{ y: -200, x: '20%' }}
-                                whileHover={{ y: 100 }}
-                                transition={{ duration: 0.6, ease: "easeOut" }}
-                                className="absolute w-[200px] h-[200px] rounded-full blur-3xl"
-                                style={{ backgroundColor: `${category.color}20` }}
-                              />
-                            </div>
-
-                            {/* Badge da Categoria - Topo */}
-                            <div 
-                              className="relative z-10 w-full px-5 py-3 rounded-t-[20px] transition-all duration-200 group-hover:brightness-110"
-                              style={{ 
-                                backgroundColor: isFailed 
-                                  ? '#94A3B8'  // Cinza para bloqueado
-                                  : category.color 
+                            <motion.div
+                              key={compIndex}
+                              initial={{ opacity: 0, y: 30 }}
+                              animate={categoryInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                              transition={{
+                                duration: 0.4,
+                                delay: compIndex * 0.08,
+                                ease: [0.4, 0, 0.2, 1]
                               }}
+                              whileHover={{
+                                y: -8,
+                                scale: 1.02,
+                                transition: { duration: 0.1 }
+                              }}
+                              className={`relative rounded-[20px] shadow-[0_4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all duration-100 overflow-hidden group cursor-pointer ${isFailed
+                                ? 'bg-white dark:bg-gray-800 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)]'
+                                : 'bg-white dark:bg-gray-800 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)]'
+                                }`}
+                              onClick={() =>
+                                isFailed
+                                  ? handleShowBlockedModal(comp.title, category.name, category.color, comp.icon, category.icon)
+                                  : handleStartQuiz(comp.title, category.name, category.color, comp.icon, category.icon)
+                              }
                             >
-                              <span className="text-white text-[11px] font-bold uppercase tracking-[1px] drop-shadow-sm">
-                                {category.name}
-                              </span>
-                            </div>
-
-                            {/* Corpo do Card */}
-                            <div className="relative z-10 p-5 flex flex-col items-center gap-4">
-                              {/* Ícone Central */}
-                              <motion.div
-                                whileHover={{ 
-                                  rotate: isFailed ? 0 : [0, -10, 10, -10, 0],
-                                  scale: isFailed ? 1 : 1.15,
-                                }}
-                                transition={{ 
-                                  rotate: { duration: 0.4 },
-                                  scale: { duration: 0.2 }
-                                }}
-                                className={`w-[80px] h-[80px] rounded-full flex items-center justify-center shadow-[0_6px_20px_rgba(0,0,0,0.08)] transition-shadow duration-200 ${
-                                  isFailed ? '' : 'group-hover:shadow-[0_10px_28px_rgba(0,0,0,0.12)]'
-                                } ${iconBgClass}`}
-                                style={isFailed ? { backgroundColor: '#E2E8F0' } : {}}
-                              >
-                                <comp.icon
-                                  className={`w-[40px] h-[40px] ${isFailed ? 'opacity-40' : ''}`}
-                                  style={{ color: isFailed ? '#94A3B8' : category.color }}
-                                  strokeWidth={2}
+                              {/* Formas coloridas que descem no hover */}
+                              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none overflow-hidden">
+                                {/* Círculo grande */}
+                                <motion.div
+                                  initial={{ y: -200, x: '20%' }}
+                                  whileHover={{ y: 100 }}
+                                  transition={{ duration: 0.6, ease: "easeOut" }}
+                                  className="absolute w-[200px] h-[200px] rounded-full blur-3xl"
+                                  style={{ backgroundColor: `${category.color}20` }}
                                 />
-                              </motion.div>
-
-                              {/* Título da Competência */}
-                              <h4 className={`text-[15px] font-semibold text-center leading-[1.3] min-h-[40px] px-1 ${
-                                isFailed ? 'text-gray-500 dark:text-gray-400' : 'text-gray-800 dark:text-gray-200'
-                              }`}>
-                                {comp.title}
-                              </h4>
-
-                              {/* Timer - Posição fixa acima do botão */}
-                              <div className="w-full h-[28px] flex items-center justify-center">
-                                {isInProgress && (
-                                  <CompetencyTimer 
-                                    competencyName={comp.title}
-                                    mockTime={comp.title === 'Compartilhar e publicar' ? 1800 : undefined}
-                                    className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600"
-                                    showIcon={true}
-                                  />
-                                )}
                               </div>
 
-                              {/* Botão CONTINUAR ou INICIAR - Sempre na mesma posição */}
-                              {isInProgress ? (
-                                /* Botão CONTINUAR - Índigo */
-                                <motion.button
-                                  whileHover={{ scale: 1.05 }}
-                                  whileTap={{ scale: 0.95 }}
-                                  transition={{ duration: 0.15 }}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleStartQuiz(comp.title, category.name, category.color, comp.icon, category.icon);
+                              {/* Badge da Categoria - Topo */}
+                              <div
+                                className="relative z-10 w-full px-5 py-3 rounded-t-[20px] transition-all duration-200 group-hover:brightness-110"
+                                style={{
+                                  backgroundColor: isFailed
+                                    ? '#94A3B8'  // Cinza para bloqueado
+                                    : category.color
+                                }}
+                              >
+                                <span className="text-white text-[11px] font-bold uppercase tracking-[1px] drop-shadow-sm">
+                                  {category.name}
+                                </span>
+                              </div>
+
+                              {/* Corpo do Card */}
+                              <div className="relative z-10 p-5 flex flex-col items-center gap-4">
+                                {/* Ícone Central */}
+                                <motion.div
+                                  whileHover={{
+                                    rotate: isFailed ? 0 : [0, -10, 10, -10, 0],
+                                    scale: isFailed ? 1 : 1.15,
                                   }}
-                                  className="w-full py-2.5 rounded-full text-white font-bold text-[13px] uppercase tracking-[0.8px] shadow-[0_4px_12px_rgba(99,102,241,0.3)] hover:shadow-[0_6px_20px_rgba(99,102,241,0.4)] transition-all duration-200 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700"
+                                  transition={{
+                                    rotate: { duration: 0.4 },
+                                    scale: { duration: 0.2 }
+                                  }}
+                                  className={`w-[80px] h-[80px] rounded-full flex items-center justify-center shadow-[0_6px_20px_rgba(0,0,0,0.08)] transition-shadow duration-200 ${isFailed ? '' : 'group-hover:shadow-[0_10px_28px_rgba(0,0,0,0.12)]'
+                                    } ${iconBgClass}`}
+                                  style={isFailed ? { backgroundColor: '#E2E8F0' } : {}}
                                 >
-                                  <span className="flex items-center justify-center gap-1.5">
-                                    <PlayCircle className="w-4 h-4" />
-                                    CONTINUAR
-                                  </span>
-                                </motion.button>
-                              ) : (
-                                /* Botão INICIAR */
-                                <motion.button
-                                  whileHover={{ scale: 1.05 }}
-                                  whileTap={{ scale: 0.95 }}
-                                  transition={{ duration: 0.15 }}
-                                  className={`w-full py-2.5 rounded-full font-bold text-[13px] uppercase tracking-[0.8px] transition-all duration-200 ${
-                                    isFailed 
-                                      ? 'text-white shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.25)] cursor-pointer' 
+                                  <comp.icon
+                                    className={`w-[40px] h-[40px] ${isFailed ? 'opacity-40' : ''}`}
+                                    style={{ color: isFailed ? '#94A3B8' : category.color }}
+                                    strokeWidth={2}
+                                  />
+                                </motion.div>
+
+                                {/* Título da Competência */}
+                                <h4 className={`text-[15px] font-semibold text-center leading-[1.3] min-h-[40px] px-1 ${isFailed ? 'text-gray-500 dark:text-gray-400' : 'text-gray-800 dark:text-gray-200'
+                                  }`}>
+                                  {comp.title}
+                                </h4>
+
+                                {/* Timer - Posição fixa acima do botão */}
+                                <div className="w-full h-[28px] flex items-center justify-center">
+                                  {isInProgress && (
+                                    <CompetencyTimer
+                                      competencyName={comp.title}
+                                      mockTime={comp.title === 'Compartilhar e publicar' ? 1800 : undefined}
+                                      className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600"
+                                      showIcon={true}
+                                    />
+                                  )}
+                                </div>
+
+                                {/* Botão CONTINUAR ou INICIAR - Sempre na mesma posição */}
+                                {isInProgress ? (
+                                  /* Botão CONTINUAR - Índigo */
+                                  <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    transition={{ duration: 0.15 }}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleStartQuiz(comp.title, category.name, category.color, comp.icon, category.icon);
+                                    }}
+                                    className="w-full py-2.5 rounded-full text-white font-bold text-[13px] uppercase tracking-[0.8px] shadow-[0_4px_12px_rgba(99,102,241,0.3)] hover:shadow-[0_6px_20px_rgba(99,102,241,0.4)] transition-all duration-200 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700"
+                                  >
+                                    <span className="flex items-center justify-center gap-1.5">
+                                      <PlayCircle className="w-4 h-4" />
+                                      CONTINUAR
+                                    </span>
+                                  </motion.button>
+                                ) : (
+                                  /* Botão INICIAR */
+                                  <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    transition={{ duration: 0.15 }}
+                                    className={`w-full py-2.5 rounded-full font-bold text-[13px] uppercase tracking-[0.8px] transition-all duration-200 ${isFailed
+                                      ? 'text-white shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.25)] cursor-pointer'
                                       : 'text-white shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.25)]'
-                                  }`}
-                                  style={{ 
-                                    background: (() => {
-                                      if (isFailed) {
-                                        // Gradiente cinza para bloqueado
-                                        return 'linear-gradient(135deg, #CBD5E1 0%, #94A3B8 100%)';
-                                      }
-                                      return buttonGradient;
-                                    })()
-                                  }}
-                                >
-                                  <span className="flex items-center justify-center gap-1.5">
-                                    {!isFailed && <PlayCircle className="w-4 h-4" />}
-                                    {isFailed ? 'REFORÇO NECESSÁRIO' : 'INICIAR'}
-                                  </span>
-                                </motion.button>
-                              )}
-                            </div>
-                          </motion.div>
+                                      }`}
+                                    style={{
+                                      background: (() => {
+                                        if (isFailed) {
+                                          // Gradiente cinza para bloqueado
+                                          return 'linear-gradient(135deg, #CBD5E1 0%, #94A3B8 100%)';
+                                        }
+                                        return buttonGradient;
+                                      })()
+                                    }}
+                                  >
+                                    <span className="flex items-center justify-center gap-1.5">
+                                      {!isFailed && <PlayCircle className="w-4 h-4" />}
+                                      {isFailed ? 'REFORÇO NECESSÁRIO' : 'INICIAR'}
+                                    </span>
+                                  </motion.button>
+                                )}
+                              </div>
+                            </motion.div>
                           );
                         })}
                       </div>
@@ -564,7 +567,7 @@ function BlockedCompetencyModal({
           </div>
           <h3 className="text-xl font-bold text-gray-900 dark:text-white">Reforço Necessário</h3>
         </div>
-        
+
         <p className="text-gray-600 dark:text-gray-300 mb-4">
           A competência <strong>{competency}</strong> precisa de reforço. Acesse os conteúdos relacionados antes de tentar novamente.
         </p>

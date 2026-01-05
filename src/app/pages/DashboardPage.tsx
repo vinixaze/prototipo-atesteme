@@ -6,8 +6,8 @@ import Sidebar from '../components/Sidebar';
 import { CompetencyTimer } from '../components/CompetencyTimer';
 import ParentalControlPanel from '../components/ParentalControlPanel';
 import { getCompetencyStatus, startCompetencyTimer } from '../utils/competencyStorage';
-import { 
-  AlertCircle, ClipboardList, Trophy, Lock, Search, MessageCircle, FolderOpen, X, 
+import {
+  AlertCircle, ClipboardList, Trophy, Lock, Search, MessageCircle, FolderOpen, X,
   Award, Clock, Users, School, Globe, Coins, Medal, Info,
   ChevronLeft, ChevronRight, Monitor, Lightbulb, FileCheck, PlayCircle
 } from 'lucide-react';
@@ -29,7 +29,7 @@ function CountUp({ end, duration = 1500, suffix = '' }: { end: number; duration?
 
   useEffect(() => {
     if (!inView) return;
-    
+
     let startTime: number;
     const startValue = 0;
     const endValue = end;
@@ -72,11 +72,14 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
   useEffect(() => {
     const completed = localStorage.getItem('testeCompetenciasCompleted') === 'true';
     setTesteCompetenciasCompleted(completed);
-    
+
     // Verificar se o banner de noções básicas foi fechado
-    const nocoesBasicasClosed = localStorage.getItem('nocoesBasicasBannerClosed') === 'true';
+    const nocoesBasicasClosed =
+      sessionStorage.getItem('nocoesBasicasBannerClosed') === 'true';
+
     setShowNocoesBasicasBanner(!nocoesBasicasClosed);
-    
+
+
     // Debug: mostrar no console
     console.log('Dashboard - Teste completado?', completed);
   }, []);
@@ -168,10 +171,10 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
   const handleStartCompetency = (competency: any) => {
     console.log('handleStartCompetency chamada com:', competency);
     // Navegar para a pgina de aviso (igual a tela de habilidades)
-    navigateTo('quiz-warning', { 
-      competency: competency.title, 
-      category: competency.category, 
-      categoryColor: competency.color, 
+    navigateTo('quiz-warning', {
+      competency: competency.title,
+      category: competency.category,
+      categoryColor: competency.color,
       icon: competency.icon,
       fromPage: 'dashboard'
     });
@@ -234,8 +237,8 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
       />
 
       <div className="flex-1 flex flex-col min-w-0 pt-16">
-        <Header 
-          onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} 
+        <Header
+          onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
           userName={userName}
           navigateTo={navigateTo}
           onLogout={onLogout}
@@ -244,8 +247,8 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
         />
 
         <main className="flex-1 overflow-auto">
-          <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-12 py-2 md:py-4 pb-6 space-y-6">
-            
+          <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-12 pt-0 md:pt-1 pb-24 md:pb-5 space-y-6">
+
             {/* 1. BANNER ROXO DE BOAS-VINDAS (Topo) */}
             {showWelcomeBanner && (
               <motion.div
@@ -256,18 +259,18 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
               >
                 {/* Animated gradient blobs */}
                 <div className="absolute inset-0 opacity-30">
-                  <motion.div 
+                  <motion.div
                     className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"
-                    animate={{ 
+                    animate={{
                       x: [0, 50, 0],
                       y: [0, -30, 0],
                       scale: [1, 1.2, 1]
                     }}
                     transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                   />
-                  <motion.div 
+                  <motion.div
                     className="absolute bottom-0 left-0 w-80 h-80 bg-purple-300 rounded-full blur-3xl"
-                    animate={{ 
+                    animate={{
                       x: [0, -40, 0],
                       y: [0, 40, 0],
                       scale: [1, 1.3, 1]
@@ -283,10 +286,10 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                   <X className="w-5 h-5 text-white" />
                 </button>
 
-                <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
-                  <motion.div 
+                <div className="relative z-10 flex items-center gap-4">
+                  <motion.div
                     className="flex-shrink-0"
-                    animate={{ 
+                    animate={{
                       rotate: [0, 5, -5, 0],
                       scale: [1, 1.05, 1]
                     }}
@@ -296,16 +299,11 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                       <AlertCircle className="w-8 h-8 text-white" />
                     </div>
                   </motion.div>
-                  <div className="text-center sm:text-left">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl text-white mb-2">
-                      Bem-vindo(a), <span className="font-bold">{userName}</span>!
+                  <div className="text-left">
+                    <h2 className="text-xl sm:text-2xl md:text-4xl text-white mb-0">
+                      Olá, usuário(a)
                     </h2>
-                    <p className="text-base sm:text-lg text-white/90 mb-1">
-                      Pronto para continuar sua jornada de aprendizagens digitais?
-                    </p>
-                    <p className="text-sm text-white/80">
-                      Responda aos desafios, confira as respostas e consulte as recomendações para aprender mais. Seja um cidadão digital!
-                    </p>
+                    <p className="text-white/90 text-xs md:text-base mt-1">Pronto para iniciar sua jornada de aprendizagens digitais?</p>
                   </div>
                 </div>
               </motion.div>
@@ -321,18 +319,18 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
               >
                 {/* Animated background effects */}
                 <div className="absolute inset-0 opacity-30">
-                  <motion.div 
+                  <motion.div
                     className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#F3E5F5] to-[#E1BEE7] rounded-full blur-3xl"
-                    animate={{ 
+                    animate={{
                       x: [0, 30, 0],
                       y: [0, -20, 0],
                       scale: [1, 1.1, 1]
                     }}
                     transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                   />
-                  <motion.div 
+                  <motion.div
                     className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-br from-[#E1BEE7] to-[#F3E5F5] rounded-full blur-3xl"
-                    animate={{ 
+                    animate={{
                       x: [0, -20, 0],
                       y: [0, 20, 0],
                       scale: [1, 1.2, 1]
@@ -352,32 +350,32 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                 </button>
 
                 <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 flex-1 w-full">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#F3E5F5] to-[#E1BEE7] backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
-                    <ClipboardList className="w-6 h-6 text-[#7B1FA2]" />
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 flex-1 w-full">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#F3E5F5] to-[#E1BEE7] backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
+                      <ClipboardList className="w-6 h-6 text-[#7B1FA2]" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-[#6A1B9A] dark:text-purple-300 text-lg font-bold mb-1">
+                        Noções Básicas
+                      </h3>
+                      <p className="text-gray-700 dark:text-gray-300 text-xs sm:text-sm leading-relaxed">
+                        Conteúdos fundamentais sobre informática, internet e vida digital. Recomendado antes de iniciar sua jornada no Nível 1.
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-[#6A1B9A] dark:text-purple-300 text-lg font-bold mb-1">
-                      Noções Básicas
-                    </h3>
-                    <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
-                      Conteúdos fundamentais sobre informática, internet e vida digital. Recomendado antes de iniciar sua jornada no Nível 1.
-                    </p>
-                  </div>
+                  <button
+                    onClick={() => navigateTo('nocoes-basicas')}
+                    className="bg-gradient-to-r from-[#8B27FF] to-[#A855F7] hover:from-[#7B1FE8] hover:to-[#9333EA] text-white px-6 py-2.5 rounded-xl transition-all shadow-md hover:shadow-lg flex-shrink-0 w-full sm:w-auto font-bold"
+                  >
+                    Iniciar
+                  </button>
                 </div>
-                <button
-                  onClick={() => navigateTo('nocoes-basicas')}
-                  className="bg-gradient-to-r from-[#8B27FF] to-[#A855F7] hover:from-[#7B1FE8] hover:to-[#9333EA] text-white px-6 py-2.5 rounded-xl transition-all shadow-md hover:shadow-lg flex-shrink-0 w-full sm:w-auto font-bold"
-                >
-                  Iniciar
-                </button>
-              </div>
-            </motion.div>
+              </motion.div>
             )}
 
             {/* 3. SEÇÃO HORIZONTAL: NÍVEL + PROGRESSO/GRÁFICO + LOGO */}
-            <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] gap-6 items-stretch">
-              
+            <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] lg:grid-cols-[auto_1fr_auto] gap-6 items-stretch">
+
               {/* Card 1: Nível Atual */}
               <motion.div
                 ref={levelCardRef}
@@ -389,7 +387,7 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                 {/* Efeito de luz animado */}
                 <motion.div
                   className="absolute inset-0 opacity-20"
-                  animate={{ 
+                  animate={{
                     background: [
                       'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 50%)',
                       'radial-gradient(circle at 80% 50%, rgba(255,255,255,0.3) 0%, transparent 50%)',
@@ -441,21 +439,21 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                 <div className="h-full w-px bg-gradient-to-b from-transparent via-gray-300 dark:via-gray-600 to-transparent"></div>
 
                 {/* Gráfico de Barras - Versão Compacta */}
-                <div className="flex-1 max-w-xs flex flex-col justify-center space-y-2.5">
+                <div className="flex-1 w-full min-w-0 flex flex-col justify-center space-y-2.5">
                   {progressData.map((item, index) => (
                     <div key={index}>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide min-w-[140px]">
+                        <span className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide truncate">
                           {item.category}
                         </span>
                       </div>
-                      <div className="relative h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                      <div className="relative h-2.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={competencyBarsInView ? { width: `${item.percentage}%` } : { width: 0 }}
-                          transition={{ 
-                            duration: 1.2, 
-                            delay: 0.15 * index, 
+                          transition={{
+                            duration: 1.2,
+                            delay: 0.15 * index,
                             ease: [0.25, 0.1, 0.25, 1]
                           }}
                           className="h-full rounded-full shadow-sm"
@@ -479,7 +477,7 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                   <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500 rounded-full blur-2xl"></div>
                   <div className="absolute bottom-0 left-0 w-24 h-24 bg-purple-400 rounded-full blur-2xl"></div>
                 </div>
-                
+
                 <div className="relative z-10 text-center p-6">
                   <p className="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-[0.15em] mb-2">
                     CONTA DE
@@ -499,10 +497,10 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
 
             {/* 4. LAYOUT DE DUAS COLUNAS */}
             <div className="grid lg:grid-cols-2 gap-6">
-              
+
               {/* COLUNA ESQUERDA: MINHAS CONQUISTAS */}
               <div className="flex flex-col gap-6">
-                
+
                 {/* Card Minhas Conquistas - REORGANIZADO */}
                 <motion.div
                   ref={conquestRef}
@@ -594,13 +592,12 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={conquestInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
                       transition={{ duration: 0.4, delay: 0.7 }}
-                      className={`relative rounded-xl p-4 text-center flex flex-col justify-center overflow-hidden shadow-md hover:shadow-lg transition-shadow ${
-                        rankingSlide === 0
-                          ? 'bg-gray-50 dark:bg-gray-700/50'
-                          : rankingSlide === 1
+                      className={`relative rounded-xl p-4 text-center flex flex-col justify-center overflow-hidden shadow-md hover:shadow-lg transition-shadow ${rankingSlide === 0
+                        ? 'bg-gray-50 dark:bg-gray-700/50'
+                        : rankingSlide === 1
                           ? 'bg-gradient-to-r from-[#F3E5F5] to-[#E1BEE7] dark:from-purple-900/40 dark:to-purple-800/40'
                           : 'bg-indigo-50 dark:bg-indigo-900/30'
-                      }`}
+                        }`}
                     >
                       {/* Navegação Esquerda */}
                       <button
@@ -634,18 +631,18 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                               color: rankingSlide === 0
                                 ? '#616161'
                                 : rankingSlide === 1
-                                ? '#7B1FA2'
-                                : '#3949AB'
+                                  ? '#7B1FA2'
+                                  : '#3949AB'
                             }
                           })}
-                          <p 
+                          <p
                             className="text-2xl font-bold mb-1 opacity-70"
                             style={{
                               color: rankingSlide === 0
                                 ? '#616161'
                                 : rankingSlide === 1
-                                ? '#7B1FA2'
-                                : '#3949AB'
+                                  ? '#7B1FA2'
+                                  : '#3949AB'
                             }}
                           >
                             {rankingSlides[rankingSlide].position}
@@ -665,11 +662,10 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                           <button
                             key={index}
                             onClick={() => setRankingSlide(index)}
-                            className={`w-1.5 h-1.5 rounded-full transition-all ${
-                              rankingSlide === index 
-                                ? 'bg-gray-700 dark:bg-gray-300 w-4' 
-                                : 'bg-gray-400 dark:bg-gray-500'
-                            }`}
+                            className={`w-1.5 h-1.5 rounded-full transition-all ${rankingSlide === index
+                              ? 'bg-gray-700 dark:bg-gray-300 w-4'
+                              : 'bg-gray-400 dark:bg-gray-500'
+                              }`}
                           />
                         ))}
                       </div>
@@ -688,7 +684,7 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
 
               {/* COLUNA DIREITA: TEMPO NA PLATAFORMA + COMPETÊNCIAS RECOMENDADAS */}
               <div className="flex flex-col gap-6">
-                
+
                 {/* Card de Tempo na Plataforma */}
                 <motion.div
                   ref={timeCardRef}
@@ -702,13 +698,13 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                       <div className={`w-10 h-10 bg-gradient-to-br ${colors.icon} rounded-full flex items-center justify-center`}>
                         <Clock className="w-5 h-5 text-white" />
                       </div>
-                      <h3 className="text-lg font-bold text-[#333] dark:text-gray-200">Tempo na Plataforma</h3>
+                      <h3 className="text-lg font-bold text-[#333] dark:text-gray-200">Tempo</h3>
                     </div>
                     <button
                       onClick={() => setShowParentalControl(true)}
                       className="px-4 py-2 bg-gradient-to-r from-cyan-400 to-blue-400 hover:from-cyan-500 hover:to-blue-500 text-white text-sm font-bold rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105 active:scale-95"
                     >
-                      Gerenciar Uso
+                      Gerenciar
                     </button>
                   </div>
 
@@ -766,7 +762,7 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                       let badgeBg = '';
                       let iconBgClass = '';
                       let buttonGradient = '';
-                      
+
                       if (comp.color === '#FFD700') { // Amarelo - Info e Dados
                         badgeBg = '#FFD700';
                         iconBgClass = 'bg-[#FFF9E6] dark:bg-yellow-900/30';
@@ -794,8 +790,8 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                           key={index}
                           initial={{ opacity: 0, y: 30 }}
                           animate={competenciesInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                          transition={{ 
-                            duration: 0.4, 
+                          transition={{
+                            duration: 0.4,
                             delay: index * 0.08,
                             ease: [0.4, 0, 0.2, 1]
                           }}
@@ -818,7 +814,7 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                           </div>
 
                           {/* Badge da Categoria - Topo */}
-                          <div 
+                          <div
                             className="relative z-10 w-full px-4 py-2.5 rounded-t-[20px] group-hover:brightness-110 transition-all duration-200"
                             style={{ backgroundColor: badgeBg }}
                           >
@@ -831,11 +827,11 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                           <div className="relative z-10 p-4 flex flex-col items-center gap-3">
                             {/* Ícone Central */}
                             <motion.div
-                              whileHover={{ 
+                              whileHover={{
                                 rotate: [0, -10, 10, -10, 0],
                                 scale: 1.15,
                               }}
-                              transition={{ 
+                              transition={{
                                 rotate: { duration: 0.4 },
                                 scale: { duration: 0.2 }
                               }}
@@ -857,12 +853,12 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                             {comp.isInProgress ? (
                               <div className="w-full space-y-2">
                                 {/* Timer */}
-                                <CompetencyTimer 
+                                <CompetencyTimer
                                   competencyName={comp.title}
                                   className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200"
                                   showIcon={true}
                                 />
-                                
+
                                 {/* Botão Continuar - Índigo */}
                                 <motion.button
                                   whileHover={{ scale: 1.05 }}
@@ -892,7 +888,7 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                                   handleStartCompetency(comp);
                                 }}
                                 className="w-full py-2 rounded-full text-white font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all duration-200"
-                                style={{ 
+                                style={{
                                   background: buttonGradient
                                 }}
                               >
@@ -926,10 +922,10 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
       </div>
 
       {/* Painel de Controle Parental */}
-      <ParentalControlPanel 
+      <ParentalControlPanel
         isOpen={showParentalControl}
         onClose={() => setShowParentalControl(false)}
       />
     </div>
   );
-}
+} 

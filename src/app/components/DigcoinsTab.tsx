@@ -1,5 +1,5 @@
-import { 
-  Coins, 
+import {
+  Coins,
   Star,
   Trophy,
   Zap,
@@ -22,11 +22,11 @@ import {
   Check
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { 
-  getUserInventory, 
-  buyPowerUp, 
+import {
+  getUserInventory,
+  buyPowerUp,
   getPowerUpQuantity,
-  type PowerUp 
+  type PowerUp
 } from '../utils/powerupsStorage';
 
 interface DigcoinsTabProps {
@@ -37,7 +37,7 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
   const [showAllHistory, setShowAllHistory] = useState(false);
   const [userDigcoins, setUserDigcoins] = useState(0);
   const [purchaseSuccess, setPurchaseSuccess] = useState<number | null>(null);
-  
+
   // Carregar saldo de digcoins do localStorage
   useEffect(() => {
     const inventory = getUserInventory();
@@ -47,108 +47,108 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
   // Dados do Marketplace Educativo
   const marketplaceItems = [
     // Ferramentas de Estudo (Power-ups de Desafio)
-    { 
-      id: 1, 
-      name: 'Segunda Chance', 
-      cost: 500, 
-      category: 'Consumível (Desafio)', 
+    {
+      id: 1,
+      name: 'Segunda Chance',
+      cost: 500,
+      category: 'Consumível (Desafio)',
       categoryTag: 'FERRAMENTAS DE ESTUDO',
       categoryColor: '#8B27FF',
-      icon: RotateCcw, 
+      icon: RotateCcw,
       description: 'Permite repetir o teste completo imediatamente, sem penalidade de tempo.',
       rationale: '',
       type: 'retry' as PowerUp['type'],
       usableInQuiz: true
     },
-    { 
-      id: 2, 
-      name: 'Fura-Fila (Zera 5 Dias)', 
-      cost: 400, 
-      category: 'Consumível (Tempo)', 
+    {
+      id: 2,
+      name: 'Fura-Fila (Zera 5 Dias)',
+      cost: 400,
+      category: 'Consumível (Tempo)',
       categoryTag: 'FERRAMENTAS DE ESTUDO',
       categoryColor: '#8B27FF',
-      icon: Clock, 
+      icon: Clock,
       description: 'Zera a penalidade de espera ao bloquear uma competência.',
       rationale: '',
       type: 'reset-time' as PowerUp['type'],
       usableInQuiz: false
     },
-    { 
-      id: 3, 
-      name: 'Escudo (50/50)', 
-      cost: 150, 
-      category: 'Consumível (Facilitador)', 
+    {
+      id: 3,
+      name: 'Escudo (50/50)',
+      cost: 150,
+      category: 'Consumível (Facilitador)',
       categoryTag: 'FERRAMENTAS DE ESTUDO',
       categoryColor: '#8B27FF',
-      icon: Shield, 
+      icon: Shield,
       description: 'Elimina uma alternativa incorreta em múltipla escolha.',
       rationale: '',
       type: 'shield' as PowerUp['type'],
       usableInQuiz: true
     },
-    { 
-      id: 8, 
-      name: 'Conferir Resposta', 
-      cost: 100, 
-      category: 'Consumível (Facilitador)', 
+    {
+      id: 8,
+      name: 'Conferir Resposta',
+      cost: 100,
+      category: 'Consumível (Facilitador)',
       categoryTag: 'FERRAMENTAS DE ESTUDO',
       categoryColor: '#8B27FF',
-      icon: CircleAlert, 
+      icon: CircleAlert,
       description: 'Verifica se a resposta selecionada está correta ou incorreta antes de enviar.',
       rationale: '',
       type: 'check-answer' as PowerUp['type'],
       usableInQuiz: true
     },
     // Conteúdo de Apoio
-    { 
-      id: 4, 
-      name: 'Desbloqueio Teoria', 
-      cost: 50, 
-      category: 'Conteúdo de Apoio', 
+    {
+      id: 4,
+      name: 'Desbloqueio Teoria',
+      cost: 50,
+      category: 'Conteúdo de Apoio',
       categoryTag: 'CONTEÚDO DE APOIO',
       categoryColor: '#00BCD4',
-      icon: BookOpen, 
+      icon: BookOpen,
       description: 'Libera um link sugerido de conteúdo para ajudar na resolução do desafio.',
       rationale: '',
       type: 'unlock-theory' as PowerUp['type'],
       usableInQuiz: true
     },
     // Certificação e Carreira
-    { 
-      id: 5, 
-      name: 'Badge Currículo', 
-      cost: 1000, 
-      category: 'Certificação (Permanente)', 
+    {
+      id: 5,
+      name: 'Badge Currículo',
+      cost: 1000,
+      category: 'Certificação (Permanente)',
       categoryTag: 'CERTIFICAÇÃO E CARREIRA',
       categoryColor: '#4CAF50',
-      icon: FileText, 
+      icon: FileText,
       description: 'Modelo personalizado de certificado com suas medalhas integradas.',
       rationale: 'Valor prático. Converte o esforço virtual em credencial real.',
       type: 'retry' as PowerUp['type'],
       usableInQuiz: false
     },
     // Identidade e Segurança
-    { 
-      id: 6, 
-      name: 'Banners de Nível (1 ao 5)', 
-      cost: 100, 
-      category: 'Personalização Visual', 
+    {
+      id: 6,
+      name: 'Banners de Nível (1 ao 5)',
+      cost: 100,
+      category: 'Personalização Visual',
       categoryTag: 'IDENTIDADE E SEGURANÇA',
       categoryColor: '#FF9800',
-      icon: ImageIcon, 
+      icon: ImageIcon,
       description: 'Planos de fundo temáticos que refletem seu nível atual.',
       rationale: 'Proteção de Identidade & Compliance.',
       type: 'retry' as PowerUp['type'],
       usableInQuiz: false
     },
-    { 
-      id: 7, 
-      name: 'Avatares Colecionáveis', 
-      cost: 150, 
-      category: 'Personalização Visual', 
+    {
+      id: 7,
+      name: 'Avatares Colecionáveis',
+      cost: 150,
+      category: 'Personalização Visual',
       categoryTag: 'IDENTIDADE E SEGURANÇA',
       categoryColor: '#FF9800',
-      icon: ImageIcon, 
+      icon: ImageIcon,
       description: 'Imagens estilizadas de figuras importantes relacionadas à tecnologia para o perfil.',
       rationale: 'Proteção de Identidade & Compliance.',
       type: 'retry' as PowerUp['type'],
@@ -159,12 +159,12 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
   // Função para comprar item
   const handlePurchase = (item: typeof marketplaceItems[0]) => {
     const success = buyPowerUp(item.id, item.name, item.cost, item.type);
-    
+
     if (success) {
       // Atualizar saldo de digcoins
       const inventory = getUserInventory();
       setUserDigcoins(inventory.digcoins);
-      
+
       // Mostrar feedback de sucesso
       setPurchaseSuccess(item.id);
       setTimeout(() => setPurchaseSuccess(null), 2000);
@@ -195,8 +195,8 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
     .reduce((acc, item) => acc + item.amount, 0);
 
   // Calcular totais de recebidos e gastos
-  const totalReceived = digcoinsHistory.reduce((acc, item) => acc + item.amount, 0);
-  const totalSpent = 900; // Exemplo: 500 + 150 + 100 + 50 + 100 = 900 Digcoins gastos
+  const totalSpent = 900; // Exemplo fixo de pontos gastos
+  const totalReceived = totalSpent + userDigcoins;
 
   // Mostrar apenas os 3 primeiros itens do histórico, ou todos se expandido
   const displayedHistory = showAllHistory ? digcoinsHistory : digcoinsHistory.slice(0, 3);
@@ -209,22 +209,22 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
           <span className="font-bold text-gray-900 dark:text-gray-100">Pontos</span>
         </h2>
         <p className="text-[15px] text-[#666] dark:text-gray-400">
-          Ganhe e gaste Digcoins na sua jornada de aprendizado digital
+          Ganhe e gaste pontos na sua jornada de aprendizado digital
         </p>
       </div>
 
       {/* SEÇÃO 3 - SEUS PONTOS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {/* CARD 1 - SALDO ATUAL (Verde Escuro) */}
-        <div 
+        <div
           className="relative bg-gradient-to-r from-[#10B981] to-[#059669] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
           {/* Ícone decorativo - Carteira */}
-          <Wallet 
+          <Wallet
             className="absolute top-3 right-3 w-[50px] h-[50px] text-white opacity-50 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6"
             strokeWidth={2}
           />
-          
+
           {/* Conteúdo */}
           <div className="relative z-10">
             <div className="text-[44px] font-bold text-white leading-none mb-1">
@@ -237,21 +237,21 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
         </div>
 
         {/* CARD 2 - PONTOS RECEBIDOS (Verde Médio) */}
-        <div 
+        <div
           className="relative bg-gradient-to-r from-[#34D399] to-[#10B981] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
           {/* Ícone decorativo - Sinal de + dentro de moedas empilhadas */}
           <div className="absolute top-3 right-3 w-[50px] h-[50px] transition-all duration-300 group-hover:scale-110">
-            <Coins 
+            <Coins
               className="w-full h-full text-white opacity-50"
               strokeWidth={2}
             />
-            <PlusCircle 
+            <PlusCircle
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[26px] h-[26px] text-white"
               strokeWidth={2.5}
             />
           </div>
-          
+
           {/* Conteúdo */}
           <div className="relative z-10">
             <div className="text-[44px] font-bold text-white leading-none mb-1">
@@ -263,22 +263,22 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
           </div>
         </div>
 
-        {/* CARD 3 - PONTOS UTILIZADOS (Verde Lima) */}
-        <div 
-          className="relative bg-gradient-to-r from-[#A3E635] to-[#84CC16] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
+        {/* CARD 3 - PONTOS UTILIZADOS (ÂMBAR / GASTOS) */}
+        <div
+          className="relative bg-gradient-to-r from-[#F59E0B] to-[#D97706] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
-          {/* Ícone decorativo - Sinal de - dentro de moedas */}
+          {/* Ícone decorativo */}
           <div className="absolute top-3 right-3 w-[50px] h-[50px] transition-all duration-300 group-hover:scale-110">
-            <Coins 
+            <Coins
               className="w-full h-full text-white opacity-50"
               strokeWidth={2}
             />
-            <MinusCircle 
+            <MinusCircle
               className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[26px] h-[26px] text-white"
               strokeWidth={2.5}
             />
           </div>
-          
+
           {/* Conteúdo */}
           <div className="relative z-10">
             <div className="text-[44px] font-bold text-white leading-none mb-1">
@@ -289,6 +289,7 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
             </div>
           </div>
         </div>
+
       </div>
 
       {/* Botão Troque seus pontos */}
@@ -296,21 +297,21 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
         <div className="mb-6">
           <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200">Troque seus pontos</h3>
         </div>
-        
+
         {/* Grade de Itens do Marketplace */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {marketplaceItems.map((item) => {
             const ItemIcon = item.icon;
             const canAfford = userDigcoins >= item.cost;
             const ownedQuantity = getPowerUpQuantity(item.id);
-            
+
             return (
               <div
                 key={item.id}
                 className={`
                   relative bg-white dark:bg-gray-800 rounded-2xl border-2 p-6 transition-all duration-300
-                  ${canAfford 
-                    ? 'border-purple-200 dark:border-purple-700 shadow-md hover:shadow-xl hover:-translate-y-2 cursor-pointer group' 
+                  ${canAfford
+                    ? 'border-purple-200 dark:border-purple-700 shadow-md hover:shadow-xl hover:-translate-y-2 cursor-pointer group'
                     : 'border-gray-200 dark:border-gray-600 opacity-60 cursor-not-allowed'
                   }
                 `}
@@ -359,12 +360,12 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
                 {/* Preço e Botão */}
                 <div className="flex items-center justify-between pt-4 border-t-2 border-gray-100 dark:border-gray-700">
                   <div className="flex items-center gap-2">
-                    <Coins 
-                      className="w-5 h-5" 
+                    <Coins
+                      className="w-5 h-5"
                       style={{ color: canAfford ? '#8B27FF' : '#9CA3AF' }}
-                      strokeWidth={2} 
+                      strokeWidth={2}
                     />
-                    <span 
+                    <span
                       className="text-xl font-bold"
                       style={{ color: canAfford ? '#8B27FF' : '#9CA3AF' }}
                     >
@@ -375,8 +376,8 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
                   <button
                     className={`
                       px-4 py-2 rounded-xl font-bold text-sm transition-all duration-300
-                      ${canAfford 
-                        ? 'bg-gradient-to-r from-[#8B27FF] to-[#B05FFF] text-white hover:scale-105 hover:shadow-lg' 
+                      ${canAfford
+                        ? 'bg-gradient-to-r from-[#8B27FF] to-[#B05FFF] text-white hover:scale-105 hover:shadow-lg'
                         : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
                       }
                     `}
