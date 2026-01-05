@@ -209,12 +209,6 @@ export default function WelcomePage({
                   </div>
                 </div>
               </button>
-
-
-
-
-
-
             </div>
           </div>
 
@@ -246,7 +240,7 @@ export default function WelcomePage({
           </div>
 
           {/* Feature Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-10">
+          <div className="hidden md:grid grid-cols-3 gap-6 mb-8">
             <motion.div
               whileHover={{ scale: 1.05, y: -4 }}
               className="bg-gradient-to-br from-yellow-50 to-orange-50 p-5 sm:p-6 rounded-2xl border border-yellow-200/50"
@@ -292,7 +286,7 @@ export default function WelcomePage({
               </p>
             </motion.div>
           </div>
-          
+
           {/* Subtle Skip Link - Very Low Emphasis */}
           <div className="mt-6 sm:mt-8 text-center">
             <button

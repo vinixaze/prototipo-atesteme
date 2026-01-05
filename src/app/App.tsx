@@ -202,7 +202,7 @@ export default function App() {
           previousPage={previousPage}
         />
       )}
-      {currentPage === "conteudos" && (
+      {currentPage === "conteudo" && (
         <ConteudosPage
           navigateTo={navigateTo}
           filterData={testData}
