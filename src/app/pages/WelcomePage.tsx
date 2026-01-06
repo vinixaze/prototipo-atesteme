@@ -114,10 +114,11 @@ export default function WelcomePage({
             <img
               src={logoImage}
               alt="AtesteMe Logo"
-              className="relative h-24 md:h-28 w-auto object-contain drop-shadow-[0_12px_48px_rgba(139,39,255,0.6)] -mt-8"
+              className="relative h-24 md:h-28 w-auto object-contain drop-shadow-[0_12px_48px_rgba(139,39,255,0.6)]"
             />
+
             <p className="mt-1 text-xs sm:text-sm text-gray-500 text-center tracking-wide">
-              Plataforma de Educação Digital
+              Plataforma educacional
             </p>
 
           </div>
@@ -156,27 +157,36 @@ export default function WelcomePage({
             </p>
 
 
-            {/* Primary Action: desktop full-width CTA (image style) and mobile compact CTA */}
+            {/* Primary Action */}
             <div className="w-full text-center mb-6">
+              {/* Título fora do botão */}
+              <h3
+                className="
+                  text-base sm:text-xl md:text-2xl
+                  font-medium text-gray-900
+                  mb-4
+                  whitespace-nowrap
+                  "
+              >
+                Diagnóstico de Competências Digitais
+              </h3>
+
+
               {/* Mobile ONLY */}
               <button
                 onClick={onStartQuiz}
-                className="w-full md:hidden flex items-center gap-3 bg-[#8B27FF] text-white px-4 py-3 rounded-2xl hover:bg-[#6B1FBF] transition-colors"
+                className="w-full md:hidden flex items-center justify-center gap-3 bg-[#8B27FF] text-white px-4 py-3 rounded-2xl hover:bg-[#6B1FBF] transition-colors"
               >
                 <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20 flex-shrink-0">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
 
-                <div className="flex-1 text-center">
-                  <span className="text-lg font-bold leading-tight block">
-                    Teste de Competências
-                  </span>
-                  <div className="mt-1 inline-flex items-center justify-center gap-2 text-sm font-semibold">
-                    <span>Iniciar</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </div>
+                <div className="flex items-center gap-2 font-bold">
+                  <span className="text-lg">Iniciar</span>
+                  <ChevronRight className="w-5 h-5" />
                 </div>
               </button>
+
               {/* Desktop ONLY */}
               <button
                 onClick={onStartQuiz}
@@ -184,6 +194,7 @@ export default function WelcomePage({
                   hidden md:flex
                   w-full
                   justify-center
+                  items-center
                   bg-gradient-to-r from-[#8B27FF] to-[#A855F7]
                   text-white
                   px-10 py-8
@@ -192,24 +203,14 @@ export default function WelcomePage({
                   transition-all
                 "
               >
-                <div className="flex items-center gap-6 text-left">
-                  {/* Ícone à esquerda */}
+                <div className="flex items-center gap-4">
                   <Target className="w-10 h-10 text-white opacity-95" />
-
-                  {/* Textos */}
-                  <div className="flex flex-col">
-                    <span className="text-3xl font-bold leading-tight">
-                      Teste suas competências digitais
-                    </span>
-
-                    <span className="mt-2 text-sm font-semibold tracking-widest opacity-90 block text-center">
-                      INICIAR &gt;
-                    </span>
-
-                  </div>
+                  <span className="text-2xl lg:text-3xl font-extrabold">Iniciar</span>
+                  <ChevronRight className="w-6 h-6 opacity-95" />
                 </div>
               </button>
             </div>
+
           </div>
 
           {/* Main Description with Icons */}

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { 
-  X, 
-  Clock, 
-  Bell, 
-  Shield, 
+import {
+  X,
+  Clock,
+  Bell,
+  Shield,
   AlertTriangle,
   Save,
   RotateCcw,
@@ -118,7 +118,7 @@ export default function ParentalControlPanel({ isOpen, onClose }: ParentalContro
 
           {/* Content */}
           <div className="p-6 overflow-y-auto max-h-[calc(90vh-180px)] space-y-6">
-            
+
             {/* Info Box */}
             <div className="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-700 rounded-2xl p-4 flex items-start gap-3">
               <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
@@ -142,9 +142,8 @@ export default function ParentalControlPanel({ isOpen, onClose }: ParentalContro
                 </div>
                 <button
                   onClick={() => updateSetting('timeLimitEnabled', !settings.timeLimitEnabled)}
-                  className={`relative w-14 h-7 rounded-full transition-all ${
-                    settings.timeLimitEnabled ? 'bg-[#8B27FF]' : 'bg-gray-300 dark:bg-gray-600'
-                  }`}
+                  className={`relative w-14 h-7 rounded-full transition-all ${settings.timeLimitEnabled ? 'bg-[#8B27FF]' : 'bg-gray-300 dark:bg-gray-600'
+                    }`}
                 >
                   <motion.div
                     className="absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow-md"
@@ -221,9 +220,8 @@ export default function ParentalControlPanel({ isOpen, onClose }: ParentalContro
                       </p>
                       <button
                         onClick={() => updateSetting('blockAfterLimit', !settings.blockAfterLimit)}
-                        className={`relative w-12 h-6 rounded-full transition-all ${
-                          settings.blockAfterLimit ? 'bg-red-500' : 'bg-gray-300 dark:bg-gray-600'
-                        }`}
+                        className={`relative w-12 h-6 rounded-full transition-all ${settings.blockAfterLimit ? 'bg-red-500' : 'bg-gray-300 dark:bg-gray-600'
+                          }`}
                       >
                         <motion.div
                           className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow-md"
@@ -251,9 +249,8 @@ export default function ParentalControlPanel({ isOpen, onClose }: ParentalContro
                 </div>
                 <button
                   onClick={() => updateSetting('alertsEnabled', !settings.alertsEnabled)}
-                  className={`relative w-14 h-7 rounded-full transition-all ${
-                    settings.alertsEnabled ? 'bg-yellow-500' : 'bg-gray-300 dark:bg-gray-600'
-                  }`}
+                  className={`relative w-14 h-7 rounded-full transition-all ${settings.alertsEnabled ? 'bg-yellow-500' : 'bg-gray-300 dark:bg-gray-600'
+                    }`}
                 >
                   <motion.div
                     className="absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow-md"
@@ -323,23 +320,31 @@ export default function ParentalControlPanel({ isOpen, onClose }: ParentalContro
                   <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2 block">
                     Dias permitidos
                   </label>
-                  <div className="grid grid-cols-7 gap-2">
-                    {days.map((day) => (
-                      <button
-                        key={day}
-                        onClick={() => toggleDay(day)}
-                        className={`
-                          px-2 py-2 rounded-lg text-xs font-bold transition-all
-                          ${settings.allowedDays.includes(day)
-                            ? 'bg-[#8B27FF] text-white shadow-md'
-                            : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-400'
-                          }
-                        `}
-                      >
-                        {day.slice(0, 3)}
-                      </button>
-                    ))}
+                  <div className="flex flex-wrap gap-2">
+                    {days.map((day) => {
+                      const short = day.slice(0, 3);
+
+                      return (
+                        <button
+                          key={day}
+                          onClick={() => toggleDay(day)}
+                          className={`
+                            min-w-[48px] px-2 py-2
+                            rounded-xl text-xs font-bold
+                            flex items-center justify-center
+                            transition-all
+                            ${settings.allowedDays.includes(day)
+                              ? 'bg-[#8B27FF] text-white shadow-md'
+                              : 'bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-400'
+                            }
+                          }`}
+                        >
+                          {short}
+                        </button>
+                      );
+                    })}
                   </div>
+
                 </div>
 
                 {/* Horário de início e fim */}
@@ -372,59 +377,94 @@ export default function ParentalControlPanel({ isOpen, onClose }: ParentalContro
           </div>
 
           {/* Footer - Botões de Ação */}
-          <div className="border-t-2 border-gray-200 dark:border-gray-700 p-6 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-between gap-4">
-            <button
-              onClick={handleReset}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-bold transition-all hover:scale-105"
-            >
-              <RotateCcw className="w-4 h-4" />
-              Restaurar Padrão
-            </button>
+          <div className="border-t-2 border-gray-200 dark:border-gray-700 p-4 sm:p-6 bg-gray-50 dark:bg-gray-800/50">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 
-            <div className="flex items-center gap-3">
-              {showSaveConfirmation && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0 }}
-                  className="flex items-center gap-2 text-green-600 dark:text-green-400 font-bold text-sm"
-                >
+              {/* Botão Reset (esquerda) */}
+              <button
+                onClick={handleReset}
+                className="
+        w-full sm:w-auto
+        h-12
+        flex items-center justify-center
+        gap-2
+        px-4
+        bg-gray-200 dark:bg-gray-700
+        hover:bg-gray-300 dark:hover:bg-gray-600
+        text-gray-700 dark:text-gray-300
+        rounded-xl font-bold
+        transition-all
+      "
+              >
+                <RotateCcw className="w-4 h-4" />
+                {/* Mobile curto / Desktop completo */}
+                <span className="sm:hidden">Restaurar</span>
+                <span className="hidden sm:inline">Restaurar Padrão</span>
+              </button>
+
+              {/* Direita: confirmação + cancelar + salvar */}
+              <div className="w-full sm:w-auto flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-3 sm:justify-end">
+
+                {showSaveConfirmation && (
                   <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="w-5 h-5 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="flex items-center justify-center sm:justify-start gap-2 text-green-600 dark:text-green-400 font-bold text-sm"
                   >
-                    <Unlock className="w-3 h-3" />
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="w-5 h-5 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center"
+                    >
+                      <Unlock className="w-3 h-3" />
+                    </motion.div>
+                    Salvo com sucesso!
                   </motion.div>
-                  Salvo com sucesso!
-                </motion.div>
-              )}
-              
-              <button
-                onClick={onClose}
-                className="px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-bold transition-all"
-              >
-                Cancelar
-              </button>
-              
-              <button
-                onClick={handleSave}
-                disabled={!hasChanges}
-                className={`
-                  flex items-center gap-2 px-6 py-2 rounded-xl font-bold transition-all
-                  ${hasChanges
-                    ? 'bg-gradient-to-r from-[#8B27FF] to-[#A855F7] hover:from-[#7B1FE8] hover:to-[#9333EA] text-white shadow-lg hover:scale-105'
-                    : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-                  }
-                `}
-              >
-                <Save className="w-4 h-4" />
-                Salvar Configurações
-              </button>
+                )}
+
+                <div className="grid grid-cols-2 gap-3 sm:flex sm:gap-3">
+                  <button
+                    onClick={onClose}
+                    className="
+            h-12
+            w-full sm:w-auto
+            px-6
+            bg-gray-200 dark:bg-gray-700
+            hover:bg-gray-300 dark:hover:bg-gray-600
+            text-gray-700 dark:text-gray-300
+            rounded-xl font-bold
+            transition-all
+          "
+                  >
+                    Cancelar
+                  </button>
+
+                  <button
+                    onClick={handleSave}
+                    disabled={!hasChanges}
+                    className={`
+            h-12
+            w-full sm:w-auto
+            flex items-center justify-center
+            gap-2
+            px-6
+            rounded-xl font-bold transition-all
+            ${hasChanges
+                        ? 'bg-gradient-to-r from-[#8B27FF] to-[#A855F7] hover:from-[#7B1FE8] hover:to-[#9333EA] text-white shadow-lg'
+                        : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                      }
+          `}
+                  >
+                    <Save className="w-4 h-4" />
+                    Salvar
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </motion.div>
-      </div>
-    </AnimatePresence>
+      </div >
+    </AnimatePresence >
   );
 }

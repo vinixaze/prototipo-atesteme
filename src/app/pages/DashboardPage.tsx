@@ -79,7 +79,6 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
 
     setShowNocoesBasicasBanner(!nocoesBasicasClosed);
 
-
     // Debug: mostrar no console
     console.log('Dashboard - Teste completado?', completed);
   }, []);
@@ -412,53 +411,86 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                 </div>
               </motion.div>
 
-              {/* Card 2: Progresso Geral + Gráfico de Barras */}
+              {/* Card 2: Progresso + Gráfico de Barras */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all h-full min-h-[180px] flex items-center gap-8"
               >
-                {/* Progresso Geral - Número Grande */}
-                <div className="flex flex-col items-center justify-center min-w-[120px]">
-                  <p className="text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">
-                    Progresso Geral
+                {/* Progresso - Número Grande */}
+                <div className="flex flex-col items-center justify-center min-w-[90px] sm:min-w-[100px]">
+                  <p className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">
+                    Progresso
                   </p>
+
                   <motion.div
                     ref={competencyBarsRef}
                     initial={{ scale: 0 }}
                     animate={competencyBarsInView ? { scale: 1 } : { scale: 0 }}
                     transition={{ duration: 0.5, delay: 0.6, type: "spring" }}
-                    className={`text-6xl font-bold bg-gradient-to-br ${colors.textGradient} bg-clip-text text-transparent`}
+                    className={`text-5xl sm:text-6xl font-black bg-gradient-to-br ${colors.textGradient} bg-clip-text text-transparent`}
                   >
                     <CountUp end={overallPercentage} suffix="%" />
                   </motion.div>
                 </div>
 
                 {/* Divisória Vertical */}
-                <div className="h-full w-px bg-gradient-to-b from-transparent via-gray-300 dark:via-gray-600 to-transparent"></div>
+                <div className="h-full w-px bg-gradient-to-b from-transparent via-gray-300 dark:via-gray-600 to-transparent" />
 
-                {/* Gráfico de Barras - Versão Compacta */}
+                {/* Gráfico de Barras - Compacto */}
                 <div className="flex-1 w-full min-w-0 flex flex-col justify-center space-y-2.5">
                   {progressData.map((item, index) => (
                     <div key={index}>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide truncate">
+                        <span className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide leading-tight truncate">
                           {item.category}
                         </span>
                       </div>
-                      <div className="relative h-2.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+
+                      {/* MOBILE (sem tooltip) */}
+                      <div className="relative h-2.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden md:hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={competencyBarsInView ? { width: `${item.percentage}%` } : { width: 0 }}
                           transition={{
                             duration: 1.2,
                             delay: 0.15 * index,
-                            ease: [0.25, 0.1, 0.25, 1]
+                            ease: [0.25, 0.1, 0.25, 1],
                           }}
                           className="h-full rounded-full shadow-sm"
                           style={{ backgroundColor: item.color }}
                         />
+                      </div>
+
+                      {/* DESKTOP (com tooltip no hover) - CORRIGIDO */}
+                      <div className="relative group hidden md:block">
+                        <div className="relative h-2.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={competencyBarsInView ? { width: `${item.percentage}%` } : { width: 0 }}
+                            transition={{
+                              duration: 1.2,
+                              delay: 0.15 * index,
+                              ease: [0.25, 0.1, 0.25, 1],
+                            }}
+                            className="h-full rounded-full shadow-sm"
+                            style={{ backgroundColor: item.color }}
+                          />
+                        </div>
+
+                        {/* Tooltip */}
+                        <div
+                          className="pointer-events-none absolute -top-8 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20"
+                          style={{ left: `${item.percentage}%`, transform: 'translateX(-50%)' }}
+                        >
+                          <div
+                            className="px-2 py-1 text-[10px] font-bold text-white rounded-md shadow-lg"
+                            style={{ backgroundColor: item.color }}
+                          >
+                            {item.percentage}%
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -517,20 +549,21 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                     <h3 className="text-lg font-bold text-[#333] dark:text-gray-200">Minhas Conquistas</h3>
                   </div>
 
-                  {/* Barra de progresso de conquistas */}
+                  {/* Barra de progresso de conquistas (SEM % fixo + tooltip no desktop) */}
                   <div className="mb-6">
                     <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2 font-semibold">
                       <span>Nível {currentLevel - 1}</span>
                       <span>Nível {currentLevel}</span>
                     </div>
-                    <div className="relative h-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+
+                    {/* MOBILE (sem tooltip) */}
+                    <div className="relative h-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden md:hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={conquestInView ? { width: `${totalProgress}%` } : { width: 0 }}
                         transition={conquestInView ? { duration: 1.5, delay: 0.3, ease: "easeOut" } : { duration: 0 }}
                         className={`absolute left-0 top-0 h-full bg-gradient-to-r ${colors.button} rounded-full`}
                       >
-                        {/* Shine effect */}
                         <motion.div
                           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
                           animate={{ x: ['-100%', '200%'] }}
@@ -538,8 +571,33 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                         />
                       </motion.div>
                     </div>
-                    <div className="flex justify-end items-center mt-1">
-                      <span className="text-base text-gray-700 dark:text-gray-300 font-bold">{totalProgress}%</span>
+
+                    {/* DESKTOP (com tooltip no hover) */}
+                    <div className="relative group hidden md:block">
+                      <div className="relative h-6 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={conquestInView ? { width: `${totalProgress}%` } : { width: 0 }}
+                          transition={conquestInView ? { duration: 1.5, delay: 0.3, ease: "easeOut" } : { duration: 0 }}
+                          className={`absolute left-0 top-0 h-full bg-gradient-to-r ${colors.button} rounded-full`}
+                        >
+                          <motion.div
+                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                            animate={{ x: ['-100%', '200%'] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                          />
+                        </motion.div>
+                      </div>
+
+                      {/* Tooltip */}
+                      <div
+                        className="pointer-events-none absolute -top-9 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20"
+                        style={{ left: `${totalProgress}%`, transform: 'translateX(-50%)' }}
+                      >
+                        <div className="px-2 py-1 text-[10px] font-bold text-white rounded-md shadow-lg bg-gray-900/90">
+                          {totalProgress}%
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -928,4 +986,4 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
       />
     </div>
   );
-} 
+}

@@ -177,7 +177,7 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
         />
 
         <span className="-mt-[6px] w-full text-center text-white/90 text-lg font-medium leading-none tracking-wide drop-shadow-lg">
-          Plataforma da Educação Digital
+          Plataforma Educacional
         </span>
       </div>
 
@@ -185,7 +185,7 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
 
 
       {/* Card de Login Flutuante */}
-      <div className="relative z-20 w-full max-w-[520px] px-4 lg:absolute lg:right-[3%] lg:top-1/2 lg:-translate-y-1/2 lg:px-0 mt-32 lg:mt-0">
+      <div className="relative z-20 w-full max-w-[520px] px-4 lg:absolute lg:right-[3%] lg:top-1/2 lg:-translate-y-1/2 lg:px-0 mt-44 sm:mt-52 lg:mt-0">
         <div className="bg-white dark:bg-gray-800 rounded-[20px] p-6 sm:p-8 lg:p-10 shadow-[0_2px_8px_rgba(0,0,0,0.06),0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.3),0_8px_32px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_2px_8px_rgba(0,0,0,0.08),0_12px_48px_rgba(0,0,0,0.18)] dark:hover:shadow-[0_2px_8px_rgba(0,0,0,0.4),0_12px_48px_rgba(0,0,0,0.6)]">
           {/* Título */}
           <h2 className="text-2xl sm:text-3xl lg:text-4xl text-[#1A1A1A] dark:text-white mb-6 sm:mb-8">

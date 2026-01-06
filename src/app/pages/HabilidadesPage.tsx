@@ -474,7 +474,7 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
         onClick={() => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
-        className="fixed bottom-6 left-6 z-50 bg-gray-500 hover:bg-gray-600 text-white p-4 rounded-full shadow-2xl transition-all"
+        className="fixed bottom-24 md:bottom-6 left-4 md:left-6 z-50 bg-gray-500 hover:bg-gray-600 text-white p-3 md:p-4 rounded-full shadow-2xl transition-all"
         title="Ir para o topo"
       >
         <ArrowUp className="w-6 h-6" />

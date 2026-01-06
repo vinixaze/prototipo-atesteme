@@ -1,4 +1,17 @@
-import { LayoutDashboard, Target, TrendingUp, FileText, X, FileCheck, HelpCircle, Eye, Settings, BookOpen, GitBranch } from 'lucide-react';
+import {
+  Home,
+  LayoutDashboard,
+  Target,
+  TrendingUp,
+  FileText,
+  X,
+  FileCheck,
+  HelpCircle,
+  BookOpen,
+  GitBranch,
+  Grid3X3
+} from 'lucide-react';
+
 import { useState, useEffect } from 'react';
 
 interface SidebarProps {
@@ -137,20 +150,82 @@ export default function Sidebar({
       </aside>
 
       {/* Mobile bottom nav */}
-      <div className="fixed bottom-3 left-1/2 -translate-x-1/2 md:hidden z-50 w-[92%] bg-white/95 dark:bg-gray-900/95 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-lg px-4 py-2 flex items-center justify-around">
-        <button onClick={() => onNavigate?.('dashboard')} className="flex flex-col items-center gap-1 text-[#8B27FF] dark:text-[#C084FC]">
-          <LayoutDashboard className="w-6 h-6 text-current" />
+      <div
+        className="
+    fixed bottom-3 left-1/2 -translate-x-1/2 md:hidden z-50
+    w-[92%]
+    bg-white/95 dark:bg-gray-900/95
+    border border-gray-200 dark:border-gray-800
+    rounded-2xl shadow-lg
+    px-2 py-2
+    flex items-stretch justify-between
+  "
+      >
+        {/* Início */}
+        <button
+          onClick={() => onNavigate?.('dashboard')}
+          className={`
+      flex-1 flex flex-col items-center justify-center gap-1
+      py-2 rounded-xl transition
+      ${currentPage === 'dashboard'
+              ? 'text-[#8B27FF] dark:text-[#C084FC]'
+              : 'text-gray-500 dark:text-gray-400'
+            }
+    `}
+        >
+          <Home className="w-7 h-7" />
+          <span className="text-[11px] font-semibold leading-none">Início</span>
         </button>
-        <button onClick={() => onNavigate?.('habilidades')} className="flex flex-col items-center gap-1 text-[#8B27FF] dark:text-[#C084FC]">
-          <Target className="w-6 h-6 text-current" />
+
+        {/* Habilidades */}
+        <button
+          onClick={() => onNavigate?.('habilidades')}
+          className={`
+      flex-1 flex flex-col items-center justify-center gap-1
+      py-2 rounded-xl transition
+      ${currentPage === 'habilidades'
+              ? 'text-[#8B27FF] dark:text-[#C084FC]'
+              : 'text-gray-500 dark:text-gray-400'
+            }
+    `}
+        >
+          <Target className="w-7 h-7" />
+          <span className="text-[11px] font-semibold leading-none">Habilidades</span>
         </button>
-        <button onClick={() => onNavigate?.('progresso')} className="flex flex-col items-center gap-1 text-[#8B27FF] dark:text-[#C084FC]">
-          <TrendingUp className="w-6 h-6 text-current" />
+
+        {/* Progresso */}
+        <button
+          onClick={() => onNavigate?.('progresso')}
+          className={`
+      flex-1 flex flex-col items-center justify-center gap-1
+      py-2 rounded-xl transition
+      ${currentPage === 'progresso'
+              ? 'text-[#8B27FF] dark:text-[#C084FC]'
+              : 'text-gray-500 dark:text-gray-400'
+            }
+    `}
+        >
+          <TrendingUp className="w-7 h-7" />
+          <span className="text-[11px] font-semibold leading-none">Progresso</span>
         </button>
-        <button onClick={() => setShowMore(true)} className="flex flex-col items-center gap-1 text-[#8B27FF] dark:text-[#C084FC]">
-          <HelpCircle className="w-6 h-6 text-current" />
+
+        
+
+        {/* Outros */}
+        <button
+          onClick={() => setShowMore(true)}
+          className="
+            flex-1 flex flex-col items-center justify-center gap-1
+            py-2 rounded-xl transition
+            text-gray-500 dark:text-gray-400
+          "
+        >
+          {/* escolha 1: Grid3X3 | escolha 2: LayoutDashboard */}
+          <Grid3X3 className="w-7 h-7" />
+          <span className="text-[11px] font-semibold leading-none">Outros</span>
         </button>
       </div>
+
 
       {/* Mobile More Modal */}
       {showMore && (

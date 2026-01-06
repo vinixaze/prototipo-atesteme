@@ -27,7 +27,7 @@ import {
   Image as ImageIcon,
   Lock,
   Unlock,
-  ShoppingCart,
+  RefreshCcw,
   Sparkles,
   Send,
   UserCheck
@@ -62,8 +62,8 @@ interface FormErrors {
   [key: string]: string;
 }
 
-export default function PerfilPage({ 
-  navigateTo, 
+export default function PerfilPage({
+  navigateTo,
   userName = 'André Silva',
   userRole = 'user'
 }: PerfilPageProps) {
@@ -79,7 +79,7 @@ export default function PerfilPage({
   const [showBannersModal, setShowBannersModal] = useState(false);
   const [showAvatarsModal, setShowAvatarsModal] = useState(false);
   const [showNomeSocial, setShowNomeSocial] = useState(false);
-  
+
   // Webcam states
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
@@ -104,66 +104,66 @@ export default function PerfilPage({
 
   // Banners disponíveis (Níveis 1 a 8)
   const bannerLevels = [
-    { 
-      id: 1, 
-      level: 1, 
-      name: 'Banner Nível 1 - Iniciante', 
+    {
+      id: 1,
+      level: 1,
+      name: 'Banner Nível 1 - Iniciante',
       gradient: 'from-gray-400 to-gray-600',
       unlocked: true,
       cost: 0
     },
-    { 
-      id: 2, 
-      level: 2, 
-      name: 'Banner Nível 2 - Aprendiz', 
+    {
+      id: 2,
+      level: 2,
+      name: 'Banner Nível 2 - Aprendiz',
       gradient: 'from-blue-400 to-blue-600',
       unlocked: true,
       cost: 100
     },
-    { 
-      id: 3, 
-      level: 3, 
-      name: 'Banner Nível 3 - Competente', 
+    {
+      id: 3,
+      level: 3,
+      name: 'Banner Nível 3 - Competente',
       gradient: 'from-purple-400 to-purple-600',
       unlocked: false,
       cost: 100
     },
-    { 
-      id: 4, 
-      level: 4, 
-      name: 'Banner Nível 4 - Avançado', 
+    {
+      id: 4,
+      level: 4,
+      name: 'Banner Nível 4 - Avançado',
       gradient: 'from-orange-400 to-orange-600',
       unlocked: false,
       cost: 100
     },
-    { 
-      id: 5, 
-      level: 5, 
-      name: 'Banner Nível 5 - Expert', 
+    {
+      id: 5,
+      level: 5,
+      name: 'Banner Nível 5 - Expert',
       gradient: 'from-yellow-400 to-yellow-600',
       unlocked: false,
       cost: 100
     },
-    { 
-      id: 6, 
-      level: 6, 
-      name: 'Banner Nível 6 - Mestre', 
+    {
+      id: 6,
+      level: 6,
+      name: 'Banner Nível 6 - Mestre',
       gradient: 'from-green-400 to-green-600',
       unlocked: false,
       cost: 150
     },
-    { 
-      id: 7, 
-      level: 7, 
-      name: 'Banner Nível 7 - Lendário', 
+    {
+      id: 7,
+      level: 7,
+      name: 'Banner Nível 7 - Lendário',
       gradient: 'from-red-400 to-red-600',
       unlocked: false,
       cost: 200
     },
-    { 
-      id: 8, 
-      level: 8, 
-      name: 'Banner Nível 8 - Supremo', 
+    {
+      id: 8,
+      level: 8,
+      name: 'Banner Nível 8 - Supremo',
       gradient: 'from-pink-400 to-pink-600',
       unlocked: false,
       cost: 250
@@ -172,44 +172,44 @@ export default function PerfilPage({
 
   // Avatares colecionáveis disponíveis
   const collectibleAvatars = [
-    { 
-      id: 1, 
-      name: 'Avatar Padrão', 
+    {
+      id: 1,
+      name: 'Avatar Padrão',
       url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Default',
       unlocked: true,
       cost: 0
     },
-    { 
-      id: 2, 
-      name: 'Ada Lovelace', 
+    {
+      id: 2,
+      name: 'Ada Lovelace',
       url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Ada',
       unlocked: true,
       cost: 150
     },
-    { 
-      id: 3, 
-      name: 'Alan Turing', 
+    {
+      id: 3,
+      name: 'Alan Turing',
       url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alan',
       unlocked: false,
       cost: 150
     },
-    { 
-      id: 4, 
-      name: 'Grace Hopper', 
+    {
+      id: 4,
+      name: 'Grace Hopper',
       url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Grace',
       unlocked: false,
       cost: 150
     },
-    { 
-      id: 5, 
-      name: 'Steve Jobs', 
+    {
+      id: 5,
+      name: 'Steve Jobs',
       url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Steve',
       unlocked: false,
       cost: 150
     },
-    { 
-      id: 6, 
-      name: 'Bill Gates', 
+    {
+      id: 6,
+      name: 'Bill Gates',
       url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bill',
       unlocked: false,
       cost: 150
@@ -281,7 +281,7 @@ export default function PerfilPage({
   // Verificar se CPF é provisório e retornar identificador
   const getIdentificadorPessoal = (cpf: string): { isProvisorio: boolean; tipo: string; id: string } | null => {
     const cleaned = cpf.replace(/[^\d]/g, '');
-    
+
     // CPFs provisórios são números sequenciais simples
     // Aceita de 1 até 11 dígitos, com até 8 zeros iniciais seguidos de até 3 dígitos
     // Exemplos: 1, 01, 001, 000000001, 000000123, etc.
@@ -290,7 +290,7 @@ export default function PerfilPage({
       // Determina o tipo baseado no último dígito
       const lastDigit = parseInt(cleaned[cleaned.length - 1]);
       let tipo = '';
-      
+
       if (lastDigit % 3 === 0) {
         tipo = 'SUS';
       } else if (lastDigit % 3 === 1) {
@@ -298,60 +298,60 @@ export default function PerfilPage({
       } else {
         tipo = 'CNIS';
       }
-      
+
       return { isProvisorio: true, tipo, id };
     }
-    
+
     return null;
   };
 
   // Calcular idade baseado na data de nascimento
   const calcularIdade = (dataNascimento: string): number => {
     if (!dataNascimento) return 0;
-    
+
     const partes = dataNascimento.split('/');
     if (partes.length !== 3) return 0;
-    
+
     const [dia, mes, ano] = partes.map(p => parseInt(p));
     const hoje = new Date();
     const nascimento = new Date(ano, mes - 1, dia);
-    
+
     let idade = hoje.getFullYear() - nascimento.getFullYear();
     const m = hoje.getMonth() - nascimento.getMonth();
-    
+
     if (m < 0 || (m === 0 && hoje.getDate() < nascimento.getDate())) {
       idade--;
     }
-    
+
     return idade;
   };
 
   // Validar se a data de nascimento está completa e válida
   const isDataNascimentoValida = (dataNascimento: string): boolean => {
     if (!dataNascimento) return false;
-    
+
     // Verificar se tem exatamente 10 caracteres (DD/MM/AAAA)
     const cleanDate = dataNascimento.replace(/\D/g, '');
     if (cleanDate.length !== 8) return false;
-    
+
     // Validar formato DD/MM/YYYY
     const partes = dataNascimento.split('/');
     if (partes.length !== 3) return false;
-    
+
     const [dia, mes, ano] = partes.map(Number);
-    
+
     // Validar se todos os valores são números válidos
     if (!dia || !mes || !ano) return false;
     if (dia < 1 || dia > 31) return false;
     if (mes < 1 || mes > 12) return false;
     if (ano < 1900 || ano > new Date().getFullYear()) return false;
-    
+
     // Validar se a data é válida (ex: não permitir 31/02)
     const dataTest = new Date(ano, mes - 1, dia);
     if (dataTest.getDate() !== dia || dataTest.getMonth() !== mes - 1 || dataTest.getFullYear() !== ano) {
       return false;
     }
-    
+
     return true;
   };
 
@@ -483,14 +483,14 @@ export default function PerfilPage({
     }
 
     setEnviandoAcesso(true);
-    
+
     // Simular envio de email
     setTimeout(() => {
       setEnviandoAcesso(false);
       setAcessoEnviado(true);
-      setToast({ 
-        message: `Acesso de monitoramento enviado para ${formData.emailResponsavel}`, 
-        type: 'success' 
+      setToast({
+        message: `Acesso de monitoramento enviado para ${formData.emailResponsavel}`,
+        type: 'success'
       });
     }, 2000);
   };
@@ -531,10 +531,10 @@ export default function PerfilPage({
     }
 
     setIsSaving(true);
-    
+
     // Simular salvamento
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
     setIsSaving(false);
     setHasChanges(false);
     setToast({ message: 'Perfil atualizado com sucesso!', type: 'success' });
@@ -551,8 +551,8 @@ export default function PerfilPage({
   // Webcam functions
   const startWebcam = async () => {
     try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: 'user' } 
+      const mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user' }
       });
       setStream(mediaStream);
       if (videoRef.current) {
@@ -631,17 +631,17 @@ export default function PerfilPage({
     navigateTo(page);
   };
 
-  const isFormValid = Object.values(errors).every(error => !error) && 
-                       formData.nome && 
-                       formData.email && 
-                       formData.cpf;
+  const isFormValid = Object.values(errors).every(error => !error) &&
+    formData.nome &&
+    formData.email &&
+    formData.cpf;
 
-  const isProfileComplete = formData.nome && 
-                            formData.email && 
-                            formData.telefone && 
-                            formData.cpf && 
-                            formData.dataNascimento && 
-                            formData.escolaridade;
+  const isProfileComplete = formData.nome &&
+    formData.email &&
+    formData.telefone &&
+    formData.cpf &&
+    formData.dataNascimento &&
+    formData.escolaridade;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-gray-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 flex">
@@ -654,8 +654,8 @@ export default function PerfilPage({
       />
 
       <div className="flex-1 flex flex-col min-w-0 pt-20">
-        <Header 
-          onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} 
+        <Header
+          onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
           userName={userName}
           navigateTo={navigateTo}
           onLogout={() => navigateTo('login')}
@@ -667,7 +667,7 @@ export default function PerfilPage({
             <div className="mb-10 animate-fadeIn">
               <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">Meu Perfil</h1>
               <p className="text-gray-600 dark:text-gray-400">
-                Dashboard <span className="text-gray-400 dark:text-gray-500 mx-2">›</span> 
+                Dashboard <span className="text-gray-400 dark:text-gray-500 mx-2">›</span>
                 <span className="text-[#8B27FF] dark:text-[#A855F7] font-medium">Perfil</span>
               </p>
             </div>
@@ -684,9 +684,9 @@ export default function PerfilPage({
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  
+
                   {/* Badge de Status */}
-                  <div 
+                  <div
                     className={`
                       absolute bottom-1 right-1 w-8 h-8 rounded-full 
                       border-3 border-white dark:border-gray-800 shadow-lg
@@ -714,11 +714,11 @@ export default function PerfilPage({
                     <Mail className="w-4 h-4" />
                     <span className="text-sm">{formData.email}</span>
                   </div>
-                  <div 
+                  <div
                     className={`
                       inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6
-                      ${isProfileComplete 
-                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' 
+                      ${isProfileComplete
+                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
                         : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
                       }
                     `}
@@ -777,7 +777,7 @@ export default function PerfilPage({
             <div className="relative mb-8 animate-slideUp" style={{ animationDelay: '150ms' }}>
               {/* Brilho de fundo sutil */}
               <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-20"></div>
-              
+
               {/* Barra principal */}
               <div className="relative bg-gradient-to-r from-white via-purple-50/50 to-white dark:from-gray-800 dark:via-purple-900/20 dark:to-gray-800 rounded-2xl p-6 shadow-lg border-2 border-purple-200 dark:border-purple-800/60">
                 <div className="flex items-center gap-4">
@@ -788,7 +788,7 @@ export default function PerfilPage({
                       <GraduationCap className="w-7 h-7 text-white" strokeWidth={2.5} />
                     </div>
                   </div>
-                  
+
                   {/* Textos */}
                   <div>
                     <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Tipo de Perfil</p>
@@ -848,7 +848,7 @@ export default function PerfilPage({
                         </div>
                       )}
                     </div>
-                    
+
                     {/* Botão Adicionar Nome Social */}
                     {!showNomeSocial && (
                       <div className="flex justify-end mt-2">
@@ -862,7 +862,7 @@ export default function PerfilPage({
                         </button>
                       </div>
                     )}
-                    
+
                     {/* Campo de Nome Social (condicional) */}
                     {showNomeSocial && (
                       <div className="mt-3 animate-slideDown">
@@ -915,7 +915,7 @@ export default function PerfilPage({
                         </div>
                       )}
                     </div>
-                    
+
                     {/* Identificador Social (se CPF provisório) */}
                     {identificadorPessoal && identificadorPessoal.isProvisorio && (
                       <div className="mt-3 p-4 rounded-lg bg-purple-50 dark:bg-purple-900/20 border-2 border-purple-200 dark:border-purple-800 animate-slideDown">
@@ -925,13 +925,13 @@ export default function PerfilPage({
                           </div>
                           <span className="text-sm font-bold text-[#8B27FF] dark:text-[#A855F7]">CPF Provisório Detectado</span>
                         </div>
-                        
+
                         <div className="space-y-2 ml-10">
                           <div className="flex items-start gap-2">
                             <span className="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[120px]">Identificador Social:</span>
                             <span className="text-sm font-mono font-semibold text-gray-900 dark:text-gray-100">{identificadorPessoal.id}</span>
                           </div>
-                          
+
                           <div className="flex items-start gap-2">
                             <span className="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[120px]">Base de Origem:</span>
                             <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-purple-100 to-purple-200 dark:from-purple-900/60 dark:to-purple-800/60 rounded-lg text-[#8B27FF] dark:text-[#A855F7] font-bold text-sm shadow-sm">
@@ -1105,8 +1105,8 @@ export default function PerfilPage({
                                 ${acessoEnviado
                                   ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 cursor-default'
                                   : enviandoAcesso
-                                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 cursor-wait'
-                                  : 'bg-blue-500 dark:bg-blue-600 text-white hover:bg-blue-600 dark:hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5'
+                                    ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 cursor-wait'
+                                    : 'bg-blue-500 dark:bg-blue-600 text-white hover:bg-blue-600 dark:hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5'
                                 }
                               `}
                             >
@@ -1478,13 +1478,15 @@ export default function PerfilPage({
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 ml-15">Personalize seu perfil com banners exclusivos</p>
               </div>
               <div className="flex items-center gap-2">
-                <button 
+                <button
                   onClick={() => navigateTo('digcoins')}
                   className="inline-flex items-center gap-2 px-4 py-2 bg-[#8B27FF] text-white rounded-xl font-medium text-sm hover:bg-[#6B1FBF] transition-all duration-300 hover:scale-105"
                 >
-                  <ShoppingCart className="w-4 h-4" />
-                  Obter Mais
+                  <RefreshCcw className="w-4 h-4" />
+                  <span className="sm:hidden">Mais</span>
+                  <span className="hidden sm:inline">Obter Mais</span>
                 </button>
+
                 <button
                   onClick={() => setShowBannersModal(false)}
                   className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300"
@@ -1508,8 +1510,8 @@ export default function PerfilPage({
                   disabled={!banner.unlocked}
                   className={`
                     relative p-4 rounded-xl border-2 transition-all duration-300 group
-                    ${!banner.unlocked 
-                      ? 'border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-700/50 opacity-60 cursor-not-allowed' 
+                    ${!banner.unlocked
+                      ? 'border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-700/50 opacity-60 cursor-not-allowed'
                       : selectedBanner === banner.id
                         ? 'border-[#8B27FF] dark:border-[#A855F7] bg-purple-50 dark:bg-purple-900/30 shadow-lg shadow-purple-500/20 scale-105'
                         : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-700 hover:border-purple-300 dark:hover:border-purple-600 hover:scale-105'
@@ -1522,7 +1524,7 @@ export default function PerfilPage({
                     </div>
                   )}
 
-                  <div 
+                  <div
                     className={`
                       w-full h-16 rounded-lg mb-3 flex items-center justify-center
                       bg-gradient-to-r ${banner.gradient}
@@ -1571,13 +1573,16 @@ export default function PerfilPage({
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 ml-15">Figuras históricas da tecnologia</p>
               </div>
               <div className="flex items-center gap-2">
-                <button 
+                <button
                   onClick={() => navigateTo('digcoins')}
                   className="inline-flex items-center gap-2 px-4 py-2 bg-[#8B27FF] text-white rounded-xl font-medium text-sm hover:bg-[#6B1FBF] transition-all duration-300 hover:scale-105"
                 >
-                  <ShoppingCart className="w-4 h-4" />
-                  Obter Mais
+                  <RefreshCcw className="w-4 h-4" />
+                  <span className="sm:hidden">Mais</span>
+                  <span className="hidden sm:inline">Obter Mais</span>
                 </button>
+
+
                 <button
                   onClick={() => setShowAvatarsModal(false)}
                   className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300"
@@ -1601,8 +1606,8 @@ export default function PerfilPage({
                   disabled={!avatar.unlocked}
                   className={`
                     relative p-3 rounded-xl border-2 transition-all duration-300 group
-                    ${!avatar.unlocked 
-                      ? 'border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-700/50 opacity-60 cursor-not-allowed' 
+                    ${!avatar.unlocked
+                      ? 'border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-700/50 opacity-60 cursor-not-allowed'
                       : selectedAvatar === avatar.id
                         ? 'border-[#8B27FF] dark:border-[#A855F7] bg-purple-50 dark:bg-purple-900/30 shadow-lg shadow-purple-500/20 scale-105'
                         : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-700 hover:border-purple-300 dark:hover:border-purple-600 hover:scale-105'

@@ -56,10 +56,10 @@ interface NiveisTabProps {
   handleStartChallenge?: (comp: Competencia) => void;
 }
 
-export default function NiveisTab({ 
-  levels, 
-  expandedLevel, 
-  toggleLevel, 
+export default function NiveisTab({
+  levels,
+  expandedLevel,
+  toggleLevel,
   handleViewResult,
   currentLevel,
   handleStartChallenge
@@ -67,7 +67,7 @@ export default function NiveisTab({
   // Calcular estatísticas gerais
   const totalCompetencias = levels.reduce((acc, level) => acc + level.total, 0);
   const completedCompetencias = levels.reduce((acc, level) => acc + level.progress, 0);
-  const totalStars = levels.reduce((acc, level) => 
+  const totalStars = levels.reduce((acc, level) =>
     acc + level.competencias.reduce((sum, comp) => sum + comp.starsEarned, 0), 0
   );
   const maxStars = totalCompetencias * 3;
@@ -85,15 +85,15 @@ export default function NiveisTab({
       {/* SEÇÃO 1 - SEUS NÍVEIS DE COMPETÊNCIA */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         {/* CARD 1 - COMPETÊNCIAS CONQUISTADAS */}
-        <div 
+        <div
           className="relative bg-gradient-to-r from-[#9333EA] to-[#7E22CE] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl"
         >
           {/* Ícone decorativo */}
-          <CheckCircle2 
+          <CheckCircle2
             className="absolute top-3 right-3 w-[45px] h-[45px] text-white opacity-40 transition-transform duration-300 group-hover:rotate-[15deg] group-hover:scale-110"
             strokeWidth={2}
           />
-          
+
           {/* Conteúdo */}
           <div className="relative z-10">
             <div className="text-[44px] font-bold text-white leading-none mb-1">
@@ -106,15 +106,15 @@ export default function NiveisTab({
         </div>
 
         {/* CARD 2 - ESTRELAS RECEBIDAS */}
-        <div 
+        <div
           className="relative bg-gradient-to-r from-[#F0ABFC] to-[#E879F9] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
           {/* Ícone decorativo - Estrela */}
-          <Star 
+          <Star
             className="absolute top-3 right-3 w-[50px] h-[50px] text-[#FBBF24] opacity-100 fill-[#FBBF24] transition-all duration-300 group-hover:scale-125 group-hover:rotate-[-15deg]"
             strokeWidth={0}
           />
-          
+
           {/* Conteúdo */}
           <div className="relative z-10">
             <div className="text-[44px] font-bold text-white leading-none mb-1">
@@ -127,16 +127,16 @@ export default function NiveisTab({
         </div>
 
         {/* CARD 3 - COMPETÊNCIAS DESBLOQUEADAS */}
-        <div 
+        <div
           className="relative bg-gradient-to-r from-[#9CA3AF] to-[#6B7280] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-xl"
           style={{ cursor: 'not-allowed' }}
         >
           {/* Ícone decorativo - Cadeado Aberto */}
-          <LockOpen 
+          <LockOpen
             className="absolute top-3 right-3 w-[45px] h-[45px] text-white opacity-50"
             strokeWidth={2}
           />
-          
+
           {/* Conteúdo */}
           <div className="relative z-10">
             <div className="text-[44px] font-bold text-white leading-none mb-1">
@@ -156,10 +156,9 @@ export default function NiveisTab({
             key={level.number}
             className={`
               bg-white dark:bg-gray-800 rounded-2xl transition-all duration-300
-              ${
-                level.unlocked
-                  ? 'border-2 border-[#8B27FF] shadow-xl shadow-purple-100 dark:shadow-purple-950 hover:shadow-2xl hover:shadow-purple-200 dark:hover:shadow-purple-900'
-                  : 'border-2 border-gray-200 dark:border-gray-700 shadow-md opacity-70'
+              ${level.unlocked
+                ? 'border-2 border-[#8B27FF] shadow-xl shadow-purple-100 dark:shadow-purple-950 hover:shadow-2xl hover:shadow-purple-200 dark:hover:shadow-purple-900'
+                : 'border-2 border-gray-200 dark:border-gray-700 shadow-md opacity-70'
               }
             `}
             style={{
@@ -170,16 +169,15 @@ export default function NiveisTab({
             <button
               onClick={() => level.unlocked && toggleLevel(level.number)}
               disabled={!level.unlocked}
-              className={`w-full p-4 sm:p-6 flex items-center gap-3 sm:gap-6 transition-all rounded-t-2xl ${
-                level.unlocked ? 'hover:bg-purple-50/50 cursor-pointer' : 'cursor-not-allowed'
-              }`}
+              className={`w-full p-4 sm:p-6 flex items-center gap-3 sm:gap-6 transition-all rounded-t-2xl ${level.unlocked ? 'hover:bg-purple-50/50 cursor-pointer' : 'cursor-not-allowed'
+                }`}
             >
               {/* Badge com animação */}
               <div
                 className={`
                   flex-shrink-0 w-16 sm:w-20 h-16 sm:h-20 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-300
-                  ${level.unlocked 
-                    ? 'bg-gradient-to-br from-[#8B27FF] via-[#A855F7] to-[#C084FC] hover:scale-110 hover:rotate-6' 
+                  ${level.unlocked
+                    ? 'bg-gradient-to-br from-[#8B27FF] via-[#A855F7] to-[#C084FC] hover:scale-110 hover:rotate-6'
                     : 'bg-gradient-to-br from-gray-300 to-gray-400'
                   }
                 `}
@@ -212,8 +210,8 @@ export default function NiveisTab({
                     <div
                       className={`
                         h-full rounded-full transition-all duration-1000 relative overflow-hidden
-                        ${level.unlocked 
-                          ? 'bg-gradient-to-r from-[#8B27FF] via-[#A855F7] to-[#C084FC]' 
+                        ${level.unlocked
+                          ? 'bg-gradient-to-r from-[#8B27FF] via-[#A855F7] to-[#C084FC]'
                           : 'bg-gray-300 dark:bg-gray-600'
                         }
                       `}
@@ -231,7 +229,7 @@ export default function NiveisTab({
                       </span>
                     </div>
                   </div>
-                  
+
                   {/* Info abaixo da barra */}
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
@@ -259,8 +257,8 @@ export default function NiveisTab({
                   <div
                     className={`
                       h-full rounded-full transition-all duration-1000
-                      ${level.unlocked 
-                        ? 'bg-gradient-to-r from-[#8B27FF] via-[#A855F7] to-[#C084FC]' 
+                      ${level.unlocked
+                        ? 'bg-gradient-to-r from-[#8B27FF] via-[#A855F7] to-[#C084FC]'
                         : 'bg-gray-300'
                       }
                     `}
@@ -308,10 +306,9 @@ export default function NiveisTab({
                           key={comp.id}
                           className={`
                             relative p-3 sm:p-5 rounded-xl border-2 transition-all duration-300 group
-                            ${
-                              comp.completed
-                                ? 'bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-300 dark:border-green-700 shadow-md hover:shadow-xl hover:-translate-y-1'
-                                : comp.status === 'in-progress'
+                            ${comp.completed
+                              ? 'bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-300 dark:border-green-700 shadow-md hover:shadow-xl hover:-translate-y-1'
+                              : comp.status === 'in-progress'
                                 ? 'bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/30 dark:to-indigo-800/30 border-indigo-200 dark:border-indigo-700 shadow-md hover:shadow-xl hover:-translate-y-1'
                                 : 'bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-800 dark:to-gray-900 border-gray-300 dark:border-gray-600 shadow-sm hover:shadow-md hover:border-purple-300 dark:hover:border-purple-500'
                             }`}
@@ -320,12 +317,11 @@ export default function NiveisTab({
                           }}
                         >
                           {/* Barra lateral decorativa */}
-                          <div 
-                            className={`absolute left-0 top-0 bottom-0 w-1.5 rounded-l-xl transition-all duration-300 ${
-                              comp.completed ? 'bg-gradient-to-b from-green-400 to-green-600' :
-                              comp.status === 'in-progress' ? 'bg-gradient-to-b from-indigo-400 to-indigo-600' :
-                              'bg-gradient-to-b from-gray-300 to-gray-400'
-                            }`}
+                          <div
+                            className={`absolute left-0 top-0 bottom-0 w-1.5 rounded-l-xl transition-all duration-300 ${comp.completed ? 'bg-gradient-to-b from-green-400 to-green-600' :
+                                comp.status === 'in-progress' ? 'bg-gradient-to-b from-indigo-400 to-indigo-600' :
+                                  'bg-gradient-to-b from-gray-300 to-gray-400'
+                              }`}
                           />
 
                           <div className="flex items-start gap-4">
@@ -336,22 +332,22 @@ export default function NiveisTab({
                                 group-hover:scale-110 group-hover:rotate-6
                               `}
                               style={{
-                                backgroundColor: comp.completed 
-                                  ? '#10b98120' 
-                                  : comp.status === 'in-progress' 
-                                  ? '#6366F120' 
-                                  : '#6b728020',
+                                backgroundColor: comp.completed
+                                  ? '#10b98120'
+                                  : comp.status === 'in-progress'
+                                    ? '#6366F120'
+                                    : '#6b728020',
                               }}
                             >
                               {comp.completed ? (
                                 <Check className="w-6 sm:w-7 h-6 sm:h-7 text-green-600" strokeWidth={3} />
                               ) : (
-                                <CompIcon 
-                                  className="w-6 sm:w-7 h-6 sm:h-7" 
-                                  style={{ 
+                                <CompIcon
+                                  className="w-6 sm:w-7 h-6 sm:h-7"
+                                  style={{
                                     color: comp.status === 'in-progress' ? '#6366F1' : '#6b7280'
-                                  }} 
-                                  strokeWidth={1.5} 
+                                  }}
+                                  strokeWidth={1.5}
                                 />
                               )}
                             </div>
@@ -361,13 +357,13 @@ export default function NiveisTab({
                               {/* Cards informativos */}
                               <div className="flex flex-col sm:flex-row flex-wrap gap-2 mb-3">
                                 {/* Card Área */}
-                                <div 
+                                <div
                                   className="rounded-lg px-2 py-1.5 md:px-2.5 md:py-2 flex items-center gap-1.5 md:gap-2 w-full sm:w-auto"
                                   style={{
                                     backgroundColor: comp.categoryColor,
                                   }}
                                 >
-                                  <div 
+                                  <div
                                     className="w-5 h-5 md:w-6 md:h-6 rounded flex items-center justify-center flex-shrink-0 bg-white/20"
                                   >
                                     <Layers className="text-white w-3.5 h-3.5 md:w-4 md:h-4" strokeWidth={2} />
@@ -384,13 +380,13 @@ export default function NiveisTab({
                                 </div>
 
                                 {/* Card Competência */}
-                                <div 
+                                <div
                                   className="rounded-lg px-2 py-1.5 md:px-2.5 md:py-2 flex items-center gap-1.5 md:gap-2 w-full sm:w-auto"
                                   style={{
                                     backgroundColor: comp.categoryColor,
                                   }}
                                 >
-                                  <div 
+                                  <div
                                     className="w-5 h-5 md:w-6 md:h-6 rounded flex items-center justify-center flex-shrink-0 bg-white/20"
                                   >
                                     <Award className="text-white w-3.5 h-3.5 md:w-4 md:h-4" strokeWidth={2} />
@@ -406,7 +402,7 @@ export default function NiveisTab({
                                   </p>
                                 </div>
                               </div>
-                              
+
                               {/* Completed Details */}
                               {comp.completed && (
                                 <div className="space-y-3">
@@ -417,11 +413,10 @@ export default function NiveisTab({
                                       {[1, 2, 3].map((starNum) => (
                                         <Star
                                           key={starNum}
-                                          className={`w-4 h-4 transition-all duration-300 ${
-                                            starNum <= comp.starsEarned
+                                          className={`w-4 h-4 transition-all duration-300 ${starNum <= comp.starsEarned
                                               ? 'fill-[#FFD700] text-[#FFD700]'
                                               : 'fill-none text-gray-300'
-                                          }`}
+                                            }`}
                                           strokeWidth={1.5}
                                         />
                                       ))}
@@ -429,19 +424,19 @@ export default function NiveisTab({
                                         {comp.starsEarned}/3 estrelas
                                       </span>
                                     </div>
-                                    
+
                                     {/* Date */}
                                     <div className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
                                       <Calendar className="w-4 h-4 text-purple-500 flex-shrink-0" />
                                       <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200">{comp.completedDate}</span>
                                     </div>
-                                    
+
                                     {/* Time Spent - Single Line */}
                                     <div className="flex items-center gap-1.5 px-2.5 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600 whitespace-nowrap">
                                       <Clock className="w-3.5 h-3.5 md:w-4 md:h-4 text-cyan-500 flex-shrink-0" />
                                       <span className="text-[10px] md:text-xs font-medium text-gray-700 dark:text-gray-200">{comp.timeSpent}</span>
                                     </div>
-                                    
+
                                     {/* Digcoins Earned */}
                                     <div className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
                                       <Coins className="w-4 h-4 text-[#8B27FF] flex-shrink-0" />
@@ -481,9 +476,9 @@ export default function NiveisTab({
                                       <span>Continuar</span>
                                     </button>
                                   )}
-                                  
+
                                   {/* Timer ao lado */}
-                                  <CompetencyTimer 
+                                  <CompetencyTimer
                                     competencyName={comp.title}
                                     mockTime={comp.title === 'Colaborar' ? 1800 : undefined}
                                     className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600"
@@ -510,13 +505,14 @@ export default function NiveisTab({
                               )}
                             </div>
 
-                            {/* Status Badge */}
+                            {/* Status Badge (somente md+) */}
                             {!comp.completed && comp.status === 'in-progress' && (
-                              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white text-xs font-bold rounded-full shadow-sm">
+                              <div className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white text-xs font-bold rounded-full shadow-sm">
                                 <Clock className="w-3 h-3" />
                                 <span>Em progresso</span>
                               </div>
                             )}
+
                           </div>
                         </div>
                       );

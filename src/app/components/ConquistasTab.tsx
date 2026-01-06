@@ -48,7 +48,7 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
       <div className="mb-6 sm:mb-8">
         <h2 className="text-[28px] font-bold text-[#333] dark:text-gray-200 mb-3">Suas Missões</h2>
         <p className="text-[15px] text-[#666] dark:text-gray-400 mb-2">
-          Desenvolva suas competências nos eixos da BNCC Computação/Letramento Digita        </p>
+          Desenvolva suas competências nos eixos da BNCC Computação/Letramento Digital       </p>
         <div className="flex items-center gap-2 text-sm text-[#8B27FF] dark:text-[#A855F7]">
           <Medal className="w-4 h-4" />
           <span className="font-semibold">Cada missão concede uma medalha que adiciona pontos ao seu perfil!</span>

@@ -379,7 +379,7 @@ export default function Header({
                           {userName || "Usuário"}
                         </p>
                         <p className="text-xs text-white/80">
-                          Estudante Digital
+                          Estudante
                         </p>
                       </div>
                     </div>
