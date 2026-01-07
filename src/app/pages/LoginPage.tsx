@@ -36,22 +36,38 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
+    // Mostrar banner alternativo se o evento não funcionar (fallback)
+    const timer = setTimeout(() => {
+      if (!deferredPrompt) {
+        setShowInstallBanner(true);
+      }
+    }, 2000);
+
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      clearTimeout(timer);
     };
-  }, []);
+  }, [deferredPrompt]);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
 
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        console.log('PWA instalado com sucesso');
+      }
 
-    if (outcome === 'accepted') {
-      localStorage.setItem('pwa-install-banner-shown', 'true');
+      setDeferredPrompt(null);
+    } else {
+      // Fallback: instruções para instalação manual
+      const userAgent = navigator.userAgent.toLowerCase();
+      if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
+        alert('Para instalar no iOS:\n1. Toque no botão Compartilhar\n2. Selecione "Adicionar à Tela de Início"');
+      } else {
+        alert('Para instalar:\n1. Clique no menu (3 pontos)\n2. Selecione "Instalar aplicativo"');
+      }
     }
-
-    setDeferredPrompt(null);
     setShowInstallBanner(false);
   };
 
