@@ -31,12 +31,7 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
       e.preventDefault();
       const installEvent = e as BeforeInstallPromptEvent;
       setDeferredPrompt(installEvent);
-
-      // Verificar se já foi mostrado antes
-      const hasSeenBanner = localStorage.getItem('pwa-install-banner-shown');
-      if (!hasSeenBanner) {
-        setShowInstallBanner(true);
-      }
+      setShowInstallBanner(true);
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -62,7 +57,6 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
 
   const handleDismissInstall = () => {
     setShowInstallBanner(false);
-    localStorage.setItem('pwa-install-banner-shown', 'true');
   };
 
   const validateEmail = (value: string) => {
