@@ -24,52 +24,48 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [showInstallBanner, setShowInstallBanner] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [canInstall, setCanInstall] = useState(false);
 
   // Detectar prompt de instalação PWA
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
       const installEvent = e as BeforeInstallPromptEvent;
+
       setDeferredPrompt(installEvent);
+      setCanInstall(true);
       setShowInstallBanner(true);
     };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    const handleAppInstalled = () => {
+      setDeferredPrompt(null);
+      setCanInstall(false);
+      setShowInstallBanner(false);
+      localStorage.setItem("pwa-install-banner-shown", "true");
+    };
 
-    // Mostrar banner alternativo se o evento não funcionar (fallback)
-    const timer = setTimeout(() => {
-      if (!deferredPrompt) {
-        setShowInstallBanner(true);
-      }
-    }, 2000);
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    window.addEventListener("appinstalled", handleAppInstalled);
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-      clearTimeout(timer);
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      window.removeEventListener("appinstalled", handleAppInstalled);
     };
-  }, [deferredPrompt]);
+  }, []);
+
 
   const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
+    if (!deferredPrompt) return;
 
-      if (outcome === 'accepted') {
-        console.log('PWA instalado com sucesso');
-      }
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
 
-      setDeferredPrompt(null);
-    } else {
-      // Fallback: instruções para instalação manual
-      const userAgent = navigator.userAgent.toLowerCase();
-      if (userAgent.includes('iphone') || userAgent.includes('ipad')) {
-        alert('Para instalar no iOS:\n1. Toque no botão Compartilhar\n2. Selecione "Adicionar à Tela de Início"');
-      } else {
-        alert('Para instalar:\n1. Clique no menu (3 pontos)\n2. Selecione "Instalar aplicativo"');
-      }
-    }
+    setDeferredPrompt(null);
+    setCanInstall(false);
     setShowInstallBanner(false);
+    localStorage.setItem("pwa-install-banner-shown", "true");
   };
+
 
   const handleDismissInstall = () => {
     setShowInstallBanner(false);
@@ -150,10 +146,17 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
             <div className="flex items-center gap-2 flex-shrink-0">
               <button
                 onClick={handleInstallClick}
-                className="px-3 py-1 bg-white text-[#8B27FF] rounded-lg text-sm font-bold hover:bg-white/90 transition-colors whitespace-nowrap"
+                disabled={!canInstall}
+                className={`px-3 py-1 rounded-lg text-sm font-bold transition-colors whitespace-nowrap
+                  ${canInstall
+                    ? "bg-white text-[#8B27FF] hover:bg-white/90"
+                    : "bg-white/60 text-[#8B27FF]/60 cursor-not-allowed"
+                  }
+              `}
               >
                 Instalar
               </button>
+
               <button
                 onClick={handleDismissInstall}
                 className="w-6 h-6 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors"
