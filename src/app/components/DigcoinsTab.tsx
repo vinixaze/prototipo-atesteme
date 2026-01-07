@@ -217,7 +217,7 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {/* CARD 1 - SALDO ATUAL (Verde Escuro) */}
         <div
-          className="relative bg-gradient-to-r from-[#10B981] to-[#059669] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
+          className="relative bg-gradient-to-r from-[#FBBF24] to-[#F59E0B] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
           {/* Ícone decorativo - Carteira */}
           <Wallet
@@ -265,7 +265,7 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
 
         {/* CARD 3 - PONTOS UTILIZADOS (ÂMBAR / GASTOS) */}
         <div
-          className="relative bg-gradient-to-r from-[#F59E0B] to-[#D97706] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
+          className="relative bg-gradient-to-r from-[#9CA3AF] to-[#4B5563] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
           {/* Ícone decorativo */}
           <div className="absolute top-3 right-3 w-[50px] h-[50px] transition-all duration-300 group-hover:scale-110">
@@ -407,7 +407,7 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
       <div className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden mb-8">
         <div className="bg-gradient-to-r from-purple-50 to-white dark:from-purple-900/20 dark:to-gray-800 border-b-2 border-gray-100 dark:border-gray-700 px-6 py-4">
           <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200">Histórico de Pontos</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Extrato detalhado dos ganhos e utlização de pontos</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Extrato detalhado dos ganhos e utilização de pontos</p>
         </div>
 
         <div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-purple-400 dark:scrollbar-thumb-purple-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-700">
@@ -486,29 +486,44 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
 
       {/* Info sobre Digcoins */}
       <div className="bg-gradient-to-br from-purple-50 to-white dark:from-purple-900/30 dark:to-gray-800 rounded-2xl border-2 border-purple-100 dark:border-purple-700 p-6 shadow-sm mb-20 sm:mb-0">
-        <div className="flex flex-col items-start gap-4">
-          <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#8B27FF] to-[#B05FFF] rounded-xl flex items-center justify-center shadow-md">
-            <Award className="w-6 h-6 text-white" strokeWidth={2} />
+        <div className="space-y-4">
+          {/* Linha superior: ícone + título lado a lado */}
+          <div className="flex items-center gap-4">
+            <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#8B27FF] to-[#B05FFF] rounded-xl flex items-center justify-center shadow-md">
+              <Award className="w-6 h-6 text-white" strokeWidth={2} />
+            </div>
+
+            <h4 className="font-bold text-gray-800 dark:text-gray-200 text-lg leading-tight">
+              Como ganhar mais Pontos?
+            </h4>
           </div>
-          <div className="w-full">
-            <h4 className="font-bold text-gray-800 dark:text-gray-200 mb-2">Como ganhar mais Pontos?</h4>
-            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300 list-none pl-0 m-0">
-              <li className="flex items-start gap-2">
-                <Coins className="w-4 h-4 text-[#8B27FF] mt-0.5 flex-shrink-0" />
-                <span><strong>Complete competências:</strong> Ganhe até 9 Pontos por competência (3 Pontos por estrela)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Trophy className="w-4 h-4 text-[#FFD700] mt-0.5 flex-shrink-0" />
-                <span><strong>Desbloqueie medalhas:</strong> Receba Pontos bônus ao conquistar novas medalhas</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Zap className="w-4 h-4 text-[#FF9800] mt-0.5 flex-shrink-0" />
-                <span><strong>Mantenha a sequência:</strong> Acesse a plataforma diariamente e ganhe bônus especiais</span>
-              </li>
-            </ul>
-          </div>
+
+          {/* Lista embaixo, largura total */}
+          <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300 list-none pl-0 m-0">
+            <li className="flex items-start gap-2">
+              <Coins className="w-4 h-4 text-[#8B27FF] mt-0.5 flex-shrink-0" />
+              <span>
+                <strong>Complete competências:</strong> Ganhe até 9 Pontos por competência (3 Pontos por estrela)
+              </span>
+            </li>
+
+            <li className="flex items-start gap-2">
+              <Trophy className="w-4 h-4 text-[#FFD700] mt-0.5 flex-shrink-0" />
+              <span>
+                <strong>Desbloqueie medalhas:</strong> Receba Pontos bônus ao conquistar novas medalhas
+              </span>
+            </li>
+
+            <li className="flex items-start gap-2">
+              <Zap className="w-4 h-4 text-[#FF9800] mt-0.5 flex-shrink-0" />
+              <span>
+                <strong>Mantenha a sequência:</strong> Acesse a plataforma diariamente e ganhe bônus especiais
+              </span>
+            </li>
+          </ul>
         </div>
       </div>
+
 
       <style>{`
         @keyframes shimmer {

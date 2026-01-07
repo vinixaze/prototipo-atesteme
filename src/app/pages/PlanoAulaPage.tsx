@@ -34,10 +34,10 @@ interface PlanoAula {
   descricao: string;
   duracao: string;
   turma: string;
-  competencia: string;
+  matéria: string;
   codigoBNCC: string;
   data: string;
-  participantes: number;
+  anoescolar: string;
 }
 
 interface FormData {
@@ -104,35 +104,35 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
     {
       id: 1,
       titulo: 'Introdução à Pesquisa Digital',
-      descricao: 'Aula sobre técnicas básicas de pesquisa e monitoramento de informações na internet',
+      descricao: 'Aula sobre técnicas básicas de pesquisa e monitoramento de informações na internet ',
       duracao: '100 min',
       turma: '6º Ano',
-      competencia: 'Realizar pesquisa e monitoramento',
+      matéria: 'Informática',
       codigoBNCC: 'EF67ER01',
       data: '2025-01-15',
-      participantes: 30,
+      anoescolar: '6 ano',
     },
     {
       id: 2,
-      titulo: 'Segurança na Internet',
-      descricao: 'Como proteger dados pessoais e manter a privacidade online',
-      duracao: '90 min',
+      titulo: 'A Revolução Industrial',
+      descricao: 'Estudo dos principais eventos e impactos da Revolução Industrial',
+      duracao: '50 min',
       turma: '7º Ano',
-      competencia: 'Proteger dados pessoais e privacidade',
+      matéria: 'História',
       codigoBNCC: 'EF67ER04',
       data: '2025-01-20',
-      participantes: 28,
+      anoescolar: '7 ano',
     },
     {
       id: 3,
-      titulo: 'Criação de Conteúdo Multimídia',
-      descricao: 'Ferramentas e técnicas para editar imagens e vídeos',
+      titulo: 'Semântica',
+      descricao: 'Formas de organização e interpretação de textos',
       duracao: '100 min',
       turma: '8º Ano',
-      competencia: 'Editar texto multimídia',
+      matéria: 'Lingua portuguesa',
       codigoBNCC: 'EF69EF02',
       data: '2025-01-10',
-      participantes: 32,
+      anoescolar: '8 ano',
     },
   ]);
 
@@ -813,7 +813,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
                     <div className="flex items-center gap-2">
                       <Users className="w-4 h-4 text-gray-400" />
                       <span className="text-sm text-gray-600 dark:text-gray-400">
-                        {plano.participantes} alunos
+                        {plano.turma} 
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -825,7 +825,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
                     <div className="flex items-center gap-2">
                       <FileText className="w-4 h-4 text-gray-400" />
                       <span className="text-sm text-gray-600 dark:text-gray-400">
-                        {plano.competencia}
+                        {plano.matéria}
                       </span>
                     </div>
                   </div>

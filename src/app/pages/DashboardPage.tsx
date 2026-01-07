@@ -416,7 +416,7 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all h-full min-h-[180px] flex items-center gap-8"
+                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all h-full min-h-[180px] flex flex-col md:flex-row md:items-center gap-6 md:gap-8"
               >
                 {/* Progresso - Número Grande */}
                 <div className="flex flex-col items-center justify-center min-w-[90px] sm:min-w-[100px]">
@@ -435,15 +435,15 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                   </motion.div>
                 </div>
 
-                {/* Divisória Vertical */}
-                <div className="h-full w-px bg-gradient-to-b from-transparent via-gray-300 dark:via-gray-600 to-transparent" />
+                {/* Divisória: horizontal no mobile, vertical no desktop */}
+                <div className="w-full h-px md:h-full md:w-px bg-gradient-to-r md:bg-gradient-to-b from-transparent via-gray-300 dark:via-gray-600 to-transparent" />
 
                 {/* Gráfico de Barras - Compacto */}
                 <div className="flex-1 w-full min-w-0 flex flex-col justify-center space-y-2.5">
                   {progressData.map((item, index) => (
                     <div key={index}>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide leading-tight truncate">
+                        <span className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide leading-tight whitespace-normal break-words">
                           {item.category}
                         </span>
                       </div>

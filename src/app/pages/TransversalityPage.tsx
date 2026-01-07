@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import React from "react";
-import { Filter, Search, ChevronDown, Check, X, Tag, Book, Lightbulb, Calendar, CheckSquare, Clock, ArrowRight, RotateCcw, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { Filter, Search, ChevronDown, Check, X, Tag, Book, Lightbulb, Calendar, CheckSquare, Clock, ArrowRight, RotateCcw, ChevronLeft, ChevronRight, Sparkles, Eye } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
@@ -457,164 +457,98 @@ export default function TransversalityPage({
     setSearchTerms({});
   };
 
-  const createQuestionFromFilters = () => {
+  const createQuestionFromFilters = (filters: SelectedFilters = selectedFilters) => {
     // Obter labels dos filtros selecionados
-    const curricularLabel = curricularOptions.find((o) => o.value === selectedFilters.curricular)?.label || '';
-    const componentLabel = selectedFilters.curricular && selectedFilters.component
-      ? componentOptions[selectedFilters.curricular]?.find((o) => o.value === selectedFilters.component)?.label
+    const curricularLabel = curricularOptions.find((o) => o.value === filters.curricular)?.label || '';
+    const componentLabel = filters.curricular && filters.component
+      ? componentOptions[filters.curricular]?.find((o) => o.value === filters.component)?.label
       : '';
     const thematicLabel =
-      selectedFilters.component && selectedFilters.thematic
-        ? thematicOptions[selectedFilters.component]
-          ?.find((o) => o.value === selectedFilters.thematic)
-          ?.label
+      filters.component && filters.thematic
+        ? thematicOptions[filters.component]?.find((o) => o.value === filters.thematic)?.label
         : undefined;
 
     const safeThematicLabel: string =
-      thematicLabel && thematicLabel.trim() !== ''
-        ? thematicLabel
-        : 'a temática selecionada';
+      thematicLabel && thematicLabel.trim() !== '' ? thematicLabel : 'a temática selecionada';
 
-
-    // Mapear categoria de competência baseada no componente curricular
     const categoryMap: Record<string, { category: string; color: string; competency: string }> = {
-      'portugues': {
-        category: 'Comunicação e Colaboração',
-        color: '#00BCD4',
-        competency: 'Interagir por meio de tecnologias digitais',
-      },
-      'matematica': {
-        category: 'Informações e Dados',
-        color: '#FFC107',
-        competency: 'Navegar, pesquisar e filtrar dados',
-      },
-      'ingles': {
-        category: 'Comunicação e Colaboração',
-        color: '#00BCD4',
-        competency: 'Colaborar através de tecnologias digitais',
-      },
-      'ciencias': {
-        category: 'Informações e Dados',
-        color: '#FFC107',
-        competency: 'Avaliar dados e informações',
-      },
-      'historia': {
-        category: 'Resolução de Problemas',
-        color: '#E91E63',
-        competency: 'Identificar necessidades e respostas tecnológicas',
-      },
-      'geografia': {
-        category: 'Informações e Dados',
-        color: '#FFC107',
-        competency: 'Gerenciar dados e informações',
-      },
+      portugues: { category: 'Comunicação e Colaboração', color: '#00BCD4', competency: 'Interagir por meio de tecnologias digitais' },
+      matematica: { category: 'Informações e Dados', color: '#FFC107', competency: 'Navegar, pesquisar e filtrar dados' },
+      ingles: { category: 'Comunicação e Colaboração', color: '#00BCD4', competency: 'Colaborar através de tecnologias digitais' },
+      ciencias: { category: 'Informações e Dados', color: '#FFC107', competency: 'Avaliar dados e informações' },
+      historia: { category: 'Resolução de Problemas', color: '#E91E63', competency: 'Identificar necessidades e respostas tecnológicas' },
+      geografia: { category: 'Informações e Dados', color: '#FFC107', competency: 'Gerenciar dados e informações' },
     };
 
-    const categoryInfo = categoryMap[selectedFilters.curricular || 'portugues'] || categoryMap['portugues'];
+    const categoryInfo = categoryMap[filters.curricular || 'portugues'] || categoryMap.portugues;
 
-    // Criar questão baseada no tipo de filtro
-    if (selectedFilters.filterType === 'curricular') {
+    if (filters.filterType === 'curricular') {
       return {
         fromPage: 'transversalidade',
-
         category: categoryInfo.category,
         categoryColor: categoryInfo.color,
         competency: categoryInfo.competency,
-
         questions: [
           {
             id: 1,
-            text: `[${curricularLabel} - ${componentLabel}] ${safeThematicLabel
-              }: Qual alternativa representa melhor essa competência?`,
-
+            text: `[${curricularLabel} - ${componentLabel}] ${safeThematicLabel}: Qual alternativa representa melhor essa competência?`,
             options: [
-              {
-                letter: 'A',
-                text: `Aplicar ${safeThematicLabel
-                  .toLowerCase()} apenas de forma teórica`,
-                isCorrect: false,
-              },
-              {
-                letter: 'B',
-                text: `Integrar ${safeThematicLabel
-                  .toLowerCase()} com tecnologias digitais`,
-                isCorrect: true,
-              },
-              {
-                letter: 'C',
-                text: 'Ignorar metodologias digitais',
-                isCorrect: false,
-              },
-              {
-                letter: 'D',
-                text: 'Usar tecnologia sem intencionalidade pedagógica',
-                isCorrect: false,
-              },
+              { letter: 'A', text: `Aplicar ${safeThematicLabel.toLowerCase()} apenas de forma teórica`, isCorrect: false },
+              { letter: 'B', text: `Integrar ${safeThematicLabel.toLowerCase()} com tecnologias digitais`, isCorrect: true },
+              { letter: 'C', text: 'Ignorar metodologias digitais', isCorrect: false },
+              { letter: 'D', text: 'Usar tecnologia sem intencionalidade pedagógica', isCorrect: false },
             ],
-
             explanation: `A alternativa correta demonstra o uso adequado da competência no contexto educacional.`,
-
             transversality: {
               curricular: curricularLabel,
               component: componentLabel,
-              thematic: safeThematicLabel
-              ,
-              year: selectedFilters.year,
-            },
-          },
-        ],
-      };
-
-    } else {
-      // Fluxo BNCC
-      const bnccTypeLabel = bnccTypeOptions.find((o) => o.value === selectedFilters.bnccType)?.label || '';
-      const selectedCodes = selectedFilters.bnccCodes?.join(', ') || '';
-
-      return {
-        category: 'Cultura Digital',
-        categoryColor: '#8B27FF',
-        competency: 'Competências Gerais da BNCC',
-        level: 'Intermediário',
-        totalQuestions: 1,
-        questions: [
-          {
-            id: 1,
-            text: `[${bnccTypeLabel} - ${selectedCodes}] Considerando as habilidades BNCC selecionadas, qual alternativa melhor demonstra a aplicação dessas competências?`,
-            options: [
-              {
-                letter: 'A',
-                text: 'Utilizar tecnologias digitais apenas para entretenimento',
-              },
-              {
-                letter: 'B',
-                text: 'Compreender e aplicar as tecnologias digitais de forma crítica, reflexiva e ética nas diversas práticas sociais',
-              },
-              {
-                letter: 'C',
-                text: 'Evitar o uso de tecnologias no processo de aprendizagem',
-              },
-              {
-                letter: 'D',
-                text: 'Usar tecnologias sem considerar aspectos éticos',
-              },
-              {
-                letter: 'E',
-                text: 'Limitar o uso de tecnologias apenas a atividades recreativas',
-              },
-            ],
-            correctAnswer: 'B',
-            explanation: `Esta alternativa reflete adequadamente as competências gerais da BNCC relacionadas à cultura digital, enfatizando o uso crítico, reflexivo e ético das tecnologias digitais, conforme especificado nas habilidades ${selectedCodes}.`,
-            category: 'Cultura Digital',
-            categoryColor: '#8B27FF',
-            competency: 'Competências Gerais da BNCC',
-            transversality: {
-              bnccType: bnccTypeLabel,
-              bnccCodes: selectedFilters.bnccCodes,
+              thematic: safeThematicLabel,
+              year: filters.year,
             },
           },
         ],
       };
     }
+
+    // Fluxo BNCC
+    const bnccTypeLabel = bnccTypeOptions.find((o) => o.value === filters.bnccType)?.label || '';
+    const selectedCodes = filters.bnccCodes?.join(', ') || '';
+
+    return {
+      category: 'Cultura Digital',
+      categoryColor: '#8B27FF',
+      competency: 'Competências Gerais da BNCC',
+      level: 'Intermediário',
+      totalQuestions: 1,
+      questions: [
+        {
+          id: 1,
+          text: `[${bnccTypeLabel} - ${selectedCodes}] Considerando as habilidades BNCC selecionadas, qual alternativa melhor demonstra a aplicação dessas competências?`,
+          options: [
+            { letter: 'A', text: 'Utilizar tecnologias digitais apenas para entretenimento' },
+            { letter: 'B', text: 'Compreender e aplicar as tecnologias digitais de forma crítica, reflexiva e ética nas diversas práticas sociais' },
+            { letter: 'C', text: 'Evitar o uso de tecnologias no processo de aprendizagem' },
+            { letter: 'D', text: 'Usar tecnologias sem considerar aspectos éticos' },
+            { letter: 'E', text: 'Limitar o uso de tecnologias apenas a atividades recreativas' },
+          ],
+          correctAnswer: 'B',
+          explanation: `Esta alternativa reflete adequadamente as competências gerais da BNCC relacionadas à cultura digital...`,
+          category: 'Cultura Digital',
+          categoryColor: '#8B27FF',
+          competency: 'Competências Gerais da BNCC',
+          transversality: {
+            bnccType: bnccTypeLabel,
+            bnccCodes: filters.bnccCodes,
+          },
+        },
+      ],
+    };
+  };
+
+
+  const handleViewHistory = (filters: SelectedFilters) => {
+    const questionData = createQuestionFromFilters(filters);
+    navigateTo('quiz', questionData);
   };
 
   const handleSearch = () => {
@@ -1123,29 +1057,49 @@ export default function TransversalityPage({
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
                 Histórico de Buscas
               </h2>
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {searchHistory.map((item, index) => (
-                  <motion.button
+                  <motion.div
                     key={index}
                     whileHover={{ y: -4 }}
-                    className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 hover:border-[#8B27FF] hover:shadow-lg transition-all text-left"
+                    className="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 hover:border-[#8B27FF] hover:shadow-lg transition-all text-left"
                   >
-                    <div className="flex items-start gap-3 mb-3">
+                    {/* Botão verde (visualizar busca) */}
+                    <button
+                      type="button"
+                      aria-label="Visualizar busca"
+                      onClick={() => handleViewHistory(item.filters)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg flex items-center justify-center transition"
+                    >
+                      <Eye className="w-5 h-5" />
+                    </button>
+
+                    <div className="flex items-start gap-3 mb-3 pr-16">
                       <Clock className="w-5 h-5 text-gray-400 mt-0.5" />
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">{item.label}</h3>
+                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                          {item.label}
+                        </h3>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
                           {new Date(item.date).toLocaleDateString('pt-BR')}
                         </p>
                       </div>
                     </div>
-                    <div className="text-xs text-[#8B27FF] font-medium hover:underline">
+
+                    {/* Texto/ação (se quiser, pode clicar também) */}
+                    <button
+                      type="button"
+                      onClick={() => handleViewHistory(item.filters)}
+                      className="text-xs text-[#8B27FF] font-medium hover:underline"
+                    >
                       Buscar novamente →
-                    </div>
-                  </motion.button>
+                    </button>
+                  </motion.div>
                 ))}
               </div>
             </motion.div>
+
           </div>
         </main>
       </div>

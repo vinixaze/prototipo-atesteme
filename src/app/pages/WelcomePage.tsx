@@ -222,7 +222,7 @@ export default function WelcomePage({
               <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
                 O{" "}
                 <span className="font-bold text-[#8B27FF]">
-                  Teste de Competências Digitais
+                  Diagnóstico de Competências Digitais
                 </span>{" "}
                 vai identificar suas habilidades atuais
               </p>
