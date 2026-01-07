@@ -4,7 +4,7 @@ interface TestHeaderProps {
   categoryBadge?: string;
   categoryColor?: string;
   title: string;
-  onBackClick: () => void;
+  onBackClick?: () => void;
   isSimplified?: boolean;
   hideBackButton?: boolean;
   // Novas props para os 4 campos informativos
@@ -52,7 +52,7 @@ export default function TestHeader({
         <div className="flex items-center justify-between gap-4 mb-3">
           <div className="flex items-center gap-3 flex-1 min-w-0">
           </div>
-          {!hideBackButton && (
+          {!hideBackButton && onBackClick && (
             <button
               onClick={onBackClick}
               className="px-3 md:px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-all flex items-center gap-2 text-sm font-medium flex-shrink-0"

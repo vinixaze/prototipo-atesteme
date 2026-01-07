@@ -421,7 +421,22 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
                   animationDelay: `${index * 50}ms`,
                 }}
               >
-                <div className="flex items-center gap-4">
+                {/* Mobile layout */}
+                <div className="sm:hidden">
+                  <p className="font-bold text-gray-800 dark:text-gray-200 text-sm mb-2">{item.description}</p>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400">
+                      <Calendar className="w-3 h-3" />
+                      <span>{item.date}</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl border-2 border-purple-200 dark:border-purple-700 shadow-sm">
+                      <span className="text-base font-bold text-[#8B27FF]">+{item.amount}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Desktop layout */}
+                <div className="hidden sm:flex items-center gap-4">
                   {/* Ícone */}
                   <div
                     className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center shadow-md transition-all duration-300 group-hover:scale-110"
@@ -459,7 +474,6 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
                   {/* Valor dos Digcoins */}
                   <div className="flex-shrink-0">
                     <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl border-2 border-purple-200 dark:border-purple-700 shadow-sm">
-                      <Coins className="w-4 h-4 text-[#8B27FF]" strokeWidth={2} />
                       <span className="text-base font-bold text-[#8B27FF]">+{item.amount}</span>
                     </div>
                   </div>
@@ -471,14 +485,14 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
       </div>
 
       {/* Info sobre Digcoins */}
-      <div className="bg-gradient-to-br from-purple-50 to-white dark:from-purple-900/30 dark:to-gray-800 rounded-2xl border-2 border-purple-100 dark:border-purple-700 p-6 shadow-sm">
-        <div className="flex items-start gap-4">
+      <div className="bg-gradient-to-br from-purple-50 to-white dark:from-purple-900/30 dark:to-gray-800 rounded-2xl border-2 border-purple-100 dark:border-purple-700 p-6 shadow-sm mb-20 sm:mb-0">
+        <div className="flex flex-col items-start gap-4">
           <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-[#8B27FF] to-[#B05FFF] rounded-xl flex items-center justify-center shadow-md">
             <Award className="w-6 h-6 text-white" strokeWidth={2} />
           </div>
-          <div>
+          <div className="w-full">
             <h4 className="font-bold text-gray-800 dark:text-gray-200 mb-2">Como ganhar mais Pontos?</h4>
-            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+            <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300 list-none pl-0 m-0">
               <li className="flex items-start gap-2">
                 <Coins className="w-4 h-4 text-[#8B27FF] mt-0.5 flex-shrink-0" />
                 <span><strong>Complete competências:</strong> Ganhe até 9 Pontos por competência (3 Pontos por estrela)</span>

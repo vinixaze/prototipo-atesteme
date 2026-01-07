@@ -993,12 +993,14 @@ export default function ConteudosPage({ navigateTo, filterData, userRole }: Cont
           <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
             Espaço de Aprendizagem
           </h1>
-          <h2 className="text-2xl text-gray-800 dark:text-gray-200 mb-2">
+          <h2 className="text-2xl text-gray-800 dark:text-gray-200 mb-4">
             Conteúdo para você estudar
           </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
-            Explore materiais organizados por competências e níveis
-          </p>
+          <div className="bg-gradient-to-r from-[#8B27FF]/10 to-[#A855F7]/10 dark:from-[#8B27FF]/20 dark:to-[#A855F7]/20 rounded-xl px-6 py-3 inline-block">
+            <p className="text-lg font-semibold text-[#8B27FF] dark:text-[#A855F7]">
+              Explore materiais organizados por competências e níveis
+            </p>
+          </div>
         </motion.div>
 
         {/* Tabs de Categorias - Design Moderno */}

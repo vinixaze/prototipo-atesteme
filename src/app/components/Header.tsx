@@ -24,7 +24,8 @@ import {
   Car,
 } from "lucide-react";
 import prosaebLogo from "../../assets/c8fa7f66c2fe8238b13cdb022c41e85fac6b0ed1.png";
-import logoImage from "../../assets/da5833970446418eda0c49362599da6c1f9fdbf3.png";
+import logoDarkMode from "../../assets/logo-darkmode.png";
+import logoLightMode from "../../assets/logo-lightmode.png";
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -176,11 +177,10 @@ export default function Header({
   return (
     <>
       <header
-        className={`bg-white dark:bg-gray-600 border-b border-gray-200 dark:border-gray-500 fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${
-          isVisible ? "translate-y-0" : "-translate-y-full"
-        }`}
+        className={`bg-white dark:bg-gray-600 border-b border-gray-200 dark:border-gray-500 fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"
+          }`}
       >
-        <div className="px-4 py-2 flex items-center justify-between gap-3">
+        <div className="px-4 py-4 flex items-center justify-between gap-3">
           {/* Left: Menu + Logo */}
           <div className="flex items-center gap-3">
             <button
@@ -191,19 +191,28 @@ export default function Header({
             </button>
 
             {/* Logo PNG */}
-            <div className="h-16 flex items-center">
+            <div className="flex items-center">
               <img
-                src={activeModule === "prosaeb" ? prosaebLogo : logoImage}
-                alt={
-                  activeModule === "prosaeb" ? "Prosaeb Logo" : "Atesteme Logo"
-                }
-                className={
+                src={
                   activeModule === "prosaeb"
-                    ? "h-12 w-auto object-contain"
-                    : "h-32 w-auto object-contain"
+                    ? prosaebLogo
+                    : isDarkMode
+                      ? logoDarkMode
+                      : logoLightMode
                 }
+                alt={activeModule === "prosaeb" ? "Prosaeb Logo" : "Atesteme Logo"}
+                className="
+                  h-10 sm:h-11 md:h-12
+                  w-auto
+                  max-w-[180px] sm:max-w-[220px] md:max-w-[260px]
+                  object-contain
+                  select-none
+                "
+                draggable={false}
               />
             </div>
+
+
           </div>
 
           {/* Right: Dark Mode, Font Controls, Coins, Notifications, User */}
@@ -322,11 +331,10 @@ export default function Header({
                       {notifications.map((notif) => (
                         <div
                           key={notif.id}
-                          className={`p-3 rounded-lg transition-colors cursor-pointer ${
-                            notif.unread
-                              ? "bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/30"
-                              : "bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
-                          }`}
+                          className={`p-3 rounded-lg transition-colors cursor-pointer ${notif.unread
+                            ? "bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/30"
+                            : "bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+                            }`}
                         >
                           <div className="flex items-start gap-3">
                             {notif.unread && (

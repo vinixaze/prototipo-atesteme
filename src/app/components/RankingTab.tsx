@@ -1,4 +1,4 @@
-import { Trophy, Coins, Crown, Award, Clock, TrendingUp, Zap, Star, Info } from 'lucide-react';
+import { Trophy, Coins, Crown, Award, TrendingUp, Zap, Star, Info } from 'lucide-react';
 import { useState } from 'react';
 
 interface RankingUser {
@@ -12,11 +12,11 @@ interface RankingUser {
   avgTime: string;
   isCurrentUser: boolean;
   avatar: string;
-  school?: string; // Nome da escola/organização (apenas para ranking de rede)
-  seduc?: string; // SEDUC
-  regional?: string; // Regional
-  schoolName?: string; // Nome da escola
-  turma?: string; // Turma (ex: 6ºA, 7ºB, etc)
+  school?: string;
+  seduc?: string;
+  regional?: string;
+  schoolName?: string;
+  turma?: string;
 }
 
 interface RankingTabProps {
@@ -33,8 +33,15 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
   const [showInfo, setShowInfo] = useState(false);
   const [selectedUser, setSelectedUser] = useState<RankingUser | null>(null);
 
+  function shortenName(name: string) {
+    if (!name) return '';
+    const parts = name.trim().split(/\s+/);
+    if (parts.length <= 2) return parts.join(' ');
+    return `${parts[0]} ${parts[parts.length - 1]}`;
+  }
+
   return (
-    <div className="animate-fadeIn">
+    <div className="animate-fadeIn overflow-x-hidden">
       <div className="mb-6">
         <div>
           <h2 className="text-3xl text-gray-800 dark:text-gray-200 mb-2">Ranking de Desempenho</h2>
@@ -182,6 +189,12 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
               </button>
             </div>
 
+            {/* Nome completo do aluno (exibido no modal) */}
+            <div className="mb-4">
+              <p className="text-sm text-gray-600 dark:text-gray-300">Nome</p>
+              <p className="text-base font-bold text-gray-900 dark:text-white">{selectedUser.name}</p>
+            </div>
+
             <div className="space-y-3">
               {/* SEDUC */}
               <div className="flex items-start gap-3 p-3 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 rounded-xl border border-purple-200 dark:border-purple-700">
@@ -231,18 +244,21 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
         </div>
       )}
 
-      {/* Category Selector */}
-      <div className="flex gap-2 mb-3 overflow-x-auto pb-2 scrollbar-hide items-center">
-        <div className="flex gap-2">
+      {/* Category Selector (sem scroll horizontal) */}
+      <div className="flex flex-wrap gap-2 mb-3 items-center">
+        <div className="flex w-full gap-2">
           <button
             onClick={() => setRankingCategory('turma')}
             className={`
-        flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all font-semibold shadow-md flex-shrink-0 text-sm sm:text-base
-        ${rankingCategory === 'turma'
+              flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all font-semibold shadow-md
+              text-sm sm:text-base
+              w-1/3 sm:w-auto
+              justify-center
+              ${rankingCategory === 'turma'
                 ? 'bg-gradient-to-r from-[#8B27FF] to-[#A855F7] text-white shadow-lg shadow-purple-300 scale-105'
                 : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-400'
               }
-      `}
+            `}
           >
             <span className="text-lg sm:text-xl">👥</span>
             <span>Turma</span>
@@ -251,12 +267,15 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
           <button
             onClick={() => setRankingCategory('escola')}
             className={`
-        flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all font-semibold shadow-md flex-shrink-0 text-sm sm:text-base
-        ${rankingCategory === 'escola'
+              flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all font-semibold shadow-md
+              text-sm sm:text-base
+              w-1/3 sm:w-auto
+              justify-center
+              ${rankingCategory === 'escola'
                 ? 'bg-gradient-to-r from-[#8B27FF] to-[#A855F7] text-white shadow-lg shadow-purple-300 scale-105'
                 : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-400'
               }
-      `}
+            `}
           >
             <span className="text-lg sm:text-xl">🏫</span>
             <span>Escola</span>
@@ -265,12 +284,15 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
           <button
             onClick={() => setRankingCategory('rede')}
             className={`
-        flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all font-semibold shadow-md flex-shrink-0 text-sm sm:text-base
-        ${rankingCategory === 'rede'
+              flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl transition-all font-semibold shadow-md
+              text-sm sm:text-base
+              w-1/3 sm:w-auto
+              justify-center
+              ${rankingCategory === 'rede'
                 ? 'bg-gradient-to-r from-[#8B27FF] to-[#A855F7] text-white shadow-lg shadow-purple-300 scale-105'
                 : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 border-2 border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-400'
               }
-      `}
+            `}
           >
             <span className="text-lg sm:text-xl">🌐</span>
             <span>Rede</span>
@@ -302,39 +324,45 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
           </div>
         )}
       </div>
-      {/* Contexto do Ranking - Mobile */}
+
+      {/* Contexto do Ranking - Mobile (NUNCA corta) */}
       <div className="sm:hidden mb-4 px-3">
         {rankingCategory === 'escola' && rankingData.escola.length > 0 && (
-          <div className="
-            w-full text-center text-sm font-semibold
-            text-purple-700 dark:text-purple-300
-            bg-gradient-to-r from-purple-50 to-pink-50
-            dark:from-purple-900/30 dark:to-pink-900/30
-            border border-purple-200 dark:border-purple-700
-            rounded-xl px-4 py-2
-            truncate
-          ">
+          <div
+            className="
+              w-full text-center text-sm font-semibold
+              text-purple-700 dark:text-purple-300
+              bg-gradient-to-r from-purple-50 to-pink-50
+              dark:from-purple-900/30 dark:to-pink-900/30
+              border border-purple-200 dark:border-purple-700
+              rounded-xl px-4 py-2
+              whitespace-normal break-words
+            "
+          >
             🏫 {rankingData.escola[0].schoolName || 'Escola Municipal Castro Alves'}
           </div>
         )}
 
         {rankingCategory === 'turma' && rankingData.turma.length > 0 && (
-          <div className="
-            w-full text-center text-sm font-semibold
-            text-gray-700 dark:text-gray-200
-            bg-gradient-to-r from-purple-50 via-pink-50 to-orange-50
-            dark:from-purple-900/30 dark:via-pink-900/30 dark:to-orange-900/30
-            border border-purple-200 dark:border-purple-700
-            rounded-xl px-4 py-2
-            truncate
-          ">
-            🏫 {rankingData.turma[0].schoolName || 'Escola Municipal Castro Alves'}
-            <span className="mx-1 text-gray-400">•</span>
-            👥 {rankingData.turma[0].turma || '8ºA'}
+          <div
+            className="
+              w-full text-center text-sm font-semibold
+              text-gray-700 dark:text-gray-200
+              bg-gradient-to-r from-purple-50 via-pink-50 to-orange-50
+              dark:from-purple-900/30 dark:via-pink-900/30 dark:to-orange-900/30
+              border border-purple-200 dark:border-purple-700
+              rounded-xl px-4 py-2
+            "
+          >
+            <div className="whitespace-normal break-words">
+              🏫 {rankingData.turma[0].schoolName || 'Escola Municipal Castro Alves'}
+            </div>
+            <div className="mt-1 whitespace-normal break-words">
+              👥 {rankingData.turma[0].turma || '8ºA'}
+            </div>
           </div>
         )}
       </div>
-
 
       {/* Pódio Visual */}
       <div className="mb-8 px-2">
@@ -352,7 +380,9 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
             <p className="text-center text-xs sm:text-sm font-bold text-gray-800 dark:text-gray-200 mb-0.5 sm:mb-1 truncate w-full px-1">
               {rankingData[rankingCategory][1].name.split(' ')[0]}
             </p>
-            <p className="text-[10px] sm:text-sm text-gray-600 dark:text-gray-400 mb-1 sm:mb-2 font-semibold">{rankingData[rankingCategory][1].points} pts</p>
+            <p className="text-[10px] sm:text-sm text-gray-600 dark:text-gray-400 mb-1 sm:mb-2 font-semibold">
+              {rankingData[rankingCategory][1].points} pts
+            </p>
             <div className="flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-xs text-[#8B27FF] font-bold">
               <Coins className="w-3 h-3 sm:w-4 sm:h-4" />
               <span>{rankingData[rankingCategory][1].digcoins}</span>
@@ -375,14 +405,16 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
             <p className="text-center text-sm sm:text-lg font-bold text-gray-900 dark:text-gray-100 mb-0.5 sm:mb-1 truncate w-full px-1">
               {rankingData[rankingCategory][0].name.split(' ')[0]}
             </p>
-            <p className="text-xs sm:text-base text-gray-700 dark:text-gray-300 mb-1 sm:mb-2 font-bold">{rankingData[rankingCategory][0].points} pts</p>
+            <p className="text-xs sm:text-base text-gray-700 dark:text-gray-300 mb-1 sm:mb-2 font-bold">
+              {rankingData[rankingCategory][0].points} pts
+            </p>
             <div className="flex items-center gap-0.5 sm:gap-1 text-xs sm:text-sm text-[#8B27FF] font-bold">
               <Coins className="w-4 h-4 sm:w-5 sm:h-5" />
               <span>{rankingData[rankingCategory][0].digcoins}</span>
             </div>
           </div>
 
-          {/* 3º Lugar - Mesmo tamanho do 2º lugar */}
+          {/* 3º Lugar */}
           <div className="flex flex-col items-center mt-6 sm:mt-8 group">
             <div className="relative mb-2 sm:mb-4">
               <div className="w-14 h-14 sm:w-20 sm:h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white text-lg sm:text-2xl font-bold shadow-xl ring-2 sm:ring-4 ring-orange-200 ring-offset-1 sm:ring-offset-2 group-hover:scale-110 transition-transform">
@@ -395,7 +427,9 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
             <p className="text-center text-xs sm:text-sm font-bold text-gray-800 dark:text-gray-200 mb-0.5 sm:mb-1 truncate w-full px-1">
               {rankingData[rankingCategory][2].name.split(' ')[0]}
             </p>
-            <p className="text-[10px] sm:text-sm text-gray-600 dark:text-gray-400 mb-1 sm:mb-2 font-semibold">{rankingData[rankingCategory][2].points} pts</p>
+            <p className="text-[10px] sm:text-sm text-gray-600 dark:text-gray-400 mb-1 sm:mb-2 font-semibold">
+              {rankingData[rankingCategory][2].points} pts
+            </p>
             <div className="flex items-center gap-0.5 sm:gap-1 text-[10px] sm:text-xs text-[#8B27FF] font-bold">
               <Coins className="w-3 h-3 sm:w-4 sm:h-4" />
               <span>{rankingData[rankingCategory][2].digcoins}</span>
@@ -410,9 +444,9 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
           const isTop3 = user.position <= 3;
           const positionGradient =
             user.position === 1 ? 'from-yellow-400 to-yellow-600' :
-              user.position === 2 ? 'from-gray-300 to-gray-500' :
-                user.position === 3 ? 'from-orange-400 to-orange-600' :
-                  'from-purple-100 to-purple-200';
+            user.position === 2 ? 'from-gray-300 to-gray-500' :
+            user.position === 3 ? 'from-orange-400 to-orange-600' :
+            'from-purple-100 to-purple-200';
 
           return (
             <div
@@ -425,34 +459,32 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                 }
               `}
             >
-              {/* Barra decorativa lateral */}
-              <div
-                className={`absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b ${positionGradient}`}
-              />
+              <div className={`absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b ${positionGradient}`} />
 
-              {/* Botão de Informações do Aluno */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setSelectedUser(user);
                 }}
-                className="absolute top-3 right-3 w-7 h-7 bg-gradient-to-r from-[#8B27FF] to-[#A855F7] hover:from-[#7B1FE8] hover:to-[#9D3FFF] text-white rounded-full flex items-center justify-center transition-all shadow-md hover:scale-110 z-10"
+                className="absolute top-3 right-3 w-6 h-6 bg-gradient-to-r from-[#8B27FF] to-[#A855F7] hover:from-[#7B1FE8] hover:to-[#9D3FFF] text-white rounded-full flex items-center justify-center transition-all shadow-md hover:scale-105 z-10"
               >
-                <Info className="w-4 h-4" />
+                <Info className="w-3 h-3" />
               </button>
 
               <div className="flex items-center gap-4 p-5 pl-6">
-                {/* Position Badge */}
                 <div
                   className={`
                     flex-shrink-0 w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl flex items-center justify-center font-bold shadow-lg
                     transition-transform hover:scale-110
-                    ${isTop3 ? `bg-gradient-to-br ${positionGradient} text-white text-base sm:text-xl` : 'bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 text-gray-700 dark:text-gray-200 text-sm sm:text-lg'}`}
+                    ${isTop3
+                      ? `bg-gradient-to-br ${positionGradient} text-white text-base sm:text-xl`
+                      : 'bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 text-gray-700 dark:text-gray-200 text-sm sm:text-lg'
+                    }
+                  `}
                 >
                   {user.position}
                 </div>
 
-                {/* Avatar */}
                 <div
                   className={`
                     flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl flex items-center justify-center text-white text-lg sm:text-2xl font-bold shadow-lg
@@ -466,29 +498,35 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                   {user.avatar}
                 </div>
 
-                {/* User Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2 flex-wrap">
                     <div className="flex items-center gap-1.5 sm:gap-2">
-                      <p className={`text-sm sm:text-lg font-bold ${user.isCurrentUser ? 'text-[#8B27FF]' : 'text-gray-900 dark:text-gray-100'}`}>
-                        {user.name}
-                      </p>
+                      <>
+                        <p className={`hidden sm:block text-sm sm:text-lg font-bold ${user.isCurrentUser ? 'text-[#8B27FF]' : 'text-gray-900 dark:text-gray-100'}`}>
+                          {shortenName(user.name)}
+                        </p>
+                        <p className={`block sm:hidden text-sm font-bold ${user.isCurrentUser ? 'text-[#8B27FF]' : 'text-gray-900 dark:text-gray-100'}`}>
+                          {user.name.split(' ')[0]}
+                        </p>
+                      </>
+
                       {user.isCurrentUser && (
                         <span className="px-2 sm:px-3 py-0.5 sm:py-1 bg-gradient-to-r from-[#8B27FF] to-[#A855F7] text-white text-[10px] sm:text-xs rounded-full font-bold shadow-md animate-pulse">
                           VOCÊ
                         </span>
                       )}
+
                       {isTop3 && !user.isCurrentUser && (
                         <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 fill-yellow-500 animate-pulse" />
                       )}
                     </div>
-                    {/* Turma - apenas para ranking de escola */}
+
                     {rankingCategory === 'escola' && user.turma && (
                       <span className="text-[10px] sm:text-xs text-orange-700 dark:text-orange-400 bg-gradient-to-r from-orange-100 to-orange-50 dark:from-orange-900/40 dark:to-orange-800/30 px-2.5 py-0.5 rounded-md font-bold border border-orange-300 dark:border-orange-700">
                         {user.turma}
                       </span>
                     )}
-                    {/* Nome da escola - apenas para ranking de rede */}
+
                     {rankingCategory === 'rede' && user.school && (
                       <span className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-md font-medium">
                         {user.school}
@@ -496,9 +534,7 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                     )}
                   </div>
 
-                  {/* Stats Grid */}
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 sm:gap-3">
-                    {/* Nível e Progresso */}
                     <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 rounded-md sm:rounded-lg p-1.5 sm:p-2 border border-purple-200 dark:border-purple-700">
                       <div className="flex items-center gap-1 sm:gap-1.5 mb-0.5 sm:mb-1">
                         <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-600 dark:text-purple-400" />
@@ -513,7 +549,6 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                       <p className="text-[10px] sm:text-xs text-purple-700 dark:text-purple-300 font-bold mt-0.5">{user.levelProgress}%</p>
                     </div>
 
-                    {/* Digcoins */}
                     <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/30 dark:to-yellow-800/30 rounded-md sm:rounded-lg p-1.5 sm:p-2 border border-yellow-200 dark:border-yellow-700">
                       <div className="flex items-center gap-1 sm:gap-1.5 mb-0.5">
                         <Coins className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-600 dark:text-yellow-400" />
@@ -522,7 +557,6 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                       <p className="text-sm sm:text-base font-bold text-yellow-700 dark:text-yellow-300">{user.digcoins}</p>
                     </div>
 
-                    {/* Medalhas */}
                     <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 rounded-md sm:rounded-lg p-1.5 sm:p-2 border border-blue-200 dark:border-blue-700">
                       <div className="flex items-center gap-1 sm:gap-1.5 mb-0.5">
                         <Award className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600 dark:text-blue-400" />
@@ -531,7 +565,6 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                       <p className="text-sm sm:text-base font-bold text-blue-700 dark:text-blue-300">{user.medals}</p>
                     </div>
 
-                    {/* Estrelas */}
                     <div className="bg-gradient-to-br from-pink-50 to-fuchsia-100 dark:from-fuchsia-900/30 dark:to-pink-800/30 rounded-md sm:rounded-lg p-1.5 sm:p-2 border border-pink-200 dark:border-fuchsia-700">
                       <div className="flex items-center gap-1 sm:gap-1.5 mb-0.5">
                         <Star className="w-3 h-3 sm:w-4 sm:h-4 text-fuchsia-600 dark:text-fuchsia-400 fill-fuchsia-600 dark:fill-fuchsia-400" />
@@ -542,7 +575,6 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
                   </div>
                 </div>
 
-                {/* Medal Icon for Top 3 - Hidden on mobile */}
                 {isTop3 && (
                   <div className="hidden sm:flex flex-shrink-0 animate-bounce-slow">
                     {user.position === 1 && <Crown className="w-10 h-10 text-yellow-500" fill="#FFD700" />}
@@ -558,30 +590,15 @@ export default function RankingTab({ rankingCategory, setRankingCategory, rankin
 
       <style>{`
         @keyframes pulse-slow {
-          0%, 100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.8;
-          }
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.8; }
         }
-
         @keyframes bounce-slow {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-5px);
-          }
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-5px); }
         }
-
-        .animate-pulse-slow {
-          animation: pulse-slow 3s ease-in-out infinite;
-        }
-
-        .animate-bounce-slow {
-          animation: bounce-slow 2s ease-in-out infinite;
-        }
+        .animate-pulse-slow { animation: pulse-slow 3s ease-in-out infinite; }
+        .animate-bounce-slow { animation: bounce-slow 2s ease-in-out infinite; }
       `}</style>
     </div>
   );

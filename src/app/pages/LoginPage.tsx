@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Eye, EyeOff, Download, X } from "lucide-react";
 // @ts-expect-error: Image asset not found in dev environment, placeholder used for type safety.
 import backgroundImage from "../../assets/934760553d44b42ec1dd098296a4a1143272299c.png";
@@ -176,9 +175,10 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
           className="block w-[400px] h-auto drop-shadow-2xl"
         />
 
-        <span className="-mt-[6px] w-full text-center text-white/90 text-lg font-medium leading-none tracking-wide drop-shadow-lg">
+        <span className="-mt-[2px] w-full text-center text-white/90 text-lg font-medium leading-none tracking-wide drop-shadow-lg">
           Plataforma Educacional
         </span>
+
       </div>
 
 
@@ -380,9 +380,10 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
           className="block w-[180px] sm:w-[250px] h-auto drop-shadow-lg"
         />
 
-        <span className="-mt-[4px] text-white/90 text-sm sm:text-base font-medium leading-none tracking-wide text-center drop-shadow">
+        <span className="mt-1 text-white/90 text-sm sm:text-base font-medium leading-none tracking-wide text-center drop-shadow">
           Plataforma da Educação Digital
         </span>
+
       </div>
 
 

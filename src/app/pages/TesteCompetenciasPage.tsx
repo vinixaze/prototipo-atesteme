@@ -1,11 +1,8 @@
-import { useState, useEffect } from 'react';
-import TestHeader from '../components/TestHeader';
-import ProgressStepper from '../components/ProgressStepper';
-import AnswerOption from '../components/AnswerOption';
-import { MessageSquare, Wand2, RotateCcw, Shield, BookOpen, X, Coins, CircleAlert } from 'lucide-react';
+import { useState } from 'react';
 import { toast, Toaster } from 'sonner';
-import { motion } from 'motion/react';
-import { getUserInventory, usePowerUp, getPowerUpQuantity } from '../utils/powerupsStorage';
+import TestQuestion from '../components/TestQuestion';
+import TestCongrats from '../components/TestCongrats';
+import TestResult from '../components/TestResult';
 
 interface TesteCompetenciasPageProps {
   navigateTo: (page: string, data?: any) => void;
@@ -24,14 +21,6 @@ interface Question {
     isCorrect: boolean;
   }[];
 }
-
-const categoryColors: Record<string, string> = {
-  'INFORMAÇÕES E DADOS': '#FFD700',
-  'COMUNICAÇÃO E COLABORAÇÃO': '#00BCD4',
-  'CRIAÇÃO DE CONTEÚDO': '#FF9800',
-  'PROTEÇÃO E SEGURANÇA': '#4CAF50',
-  'RESOLUÇÃO DE PROBLEMAS': '#E91E63',
-};
 
 export const questions: Question[] = [
   {
@@ -260,166 +249,22 @@ export const questions: Question[] = [
   },
 ];
 
-export default function TesteCompetenciasPage({
-  navigateTo,
-}: TesteCompetenciasPageProps) {
-  const [currentQuestion, setCurrentQuestion] = useState<number>(1);
+type PageState = 'question' | 'congrats' | 'result';
+
+export default function TesteCompetenciasPage({ navigateTo }: TesteCompetenciasPageProps) {
+  const [pageState, setPageState] = useState<PageState>('question');
+  const [currentQuestion, setCurrentQuestion] = useState(1);
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
-  const [isFillingSkipped, setIsFillingSkipped] = useState(false); // Novo estado para controlar modo de completar puladas
-  
-  // Power-ups states
-  const [showPowerUpsMenu, setShowPowerUpsMenu] = useState(false);
-  const [userPowerUps, setUserPowerUps] = useState<any[]>([]);
-  const [usedShield, setUsedShield] = useState(false);
-  const [eliminatedOptions, setEliminatedOptions] = useState<string[]>([]);
-  const [showCookiesBanner, setShowCookiesBanner] = useState(false);
-
-  // Verificar se já aceitou cookies
-  useEffect(() => {
-    const cookiesAccepted = localStorage.getItem('cookies-accepted');
-    if (!cookiesAccepted) {
-      setShowCookiesBanner(true);
-    }
-  }, []);
-
-  const handleAcceptCookies = () => {
-    localStorage.setItem('cookies-accepted', 'true');
-    setShowCookiesBanner(false);
-  };
-
-  // Initialize all steps as future, except the first one as current
-  const [stepStatuses, setStepStatuses] = useState<{ status: 'future' | 'current' | 'correct' | 'incorrect' | 'answered' | 'skipped' }[]>(
+  const [isFillingSkipped, setIsFillingSkipped] = useState(false);
+  const [stepStatuses, setStepStatuses] = useState<{ status: 'current' | 'answered' | 'future' | 'skipped' }[]>(
     Array.from({ length: 16 }, (_, i) => ({
       status: i === 0 ? 'current' : 'future'
     }))
   );
-
-  // Definição dos power-ups disponíveis
-  const AVAILABLE_POWERUPS = [
-    {
-      id: 1,
-      name: 'Segunda Chance',
-      icon: RotateCcw,
-      description: 'Repetir teste completo',
-      color: '#8B27FF',
-      usableInQuiz: true
-    },
-    {
-      id: 3,
-      name: 'Escudo 50/50',
-      icon: Shield,
-      description: 'Elimina opção incorreta',
-      color: '#8B27FF',
-      usableInQuiz: true
-    },
-    {
-      id: 4,
-      name: 'Desbloqueio Teoria',
-      icon: BookOpen,
-      description: 'Link de conteúdo',
-      color: '#00BCD4',
-      usableInQuiz: true
-    },
-    {
-      id: 8,
-      name: 'Conferir Resposta',
-      icon: CircleAlert,
-      description: 'Verifica se está certo',
-      color: '#10B981',
-      usableInQuiz: true
-    }
-  ];
-
-  // Carregar power-ups do usuário
-  useEffect(() => {
-    loadUserPowerUps();
-  }, []);
-
-  const loadUserPowerUps = () => {
-    const inventory = getUserInventory();
-    const availablePowerUps = AVAILABLE_POWERUPS.filter(powerup => {
-      const quantity = inventory.powerups.find(p => p.id === powerup.id)?.quantity || 0;
-      return quantity > 0 && powerup.usableInQuiz;
-    }).map(powerup => {
-      const inventoryItem = inventory.powerups.find(p => p.id === powerup.id);
-      return {
-        ...powerup,
-        quantity: inventoryItem?.quantity || 0
-      };
-    });
-    setUserPowerUps(availablePowerUps);
-  };
-
-  // Funções para usar power-ups
-  const useShield = () => {
-    if (getPowerUpQuantity(3) > 0) {
-      usePowerUp(3);
-      setUsedShield(true);
-      // Eliminar uma opção incorreta aleatória
-      const incorrectOptions = currentQuestionData?.options.filter(opt => !opt.isCorrect) || [];
-      if (incorrectOptions.length > 0) {
-        const randomIncorrect = incorrectOptions[Math.floor(Math.random() * incorrectOptions.length)];
-        setEliminatedOptions([...eliminatedOptions, randomIncorrect.letter]);
-        setShowPowerUpsMenu(false);
-        toast.success('Escudo (50/50) ativado! Uma opção incorreta foi eliminada.');
-      }
-    } else {
-      toast.error('Você não tem Escudos disponíveis.');
-    }
-  };
-
-  const useRetry = () => {
-    if (getPowerUpQuantity(1) > 0) {
-      usePowerUp(1);
-      // Reiniciar teste completo
-      setSelectedAnswers({});
-      setCurrentQuestion(1);
-      setStepStatuses(
-        Array.from({ length: 16 }, (_, i) => ({
-          status: i === 0 ? 'current' : 'future',
-        }))
-      );
-      setUsedShield(false);
-      setEliminatedOptions([]);
-      setShowPowerUpsMenu(false);
-      toast.success('Segunda Chance ativada! O teste foi reiniciado.');
-    } else {
-      toast.error('Você não tem Segunda Chances disponíveis.');
-    }
-  };
-
-  const useTheoryLink = () => {
-    toast.info('Recurso em desenvolvimento!');
-    setShowPowerUpsMenu(false);
-  };
-
-  const useCheckAnswer = () => {
-    if (!selectedAnswer) {
-      toast.error('Selecione uma resposta primeiro!');
-      return;
-    }
-    
-    if (getPowerUpQuantity(8) > 0) {
-      usePowerUp(8);
-      // Verificar se a resposta está correta
-      const isCorrect = currentQuestionData?.options.find(opt => opt.letter === selectedAnswer)?.isCorrect;
-      
-      if (isCorrect) {
-        toast.success('✓ Sua resposta está CORRETA!', { duration: 3000 });
-      } else {
-        toast.error('✗ Sua resposta está INCORRETA. Escolha outra opção.', { duration: 3000 });
-      }
-      
-      setShowPowerUpsMenu(false);
-      loadUserPowerUps(); // Recarregar para atualizar quantidade
-    } else {
-      toast.error('Você não tem Conferir Resposta disponível.');
-    }
-  };
+  const [testResults, setTestResults] = useState<any>(null);
 
   const currentQuestionData = questions[currentQuestion - 1];
-  const answeredCount = Object.keys(selectedAnswers).length;
 
   const handleSelectAnswer = (letter: string) => {
     setSelectedAnswer(letter);
@@ -428,27 +273,22 @@ export default function TesteCompetenciasPage({
   const handleSaveAnswer = () => {
     if (!selectedAnswer) return;
 
-    // Salvar a resposta
     const updatedAnswers = {
       ...selectedAnswers,
       [currentQuestion]: selectedAnswer,
     };
     setSelectedAnswers(updatedAnswers);
 
-    // Marcar como respondida (sem feedback de correto/incorreto)
     const newStatuses = [...stepStatuses];
     newStatuses[currentQuestion - 1] = { status: 'answered' };
     setStepStatuses(newStatuses);
 
-    // Limpar seleção atual
     setSelectedAnswer('');
 
-    // Se estiver no modo de completar questões puladas, ir para a próxima questão pulada
     if (isFillingSkipped) {
       const unansweredQuestions = questions.filter((q) => q.id !== currentQuestion && !updatedAnswers[q.id]);
-      
+
       if (unansweredQuestions.length > 0) {
-        // Ainda há questões não respondidas, navegar para a próxima
         const nextUnanswered = unansweredQuestions[0];
         setTimeout(() => {
           newStatuses[nextUnanswered.id - 1] = { status: 'current' };
@@ -456,14 +296,12 @@ export default function TesteCompetenciasPage({
           setCurrentQuestion(nextUnanswered.id);
         }, 300);
       } else {
-        // Todas respondidas agora, finalizar com as respostas atualizadas
         setTimeout(() => {
           setIsFillingSkipped(false);
           finalizarTeste(updatedAnswers);
         }, 300);
       }
     } else {
-      // Navegação normal: avançar para a próxima questão
       if (currentQuestion < 16) {
         setTimeout(() => {
           newStatuses[currentQuestion] = { status: 'current' };
@@ -477,305 +315,148 @@ export default function TesteCompetenciasPage({
   const handleSkip = () => {
     if (currentQuestion < 16) {
       const newStatuses = [...stepStatuses];
-      // Marcar questão atual como pulada se ainda não foi respondida
       if (!selectedAnswers[currentQuestion]) {
         newStatuses[currentQuestion - 1] = { status: 'skipped' };
       }
-      // Marcar próxima questão como atual
       newStatuses[currentQuestion] = { status: 'current' };
       setStepStatuses(newStatuses);
       setCurrentQuestion(currentQuestion + 1);
+      setSelectedAnswer('');
     }
   };
 
   const handleFinish = () => {
-    // Se há uma resposta selecionada na questão atual, salvar automaticamente antes de finalizar
     let updatedAnswers = { ...selectedAnswers };
-    
+
     if (selectedAnswer && currentQuestion === 16) {
       updatedAnswers[currentQuestion] = selectedAnswer;
       setSelectedAnswers(updatedAnswers);
-      
-      // Marcar como respondida
+
       const newStatuses = [...stepStatuses];
       newStatuses[currentQuestion - 1] = { status: 'answered' };
       setStepStatuses(newStatuses);
     }
-    
-    // Verificar se há questões não respondidas (excluindo a atual se tiver resposta selecionada)
+
     const unansweredQuestions = questions.filter((q) => !updatedAnswers[q.id]);
-    
+
     if (unansweredQuestions.length > 0) {
-      // Ativar modo de completar questões puladas
       setIsFillingSkipped(true);
-      
-      // Mostrar toast informativo
+
       toast.warning('Você tem questões sem resposta!', {
         description: `Complete as ${unansweredQuestions.length} questão${unansweredQuestions.length > 1 ? 'ões' : ''} restante${unansweredQuestions.length > 1 ? 's' : ''} para finalizar.`,
         duration: 5000,
       });
-      
-      // Navegar para a primeira questão não respondida
+
       const firstUnanswered = unansweredQuestions[0];
       setTimeout(() => {
         const newStatuses = [...stepStatuses];
-        // Resetar a questão atual
         if (stepStatuses[currentQuestion - 1].status === 'current') {
           newStatuses[currentQuestion - 1] = { status: 'future' };
         }
-        // Marcar primeira não respondida como atual
         newStatuses[firstUnanswered.id - 1] = { status: 'current' };
         setStepStatuses(newStatuses);
         setCurrentQuestion(firstUnanswered.id);
-        setSelectedAnswer(''); // Limpar resposta selecionada
+        setSelectedAnswer('');
       }, 500);
-      
+
       return;
     }
 
-    // Se todas respondidas, finalizar direto sem modal
     setTimeout(() => {
       finalizarTeste(updatedAnswers);
     }, 300);
   };
 
   const finalizarTeste = (answers = selectedAnswers) => {
-    // Calcular resultados usando as respostas passadas (para garantir que está atualizado)
     const correctAnswers = questions.filter((q) => {
       const answer = answers[q.id];
-      return q.options.find((opt) => opt.letter === answer)?.isCorrect;
+      return q.options.find((opt) => opt.isCorrect)?.letter === answer;
     }).length;
 
-    // Navegar para tela de parabéns intermediária
-    navigateTo('teste-competencias-congrats', {
-      answered: Object.keys(answers).length,
-      correct: correctAnswers,
-      total: 16,
-      selectedAnswers: answers,
+    const results = questions.map((q) => {
+      const userAnswer = answers[q.id];
+      const correctOption = q.options.find((opt) => opt.isCorrect);
+      const isCorrect = userAnswer === correctOption?.letter;
+
+      return {
+        questionId: q.id,
+        questionText: q.text,
+        userAnswer: userAnswer || '',
+        correctAnswer: correctOption?.letter || '',
+        isCorrect,
+        options: q.options,
+        explanation: '',
+        category: q.category,
+        categoryColor: q.categoryColor,
+        competency: q.competency,
+      };
     });
+
+    setTestResults({
+      results,
+      correctAnswers,
+      totalQuestions: 16,
+    });
+
+    setPageState('congrats');
   };
 
+  const handleCongratsClick = () => {
+    setPageState('result');
+  };
+
+  /* Render Pages */
+  if (pageState === 'congrats' && testResults) {
+    return (
+      <>
+        <Toaster position="top-center" />
+        <TestCongrats
+          testName="Teste de Competências Digitais"
+          message="Você completou todas as 16 questões. Agora vamos descobrir seu nível de letramento digital e começar sua jornada de aprendizado!"
+          onContinue={handleCongratsClick}
+          showRocket={true}
+        />
+      </>
+    );
+  }
+
+  if (pageState === 'result' && testResults) {
+    return (
+      <>
+        <Toaster position="top-center" />
+        <TestResult
+          navigateTo={navigateTo}
+          testName="Teste de Competências Digitais"
+          correctAnswers={testResults.correctAnswers}
+          totalQuestions={testResults.totalQuestions}
+          results={testResults.results}
+          onBackClick={() => navigateTo('dashboard')}
+        />
+      </>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Banner de Cookies/LGPD - Compacto */}
-      {showCookiesBanner && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 border-t-2 border-[#8B27FF] shadow-2xl">
-          <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <Shield className="w-5 h-5 text-[#8B27FF] flex-shrink-0" />
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                Utilizamos cookies para melhorar sua experiência. Ao continuar, você concorda com nossa{' '}
-                <button 
-                  onClick={() => navigateTo('privacy')}
-                  className="text-[#8B27FF] hover:underline font-semibold"
-                >
-                  Política de Privacidade
-                </button>
-                {' '}e{' '}
-                <button 
-                  onClick={() => navigateTo('terms')}
-                  className="text-[#8B27FF] hover:underline font-semibold"
-                >
-                  Termos de Uso
-                </button>
-                .
-              </p>
-            </div>
-            <button
-              onClick={handleAcceptCookies}
-              className="px-6 py-2 bg-[#8B27FF] hover:bg-[#7B1FE8] text-white rounded-lg font-bold text-sm transition-all shadow-md hover:shadow-lg whitespace-nowrap"
-            >
-              Aceitar
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Header */}
-      <TestHeader
-        categoryBadge={currentQuestionData.category}
-        categoryColor={currentQuestionData.categoryColor}
-        title={currentQuestionData.competency}
-        onBackClick={() => navigateTo('dashboard')}
-        hideBackButton={true}
-        area={currentQuestionData.category}
-        competency={currentQuestionData.competency}
-        bncc="Competência 5 - Cultura Digital (BNCC)"
-      />
-
-      {/* Progress Stepper */}
-      <ProgressStepper
-        totalSteps={16}
-        currentStep={currentQuestion}
+    <>
+      <Toaster position="top-center" />
+      <TestQuestion
+        currentQuestion={currentQuestion}
+        totalQuestions={16}
+        questionText={currentQuestionData?.text}
+        questionImage={currentQuestionData?.image}
+        options={currentQuestionData?.options}
+        selectedAnswer={selectedAnswer}
+        onSelectAnswer={handleSelectAnswer}
+        onSaveAnswer={handleSaveAnswer}
+        onSkip={handleSkip}
+        onFinish={handleFinish}
         stepStatuses={stepStatuses}
-        showNavigation={true}
+        title={`${currentQuestionData?.competency}`}
+        categoryBadge={currentQuestionData?.category}
+        categoryColor={currentQuestionData?.categoryColor}
+        onBackClick={() => navigateTo('dashboard')}
+        isLastQuestion={currentQuestion === 16}
       />
-
-      {/* Question Card */}
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div
-          className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4 sm:p-8 md:p-12 transition-all duration-300 relative"
-          key={currentQuestion}
-        >
-          {/* Botão Varinha Mágica - Ferramentas Educativas */}
-          <button
-            onClick={() => setShowPowerUpsMenu(!showPowerUpsMenu)}
-            className="absolute top-4 right-4 sm:top-6 sm:right-6 md:top-8 md:right-8 w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all flex items-center justify-center z-50"
-            title="Ferramentas Educativas"
-          >
-            <Wand2 className="w-4 h-4 sm:w-5 sm:h-5" />
-            {userPowerUps.length > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                {userPowerUps.reduce((acc, p) => acc + p.quantity, 0)}
-              </span>
-            )}
-          </button>
-
-          {/* Enunciado */}
-          <h2 className="text-lg sm:text-xl text-gray-800 dark:text-gray-200 leading-relaxed mb-6 sm:mb-8 pr-12 sm:pr-16 md:pr-20">
-            {currentQuestionData.text}
-          </h2>
-
-          {/* Imagem (se houver) */}
-          {currentQuestionData.image && (
-            <div className="mb-6 sm:mb-8 flex justify-center">
-              <img
-                src={currentQuestionData.image}
-                alt="Question illustration"
-                className="max-w-full md:max-w-2xl rounded-xl shadow-md"
-              />
-            </div>
-          )}
-
-          {/* Opções de Resposta */}
-          <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-10">
-            {currentQuestionData.options.map((option) => (
-              <AnswerOption
-                key={option.letter}
-                letter={option.letter}
-                text={option.text}
-                isSelected={selectedAnswer === option.letter}
-                isCorrect={false}
-                isIncorrect={false}
-                showFeedback={false}
-                disabled={false}
-                onClick={() => handleSelectAnswer(option.letter)}
-              />
-            ))}
-          </div>
-
-          {/* Botões de Ação */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-0">
-            <button
-              onClick={handleSkip}
-              className="order-1 sm:order-1 self-start sm:self-auto px-4 py-2 sm:px-5 sm:py-2.5 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-xs sm:text-sm"
-            >
-              Pular
-            </button>
-
-            <button
-              onClick={currentQuestion < 16 ? handleSaveAnswer : handleFinish}
-              disabled={!selectedAnswer}
-              className="order-2 sm:order-2 w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-[#8B27FF] dark:bg-[#A855F7] text-white rounded-lg hover:bg-[#7B1FE8] dark:hover:bg-[#9333EA] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
-            >
-              <span>Salvar resposta</span>
-              <span>→</span>
-            </button>
-          </div>
-
-          {/* Menu de Ferramentas Educativas - Dentro do card de perguntas */}
-          {showPowerUpsMenu && (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: -10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: -10 }}
-              className="absolute top-16 right-4 sm:top-20 sm:right-6 md:top-24 md:right-8 z-50 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border-2 border-purple-200 dark:border-purple-700 p-4 min-w-[280px] max-w-[320px]"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <Wand2 className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                  <h3 className="font-bold text-gray-800 dark:text-gray-200">Suas Ferramentas</h3>
-                </div>
-                <button
-                  className="w-6 h-6 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
-                  onClick={() => setShowPowerUpsMenu(false)}
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              {userPowerUps.length > 0 ? (
-                <div className="space-y-2">
-                  {userPowerUps.map(powerup => {
-                    const PowerUpIcon = powerup.icon;
-                    const isDisabled = powerup.id === 3 && usedShield;
-                    
-                    return (
-                      <button
-                        key={powerup.id}
-                        className={`
-                          w-full flex items-center gap-3 p-3 rounded-xl transition-all
-                          ${isDisabled 
-                            ? 'bg-gray-100 dark:bg-gray-700 opacity-50 cursor-not-allowed' 
-                            : 'bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 hover:from-purple-100 hover:to-pink-100 dark:hover:from-purple-900/50 dark:hover:to-pink-900/50 cursor-pointer'
-                          }
-                        `}
-                        onClick={() => {
-                          if (powerup.id === 1) useRetry();
-                          if (powerup.id === 3) useShield();
-                          if (powerup.id === 4) useTheoryLink();
-                          if (powerup.id === 8) useCheckAnswer();
-                        }}
-                        disabled={isDisabled}
-                      >
-                        <div 
-                          className={`
-                            flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center
-                            ${isDisabled 
-                              ? 'bg-gray-300 dark:bg-gray-600' 
-                              : 'bg-gradient-to-br from-purple-500 to-pink-500 shadow-md'
-                            }
-                          `}
-                        >
-                          <PowerUpIcon className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="flex-1 text-left">
-                          <p className="font-bold text-sm text-gray-800 dark:text-gray-200">
-                            {powerup.name}
-                          </p>
-                          <p className="text-xs text-gray-600 dark:text-gray-400">
-                            {powerup.description}
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1 bg-purple-600 rounded-lg">
-                          <span className="text-xs font-bold text-white">
-                            {powerup.quantity}x
-                          </span>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="text-center py-6 text-gray-500 dark:text-gray-400 text-sm">
-                  Nenhuma ferramenta disponível.<br />
-                  Compre no Marketplace!
-                </div>
-              )}
-            </motion.div>
-          )}
-        </div>
-
-        {/* Botão Flutuante: Enviar Observação */}
-        <button className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 px-4 py-2 sm:px-6 sm:py-3 bg-white dark:bg-gray-800 text-[#8B27FF] dark:text-[#A855F7] border-2 border-[#8B27FF] dark:border-[#A855F7] rounded-full shadow-lg hover:bg-[#F3E8FF] dark:hover:bg-gray-700 transition-colors flex items-center gap-2 text-xs sm:text-sm z-10">
-          <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
-          <span className="hidden sm:inline">Enviar Observação</span>
-          <span className="sm:hidden">Observação</span>
-        </button>
-      </div>
-
-      {/* Toaster para mensagens */}
-      <Toaster position="top-right" />
-    </div>
+    </>
   );
 }

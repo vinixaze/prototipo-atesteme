@@ -343,9 +343,9 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                     setShowNocoesBasicasBanner(false);
                     localStorage.setItem('nocoesBasicasBannerClosed', 'true');
                   }}
-                  className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-200/50 dark:bg-gray-700/50 backdrop-blur-sm hover:bg-gray-300/50 dark:hover:bg-gray-600/50 flex items-center justify-center transition-all hover:scale-110 hover:rotate-90 duration-300 z-20"
+                  className="absolute top-3 right-3 w-6 h-6 rounded-full bg-gray-300/40 dark:bg-gray-600/40 backdrop-blur-sm hover:bg-gray-400/50 dark:hover:bg-gray-500/50 flex items-center justify-center transition-all hover:scale-105 hover:rotate-90 duration-300 z-20"
                 >
-                  <X className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                  <X className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                 </button>
 
                 <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

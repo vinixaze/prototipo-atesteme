@@ -33,12 +33,11 @@ interface PlanoAula {
   titulo: string;
   descricao: string;
   duracao: string;
-  participantes: number;
+  turma: string;
   competencia: string;
-  categoria: string;
-  categoriaColor: string;
+  codigoBNCC: string;
   data: string;
-  
+  participantes: number;
 }
 
 interface FormData {
@@ -106,34 +105,34 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
       id: 1,
       titulo: 'Introdução à Pesquisa Digital',
       descricao: 'Aula sobre técnicas básicas de pesquisa e monitoramento de informações na internet',
-      duracao: '2 horas',
-      participantes: 25,
+      duracao: '100 min',
+      turma: '6º Ano',
       competencia: 'Realizar pesquisa e monitoramento',
-      categoria: 'INFORMAÇÕES E DADOS',
-      categoriaColor: '#FFD700',
+      codigoBNCC: 'EF67ER01',
       data: '2025-01-15',
+      participantes: 30,
     },
     {
       id: 2,
       titulo: 'Segurança na Internet',
       descricao: 'Como proteger dados pessoais e manter a privacidade online',
-      duracao: '1h 30min',
-      participantes: 30,
+      duracao: '90 min',
+      turma: '7º Ano',
       competencia: 'Proteger dados pessoais e privacidade',
-      categoria: 'PROTEÇÃO E SEGURANÇA',
-      categoriaColor: '#4CAF50',
+      codigoBNCC: 'EF67ER04',
       data: '2025-01-20',
+      participantes: 28,
     },
     {
       id: 3,
       titulo: 'Criação de Conteúdo Multimídia',
       descricao: 'Ferramentas e técnicas para editar imagens e vídeos',
-      duracao: '3 horas',
-      participantes: 20,
+      duracao: '100 min',
+      turma: '8º Ano',
       competencia: 'Editar texto multimídia',
-      categoria: 'CRIAÇÃO DE CONTEÚDO',
-      categoriaColor: '#FF9800',
+      codigoBNCC: 'EF69EF02',
       data: '2025-01-10',
+      participantes: 32,
     },
   ]);
 
@@ -362,7 +361,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
                   Duração da Aula
                 </label>
                 <div className="space-y-2">
-                  {['45 minutos', '90 minutos', '2 horas', 'outro'].map((dur) => (
+                  {['50 minutos', '100 minutos', '150 minutos', 'outro'].map((dur) => (
                     <label key={dur} className="flex items-center gap-3 p-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl hover:border-[#8B27FF] dark:hover:border-[#A855F7] cursor-pointer transition-colors">
                       <input
                         type="radio"
@@ -476,10 +475,10 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
               {/* Habilidades BNCC Computação */}
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
-                  Habilidades da BNCC Computação Digital
+                  Eixos da BNCC Computação Digital
                 </label>
                 <div className="space-y-2">
-                  {['Cultura Digital', 'Tecnologia Digital', 'Pensamento Computacional', 'Mundo Digital'].map((hab) => (
+                  {['Cultura Digital',  'Pensamento Computacional', 'Mundo Digital'].map((hab) => (
                     <label key={hab} className="flex items-center gap-3 p-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl hover:border-[#8B27FF] dark:hover:border-[#A855F7] cursor-pointer transition-colors">
                       <input
                         type="checkbox"
@@ -727,7 +726,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
           onLogout={() => navigateTo('login')}
         />
 
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto pb-20">
           <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-6">
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -770,13 +769,10 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
                         {plano.descricao}
                       </p>
                       
-                      {/* Categoria Badge */}
-                      <div
-                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-white text-xs font-bold"
-                        style={{ backgroundColor: plano.categoriaColor }}
-                      >
-                        <Target className="w-3.5 h-3.5" />
-                        {plano.categoria}
+                      {/* BNCC Card */}
+                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-bold bg-gradient-to-r from-[#8B27FF] to-[#A855F7] shadow-md">
+                        <FileText className="w-4 h-4" />
+                        BNCC: {plano.codigoBNCC}
                       </div>
                     </div>
 

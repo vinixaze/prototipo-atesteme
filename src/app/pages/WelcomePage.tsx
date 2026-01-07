@@ -114,7 +114,7 @@ export default function WelcomePage({
             <img
               src={logoImage}
               alt="AtesteMe Logo"
-              className="relative h-24 md:h-28 w-auto object-contain drop-shadow-[0_12px_48px_rgba(139,39,255,0.6)]"
+              className="relative h-16 md:h-20 w-auto object-contain drop-shadow-[0_12px_48px_rgba(139,39,255,0.6)]"
             />
 
             <p className="mt-1 text-xs sm:text-sm text-gray-500 text-center tracking-wide">
