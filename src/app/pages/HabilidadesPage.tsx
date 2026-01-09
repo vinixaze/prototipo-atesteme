@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
-import React from "react";
-import Header from '../components/Header';
-import Sidebar from '../components/Sidebar';
-import { CompetencyTimer } from '../components/CompetencyTimer';
-import { getCompetencyStatus, getDaysUntilUnblock } from '../utils/competencyStorage';
-import { motion, AnimatePresence, useInView } from 'motion/react';
+// pages/HabilidadesPage.tsx
+import React, { useState, useRef } from "react";
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
+import { CompetencyTimer } from "../components/CompetencyTimer";
+import { getCompetencyStatus, getDaysUntilUnblock } from "../utils/competencyStorage";
+import { motion, useInView } from "motion/react";
 import {
   Search,
   BarChart3,
@@ -25,15 +25,13 @@ import {
   AlertTriangle,
   X,
   PlayCircle,
-  Info,
   Award,
-  ClipboardList,
   ArrowUp,
-} from 'lucide-react';
+} from "lucide-react";
 
 interface HabilidadesPageProps {
   navigateTo: (page: string, data?: any) => void;
-  userRole?: 'admin' | 'user';
+  userRole?: "admin" | "user";
 }
 
 interface Competencia {
@@ -51,68 +49,71 @@ interface Category {
 
 export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedArea, setSelectedArea] = useState('Todas');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedArea, setSelectedArea] = useState("Todas");
+
+  // (você hoje não usa o modal de warning, mas mantive pra não quebrar nada)
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [selectedCompetency, setSelectedCompetency] = useState<any>(null);
   const [showBlockedModal, setShowBlockedModal] = useState(false);
+
   const [showNocoes, setShowNocoes] = useState(true);
 
   const categories: Category[] = [
     {
-      name: 'INFORMAÇÕES E DADOS',
-      color: '#FFD700',
-      bgColor: '#FFF9E6',
+      name: "INFORMAÇÕES E DADOS",
+      color: "#FFD700",
+      bgColor: "#FFF9E6",
       icon: BarChart3,
       competencias: [
-        { title: 'Realizar pesquisa e monitoramento', icon: Search },
-        { title: 'Realizar o tratamento de dados', icon: BarChart3 },
-        { title: 'Gerenciar dados', icon: FolderOpen },
+        { title: "Realizar pesquisa e monitoramento", icon: Search },
+        { title: "Realizar o tratamento de dados", icon: BarChart3 },
+        { title: "Gerenciar dados", icon: FolderOpen },
       ],
     },
     {
-      name: 'COMUNICAÇÃO E COLABORAÇÃO',
-      color: '#00BCD4',
-      bgColor: '#E0F7FA',
+      name: "COMUNICAÇÃO E COLABORAÇÃO",
+      color: "#00BCD4",
+      bgColor: "#E0F7FA",
       icon: Users,
       competencias: [
-        { title: 'Interagir', icon: MessageCircle },
-        { title: 'Gerir a identidade digital', icon: Fingerprint },
-        { title: 'Compartilhar e publicar', icon: Share2 },
-        { title: 'Colaborar', icon: Users },
+        { title: "Interagir", icon: MessageCircle },
+        { title: "Gerir a identidade digital", icon: Fingerprint },
+        { title: "Compartilhar e publicar", icon: Share2 },
+        { title: "Colaborar", icon: Users },
       ],
     },
     {
-      name: 'CRIAÇÃO DE CONTEÚDO',
-      color: '#FF9800',
-      bgColor: '#FFF3E0',
+      name: "CRIAÇÃO DE CONTEÚDO",
+      color: "#FF9800",
+      bgColor: "#FFF3E0",
       icon: FileEdit,
       competencias: [
-        { title: 'Programar sistemas', icon: Code },
-        { title: 'Editar texto multimídia', icon: ImageIcon },
-        { title: 'Editar texto escrito', icon: FileEdit },
-        { title: 'Adaptar arquivos', icon: Files },
+        { title: "Programar sistemas", icon: Code },
+        { title: "Editar texto multimídia", icon: ImageIcon },
+        { title: "Editar texto escrito", icon: FileEdit },
+        { title: "Adaptar arquivos", icon: Files },
       ],
     },
     {
-      name: 'PROTEÇÃO E SEGURANÇA',
-      color: '#4CAF50',
-      bgColor: '#E8F5E9',
+      name: "PROTEÇÃO E SEGURANÇA",
+      color: "#4CAF50",
+      bgColor: "#E8F5E9",
       icon: Shield,
       competencias: [
-        { title: 'Proteger o ambiente digital', icon: Shield },
-        { title: 'Proteger dados pessoais e privacidade', icon: Lock },
-        { title: 'Proteger a saúde e o meio ambiente', icon: Heart },
+        { title: "Proteger o ambiente digital", icon: Shield },
+        { title: "Proteger dados pessoais e privacidade", icon: Lock },
+        { title: "Proteger a saúde e o meio ambiente", icon: Heart },
       ],
     },
     {
-      name: 'RESOLUÇÃO DE PROBLEMAS',
-      color: '#E91E63',
-      bgColor: '#FCE4EC',
+      name: "RESOLUÇÃO DE PROBLEMAS",
+      color: "#E91E63",
+      bgColor: "#FCE4EC",
       icon: Wrench,
       competencias: [
-        { title: 'Resolver problemas técnicos', icon: Wrench },
-        { title: 'Evoluir em um ambiente digital', icon: TrendingUp },
+        { title: "Resolver problemas técnicos", icon: Wrench },
+        { title: "Evoluir em um ambiente digital", icon: TrendingUp },
       ],
     },
   ];
@@ -125,29 +126,47 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
       ),
     }))
     .filter((category) => {
-      if (selectedArea === 'Todas') return category.competencias.length > 0;
+      if (selectedArea === "Todas") return category.competencias.length > 0;
       return category.name === selectedArea && category.competencias.length > 0;
     });
 
   const handleNavigate = (page: string) => {
-    if (page === 'habilidades') {
-      return;
-    }
+    if (page === "habilidades") return;
     navigateTo(page);
   };
 
-  const handleStartQuiz = (competency: string, category: string, categoryColor: string, competencyIcon: any, categoryIcon: any) => {
+  const handleStartQuiz = (
+    competency: string,
+    category: string,
+    categoryColor: string,
+    competencyIcon: any,
+    categoryIcon: any
+  ) => {
     setSelectedCompetency({ competency, category, categoryColor, competencyIcon, categoryIcon });
-    // Navegar para a página de aviso ao invés de mostrar modal
-    navigateTo('quiz-warning', { competency, category, categoryColor, competencyIcon, categoryIcon, fromPage: 'habilidades' });
+
+    // você já navega pro warning page (ótimo)
+    navigateTo("quiz-warning", {
+      competency,
+      category,
+      categoryColor,
+      competencyIcon,
+      categoryIcon,
+      fromPage: "habilidades",
+    });
   };
 
   const handleConfirmWarning = () => {
     setShowWarningModal(false);
-    navigateTo('quiz', selectedCompetency);
+    navigateTo("quiz", selectedCompetency);
   };
 
-  const handleShowBlockedModal = (competency: string, category: string, categoryColor: string, competencyIcon: any, categoryIcon: any) => {
+  const handleShowBlockedModal = (
+    competency: string,
+    category: string,
+    categoryColor: string,
+    competencyIcon: any,
+    categoryIcon: any
+  ) => {
     setSelectedCompetency({ competency, category, categoryColor, competencyIcon, categoryIcon });
     setShowBlockedModal(true);
   };
@@ -159,7 +178,7 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
         onClose={() => setIsSidebarOpen(false)}
         currentPage="habilidades"
         onNavigate={handleNavigate}
-        isAdmin={userRole === 'admin'}
+        isAdmin={userRole === "admin"}
       />
 
       <div className="flex-1 flex flex-col min-w-0 pt-20">
@@ -167,41 +186,52 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
           onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
           userName="Usuário"
           navigateTo={navigateTo}
-          onLogout={() => navigateTo('login')}
+          onLogout={() => navigateTo("login")}
         />
 
         <main className="flex-1 overflow-auto">
           <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-6">
             {/* Header + Card Noções Básicas */}
             <div className="flex flex-col lg:flex-row gap-6 mb-8 items-start">
-
-              {/* ESQUERDA — TÍTULO (70%) */}
+              {/* ESQUERDA — TÍTULO */}
               <div className="w-full lg:w-[70%]">
                 <h1 className="text-3xl md:text-4xl font-semibold text-[#8B27FF] mb-2">
                   Competências Digitais
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
-                  Desenvolva suas competências nos eixos da BNCC Computação/Letramento Digital  </p>
+                  Desenvolva suas competências nos eixos da BNCC Computação/Letramento Digital
+                </p>
               </div>
 
               {/* Noções Básicas panel (desktop only, closable) */}
               {showNocoes && (
                 <div className="hidden lg:block w-full lg:w-[50%] relative">
                   <div className="bg-[#F3E8FF]/60 dark:bg-gray-800/60 backdrop-blur-md border border-purple-200 dark:border-gray-700/40 rounded-2xl p-6 shadow-sm">
-                    <button type="button" onClick={() => setShowNocoes(false)} className="absolute top-3 right-3 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <button
+                      type="button"
+                      onClick={() => setShowNocoes(false)}
+                      className="absolute top-3 right-3 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
                       <X className="w-4 h-4 text-gray-600 dark:text-gray-200" />
                     </button>
+
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-lg bg-[#F3E8FF] flex items-center justify-center">
                         <Award className="w-6 h-6 text-[#8B27FF]" />
                       </div>
+
                       <div className="flex-1">
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">Noções Básicas</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Conteúdo muito recomendado antes do Nível 01</p>
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                          Noções Básicas
+                        </h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                          Conteúdo muito recomendado antes do Nível 01
+                        </p>
+
                         <div className="mt-4">
                           <button
                             type="button"
-                            onClick={() => navigateTo('nocoes-basicas')}
+                            onClick={() => navigateTo("nocoes-basicas")}
                             className="px-4 py-2 rounded-xl bg-[#8B27FF] text-white hover:bg-[#7B1FE8] transition-all"
                           >
                             Começar
@@ -212,15 +242,12 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
                   </div>
                 </div>
               )}
-
             </div>
-
-
 
             {/* Search and Filter */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
               <div className="flex flex-col md:flex-row gap-4">
-                {/* Select (25%) */}
+                {/* Select */}
                 <div className="w-full md:w-1/4">
                   <select
                     value={selectedArea}
@@ -236,7 +263,7 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
                   </select>
                 </div>
 
-                {/* Search (75%) */}
+                {/* Search */}
                 <div className="w-full md:w-3/4 relative">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
@@ -250,208 +277,17 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
               </div>
             </div>
 
-
             {/* Categories and Skills */}
             <div className="space-y-12">
-              {filteredCategories.map((category, categoryIndex) => {
-                const CategorySection = () => {
-                  const categoryRef = useRef(null);
-                  const categoryInView = useInView(categoryRef, { once: true, amount: 0.2 });
-
-                  return (
-                    <div key={categoryIndex} ref={categoryRef}>
-                      {/* Category Header */}
-                      <div className="flex items-center gap-3 p-4 rounded-xl mb-6 bg-white dark:bg-gray-800">
-                        <category.icon
-                          className="w-6 h-6"
-                          style={{ color: category.color }}
-                          strokeWidth={1.5}
-                        />
-                        <h2 className="text-lg font-bold" style={{ color: category.color }}>
-                          {category.name}
-                        </h2>
-                      </div>
-
-                      {/* Competency Cards Grid - NOVO DESIGN */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-                        {category.competencias.map((comp, compIndex) => {
-                          // Obter status da competência
-                          const status = getCompetencyStatus(comp.title);
-                          const isCompleted = status?.status === 'completed';
-                          const isFailed = status?.status === 'failed';
-                          const isAttempted = status?.status === 'attempted'; // Tentou mas pode refazer
-                          // Mock: Definir "Compartilhar e publicar" como em progresso para visualização
-                          const isInProgress = status?.status === 'in-progress' || comp.title === 'Compartilhar e publicar';
-
-                          // Definir classes de background para dark mode
-                          let iconBgClass = '';
-                          if (category.color === '#FFD700') { // Amarelo
-                            iconBgClass = isFailed ? '' : 'bg-[#FFF9E6] dark:bg-yellow-900/30';
-                          } else if (category.color === '#00BCD4') { // Cyan
-                            iconBgClass = isFailed ? '' : 'bg-[#E0F7FA] dark:bg-cyan-900/30';
-                          } else if (category.color === '#FF9800') { // Laranja
-                            iconBgClass = isFailed ? '' : 'bg-[#FFF3E0] dark:bg-orange-900/30';
-                          } else if (category.color === '#4CAF50') { // Verde
-                            iconBgClass = isFailed ? '' : 'bg-[#E8F5E9] dark:bg-green-900/30';
-                          } else if (category.color === '#E91E63') { // Rosa
-                            iconBgClass = isFailed ? '' : 'bg-[#FCE4EC] dark:bg-pink-900/30';
-                          }
-
-                          // Definir gradientes dos botões
-                          let buttonGradient = '';
-                          if (category.color === '#FFD700') buttonGradient = 'linear-gradient(135deg, #FFE57F 0%, #FF9800 100%)';
-                          else if (category.color === '#00BCD4') buttonGradient = 'linear-gradient(135deg, #4DD0E1 0%, #0288D1 100%)';
-                          else if (category.color === '#FF9800') buttonGradient = 'linear-gradient(135deg, #FFB74D 0%, #E65100 100%)';
-                          else if (category.color === '#4CAF50') buttonGradient = 'linear-gradient(135deg, #81C784 0%, #2E7D32 100%)';
-                          else if (category.color === '#E91E63') buttonGradient = 'linear-gradient(135deg, #F48FB1 0%, #AD1457 100%)';
-
-                          return (
-                            <motion.div
-                              key={compIndex}
-                              initial={{ opacity: 0, y: 30 }}
-                              animate={categoryInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                              transition={{
-                                duration: 0.4,
-                                delay: compIndex * 0.08,
-                                ease: [0.4, 0, 0.2, 1]
-                              }}
-                              whileHover={{
-                                y: -8,
-                                scale: 1.02,
-                                transition: { duration: 0.1 }
-                              }}
-                              className={`relative rounded-[20px] shadow-[0_4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all duration-100 overflow-hidden group cursor-pointer ${isFailed
-                                ? 'bg-white dark:bg-gray-800 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)]'
-                                : 'bg-white dark:bg-gray-800 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)]'
-                                }`}
-                              onClick={() =>
-                                isFailed
-                                  ? handleShowBlockedModal(comp.title, category.name, category.color, comp.icon, category.icon)
-                                  : handleStartQuiz(comp.title, category.name, category.color, comp.icon, category.icon)
-                              }
-                            >
-                              {/* Formas coloridas que descem no hover */}
-                              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none overflow-hidden">
-                                {/* Círculo grande */}
-                                <motion.div
-                                  initial={{ y: -200, x: '20%' }}
-                                  whileHover={{ y: 100 }}
-                                  transition={{ duration: 0.6, ease: "easeOut" }}
-                                  className="absolute w-[200px] h-[200px] rounded-full blur-3xl"
-                                  style={{ backgroundColor: `${category.color}20` }}
-                                />
-                              </div>
-
-                              {/* Badge da Categoria - Topo */}
-                              <div
-                                className="relative z-10 w-full px-5 py-3 rounded-t-[20px] transition-all duration-200 group-hover:brightness-110"
-                                style={{
-                                  backgroundColor: isFailed
-                                    ? '#94A3B8'  // Cinza para bloqueado
-                                    : category.color
-                                }}
-                              >
-                                <span className="text-white text-[11px] font-bold uppercase tracking-[1px] drop-shadow-sm">
-                                  {category.name}
-                                </span>
-                              </div>
-
-                              {/* Corpo do Card */}
-                              <div className="relative z-10 p-5 flex flex-col items-center gap-4">
-                                {/* Ícone Central */}
-                                <motion.div
-                                  whileHover={{
-                                    rotate: isFailed ? 0 : [0, -10, 10, -10, 0],
-                                    scale: isFailed ? 1 : 1.15,
-                                  }}
-                                  transition={{
-                                    rotate: { duration: 0.4 },
-                                    scale: { duration: 0.2 }
-                                  }}
-                                  className={`w-[80px] h-[80px] rounded-full flex items-center justify-center shadow-[0_6px_20px_rgba(0,0,0,0.08)] transition-shadow duration-200 ${isFailed ? '' : 'group-hover:shadow-[0_10px_28px_rgba(0,0,0,0.12)]'
-                                    } ${iconBgClass}`}
-                                  style={isFailed ? { backgroundColor: '#E2E8F0' } : {}}
-                                >
-                                  <comp.icon
-                                    className={`w-[40px] h-[40px] ${isFailed ? 'opacity-40' : ''}`}
-                                    style={{ color: isFailed ? '#94A3B8' : category.color }}
-                                    strokeWidth={2}
-                                  />
-                                </motion.div>
-
-                                {/* Título da Competência */}
-                                <h4 className={`text-[15px] font-semibold text-center leading-[1.3] min-h-[40px] px-1 ${isFailed ? 'text-gray-500 dark:text-gray-400' : 'text-gray-800 dark:text-gray-200'
-                                  }`}>
-                                  {comp.title}
-                                </h4>
-
-                                {/* Timer - Posição fixa acima do botão */}
-                                <div className="w-full h-[28px] flex items-center justify-center">
-                                  {isInProgress && (
-                                    <CompetencyTimer
-                                      competencyName={comp.title}
-                                      mockTime={comp.title === 'Compartilhar e publicar' ? 1800 : undefined}
-                                      className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600"
-                                      showIcon={true}
-                                    />
-                                  )}
-                                </div>
-
-                                {/* Botão CONTINUAR ou INICIAR - Sempre na mesma posição */}
-                                {isInProgress ? (
-                                  /* Botão CONTINUAR - Índigo */
-                                  <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    transition={{ duration: 0.15 }}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleStartQuiz(comp.title, category.name, category.color, comp.icon, category.icon);
-                                    }}
-                                    className="w-full py-2.5 rounded-full text-white font-bold text-[13px] uppercase tracking-[0.8px] shadow-[0_4px_12px_rgba(99,102,241,0.3)] hover:shadow-[0_6px_20px_rgba(99,102,241,0.4)] transition-all duration-200 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700"
-                                  >
-                                    <span className="flex items-center justify-center gap-1.5">
-                                      <PlayCircle className="w-4 h-4" />
-                                      CONTINUAR
-                                    </span>
-                                  </motion.button>
-                                ) : (
-                                  /* Botão INICIAR */
-                                  <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    transition={{ duration: 0.15 }}
-                                    className={`w-full py-2.5 rounded-full font-bold text-[13px] uppercase tracking-[0.8px] transition-all duration-200 ${isFailed
-                                      ? 'text-white shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.25)] cursor-pointer'
-                                      : 'text-white shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.25)]'
-                                      }`}
-                                    style={{
-                                      background: (() => {
-                                        if (isFailed) {
-                                          // Gradiente cinza para bloqueado
-                                          return 'linear-gradient(135deg, #CBD5E1 0%, #94A3B8 100%)';
-                                        }
-                                        return buttonGradient;
-                                      })()
-                                    }}
-                                  >
-                                    <span className="flex items-center justify-center gap-1.5">
-                                      {!isFailed && <PlayCircle className="w-4 h-4" />}
-                                      {isFailed ? 'REFORÇO NECESSÁRIO' : 'INICIAR'}
-                                    </span>
-                                  </motion.button>
-                                )}
-                              </div>
-                            </motion.div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                };
-
-                return <CategorySection key={categoryIndex} />;
-              })}
+              {filteredCategories.map((category, categoryIndex) => (
+                <CategorySection
+                  key={category.name}
+                  category={category}
+                  categoryIndex={categoryIndex}
+                  onStartQuiz={handleStartQuiz}
+                  onShowBlocked={handleShowBlockedModal}
+                />
+              ))}
             </div>
 
             {/* No Results */}
@@ -472,21 +308,16 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
         animate={{ opacity: 1, scale: 1 }}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         className="fixed bottom-24 md:bottom-6 left-4 md:left-6 z-50 bg-gray-500 hover:bg-gray-600 text-white p-3 md:p-4 rounded-full shadow-2xl transition-all"
         title="Ir para o topo"
       >
         <ArrowUp className="w-6 h-6" />
       </motion.button>
 
-      {/* Warning Modal */}
+      {/* Warning Modal (opcional, mantido) */}
       {showWarningModal && selectedCompetency && (
-        <WarningModal
-          onClose={() => setShowWarningModal(false)}
-          onConfirm={handleConfirmWarning}
-        />
+        <WarningModal onClose={() => setShowWarningModal(false)} onConfirm={handleConfirmWarning} />
       )}
 
       {/* Blocked Competency Modal */}
@@ -495,8 +326,20 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
           isOpen={showBlockedModal}
           onClose={() => setShowBlockedModal(false)}
           onGoToContents={() => {
+            const payload = {
+              from: "habilidades",
+              competency: selectedCompetency.competency,
+              category: selectedCompetency.category,
+              categoryColor: selectedCompetency.categoryColor,
+              competencyIcon: selectedCompetency.competencyIcon,
+              categoryIcon: selectedCompetency.categoryIcon,
+            };
+
             setShowBlockedModal(false);
-            navigateTo('conteudos');
+
+            requestAnimationFrame(() => {
+              navigateTo("conteudos", payload);
+            });
           }}
           competency={selectedCompetency.competency}
           category={selectedCompetency.category}
@@ -504,6 +347,201 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
           icon={selectedCompetency.competencyIcon}
         />
       )}
+    </div>
+  );
+}
+
+/** ✅ Componente fora do map (evita hook dentro de loop e bugs aleatórios) */
+function CategorySection({
+  category,
+  categoryIndex,
+  onStartQuiz,
+  onShowBlocked,
+}: {
+  category: Category;
+  categoryIndex: number;
+  onStartQuiz: (
+    competency: string,
+    category: string,
+    categoryColor: string,
+    competencyIcon: any,
+    categoryIcon: any
+  ) => void;
+  onShowBlocked: (
+    competency: string,
+    category: string,
+    categoryColor: string,
+    competencyIcon: any,
+    categoryIcon: any
+  ) => void;
+}) {
+  const categoryRef = useRef<HTMLDivElement | null>(null);
+  const categoryInView = useInView(categoryRef, { once: true, amount: 0.2 });
+
+  return (
+    <div ref={categoryRef}>
+      {/* Category Header */}
+      <div className="flex items-center gap-3 p-4 rounded-xl mb-6 bg-white dark:bg-gray-800">
+        <category.icon className="w-6 h-6" style={{ color: category.color }} strokeWidth={1.5} />
+        <h2 className="text-lg font-bold" style={{ color: category.color }}>
+          {category.name}
+        </h2>
+      </div>
+
+      {/* Competency Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        {category.competencias.map((comp, compIndex) => {
+          const status = getCompetencyStatus(comp.title);
+
+          // ✅ BLOQUEADO DE VERDADE: se ainda tem tempo pra desbloquear
+          const daysUntilUnblock = getDaysUntilUnblock(comp.title);
+          const isBlocked = daysUntilUnblock > 0;
+
+          const isCompleted = status?.status === "completed";
+          const isAttempted = status?.status === "attempted";
+
+          // Mock: manter seu teste
+          const isInProgress = status?.status === "in-progress" || comp.title === "Compartilhar e publicar";
+
+          // Background do ícone (respeitando bloqueado)
+          let iconBgClass = "";
+          if (!isBlocked) {
+            if (category.color === "#FFD700") iconBgClass = "bg-[#FFF9E6] dark:bg-yellow-900/30";
+            else if (category.color === "#00BCD4") iconBgClass = "bg-[#E0F7FA] dark:bg-cyan-900/30";
+            else if (category.color === "#FF9800") iconBgClass = "bg-[#FFF3E0] dark:bg-orange-900/30";
+            else if (category.color === "#4CAF50") iconBgClass = "bg-[#E8F5E9] dark:bg-green-900/30";
+            else if (category.color === "#E91E63") iconBgClass = "bg-[#FCE4EC] dark:bg-pink-900/30";
+          }
+
+          // Gradiente do botão (respeitando bloqueado)
+          let buttonGradient = "";
+          if (category.color === "#FFD700") buttonGradient = "linear-gradient(135deg, #FFE57F 0%, #FF9800 100%)";
+          else if (category.color === "#00BCD4") buttonGradient = "linear-gradient(135deg, #4DD0E1 0%, #0288D1 100%)";
+          else if (category.color === "#FF9800") buttonGradient = "linear-gradient(135deg, #FFB74D 0%, #E65100 100%)";
+          else if (category.color === "#4CAF50") buttonGradient = "linear-gradient(135deg, #81C784 0%, #2E7D32 100%)";
+          else if (category.color === "#E91E63") buttonGradient = "linear-gradient(135deg, #F48FB1 0%, #AD1457 100%)";
+
+          return (
+            <motion.div
+              key={`${categoryIndex}-${compIndex}`}
+              initial={{ opacity: 0, y: 30 }}
+              animate={categoryInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              transition={{ duration: 0.4, delay: compIndex * 0.08, ease: [0.4, 0, 0.2, 1] }}
+              whileHover={{ y: -8, scale: 1.02, transition: { duration: 0.1 } }}
+              className="relative rounded-[20px] shadow-[0_4px_20px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.3)] transition-all duration-100 overflow-hidden group cursor-pointer bg-white dark:bg-gray-800 hover:shadow-[0_16px_48px_rgba(0,0,0,0.12)] dark:hover:shadow-[0_16px_48px_rgba(0,0,0,0.4)]"
+              onClick={() =>
+                isBlocked
+                  ? onShowBlocked(comp.title, category.name, category.color, comp.icon, category.icon)
+                  : onStartQuiz(comp.title, category.name, category.color, comp.icon, category.icon)
+              }
+            >
+              {/* hover blob */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none overflow-hidden">
+                <motion.div
+                  initial={{ y: -200, x: "20%" }}
+                  whileHover={{ y: 100 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="absolute w-[200px] h-[200px] rounded-full blur-3xl"
+                  style={{ backgroundColor: `${category.color}20` }}
+                />
+              </div>
+
+              {/* Badge da Categoria */}
+              <div
+                className="relative z-10 w-full px-5 py-3 rounded-t-[20px] transition-all duration-200 group-hover:brightness-110"
+                style={{ backgroundColor: isBlocked ? "#94A3B8" : category.color }}
+              >
+                <span className="text-white text-[11px] font-bold uppercase tracking-[1px] drop-shadow-sm">
+                  {category.name}
+                </span>
+              </div>
+
+              {/* Body */}
+              <div className="relative z-10 p-5 flex flex-col items-center gap-4">
+                {/* Ícone */}
+                <motion.div
+                  whileHover={{
+                    rotate: isBlocked ? 0 : [0, -10, 10, -10, 0],
+                    scale: isBlocked ? 1 : 1.15,
+                  }}
+                  transition={{ rotate: { duration: 0.4 }, scale: { duration: 0.2 } }}
+                  className={`w-[80px] h-[80px] rounded-full flex items-center justify-center shadow-[0_6px_20px_rgba(0,0,0,0.08)] transition-shadow duration-200 ${
+                    isBlocked ? "" : "group-hover:shadow-[0_10px_28px_rgba(0,0,0,0.12)]"
+                  } ${iconBgClass}`}
+                  style={isBlocked ? { backgroundColor: "#E2E8F0" } : {}}
+                >
+                  <comp.icon
+                    className={`w-[40px] h-[40px] ${isBlocked ? "opacity-40" : ""}`}
+                    style={{ color: isBlocked ? "#94A3B8" : category.color }}
+                    strokeWidth={2}
+                  />
+                </motion.div>
+
+                {/* Título */}
+                <h4
+                  className={`text-[15px] font-semibold text-center leading-[1.3] min-h-[40px] px-1 ${
+                    isBlocked ? "text-gray-500 dark:text-gray-400" : "text-gray-800 dark:text-gray-200"
+                  }`}
+                >
+                  {comp.title}
+                </h4>
+
+                {/* Timer */}
+                <div className="w-full h-[28px] flex items-center justify-center">
+                  {isInProgress && (
+                    <CompetencyTimer
+                      competencyName={comp.title}
+                      mockTime={comp.title === "Compartilhar e publicar" ? 1800 : undefined}
+                      className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600"
+                      showIcon={true}
+                    />
+                  )}
+                </div>
+
+                {/* Botão */}
+                {isInProgress ? (
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (isBlocked) {
+                        onShowBlocked(comp.title, category.name, category.color, comp.icon, category.icon);
+                        return;
+                      }
+                      onStartQuiz(comp.title, category.name, category.color, comp.icon, category.icon);
+                    }}
+                    className="w-full py-2.5 rounded-full text-white font-bold text-[13px] uppercase tracking-[0.8px] shadow-[0_4px_12px_rgba(99,102,241,0.3)] hover:shadow-[0_6px_20px_rgba(99,102,241,0.4)] transition-all duration-200 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700"
+                  >
+                    <span className="flex items-center justify-center gap-1.5">
+                      <PlayCircle className="w-4 h-4" />
+                      CONTINUAR
+                    </span>
+                  </motion.button>
+                ) : (
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="w-full py-2.5 rounded-full font-bold text-[13px] uppercase tracking-[0.8px] transition-all duration-200 text-white shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.25)]"
+                    style={{
+                      background: isBlocked
+                        ? "linear-gradient(135deg, #CBD5E1 0%, #94A3B8 100%)"
+                        : buttonGradient,
+                    }}
+                  >
+                    <span className="flex items-center justify-center gap-1.5">
+                      {!isBlocked && <PlayCircle className="w-4 h-4" />}
+                      {isBlocked ? "REFORÇO NECESSÁRIO" : "INICIAR"}
+                    </span>
+                  </motion.button>
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -554,32 +592,32 @@ function BlockedCompetencyModal({
 }) {
   if (!isOpen) return null;
 
-  // Obter dias restantes para desbloqueio
   const daysUntilUnblock = getDaysUntilUnblock(competency);
 
   return (
     <div className="fixed inset-0 bg-black/50 dark:bg-black/70 flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full">
         <div className="flex items-center gap-3 mb-4">
-          <div
-            className="w-12 h-12 rounded-full flex items-center justify-center bg-yellow-100 dark:bg-yellow-900/30"
-          >
+          <div className="w-12 h-12 rounded-full flex items-center justify-center bg-yellow-100 dark:bg-yellow-900/30">
             <AlertTriangle className="w-6 h-6 text-yellow-600 dark:text-yellow-500" />
           </div>
           <h3 className="text-xl font-bold text-gray-900 dark:text-white">Reforço Necessário</h3>
         </div>
 
         <p className="text-gray-600 dark:text-gray-300 mb-4">
-          A competência <strong>{competency}</strong> precisa de reforço. Acesse os conteúdos relacionados antes de tentar novamente.
+          A competência <strong>{competency}</strong> precisa de reforço. Acesse os conteúdos relacionados antes
+          de tentar novamente.
         </p>
 
-        {/* Contador de dias */}
         {daysUntilUnblock > 0 && (
           <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
             <div className="flex items-center justify-center gap-2">
               <Lock className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               <p className="text-sm text-gray-700 dark:text-gray-300">
-                Disponível em <span className="font-bold text-[#8B27FF] dark:text-[#A855F7]">{daysUntilUnblock} {daysUntilUnblock === 1 ? 'dia' : 'dias'}</span>
+                Disponível em{" "}
+                <span className="font-bold text-[#8B27FF] dark:text-[#A855F7]">
+                  {daysUntilUnblock} {daysUntilUnblock === 1 ? "dia" : "dias"}
+                </span>
               </p>
             </div>
           </div>

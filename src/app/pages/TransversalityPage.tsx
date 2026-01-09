@@ -871,7 +871,7 @@ export default function TransversalityPage({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-4"
+                  className="fixed inset-0 bg-black/50 z-[9999] flex items-center justify-center p-4"
                   onClick={() => setShowModal(false)}
                 >
                   <motion.div
@@ -932,33 +932,54 @@ export default function TransversalityPage({
                     {/* Footer */}
                     <div
                       ref={footerRef}
-                      className="shrink-0 bg-gray-50 dark:bg-gray-700/50 px-6 sm:px-8 py-5 border-t border-gray-200 dark:border-gray-700 pb-[calc(1.25rem+env(safe-area-inset-bottom))]"
+                      className="shrink-0 bg-gray-50 dark:bg-gray-700/50 px-6 sm:px-8 py-5 border-t border-gray-200 dark:border-gray-700 pb-[calc(2.25rem+env(safe-area-inset-bottom))]"
                     >
-                      <div className="flex gap-3">
+
+                      <div className="grid grid-cols-[9.5rem_minmax(0,1fr)] gap-3 items-center">
+                        {/* Botão esquerdo (largura fixa sempre) */}
                         <button
                           onClick={() => {
                             if (currentStep > 1) setCurrentStep((s) => s - 1);
                             else setShowModal(false);
                           }}
-                          className="flex items-center gap-2 px-5 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors font-medium"
+                          className="
+      inline-flex items-center justify-center gap-2
+      w-[9.5rem]
+      px-4 py-3
+      border-2 border-gray-300 dark:border-gray-600
+      rounded-xl
+      text-gray-700 dark:text-gray-200
+      hover:bg-gray-100 dark:hover:bg-gray-700
+      transition-colors font-medium
+      whitespace-nowrap
+    "
                         >
                           <ChevronLeft className="w-5 h-5" />
                           {currentStep === 1 ? "Cancelar" : "Voltar"}
                         </button>
 
-                        <div className="flex-1" />
-
+                        {/* Botão direito (nunca corta, sempre cabe) */}
                         <button
                           onClick={handlePrimary}
                           disabled={!canGoNext() || isSearching}
-                          className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-base sm:text-lg transition-all ${!canGoNext() || isSearching
-                            ? "bg-gray-400 dark:bg-gray-600 text-white cursor-not-allowed"
-                            : "bg-[#8B27FF] text-white hover:bg-[#6B1FBF] hover:-translate-y-0.5 shadow-lg shadow-purple-500/30"
-                            }`}
+                          className={`
+                                w-full min-w-0
+                                inline-flex items-center justify-center gap-2
+                                px-4 sm:px-6 py-3
+                                rounded-xl font-bold text-base sm:text-lg
+                                transition-all
+                                ${!canGoNext() || isSearching
+                              ? "bg-gray-400 dark:bg-gray-600 text-white cursor-not-allowed"
+                              : "bg-[#8B27FF] text-white hover:bg-[#6B1FBF] shadow-lg shadow-purple-500/30"
+                            }
+                          `}
                         >
                           {isSearching ? (
                             <>
-                              <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity }}>
+                              <motion.div
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 1, repeat: Infinity }}
+                              >
                                 <Search className="w-5 h-5" />
                               </motion.div>
                               Buscando...
@@ -966,12 +987,13 @@ export default function TransversalityPage({
                           ) : (
                             <>
                               <Search className="w-5 h-5" />
-                              Procurar Questão
+                              <span className="leading-tight">Procurar Questão</span>
                               <ArrowRight className="w-5 h-5" />
                             </>
                           )}
                         </button>
                       </div>
+
                     </div>
                   </motion.div>
                 </motion.div>

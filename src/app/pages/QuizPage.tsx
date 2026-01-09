@@ -33,18 +33,18 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
 
   const [pageState, setPageState] = useState<PageState>('question');
 
-  // ✅ navegação por índice (posição), nunca por id
+  // navegação por índice (posição), nunca por id
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // ✅ resposta atual (A/B/C...)
+  //  resposta atual (A/B/C...)
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
 
-  // ✅ respostas por ID real da questão (pode ser number ou string)
+  // respostas por ID real da questão (pode ser number ou string)
   const [selectedAnswers, setSelectedAnswers] = useState<Record<string | number, string>>({});
 
   const [isFillingSkipped, setIsFillingSkipped] = useState(false);
 
-  // ✅ status por índice (posição)
+  // status por índice (posição)
   const [stepStatuses, setStepStatuses] = useState<{ status: 'current' | 'answered' | 'future' | 'skipped' }[]>(
     Array(questions.length)
       .fill(null)
@@ -72,7 +72,7 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
     );
   }
 
-  const currentId = currentQuestionData.id; // ✅ id real
+  const currentId = currentQuestionData.id; //id real
 
   const goToIndex = (nextIndex: number) => {
     setStepStatuses((prev) => {
@@ -123,12 +123,12 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
   const handleSaveAnswer = () => {
     if (!selectedAnswer) return;
 
-    // ✅ salva por ID real
+    // salva por ID real
     const updatedAnswers = { ...selectedAnswers, [currentId]: selectedAnswer };
     setSelectedAnswers(updatedAnswers);
     setSelectedAnswer('');
 
-    // ✅ status atual vira answered
+    // status atual vira answered
     setStepStatuses((prev) => {
       const next = [...prev];
       next[currentIndex] = { status: 'answered' };
@@ -137,7 +137,7 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
 
     const firstUnansweredIndex = findFirstUnansweredIndex(updatedAnswers);
 
-    // ✅ se está preenchendo puladas
+    // se está preenchendo puladas
     if (isFillingSkipped) {
       if (firstUnansweredIndex !== -1) {
         setTimeout(() => goToIndex(firstUnansweredIndex), 250);
@@ -150,7 +150,7 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
       return;
     }
 
-    // ✅ se era a última posição
+    // se era a última posição
     if (currentIndex === questions.length - 1) {
       if (firstUnansweredIndex !== -1) {
         setIsFillingSkipped(true);
@@ -167,7 +167,7 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
       return;
     }
 
-    // ✅ senão, vai pra próxima posição
+    // senão, vai pra próxima posição
     setTimeout(() => {
       setStepStatuses((prev) => {
         const next = [...prev];
@@ -268,7 +268,7 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
     <>
       <Toaster position="top-center" />
       <TestQuestion
-        currentQuestion={currentIndex + 1}          // ✅ número para UI
+        currentQuestion={currentIndex + 1}          // número para UI
         totalQuestions={questions.length}
         questionText={currentQuestionData?.text}
         options={currentQuestionData?.options}
@@ -283,7 +283,7 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
         categoryBadge={quizMeta?.category}
         categoryColor={quizMeta?.categoryColor}
         onBackClick={() => navigateTo(backRoute)}
-        isLastQuestion={currentIndex === questions.length - 1} // ✅ certo
+        isLastQuestion={currentIndex === questions.length - 1} // certo
       />
     </>
   );

@@ -71,7 +71,7 @@ export default function InteractiveHTMLWindow({
             </>
           )}
         </div>
-      </div>
+      </div> 
 
       {/* Iframe com o HTML */}
       {/* Mantemos o iframe montado sempre; em mobile podemos torná-lo 'expandido' via classes */}
