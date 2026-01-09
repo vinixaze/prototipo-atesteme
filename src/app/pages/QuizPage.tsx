@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { toast, Toaster } from 'sonner';
 import { quizQuestions } from '../data/quizQuestions';
 import TestQuestion from '../components/TestQuestion';
@@ -8,7 +8,7 @@ import TestResult from '../components/TestResult';
 const BACK_ROUTE_MAP: Record<string, string> = {
   transversalidade: 'transversalidade',
   habilidades: 'habilidades',
-  dashboard: 'dashboard'
+  dashboard: 'dashboard',
 };
 
 interface QuizPageProps {
@@ -19,33 +19,42 @@ interface QuizPageProps {
 
 type PageState = 'question' | 'congrats' | 'result';
 
-export default function QuizPage({
-  navigateTo,
-  competencyData,
-  quizData
-}: QuizPageProps) {
-  /* Meta Information */
+export default function QuizPage({ navigateTo, competencyData, quizData }: QuizPageProps) {
   const quizMeta = quizData || competencyData;
-  const questions =
-    quizMeta?.questions && quizMeta.questions.length > 0
-      ? quizMeta.questions
-      : quizQuestions[quizMeta?.competency || ''] || [];
 
-  /* Page State */
+  const questions = useMemo(() => {
+    const qs =
+      quizMeta?.questions && quizMeta.questions.length > 0
+        ? quizMeta.questions
+        : quizQuestions[quizMeta?.competency || ''] || [];
+
+    return Array.isArray(qs) ? qs : [];
+  }, [quizMeta]);
+
   const [pageState, setPageState] = useState<PageState>('question');
-  const [currentQuestion, setCurrentQuestion] = useState(1);
+
+  // ✅ navegação por índice (posição), nunca por id
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // ✅ resposta atual (A/B/C...)
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
-  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
+
+  // ✅ respostas por ID real da questão (pode ser number ou string)
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<string | number, string>>({});
+
   const [isFillingSkipped, setIsFillingSkipped] = useState(false);
+
+  // ✅ status por índice (posição)
   const [stepStatuses, setStepStatuses] = useState<{ status: 'current' | 'answered' | 'future' | 'skipped' }[]>(
-    Array(questions.length).fill(null).map((_, i) => ({
-      status: i === 0 ? 'current' : 'future'
-    }))
+    Array(questions.length)
+      .fill(null)
+      .map((_, i) => ({ status: i === 0 ? 'current' : 'future' }))
   );
-  const [eliminatedOptions, setEliminatedOptions] = useState<string[]>([]);
+
+  const [eliminatedOptions] = useState<string[]>([]);
   const [testResults, setTestResults] = useState<any>(null);
 
-  const currentQuestionData = questions[currentQuestion - 1];
+  const currentQuestionData = questions[currentIndex];
 
   if (!questions || questions.length === 0) {
     return (
@@ -63,148 +72,26 @@ export default function QuizPage({
     );
   }
 
-  const handleSelectAnswer = (letter: string) => {
-    setSelectedAnswer(letter);
-  };
+  const currentId = currentQuestionData.id; // ✅ id real
 
-  const handleSaveAnswer = () => {
-    if (!selectedAnswer) return;
-
-    const updatedAnswers = {
-      ...selectedAnswers,
-      [currentQuestion]: selectedAnswer,
-    };
-
-    setSelectedAnswers(updatedAnswers);
-    setSelectedAnswer('');
-
-    // Atualiza status do passo atual como answered
+  const goToIndex = (nextIndex: number) => {
     setStepStatuses((prev) => {
       const next = [...prev];
-      next[currentQuestion - 1] = { status: 'answered' };
+      // coloca tudo que ainda está future como future mesmo
+      // e marca o próximo como current
+      if (next[nextIndex]) next[nextIndex] = { status: 'current' };
       return next;
     });
-
-    // Decide o que fazer depois de salvar
-    const unanswered = questions.filter((q: any) => !updatedAnswers[q.id]);
-
-    // Se está preenchendo puladas, segue nelas
-    if (isFillingSkipped) {
-      if (unanswered.length > 0) {
-        const nextUnanswered = unanswered[0];
-        setTimeout(() => {
-          setStepStatuses((prev) => {
-            const next = [...prev];
-            next[nextUnanswered.id - 1] = { status: 'current' };
-            return next;
-          });
-          setCurrentQuestion(nextUnanswered.id);
-        }, 300);
-      } else {
-        setTimeout(() => {
-          setIsFillingSkipped(false);
-          finalizarTeste(updatedAnswers);
-        }, 300);
-      }
-      return;
-    }
-
-    // ✅ Se terminou a última questão:
-    if (currentQuestion === questions.length) {
-      // Se ainda tem sem resposta, vai pra primeira sem resposta
-      if (unanswered.length > 0) {
-        setIsFillingSkipped(true);
-        toast.warning('Você tem questões sem resposta!', {
-          description: `Complete as ${unanswered.length} questão${unanswered.length > 1 ? 'ões' : ''} restante${unanswered.length > 1 ? 's' : ''} para finalizar.`,
-          duration: 5000,
-        });
-
-        const firstUnanswered = unanswered[0];
-        setTimeout(() => {
-          setStepStatuses((prev) => {
-            const next = [...prev];
-            next[firstUnanswered.id - 1] = { status: 'current' };
-            return next;
-          });
-          setCurrentQuestion(firstUnanswered.id);
-        }, 300);
-
-        return;
-      }
-
-      // ✅ Se não tem sem resposta, finaliza
-      setTimeout(() => finalizarTeste(updatedAnswers), 300);
-      return;
-    }
-
-    // Se não é a última, vai pra próxima
-    setTimeout(() => {
-      setStepStatuses((prev) => {
-        const next = [...prev];
-        next[currentQuestion] = { status: 'current' }; // próximo índice (currentQuestion + 1) => posição currentQuestion
-        return next;
-      });
-      setCurrentQuestion((prev) => prev + 1);
-    }, 300);
+    setCurrentIndex(nextIndex);
   };
 
-
-  const handleSkip = () => {
-    if (currentQuestion < questions.length) {
-      const newStatuses = [...stepStatuses];
-      if (!selectedAnswers[currentQuestion]) {
-        newStatuses[currentQuestion - 1] = { status: 'skipped' };
-      }
-      newStatuses[currentQuestion] = { status: 'current' };
-      setStepStatuses(newStatuses);
-      setCurrentQuestion(currentQuestion + 1);
-      setSelectedAnswer('');
-    }
+  const findFirstUnansweredIndex = (answers: Record<string | number, string>) => {
+    return questions.findIndex((q: any) => !answers[q.id]);
   };
 
-  const handleFinish = () => {
-    let updatedAnswers = { ...selectedAnswers };
+  const handleSelectAnswer = (letter: string) => setSelectedAnswer(letter);
 
-    if (selectedAnswer && currentQuestion === questions.length) {
-      updatedAnswers[currentQuestion] = selectedAnswer;
-      setSelectedAnswers(updatedAnswers);
-
-      const newStatuses = [...stepStatuses];
-      newStatuses[currentQuestion - 1] = { status: 'answered' };
-      setStepStatuses(newStatuses);
-    }
-
-    const unansweredQuestions = questions.filter((q: any) => !updatedAnswers[q.id]);
-
-    if (unansweredQuestions.length > 0) {
-      setIsFillingSkipped(true);
-      toast.warning('Você tem questões sem resposta!', {
-        description: `Complete as ${unansweredQuestions.length} questão${unansweredQuestions.length > 1 ? 'ões' : ''} restante${unansweredQuestions.length > 1 ? 's' : ''} para finalizar.`,
-        duration: 5000,
-      });
-
-      const firstUnanswered = unansweredQuestions[0];
-      setTimeout(() => {
-        const newStatuses = [...stepStatuses];
-        if (stepStatuses[currentQuestion - 1].status === 'current') {
-          newStatuses[currentQuestion - 1] = { status: 'future' };
-        }
-        newStatuses[firstUnanswered.id - 1] = { status: 'current' };
-        setStepStatuses(newStatuses);
-        setCurrentQuestion(firstUnanswered.id);
-        setSelectedAnswer('');
-      }, 500);
-
-      return;
-    }
-
-    setTimeout(() => {
-      finalizarTeste(updatedAnswers);
-    }, 300);
-  };
-
-  const finalizarTeste = (answers = selectedAnswers) => {
-    // Calcular resultados
+  const finalizarTeste = (answers: Record<string | number, string>) => {
     const correctAnswers = questions.filter((q: any) => {
       const answer = answers[q.id];
       return q.options.find((opt: any) => opt.letter === answer)?.isCorrect;
@@ -229,27 +116,127 @@ export default function QuizPage({
       };
     });
 
-    setTestResults({
-      results,
-      correctAnswers,
-      totalQuestions: questions.length,
-    });
-
+    setTestResults({ results, correctAnswers, totalQuestions: questions.length });
     setPageState('congrats');
   };
 
-  const handleCongratsClick = () => {
-    setPageState('result');
+  const handleSaveAnswer = () => {
+    if (!selectedAnswer) return;
+
+    // ✅ salva por ID real
+    const updatedAnswers = { ...selectedAnswers, [currentId]: selectedAnswer };
+    setSelectedAnswers(updatedAnswers);
+    setSelectedAnswer('');
+
+    // ✅ status atual vira answered
+    setStepStatuses((prev) => {
+      const next = [...prev];
+      next[currentIndex] = { status: 'answered' };
+      return next;
+    });
+
+    const firstUnansweredIndex = findFirstUnansweredIndex(updatedAnswers);
+
+    // ✅ se está preenchendo puladas
+    if (isFillingSkipped) {
+      if (firstUnansweredIndex !== -1) {
+        setTimeout(() => goToIndex(firstUnansweredIndex), 250);
+      } else {
+        setTimeout(() => {
+          setIsFillingSkipped(false);
+          finalizarTeste(updatedAnswers);
+        }, 250);
+      }
+      return;
+    }
+
+    // ✅ se era a última posição
+    if (currentIndex === questions.length - 1) {
+      if (firstUnansweredIndex !== -1) {
+        setIsFillingSkipped(true);
+        toast.warning('Você tem questões sem resposta!', {
+          description: `Complete as questões restantes para finalizar.`,
+          duration: 5000,
+        });
+
+        setTimeout(() => goToIndex(firstUnansweredIndex), 250);
+        return;
+      }
+
+      setTimeout(() => finalizarTeste(updatedAnswers), 250);
+      return;
+    }
+
+    // ✅ senão, vai pra próxima posição
+    setTimeout(() => {
+      setStepStatuses((prev) => {
+        const next = [...prev];
+        if (next[currentIndex + 1]) next[currentIndex + 1] = { status: 'current' };
+        return next;
+      });
+      setCurrentIndex((prev) => prev + 1);
+    }, 250);
   };
 
-  /* Render Pages */
+  const handleSkip = () => {
+    if (currentIndex >= questions.length - 1) return;
+
+    setStepStatuses((prev) => {
+      const next = [...prev];
+
+      // se não respondeu esta, marca como skipped
+      if (!selectedAnswers[currentId]) next[currentIndex] = { status: 'skipped' };
+
+      // próxima vira current
+      next[currentIndex + 1] = { status: 'current' };
+      return next;
+    });
+
+    setSelectedAnswer('');
+    setCurrentIndex((prev) => prev + 1);
+  };
+
+  const handleFinish = () => {
+    let updatedAnswers = { ...selectedAnswers };
+
+    // se tiver resposta marcada na tela, salva também (por ID)
+    if (selectedAnswer) {
+      updatedAnswers[currentId] = selectedAnswer;
+      setSelectedAnswers(updatedAnswers);
+      setSelectedAnswer('');
+
+      setStepStatuses((prev) => {
+        const next = [...prev];
+        next[currentIndex] = { status: 'answered' };
+        return next;
+      });
+    }
+
+    const firstUnansweredIndex = findFirstUnansweredIndex(updatedAnswers);
+
+    if (firstUnansweredIndex !== -1) {
+      setIsFillingSkipped(true);
+      toast.warning('Você tem questões sem resposta!', {
+        description: 'Complete as questões pendentes para finalizar.',
+        duration: 5000,
+      });
+
+      setTimeout(() => goToIndex(firstUnansweredIndex), 350);
+      return;
+    }
+
+    setTimeout(() => finalizarTeste(updatedAnswers), 250);
+  };
+
+  const handleCongratsClick = () => setPageState('result');
+
   if (pageState === 'congrats' && testResults) {
     return (
       <>
         <Toaster position="top-center" />
         <TestCongrats
           testName="Desafio"
-          message="Você completou todas as 16 questões. Agora vamos ver como você se saiu..."
+          message={`Você completou todas as ${questions.length} questões. Agora vamos ver como você se saiu...`}
           onContinue={handleCongratsClick}
           showRocket={false}
         />
@@ -258,29 +245,30 @@ export default function QuizPage({
   }
 
   if (pageState === 'result' && testResults) {
+    const backRoute = BACK_ROUTE_MAP[quizMeta?.fromPage || ''] || 'dashboard';
+
     return (
       <>
         <Toaster position="top-center" />
         <TestResult
           navigateTo={navigateTo}
-          testName={`Desafio - ${quizMeta?.competency}`}
+          testName={`Desafio - ${quizMeta?.competency || 'Quiz'}`}
           correctAnswers={testResults.correctAnswers}
           totalQuestions={testResults.totalQuestions}
           results={testResults.results}
-          onBackClick={() => {
-            const backRoute = BACK_ROUTE_MAP[quizMeta?.fromPage || ''] || 'dashboard';
-            navigateTo(backRoute);
-          }}
+          onBackClick={() => navigateTo(backRoute)}
         />
       </>
     );
   }
 
+  const backRoute = BACK_ROUTE_MAP[quizMeta?.fromPage || ''] || 'dashboard';
+
   return (
     <>
       <Toaster position="top-center" />
       <TestQuestion
-        currentQuestion={currentQuestion}
+        currentQuestion={currentIndex + 1}          // ✅ número para UI
         totalQuestions={questions.length}
         questionText={currentQuestionData?.text}
         options={currentQuestionData?.options}
@@ -291,14 +279,11 @@ export default function QuizPage({
         onFinish={handleFinish}
         stepStatuses={stepStatuses}
         eliminatedOptions={eliminatedOptions}
-        title={`Desafio - ${quizMeta?.competency}`}
+        title={`Desafio - ${quizMeta?.competency || 'Quiz'}`}
         categoryBadge={quizMeta?.category}
         categoryColor={quizMeta?.categoryColor}
-        onBackClick={() => {
-          const backRoute = BACK_ROUTE_MAP[quizMeta?.fromPage || ''] || 'dashboard';
-          navigateTo(backRoute);
-        }}
-        isLastQuestion={currentQuestion === questions.length}
+        onBackClick={() => navigateTo(backRoute)}
+        isLastQuestion={currentIndex === questions.length - 1} // ✅ certo
       />
     </>
   );

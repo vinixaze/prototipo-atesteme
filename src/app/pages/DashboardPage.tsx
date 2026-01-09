@@ -352,7 +352,7 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                   <X className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                 </button>
 
-                <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 flex-1 w-full">
                     <div className="w-12 h-12 bg-gradient-to-br from-[#F3E5F5] to-[#E1BEE7] backdrop-blur-sm rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
                       <ClipboardList className="w-6 h-6 text-[#7B1FA2]" />
@@ -362,16 +362,27 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                         Noções Básicas
                       </h3>
                       <p className="text-gray-700 dark:text-gray-300 text-xs sm:text-sm leading-relaxed">
-                        Sobre informática, internet e mundo digital. Muito recomendado fazer antes de iniciar a jornada no Nível 1.
+                        sobre informática, internet e mundo digital. Muito recomendado fazer antes de iniciar a jornada no Nível 1.
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={() => navigateTo('nocoes-basicas')}
-                    className="bg-gradient-to-r from-[#8B27FF] to-[#A855F7] hover:from-[#7B1FE8] hover:to-[#9333EA] text-white px-6 py-2.5 rounded-xl transition-all shadow-md hover:shadow-lg flex-shrink-0 w-full sm:w-auto font-bold"
+                    className="
+                    bg-gradient-to-r from-[#8B27FF] to-[#A855F7]
+                    hover:from-[#7B1FE8] hover:to-[#9333EA]
+                    text-white px-6 py-2.5 rounded-xl
+                    transition-all shadow-md hover:shadow-lg
+                    flex-shrink-0
+                    w-full sm:w-auto
+                    font-bold
+                    sm:ml-3 lg:ml-6
+                    mt-2 sm:mt-3
+                  "
                   >
                     Iniciar
                   </button>
+
                 </div>
               </motion.div>
             )}
@@ -508,16 +519,20 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
 
               {/* Card 3: Logo da Organização */}
               <motion.div
-  initial={{ opacity: 0, scale: 0.9 }}
-  animate={{ opacity: 1, scale: 1 }}
-  transition={{ duration: 0.5, delay: 0.4 }}
-  className="relative bg-white dark:bg-gray-800 rounded-xl shadow-lg 
-             flex items-center justify-center 
-             w-full h-full min-h-[145px] 
-             overflow-hidden 
-             border-2 border-gray-200 dark:border-gray-700
-             md:col-span-2 lg:col-span-3"
->
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="
+    relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg
+    flex items-center justify-center
+    w-full h-full
+    min-h-[140px] lg:min-h-[180px]
+    overflow-hidden
+    border-2 border-gray-200 dark:border-gray-700
+    md:col-span-2 lg:col-span-1
+    px-6
+  "
+              >
 
 
                 {/* Efeitos de fundo sutis */}

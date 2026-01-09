@@ -279,20 +279,27 @@ export default function TesteCompetenciasPage({ navigateTo }: TesteCompetenciasP
     };
     setSelectedAnswers(updatedAnswers);
 
-    const newStatuses = [...stepStatuses];
-    newStatuses[currentQuestion - 1] = { status: 'answered' };
-    setStepStatuses(newStatuses);
+    // marca atual como answered
+    setStepStatuses((prev) => {
+      const next = [...prev];
+      next[currentQuestion - 1] = { status: 'answered' };
+      return next;
+    });
 
     setSelectedAnswer('');
 
-    if (isFillingSkipped) {
-      const unansweredQuestions = questions.filter((q) => q.id !== currentQuestion && !updatedAnswers[q.id]);
+    const unanswered = questions.filter((q) => !updatedAnswers[q.id]);
 
-      if (unansweredQuestions.length > 0) {
-        const nextUnanswered = unansweredQuestions[0];
+    // se está preenchendo puladas, continua nelas
+    if (isFillingSkipped) {
+      if (unanswered.length > 0) {
+        const nextUnanswered = unanswered[0];
         setTimeout(() => {
-          newStatuses[nextUnanswered.id - 1] = { status: 'current' };
-          setStepStatuses(newStatuses);
+          setStepStatuses((prev) => {
+            const next = [...prev];
+            next[nextUnanswered.id - 1] = { status: 'current' };
+            return next;
+          });
           setCurrentQuestion(nextUnanswered.id);
         }, 300);
       } else {
@@ -301,16 +308,48 @@ export default function TesteCompetenciasPage({ navigateTo }: TesteCompetenciasP
           finalizarTeste(updatedAnswers);
         }, 300);
       }
-    } else {
-      if (currentQuestion < 16) {
-        setTimeout(() => {
-          newStatuses[currentQuestion] = { status: 'current' };
-          setStepStatuses(newStatuses);
-          setCurrentQuestion(currentQuestion + 1);
-        }, 300);
-      }
+      return;
     }
+
+    // ✅ salvou na última questão
+    if (currentQuestion === 16) {
+      if (unanswered.length > 0) {
+        setIsFillingSkipped(true);
+
+        toast.warning('Você tem questões sem resposta!', {
+          description: `Complete as ${unanswered.length} questão${unanswered.length > 1 ? 'ões' : ''} restante${unanswered.length > 1 ? 's' : ''} para finalizar.`,
+          duration: 5000,
+        });
+
+        const firstUnanswered = unanswered[0];
+        setTimeout(() => {
+          setStepStatuses((prev) => {
+            const next = [...prev];
+            next[firstUnanswered.id - 1] = { status: 'current' };
+            return next;
+          });
+          setCurrentQuestion(firstUnanswered.id);
+        }, 300);
+
+        return;
+      }
+
+      // ✅ sem pendências -> finaliza
+      setTimeout(() => finalizarTeste(updatedAnswers), 300);
+      return;
+    }
+
+    // fluxo normal: vai pra próxima
+    setTimeout(() => {
+      setStepStatuses((prev) => {
+        const next = [...prev];
+        next[currentQuestion] = { status: 'current' };
+        return next;
+      });
+      setCurrentQuestion((prev) => prev + 1);
+    }, 300);
   };
+
 
   const handleSkip = () => {
     if (currentQuestion < 16) {
