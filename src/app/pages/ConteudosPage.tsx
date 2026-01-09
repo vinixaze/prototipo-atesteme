@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { ExternalLink, Database, Users, FileEdit, Shield, Wrench, BookOpen, Play, FileText, Globe, Search, Filter } from 'lucide-react';
+import { ExternalLink, Database, Users, FileEdit, Shield, Wrench, BookOpen, Play, FileText, Globe, Search, Filter, ChevronDown } from 'lucide-react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 
@@ -924,8 +924,10 @@ const mockContents: Content[] = [
 export default function ConteudosPage({ navigateTo, filterData, userRole }: ConteudosPageProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('INFORMAÇÕES E DADOS');
-  const [selectedCompetency, setSelectedCompetency] = useState('');
-  const [selectedLevel, setSelectedLevel] = useState('1');
+  const [selectedCompetency, setSelectedCompetency] = useState(''); // vazio
+  const [selectedLevel, setSelectedLevel] = useState(''); // vazio
+
+
 
   const categories = [
     { name: 'INFORMAÇÕES E DADOS', color: '#FFD700', icon: Database },
@@ -944,12 +946,7 @@ export default function ConteudosPage({ navigateTo, filterData, userRole }: Cont
     )
   );
 
-  // Se não há competência selecionada ou se a competência selecionada não existe na categoria, selecionar a primeira
-  if (!selectedCompetency || !availableCompetencies.includes(selectedCompetency)) {
-    if (availableCompetencies.length > 0) {
-      setSelectedCompetency(availableCompetencies[0]);
-    }
-  }
+
 
   // Filtrar conteúdos
   const filteredContents = mockContents.filter(content => {
@@ -965,7 +962,7 @@ export default function ConteudosPage({ navigateTo, filterData, userRole }: Cont
     if (filterData) {
       setSelectedCategory(filterData.category || 'INFORMAÇÕES E DADOS');
       setSelectedCompetency('');
-      setSelectedLevel('1');
+      setSelectedLevel('');
     }
   }, [filterData]);
 
@@ -1057,17 +1054,29 @@ export default function ConteudosPage({ navigateTo, filterData, userRole }: Cont
           animate={{ opacity: 1, y: 0 }}
           className="mb-8 flex flex-col md:flex-row gap-4"
         >
-          {/* Competência */}
           <div className="flex-1">
             <div className="relative">
-              <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" />
+              <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 pointer-events-none" />
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 pointer-events-none" />
+
+              {/* Texto que aparece no "botão" */}
+              <span className="absolute left-10 right-10 top-1/2 -translate-y-1/2 text-sm font-semibold text-gray-800 dark:text-gray-100 pointer-events-none truncate">
+                {selectedCompetency ? selectedCompetency : 'Competências'}
+              </span>
+
               <select
                 value={selectedCompetency}
                 onChange={(e) => setSelectedCompetency(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-[#8B27FF] dark:focus:border-[#A855F7] transition-all appearance-none cursor-pointer text-gray-900 dark:text-gray-100"
+                className="w-full pl-10 pr-10 py-3 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl
+                 focus:outline-none focus:border-[#8B27FF] dark:focus:border-[#A855F7] transition-all appearance-none cursor-pointer
+                 text-transparent"
               >
+                <option value="" disabled hidden>
+                  Competências
+                </option>
+
                 {availableCompetencies.map((competency) => (
-                  <option key={competency} value={competency}>
+                  <option key={competency} value={competency} className="text-gray-900">
                     {competency}
                   </option>
                 ))}
@@ -1075,21 +1084,38 @@ export default function ConteudosPage({ navigateTo, filterData, userRole }: Cont
             </div>
           </div>
 
-          {/* Nível */}
+
+
           <div className="w-full md:w-48">
-            <select
-              value={selectedLevel}
-              onChange={(e) => setSelectedLevel(e.target.value)}
-              className="w-full px-4 py-3 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:border-[#8B27FF] dark:focus:border-[#A855F7] transition-all appearance-none cursor-pointer font-semibold"
-              style={{ color: currentCategory?.color }}
-            >
-              <option value="1">Nível 1</option>
-              <option value="2">Nível 2</option>
-              <option value="3">Nível 3</option>
-              <option value="4">Nível 4</option>
-              <option value="5">Nível 5</option>
-            </select>
+            <div className="relative">
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 pointer-events-none" />
+
+              {/* Texto do "botão" */}
+              <span className="absolute left-4 right-10 top-1/2 -translate-y-1/2 text-sm font-semibold text-gray-800 dark:text-gray-100 pointer-events-none truncate">
+                {selectedLevel ? `Nível ${selectedLevel}` : 'Níveis'}
+              </span>
+
+              <select
+                value={selectedLevel}
+                onChange={(e) => setSelectedLevel(e.target.value)}
+                className="w-full px-4 pr-10 py-3 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl
+                 focus:outline-none focus:border-[#8B27FF] dark:focus:border-[#A855F7] transition-all appearance-none cursor-pointer
+                 text-transparent"
+              >
+                <option value="" disabled hidden>
+                  Níveis
+                </option>
+
+                <option value="1" className="text-gray-900">Nível 1</option>
+                <option value="2" className="text-gray-900">Nível 2</option>
+                <option value="3" className="text-gray-900">Nível 3</option>
+                <option value="4" className="text-gray-900">Nível 4</option>
+                <option value="5" className="text-gray-900">Nível 5</option>
+              </select>
+            </div>
           </div>
+
+
         </motion.div>
 
         {/* Grid de Cards Modernos */}

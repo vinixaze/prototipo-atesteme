@@ -7,7 +7,7 @@ import {
   Calendar,
   Award,
   PlusCircle,
-  MinusCircle,
+  Minus,
   Wallet,
   ShoppingCart,
   RotateCcw,
@@ -19,6 +19,7 @@ import {
   ChevronDown,
   ChevronUp,
   CircleAlert,
+  Equal,
   Check
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -208,37 +209,17 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
           <span className="text-gray-800 dark:text-gray-300">Seus </span>
           <span className="font-bold text-gray-900 dark:text-gray-100">Pontos</span>
         </h2>
-        <p className="text-[15px] text-[#666] dark:text-gray-400">
-          Ganhe e gaste pontos na sua jornada de aprendizado digital
-        </p>
+        <div className="flex items-center gap-2 text-sm text-[#8B27FF] dark:text-[#A855F7]">
+          < Coins className="w-4 h-4" />
+          <span className="font-semibold">Ganhe e gaste pontos na sua jornada de aprendizado digital</span>
+        </div>
       </div>
 
       {/* SEÇÃO 3 - SEUS PONTOS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {/* CARD 1 - SALDO ATUAL (Verde Escuro) */}
-        <div
-          className="relative bg-gradient-to-r from-[#FBBF24] to-[#F59E0B] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
-        >
-          {/* Ícone decorativo - Carteira */}
-          <Wallet
-            className="absolute top-3 right-3 w-[50px] h-[50px] text-white opacity-50 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6"
-            strokeWidth={2}
-          />
 
-          {/* Conteúdo */}
-          <div className="relative z-10">
-            <div className="text-[44px] font-bold text-white leading-none mb-1">
-              {userDigcoins}
-            </div>
-            <div className="text-[13px] font-medium text-white/90">
-              Saldo Atual
-            </div>
-          </div>
-        </div>
-
-        {/* CARD 2 - PONTOS RECEBIDOS (Verde Médio) */}
         <div
-          className="relative bg-gradient-to-r from-[#34D399] to-[#10B981] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
+          className="relative bg-gradient-to-r from-[#059669] to-[#047857] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
           {/* Ícone decorativo - Sinal de + dentro de moedas empilhadas */}
           <div className="absolute top-3 right-3 w-[50px] h-[50px] transition-all duration-300 group-hover:scale-110">
@@ -246,10 +227,7 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
               className="w-full h-full text-white opacity-50"
               strokeWidth={2}
             />
-            <PlusCircle
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[26px] h-[26px] text-white"
-              strokeWidth={2.5}
-            />
+
           </div>
 
           {/* Conteúdo */}
@@ -258,7 +236,7 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
               {totalReceived}
             </div>
             <div className="text-[13px] font-medium text-white/90">
-              pontos recebidos
+              Pontos Recebidos
             </div>
           </div>
         </div>
@@ -273,22 +251,63 @@ export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
               className="w-full h-full text-white opacity-50"
               strokeWidth={2}
             />
-            <MinusCircle
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[26px] h-[26px] text-white"
-              strokeWidth={2.5}
-            />
+
           </div>
 
           {/* Conteúdo */}
           <div className="relative z-10">
-            <div className="text-[44px] font-bold text-white leading-none mb-1">
-              {totalSpent}
+            <div className="flex items-center gap-2 mb-1">
+              <Minus
+                className="w-7 h-7 text-white opacity-90 mt-0.5"
+                strokeWidth={2.5}
+              />
+
+              <div className="text-[44px] font-bold text-white leading-none">
+                {totalSpent}
+              </div>
             </div>
+
             <div className="text-[13px] font-medium text-white/90">
               Pontos utilizados
             </div>
           </div>
+
         </div>
+
+        {/* CARD 3 - SALDO ATUAL (Verde Escuro) */}
+        <div
+          className="relative bg-gradient-to-r from-[#FBBF24] to-[#F59E0B] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
+        >
+          {/* Ícone decorativo - Carteira */}
+          <Wallet
+            className="absolute top-3 right-3 w-[50px] h-[50px] text-white opacity-50 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6"
+            strokeWidth={2}
+          />
+
+          {/* Conteúdo */}
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-1">
+              <Equal
+                className="w-7 h-7 text-white opacity-90 mt-0.5"
+                strokeWidth={2.5}
+              />
+
+              <div className="text-[44px] font-bold text-white leading-none">
+                {userDigcoins}
+              </div>
+            </div>
+
+            <div className="text-[13px] font-medium text-white/90">
+              Saldo Atual
+            </div>
+          </div>
+
+        </div>
+
+
+
+
+
 
       </div>
 

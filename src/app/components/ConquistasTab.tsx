@@ -1,4 +1,4 @@
-import { Trophy, Star, Lock, Sparkles, Crown, Award, Zap, Medal, Flag, Users, PieChart, Target, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react';
+import { Trophy, Star, Lock, Sparkles, Crown, Award, Zap, Medal, Flag, Users, PieChart, Target, TrendingUp, ChevronDown, ChevronUp, LockOpen } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 import { useState } from 'react';
 
@@ -47,7 +47,7 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
     <div className="animate-fadeIn">
       <div className="mb-6 sm:mb-8">
         <h2 className="text-[28px] font-bold text-[#333] dark:text-gray-200 mb-3">Suas Missões</h2>
-        
+
         <div className="flex items-center gap-2 text-sm text-[#8B27FF] dark:text-[#A855F7]">
           <Medal className="w-4 h-4" />
           <span className="font-semibold">Cada missão concede uma medalha que adiciona pontos ao seu perfil!</span>
@@ -62,19 +62,18 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
         >
           {/* Ícone decorativo - Raio - Centralizado verticalmente */}
           <Zap
-            className="absolute top-1/2 right-3 -translate-y-1/2 w-[45px] h-[45px] text-white opacity-50 transition-all duration-300 group-hover:scale-110"
+            className="absolute top-3 right-3 w-[50px] h-[50px] text-white opacity-50 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
             strokeWidth={2}
-            fill="white"
-            fillOpacity={0.3}
           />
 
           {/* Conteúdo */}
           <div className="relative z-10">
             <div className="text-[44px] font-bold text-white leading-none mb-1">
-              {achievements.length - unlockedAchievements}
+              10/40
             </div>
+
             <div className="text-[13px] font-medium text-white/90">
-              Concluídas
+              Missões Concluídas
             </div>
           </div>
         </div>
@@ -85,35 +84,39 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
         >
           {/* Ícone decorativo - Cadeado com Raio dentro */}
           <div className="absolute top-3 right-3 w-[45px] h-[45px]">
-            <Lock
-              className="w-[45px] h-[45px] text-white opacity-50 transition-all duration-300 group-hover:scale-110"
+            <LockOpen
+              className="w-[45px] h-[45px] text-white opacity-50 transition-opacity duration-300"
               strokeWidth={2}
             />
+
             <Zap
-              className="absolute top-[60%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[16px] h-[16px] text-white opacity-80"
+              className="absolute top-[23px] left-1/2 -translate-x-1/2 w-[16px] h-[16px] text-white opacity-80"
               strokeWidth={2.5}
               fill="white"
-              fillOpacity={0.4}
             />
+
+
           </div>
 
           {/* Conteúdo */}
           <div className="relative z-10">
             <div className="text-[44px] font-bold text-white leading-none mb-1">
-              {achievements.length - unlockedAchievements}
+              2/30
             </div>
+
             <div className="text-[13px] font-medium text-white/90">
-              Bloqueadas
+              Missões Desbloqueadas
             </div>
           </div>
         </div>
 
-        {/* CARD 3 - MEDALHAS (Dourado/Amarelo) */}
+        {/* CARD 3 - MEDALHAS */}
+
         <div
-          className="relative bg-gradient-to-r from-[#FFD700] to-[#FFA500] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
+          className="relative bg-gradient-to-r from-[#3B82F6] to-[#2563EB] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
-          {/* Ícone decorativo - Award/Medalha */}
-          <Award
+          {/* Ícone decorativo - Medalha */}
+          <Medal
             className="absolute top-3 right-3 w-[50px] h-[50px] text-white opacity-50 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
             strokeWidth={2}
           />
@@ -121,13 +124,15 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
           {/* Conteúdo */}
           <div className="relative z-10">
             <div className="text-[44px] font-bold text-white leading-none mb-1">
-              {unlockedAchievements}
+              11
             </div>
+
             <div className="text-[13px] font-medium text-white/90">
               Medalhas
             </div>
           </div>
         </div>
+
       </div>
 
       {/* Achievements Grid */}

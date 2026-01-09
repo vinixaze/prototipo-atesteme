@@ -118,7 +118,7 @@ export default function WelcomePage({
             />
 
             <p className="mt-1 text-xs sm:text-sm text-gray-500 text-center tracking-wide">
-              Plataforma educacional
+              Plataforma Educacional
             </p>
 
           </div>

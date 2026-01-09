@@ -52,7 +52,7 @@ export default function Sidebar({
   }, []);
   const menuItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    { id: 'habilidades', icon: Target, label: 'Habilidades' },
+    { id: 'habilidades', icon: Target, label: 'Competências' },
     { id: 'progresso', icon: TrendingUp, label: 'Progresso' },
     { id: 'conteudo', icon: FileText, label: 'Conteúdo' },
     { id: 'plano-aula', icon: BookOpen, label: 'Plano de Aula' },
@@ -179,18 +179,18 @@ export default function Sidebar({
 
         {/* Habilidades */}
         <button
-          onClick={() => onNavigate?.('habilidades')}
+          onClick={() => onNavigate?.('competências')}
           className={`
       flex-1 flex flex-col items-center justify-center gap-1
       py-2 rounded-xl transition
-      ${currentPage === 'habilidades'
+      ${currentPage === 'competências'
               ? 'text-[#8B27FF] dark:text-[#C084FC]'
               : 'text-gray-500 dark:text-gray-400'
             }
     `}
         >
           <Target className="w-7 h-7" />
-          <span className="text-[11px] font-semibold leading-none">Habilidades</span>
+          <span className="text-[11px] font-semibold leading-none">Competências</span>
         </button>
 
         {/* Progresso */}

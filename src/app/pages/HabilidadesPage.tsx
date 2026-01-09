@@ -181,7 +181,7 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
                   Competências Digitais
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
-                  Desenvolva suas competências nos eixos da BNCC Computação/Letramento Digita  </p>
+                  Desenvolva suas competências nos eixos da BNCC Computação/Letramento Digital  </p>
               </div>
 
               {/* Noções Básicas panel (desktop only, closable) */}
@@ -217,11 +217,11 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
 
 
 
-            {/* Search and Filter (Filter moved above search) */}
+            {/* Search and Filter */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
-              <div className="flex flex-col gap-4">
-                {/* Filter by Area (moved above) */}
-                <div className="md:w-72">
+              <div className="flex flex-col md:flex-row gap-4">
+                {/* Select (25%) */}
+                <div className="w-full md:w-1/4">
                   <select
                     value={selectedArea}
                     onChange={(e) => setSelectedArea(e.target.value)}
@@ -236,8 +236,8 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
                   </select>
                 </div>
 
-                {/* Search */}
-                <div className="flex-1 relative">
+                {/* Search (75%) */}
+                <div className="w-full md:w-3/4 relative">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
@@ -249,6 +249,7 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
                 </div>
               </div>
             </div>
+
 
             {/* Categories and Skills */}
             <div className="space-y-12">

@@ -9,7 +9,7 @@ import { getCompetencyStatus, startCompetencyTimer } from '../utils/competencySt
 import {
   AlertCircle, ClipboardList, Trophy, Lock, Search, MessageCircle, FolderOpen, X,
   Award, Clock, Users, School, Globe, Coins, Medal, Info,
-  ChevronLeft, ChevronRight, Monitor, Lightbulb, FileCheck, PlayCircle
+  ChevronLeft, ChevronRight, Monitor, Lightbulb, FileCheck, PlayCircle, Target
 } from 'lucide-react';
 
 interface DashboardPageProps {
@@ -279,11 +279,15 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                 </div>
 
                 <button
-                  onClick={() => setShowWelcomeBanner(false)}
-                  className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 flex items-center justify-center transition-all hover:scale-110 hover:rotate-90 duration-300 z-20"
+                  onClick={() => {
+                    setShowWelcomeBanner(false);
+                    localStorage.setItem('welcomeBannerClosed', 'true');
+                  }}
+                  className="absolute top-3 right-3 w-6 h-6 rounded-full bg-gray-300/40 dark:bg-gray-600/40 backdrop-blur-sm hover:bg-gray-400/50 dark:hover:bg-gray-500/50 flex items-center justify-center transition-all hover:scale-105 hover:rotate-90 duration-300 z-20"
                 >
-                  <X className="w-5 h-5 text-white" />
+                  <X className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                 </button>
+
 
                 <div className="relative z-10 flex items-center gap-4">
                   <motion.div
@@ -358,7 +362,7 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                         Noções Básicas
                       </h3>
                       <p className="text-gray-700 dark:text-gray-300 text-xs sm:text-sm leading-relaxed">
-                        Conteúdos fundamentais sobre informática, internet e vida digital. Recomendado antes de iniciar sua jornada no Nível 1.
+                        Sobre informática, internet e mundo digital. Muito recomendado fazer antes de iniciar a jornada no Nível 1.
                       </p>
                     </div>
                   </div>
@@ -411,120 +415,136 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                 </div>
               </motion.div>
 
-              {/* Card 2: Progresso + Gráfico de Barras */}
+              {/* Card 2: Progresso (2 cards dentro) */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all h-full min-h-[180px] flex flex-col md:flex-row md:items-center gap-6 md:gap-8"
+                className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all h-full min-h-[180px]"
               >
-                {/* Progresso - Número Grande */}
-                <div className="flex flex-col items-center justify-center min-w-[90px] sm:min-w-[100px]">
-                  <p className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">
-                    Progresso
-                  </p>
+                {/* Grid interna: 2 cards internos */}
+                <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-4 md:gap-6 h-full">
 
-                  <motion.div
-                    ref={competencyBarsRef}
-                    initial={{ scale: 0 }}
-                    animate={competencyBarsInView ? { scale: 1 } : { scale: 0 }}
-                    transition={{ duration: 0.5, delay: 0.6, type: "spring" }}
-                    className={`text-5xl sm:text-6xl font-black bg-gradient-to-br ${colors.textGradient} bg-clip-text text-transparent`}
-                  >
-                    <CountUp end={overallPercentage} suffix="%" />
-                  </motion.div>
-                </div>
+                  {/* CARD INTERNO 1 - Porcentagem */}
+                  <div className="bg-gray-50 dark:bg-gray-900/30 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 flex flex-col items-center justify-center">
+                    <p className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">
+                      Progresso
+                    </p>
 
-                {/* Divisória: horizontal no mobile, vertical no desktop */}
-                <div className="w-full h-px md:h-full md:w-px bg-gradient-to-r md:bg-gradient-to-b from-transparent via-gray-300 dark:via-gray-600 to-transparent" />
+                    <motion.div
+                      ref={competencyBarsRef}
+                      initial={{ scale: 0 }}
+                      animate={competencyBarsInView ? { scale: 1 } : { scale: 0 }}
+                      transition={{ duration: 0.5, delay: 0.6, type: "spring" }}
+                      className={`text-5xl sm:text-6xl font-black bg-gradient-to-br ${colors.textGradient} bg-clip-text text-transparent`}
+                    >
+                      <CountUp end={overallPercentage} suffix="%" />
+                    </motion.div>
+                  </div>
 
-                {/* Gráfico de Barras - Compacto */}
-                <div className="flex-1 w-full min-w-0 flex flex-col justify-center space-y-2.5">
-                  {progressData.map((item, index) => (
-                    <div key={index}>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide leading-tight whitespace-normal break-words">
-                          {item.category}
-                        </span>
-                      </div>
+                  {/* CARD INTERNO 2 - Gráfico */}
+                  <div className="bg-gray-50 dark:bg-gray-900/30 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 flex flex-col justify-center">
+                    <div className="flex-1 w-full min-w-0 flex flex-col justify-center space-y-2.5">
+                      {progressData.map((item, index) => (
+                        <div key={index}>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-[10px] font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide leading-tight whitespace-normal break-words">
+                              {item.category}
+                            </span>
+                          </div>
 
-                      {/* MOBILE (sem tooltip) */}
-                      <div className="relative h-2.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden md:hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={competencyBarsInView ? { width: `${item.percentage}%` } : { width: 0 }}
-                          transition={{
-                            duration: 1.2,
-                            delay: 0.15 * index,
-                            ease: [0.25, 0.1, 0.25, 1],
-                          }}
-                          className="h-full rounded-full shadow-sm"
-                          style={{ backgroundColor: item.color }}
-                        />
-                      </div>
+                          {/* MOBILE (sem tooltip) */}
+                          <div className="relative h-2.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden md:hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              animate={competencyBarsInView ? { width: `${item.percentage}%` } : { width: 0 }}
+                              transition={{
+                                duration: 1.2,
+                                delay: 0.15 * index,
+                                ease: [0.25, 0.1, 0.25, 1],
+                              }}
+                              className="h-full rounded-full shadow-sm"
+                              style={{ backgroundColor: item.color }}
+                            />
+                          </div>
 
-                      {/* DESKTOP (com tooltip no hover) - CORRIGIDO */}
-                      <div className="relative group hidden md:block">
-                        <div className="relative h-2.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={competencyBarsInView ? { width: `${item.percentage}%` } : { width: 0 }}
-                            transition={{
-                              duration: 1.2,
-                              delay: 0.15 * index,
-                              ease: [0.25, 0.1, 0.25, 1],
-                            }}
-                            className="h-full rounded-full shadow-sm"
-                            style={{ backgroundColor: item.color }}
-                          />
-                        </div>
+                          {/* DESKTOP (com tooltip no hover) */}
+                          <div className="relative group hidden md:block">
+                            <div className="relative h-2.5 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                              <motion.div
+                                initial={{ width: 0 }}
+                                animate={competencyBarsInView ? { width: `${item.percentage}%` } : { width: 0 }}
+                                transition={{
+                                  duration: 1.2,
+                                  delay: 0.15 * index,
+                                  ease: [0.25, 0.1, 0.25, 1],
+                                }}
+                                className="h-full rounded-full shadow-sm"
+                                style={{ backgroundColor: item.color }}
+                              />
+                            </div>
 
-                        {/* Tooltip */}
-                        <div
-                          className="pointer-events-none absolute -top-8 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20"
-                          style={{ left: `${item.percentage}%`, transform: 'translateX(-50%)' }}
-                        >
-                          <div
-                            className="px-2 py-1 text-[10px] font-bold text-white rounded-md shadow-lg"
-                            style={{ backgroundColor: item.color }}
-                          >
-                            {item.percentage}%
+                            {/* Tooltip */}
+                            <div
+                              className="pointer-events-none absolute -top-8 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20"
+                              style={{ left: `${item.percentage}%`, transform: "translateX(-50%)" }}
+                            >
+                              <div
+                                className="px-2 py-1 text-[10px] font-bold text-white rounded-md shadow-lg"
+                                style={{ backgroundColor: item.color }}
+                              >
+                                {item.percentage}%
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+
                 </div>
               </motion.div>
 
+
               {/* Card 3: Logo da Organização */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl flex items-center justify-center w-full lg:w-[180px] h-full min-h-[180px] overflow-hidden border-2 border-gray-200 dark:border-gray-700"
-              >
+  initial={{ opacity: 0, scale: 0.9 }}
+  animate={{ opacity: 1, scale: 1 }}
+  transition={{ duration: 0.5, delay: 0.4 }}
+  className="relative bg-white dark:bg-gray-800 rounded-xl shadow-lg 
+             flex items-center justify-center 
+             w-full h-full min-h-[145px] 
+             overflow-hidden 
+             border-2 border-gray-200 dark:border-gray-700
+             md:col-span-2 lg:col-span-3"
+>
+
+
                 {/* Efeitos de fundo sutis */}
                 <div className="absolute inset-0 opacity-5">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500 rounded-full blur-2xl"></div>
-                  <div className="absolute bottom-0 left-0 w-24 h-24 bg-purple-400 rounded-full blur-2xl"></div>
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500 rounded-full blur-2xl"></div>
+                  <div className="absolute bottom-0 left-0 w-20 h-20 bg-purple-400 rounded-full blur-2xl"></div>
                 </div>
 
-                <div className="relative z-10 text-center p-6">
-                  <p className="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-[0.15em] mb-2">
+                <div className="relative z-10 text-center p-4">
+                  <p className="text-gray-400 dark:text-gray-500 text-[9px] font-normal uppercase tracking-[0.1em] mb-0.5">
                     CONTA DE
                   </p>
-                  <h2 className="text-gray-800 dark:text-gray-200 text-2xl font-black uppercase tracking-tight mb-2">
+
+                  <h2 className="text-gray-600 dark:text-gray-400 text-base font-medium uppercase tracking-tight mb-0.5">
                     ORGANIZAÇÃO
                   </h2>
-                  <div className="flex items-center justify-center gap-1.5">
+
+                  <div className="flex items-center justify-center gap-1">
                     <div className="w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm font-bold tracking-wide">
+                    <p className="text-gray-600 dark:text-gray-300 text-xs font-bold tracking-wide">
                       ateste<span className="text-[#8B27FF]">me</span>
                     </p>
                   </div>
                 </div>
               </motion.div>
+
+
             </div>
 
             {/* 4. LAYOUT DE DUAS COLUNAS */}
@@ -610,7 +630,7 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
                       transition={{ duration: 0.4, delay: 0.4 }}
                       className="bg-purple-50 dark:bg-purple-900/30 rounded-xl p-4 text-center flex flex-col justify-center shadow-md hover:shadow-lg transition-shadow"
                     >
-                      <Award className="w-10 h-10 mx-auto mb-2 text-[#7B1FA2] dark:text-purple-400 opacity-60" />
+                      <Target className="w-10 h-10 mx-auto mb-2 text-[#7B1FA2] dark:text-purple-400 opacity-60" />
                       <p className="text-2xl font-bold text-[#7B1FA2] dark:text-purple-300 opacity-70 mb-1">
                         <CountUp end={7} />/<CountUp end={16} />
                       </p>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import React from "react";
+import { useRef, useMemo, useEffect } from 'react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { motion, AnimatePresence } from 'motion/react';
@@ -22,11 +23,14 @@ import {
   Copy,
   Send,
   Loader,
+  Search,
+
 } from 'lucide-react';
 
 interface PlanoAulaPageProps {
   navigateTo: (page: string) => void;
-  userRole?: 'admin' | 'user';}
+  userRole?: 'admin' | 'user';
+}
 
 interface PlanoAula {
   id: number;
@@ -45,31 +49,196 @@ interface FormData {
   componenteCurricular: string;
   ano: string;
   tema: string;
-  
+
   // Etapa 2: Configurações da Aula
   duracao: string;
   duracaoCustom: string;
   recursoDidatico: string[];
   formaAvaliacao: string[];
-  
+
   // Etapa 3: BNCC e Habilidades
   objetoConhecimento: string;
   habilidadesBNCCGeral: string[];
   habilidadesBNCCComputacao: string[];
-  
+
   // Etapa 4: Contexto Educacional
   etapaEnsino: string;
   tempoAula: string;
   metodologia: string[];
-  
+
   // Etapa 5: Atividades e Adaptações
   tiposAtividades: string[];
   adaptacoes: string[];
-  
+
   // Etapa 6: Localização (Opcional)
   unidadeFederativa: string;
   cidade: string;
   escola: string;
+}
+
+
+type BnccSkill = { code: string; text: string; type: "geral" | "computacao" };
+
+const BNCC_SKILLS: BnccSkill[] = [
+  // ===== GERAL =====
+  { code: "CG01", text: "Pensamento científico, crítico e criativo", type: "geral" },
+  { code: "CG02", text: "Repertório cultural", type: "geral" },
+  { code: "CG03", text: "Comunicação", type: "geral" },
+  { code: "CG04", text: "Cultura digital", type: "geral" },
+  { code: "CG05", text: "Trabalho e projeto de vida", type: "geral" },
+  { code: "CG06", text: "Argumentação", type: "geral" },
+  { code: "CG07", text: "Autoconhecimento e autocuidado", type: "geral" },
+  { code: "CG08", text: "Empatia e cooperação", type: "geral" },
+  { code: "CG09", text: "Responsabilidade e cidadania", type: "geral" },
+
+  // ===== COMPUTAÇÃO =====
+  { code: "CC01", text: "Cultura Digital — segurança e ética", type: "computacao" },
+  { code: "CC02", text: "Pensamento Computacional — decomposição", type: "computacao" },
+  { code: "CC03", text: "Mundo Digital — redes e dados", type: "computacao" },
+  { code: "CC04", text: "Algoritmos — sequências e instruções", type: "computacao" },
+  { code: "CC05", text: "Dados — coleta e representação", type: "computacao" },
+  { code: "CC06", text: "Programação — condições e repetição", type: "computacao" },
+  { code: "CC07", text: "Depuração — testar e melhorar soluções", type: "computacao" },
+  { code: "CC08", text: "Impactos sociais da tecnologia", type: "computacao" },
+];
+
+
+type BnccMultiSelectProps = {
+  label: string;
+  placeholder?: string;
+  type: "geral" | "computacao";
+  selected: string[];
+  onChange: (next: string[]) => void;
+};
+
+function BnccMultiSelect({
+  label,
+  placeholder = "Digite um código ou palavra-chave…",
+  type,
+  selected,
+  onChange,
+}: BnccMultiSelectProps) {
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  const options = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const base = BNCC_SKILLS.filter((s) => s.type === type);
+
+    const filtered = !q
+      ? base
+      : base.filter(
+        (s) =>
+          s.code.toLowerCase().includes(q) ||
+          s.text.toLowerCase().includes(q)
+      );
+
+    // mostra mais itens antes de scrollar
+    return filtered.slice(0, 50);
+  }, [query, type]);
+
+
+  const add = (code: string) => {
+    if (selected.includes(code)) return;
+    onChange([...selected, code]);
+    setQuery("");
+    setOpen(false);
+  };
+
+  const remove = (code: string) => onChange(selected.filter((c) => c !== code));
+
+  useEffect(() => {
+    const onDoc = (e: MouseEvent) => {
+      if (!containerRef.current) return;
+      if (!containerRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, []);
+
+  return (
+    <div className="space-y-2" ref={containerRef}>
+      <label className="block text-sm font-bold text-gray-700 dark:text-gray-300">
+        {label}
+      </label>
+
+      <div className="relative">
+        <input
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => setOpen(true)}
+          placeholder={placeholder}
+          className="w-full pl-11 pr-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
+        />
+
+        <div className="absolute left-3 top-1/2 -translate-y-1/2">
+          <Search className="w-5 h-5 text-gray-400" />
+        </div>
+
+        {open && (
+          <div className="absolute z-20 mt-2 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl overflow-hidden">
+            <div
+              className="max-h-64 overflow-y-auto overscroll-contain"
+              onWheelCapture={(e) => e.stopPropagation()}
+              onTouchMoveCapture={(e) => e.stopPropagation()}
+            >
+              {options.length === 0 ? (
+                <div className="px-4 py-3 text-sm text-gray-500">Nenhum resultado</div>
+              ) : (
+                options.map((opt) => (
+                  <button
+                    key={opt.code}
+                    type="button"
+                    onClick={() => add(opt.code)}
+                    className="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    <div className="text-sm font-bold text-gray-900 dark:text-white">
+                      {opt.code}
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
+                      {opt.text}
+                    </div>
+                  </button>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+
+      </div>
+
+      {/* Chips selecionados */}
+      {selected.length > 0 && (
+        <div className="flex flex-wrap gap-2 pt-1">
+          {selected.map((code) => {
+            const item = BNCC_SKILLS.find((s) => s.code === code);
+            return (
+              <div
+                key={code}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#8B27FF]/10 text-[#8B27FF] border border-[#8B27FF]/20"
+              >
+                <span className="text-xs font-bold">{code}</span>
+                <span className="text-xs hidden sm:inline max-w-[260px] truncate">
+                  {item?.text}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => remove(code)}
+                  className="p-0.5 hover:bg-[#8B27FF]/10 rounded-full"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPageProps) {
@@ -78,7 +247,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
   const [currentStep, setCurrentStep] = useState(1);
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  
+
   const [formData, setFormData] = useState<FormData>({
     componenteCurricular: '',
     ano: '',
@@ -171,43 +340,43 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
 
   const generatePrompt = () => {
     setIsGenerating(true);
-    
+
     // Simular geração de prompt
     setTimeout(() => {
       let prompt = `Crie um plano de aula completo e detalhado com as seguintes especificações:\n\n`;
-      
+
       // Informações Básicas
       prompt += `📚 INFORMAÇÕES BÁSICAS:\n`;
       if (formData.componenteCurricular) prompt += `- Componente Curricular: ${formData.componenteCurricular}\n`;
       if (formData.ano) prompt += `- Ano/Série: ${formData.ano}\n`;
       if (formData.tema) prompt += `- Tema da Aula: ${formData.tema}\n`;
       prompt += `\n`;
-      
+
       // Configurações da Aula
       prompt += `⏱️ CONFIGURAÇÕES DA AULA:\n`;
       if (formData.duracao) prompt += `- Duração: ${formData.duracao === 'outro' ? formData.duracaoCustom : formData.duracao}\n`;
       if (formData.recursoDidatico.length > 0) prompt += `- Recursos Didáticos: ${formData.recursoDidatico.join(', ')}\n`;
       if (formData.formaAvaliacao.length > 0) prompt += `- Formas de Avaliação: ${formData.formaAvaliacao.join(', ')}\n`;
       prompt += `\n`;
-      
+
       // BNCC e Habilidades
       if (formData.objetoConhecimento || formData.habilidadesBNCCGeral.length > 0 || formData.habilidadesBNCCComputacao.length > 0) {
         prompt += `🎯 BNCC E HABILIDADES:\n`;
         if (formData.objetoConhecimento) prompt += `- Objeto de Conhecimento: ${formData.objetoConhecimento}\n`;
         if (formData.habilidadesBNCCGeral.length > 0) prompt += `- Habilidades BNCC Geral: ${formData.habilidadesBNCCGeral.join(', ')}\n`;
-        if (formData.habilidadesBNCCComputacao.length > 0) prompt += `- Habilidades BNCC Computação Digital: ${formData.habilidadesBNCCComputacao.join(', ')}\n`;
+        if (formData.habilidadesBNCCComputacao.length > 0) prompt += `- Habilidades BNCC Computação : ${formData.habilidadesBNCCComputacao.join(', ')}\n`;
         prompt += `\n`;
       }
-      
+
       // Contexto Educacional
       if (formData.etapaEnsino || formData.tempoAula || formData.metodologia.length > 0) {
         prompt += `🏫 CONTEXTO EDUCACIONAL:\n`;
-        if (formData.etapaEnsino) prompt += `- Etapa de Ensino: ${formData.etapaEnsino}\n`;
+
         if (formData.tempoAula) prompt += `- Tempo de Aula: ${formData.tempoAula}\n`;
         if (formData.metodologia.length > 0) prompt += `- Metodologias: ${formData.metodologia.join(', ')}\n`;
         prompt += `\n`;
       }
-      
+
       // Atividades e Adaptações
       if (formData.tiposAtividades.length > 0 || formData.adaptacoes.length > 0) {
         prompt += `✨ ATIVIDADES E ADAPTAÇÕES:\n`;
@@ -215,7 +384,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
         if (formData.adaptacoes.length > 0) prompt += `- Adaptações Necessárias: ${formData.adaptacoes.join(', ')}\n`;
         prompt += `\n`;
       }
-      
+
       // Localização
       if (formData.unidadeFederativa || formData.cidade || formData.escola) {
         prompt += `📍 LOCALIZAÇÃO:\n`;
@@ -224,7 +393,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
         if (formData.escola) prompt += `- Escola: ${formData.escola}\n`;
         prompt += `\n`;
       }
-      
+
       prompt += `\n📝 Por favor, estruture o plano de aula incluindo:\n`;
       prompt += `1. Objetivos de Aprendizagem\n`;
       prompt += `2. Conteúdos Programáticos\n`;
@@ -234,7 +403,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
       prompt += `6. Atividades Práticas\n`;
       prompt += `7. Avaliação\n`;
       prompt += `8. Referências e Materiais de Apoio\n`;
-      
+
       setGeneratedPrompt(prompt);
       setIsGenerating(false);
     }, 1500);
@@ -250,7 +419,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-    
+
     try {
       document.execCommand('copy');
       textArea.remove();
@@ -279,7 +448,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Informações Básicas</h3>
               <p className="text-gray-600 dark:text-gray-400">Vamos começar com as informações essenciais da sua aula</p>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
@@ -353,7 +522,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Configurações da Aula</h3>
               <p className="text-gray-600 dark:text-gray-400">Defina duração, recursos e formas de avaliação</p>
             </div>
-            
+
             <div className="space-y-6">
               {/* Duração */}
               <div>
@@ -436,8 +605,8 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">BNCC e Habilidades</h3>
               <p className="text-gray-600 dark:text-gray-400">Alinhe sua aula com a Base Nacional Comum Curricular</p>
             </div>
-            
-            <div className="space-y-6">
+
+            <div className=" relative space-y-6">
               {/* Objeto de Conhecimento */}
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
@@ -452,45 +621,22 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
                 />
               </div>
 
-              {/* Habilidades BNCC Geral */}
-              <div>
-                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
-                  Habilidades da BNCC Geral
-                </label>
-                <div className="space-y-2">
-                  {['Pensamento científico, crítico e criativo', 'Repertório cultural', 'Comunicação', 'Cultura digital', 'Trabalho e projeto de vida', 'Argumentação', 'Autoconhecimento e autocuidado', 'Empatia e cooperação', 'Responsabilidade e cidadania'].map((hab) => (
-                    <label key={hab} className="flex items-center gap-3 p-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl hover:border-[#8B27FF] dark:hover:border-[#A855F7] cursor-pointer transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={formData.habilidadesBNCCGeral.includes(hab)}
-                        onChange={() => handleCheckboxChange('habilidadesBNCCGeral', hab)}
-                        className="w-4 h-4 text-[#8B27FF] focus:ring-[#8B27FF] rounded"
-                      />
-                      <span className="text-sm text-gray-900 dark:text-white font-medium">{hab}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
+              {/* Habilidades BNCC Geral (busca digitando) */}
+              <BnccMultiSelect
+                label="Habilidades da BNCC Geral"
+                type="geral"
+                selected={formData.habilidadesBNCCGeral}
+                onChange={(next) => setFormData({ ...formData, habilidadesBNCCGeral: next })}
+              />
 
-              {/* Habilidades BNCC Computação */}
-              <div>
-                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
-                  Eixos da BNCC Computação Digital
-                </label>
-                <div className="space-y-2">
-                  {['Cultura Digital',  'Pensamento Computacional', 'Mundo Digital'].map((hab) => (
-                    <label key={hab} className="flex items-center gap-3 p-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl hover:border-[#8B27FF] dark:hover:border-[#A855F7] cursor-pointer transition-colors">
-                      <input
-                        type="checkbox"
-                        checked={formData.habilidadesBNCCComputacao.includes(hab)}
-                        onChange={() => handleCheckboxChange('habilidadesBNCCComputacao', hab)}
-                        className="w-4 h-4 text-[#8B27FF] focus:ring-[#8B27FF] rounded"
-                      />
-                      <span className="text-sm text-gray-900 dark:text-white font-medium">{hab}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
+              {/* Habilidades BNCC Computação (busca digitando) */}
+              <BnccMultiSelect
+                label="Habilidades da BNCC Computação"
+                type="computacao"
+                selected={formData.habilidadesBNCCComputacao}
+                onChange={(next) => setFormData({ ...formData, habilidadesBNCCComputacao: next })}
+              />
+
             </div>
           </div>
         );
@@ -502,26 +648,9 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Contexto Educacional</h3>
               <p className="text-gray-600 dark:text-gray-400">Informações sobre etapa de ensino e metodologias</p>
             </div>
-            
+
             <div className="space-y-6">
-              {/* Etapa de Ensino */}
-              <div>
-                <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-                  Etapa de Ensino
-                </label>
-                <select
-                  value={formData.etapaEnsino}
-                  onChange={(e) => setFormData({ ...formData, etapaEnsino: e.target.value })}
-                  className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
-                >
-                  <option value="">Selecione...</option>
-                  <option value="Educação Infantil">Educação Infantil</option>
-                  <option value="Ensino Fundamental I">Ensino Fundamental I (1º ao 5º ano)</option>
-                  <option value="Ensino Fundamental II">Ensino Fundamental II (6º ao 9º ano)</option>
-                  <option value="Ensino Médio">Ensino Médio</option>
-                  <option value="EJA">Educação de Jovens e Adultos (EJA)</option>
-                </select>
-              </div>
+
 
               {/* Tempo de Aula */}
               <div>
@@ -571,7 +700,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Atividades e Adaptações</h3>
               <p className="text-gray-600 dark:text-gray-400">Tipos de atividades e necessidades especiais</p>
             </div>
-            
+
             <div className="space-y-6">
               {/* Tipos de Atividades */}
               <div>
@@ -632,7 +761,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Localização (Opcional)</h3>
               <p className="text-gray-600 dark:text-gray-400">Adaptação aos referenciais curriculares estaduais</p>
             </div>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
@@ -768,12 +897,13 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
                       <p className="text-gray-600 dark:text-gray-400 mb-3">
                         {plano.descricao}
                       </p>
-                      
+
                       {/* BNCC Card */}
-                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-bold bg-gradient-to-r from-[#8B27FF] to-[#A855F7] shadow-md">
-                        <FileText className="w-4 h-4" />
+                      <div className="inline-flex items-center gap-2 rounded-full border border-[#8B27FF]/15 bg-[#8B27FF]/8 px-2.5 py-1 text-[11px] font-semibold text-[#8B27FF]">
+                        <span className="h-2 w-2 rounded-full bg-[#8B27FF]/35" />
                         BNCC: {plano.codigoBNCC}
                       </div>
+
                     </div>
 
                     {/* Actions */}
@@ -813,7 +943,7 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
                     <div className="flex items-center gap-2">
                       <Users className="w-4 h-4 text-gray-400" />
                       <span className="text-sm text-gray-600 dark:text-gray-400">
-                        {plano.turma} 
+                        {plano.turma}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -887,7 +1017,8 @@ export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPagePro
                     <Sparkles className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-white">Gerador de Plano de Aula com IA</h2>
+                    <h2 className="text-2xl font-bold text-white">Gerar Prompt </h2>
+                    <span className="text-white text-lg">Plano de aula com IA</span>
                     <p className="text-white/80 text-sm">
                       {generatedPrompt ? 'Prompt gerado com sucesso!' : `Etapa ${currentStep} de ${totalSteps}`}
                     </p>

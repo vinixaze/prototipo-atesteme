@@ -1,9 +1,18 @@
-import { useState, useRef, useEffect } from 'react';
-import React from "react";
-import { Filter, Search, ChevronDown, Check, X, Tag, Book, Lightbulb, Calendar, CheckSquare, Clock, ArrowRight, RotateCcw, ChevronLeft, ChevronRight, Sparkles, Eye } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
-import Header from '../components/Header';
-import Sidebar from '../components/Sidebar';
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import {
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+  Eye,
+  Check,
+  X,
+  Clock,
+  ArrowRight,
+} from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import Header from "../components/Header";
+import Sidebar from "../components/Sidebar";
 
 interface TransversalityPageProps {
   navigateTo: (page: string, data?: any) => void;
@@ -19,14 +28,179 @@ interface FilterOption {
 }
 
 interface SelectedFilters {
-  filterType: string;
-  curricular?: string;
+  filterType: '' | 'curricular' | 'bncc';
+
+  // Curricular
   component?: string;
   thematic?: string;
   year?: string;
-  bnccType?: string;
-  bnccCodes?: string[];
+
+  // BNCC (novo fluxo)
+  bnccType?: 'geral' | 'computacao';
+  bnccCode?: string; // apenas 1 código
 }
+
+
+
+type BnccCode = {
+  value: string;
+  label: string;
+  bnccType: "geral" | "computacao";
+  component?: string; // portugues | matematica | ...
+};
+
+type HistoryItem = {
+  date: Date;
+  filters: SelectedFilters;
+  label: string;
+};
+
+type BnccSingleSelectProps = {
+  label: string;
+  placeholder?: string;
+  options: { value: string; label: string }[];
+  value?: string; // selecionado (1)
+  onChange: (next?: string) => void; // undefined = limpar
+};
+
+function BnccSingleSelect({
+  label,
+  placeholder = "Digite um código…",
+  options,
+  value,
+  onChange,
+}: BnccSingleSelectProps) {
+  const [query, setQuery] = useState(value ?? "");
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setQuery(value ?? "");
+  }, [value]);
+
+  const filtered = useMemo<{ value: string; label: string }[]>(() => {
+    const q = query.trim().toLowerCase();
+    const base = options;
+
+    if (!q) return base.slice(0, 80);
+
+    return base
+      .filter(
+        (o) =>
+          o.value.toLowerCase().includes(q) ||
+          o.label.toLowerCase().includes(q)
+      )
+      .slice(0, 80);
+  }, [query, options]);
+
+
+  useEffect(() => {
+    const onDoc = (e: MouseEvent) => {
+      if (!containerRef.current) return;
+      if (!containerRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    return () => document.removeEventListener("mousedown", onDoc);
+  }, []);
+
+  const pick = (code: string) => {
+    onChange(code);      // ✅ só 1 (substitui)
+    setOpen(false);
+  };
+
+  const clear = () => {
+    onChange(undefined);
+    setQuery("");
+    setOpen(false);
+  };
+
+  return (
+    <div className="space-y-2" ref={containerRef}>
+      <label className="block text-sm font-bold text-gray-700 dark:text-gray-300">
+        {label} <span className="text-red-500">*</span>
+      </label>
+
+      <div className="relative">
+        <input
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => setOpen(true)}
+          placeholder={placeholder}
+          className="w-full pl-11 pr-10 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
+        />
+
+        <div className="absolute left-3 top-1/2 -translate-y-1/2">
+          <Search className="w-5 h-5 text-gray-400" />
+        </div>
+
+        {(query || value) && (
+          <button
+            type="button"
+            onClick={clear}
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 flex items-center justify-center"
+            aria-label="Limpar"
+          >
+            <X className="w-4 h-4 text-gray-500" />
+          </button>
+        )}
+
+        {open && (
+          <div className="absolute z-20 mt-2 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl overflow-hidden">
+            {/* ✅ Scroll só aqui (não mexe no scroll do modal) */}
+            <div
+              className="max-h-64 overflow-y-auto overscroll-contain"
+              onWheelCapture={(e) => e.stopPropagation()}
+              onTouchMoveCapture={(e) => e.stopPropagation()}
+            >
+              {filtered.length === 0 ? (
+                <div className="px-4 py-3 text-sm text-gray-500">
+                  Nenhum resultado
+                </div>
+              ) : (
+                filtered.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => pick(opt.value)}
+                    className={`w-full text-left px-4 py-3 transition-colors ${value === opt.value
+                      ? "bg-[#8B27FF]/10"
+                      : "hover:bg-gray-50 dark:hover:bg-gray-700"
+                      }`}
+                  >
+                    <div className="text-sm font-bold text-gray-900 dark:text-white font-mono">
+                      {opt.label}
+                    </div>
+                  </button>
+                ))
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Chip do selecionado */}
+      {value && (
+        <div className="pt-1">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#8B27FF]/10 text-[#8B27FF] border border-[#8B27FF]/20">
+            <span className="text-xs font-bold font-mono">{value}</span>
+            <button
+              type="button"
+              onClick={clear}
+              className="p-0.5 hover:bg-[#8B27FF]/10 rounded-full"
+              aria-label="Remover"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 export default function TransversalityPage({
   navigateTo,
@@ -35,472 +209,315 @@ export default function TransversalityPage({
   onLogout,
 }: TransversalityPageProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [searchHistory, setSearchHistory] = useState<any[]>([
+
+  const [searchHistory, setSearchHistory] = useState<HistoryItem[]>([
     {
       date: new Date(Date.now() - 86400000),
-      filters: { filterType: 'curricular', curricular: 'portugues' },
-      label: 'Português - Interpretação de Texto',
+      filters: { filterType: "curricular", component: "portugues", thematic: "interpretacao-texto", year: "EF9" },
+      label: "Língua Portuguesa - Interpretação de texto (EF9)",
     },
     {
       date: new Date(Date.now() - 172800000),
-      filters: { filterType: 'bncc', bnccType: 'geral' },
-      label: 'Habilidade BNCC Geral',
+      filters: { filterType: "bncc", bnccType: "geral", bnccCode: "EM13LP28" },
+      label: "BNCC Geral - EM13LP28",
     },
     {
       date: new Date(Date.now() - 259200000),
-      filters: { filterType: 'curricular', curricular: 'matematica' },
-      label: 'Matemática - Álgebra',
+      filters: { filterType: "curricular", component: "matematica", thematic: "algebra", year: "EF8" },
+      label: "Matemática - Álgebra (EF8)",
     },
     {
       date: new Date(Date.now() - 345600000),
-      filters: { filterType: 'curricular', curricular: 'ciencias' },
-      label: 'Ciências - Matéria e Energia',
+      filters: { filterType: "curricular", component: "ciencias", thematic: "materia-energia", year: "EF7" },
+      label: "Ciências - Matéria e energia (EF7)",
     },
     {
       date: new Date(Date.now() - 432000000),
-      filters: { filterType: 'bncc', bnccType: 'computacao' },
-      label: 'Habilidade BNCC Computação',
+      filters: { filterType: "bncc", bnccType: "computacao", bnccCode: "EF06CO01" },
+      label: "BNCC Computação - EF06CO01",
     },
     {
       date: new Date(Date.now() - 518400000),
-      filters: { filterType: 'curricular', curricular: 'historia' },
-      label: 'História - Brasil Colônia',
+      filters: { filterType: "curricular", component: "historia", thematic: "brasil-colonia", year: "EF8" },
+      label: "História - Brasil Colônia (EF8)",
     },
   ]);
+
   const [showModal, setShowModal] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-  const totalSteps = 3;
 
-  // Estado dos filtros selecionados
+
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
-    filterType: '',
+    filterType: "",
   });
 
-  // Estado dos dropdowns abertos
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-
-  // Estado de busca dentro dos dropdowns
-  const [searchTerms, setSearchTerms] = useState<Record<string, string>>({});
-
-  // Estado de loading
   const [isSearching, setIsSearching] = useState(false);
 
-  // Refs para scroll automático
-  const curricularRef = useRef<HTMLDivElement>(null);
-  const componentRef = useRef<HTMLDivElement>(null);
-  const thematicRef = useRef<HTMLDivElement>(null);
-  const yearRef = useRef<HTMLDivElement>(null);
+  // refs (scroll suave quando completa campos)
   const bnccTypeRef = useRef<HTMLDivElement>(null);
-  const bnccCodesRef = useRef<HTMLDivElement>(null);
-  const searchButtonRef = useRef<HTMLDivElement>(null);
+  const codesRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
 
-  // Scroll automático quando novos filtros aparecem
-  useEffect(() => {
-    if (selectedFilters.filterType === 'curricular' && selectedFilters.curricular && curricularRef.current) {
-      setTimeout(() => {
-        curricularRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 100);
-    }
-  }, [selectedFilters.curricular]);
+  const totalSteps =
+    selectedFilters.filterType === "bncc" ? 2 : selectedFilters.filterType === "curricular" ? 2 : 1;
 
-  useEffect(() => {
-    if (selectedFilters.component && componentRef.current) {
-      setTimeout(() => {
-        componentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 100);
-    }
-  }, [selectedFilters.component]);
 
-  useEffect(() => {
-    if (selectedFilters.thematic && thematicRef.current) {
-      setTimeout(() => {
-        thematicRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 100);
-    }
-  }, [selectedFilters.thematic]);
-
-  useEffect(() => {
-    if (selectedFilters.year && searchButtonRef.current) {
-      setTimeout(() => {
-        searchButtonRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 100);
-    }
-  }, [selectedFilters.year]);
-
-  useEffect(() => {
-    if (selectedFilters.filterType === 'bncc' && selectedFilters.bnccType && bnccTypeRef.current) {
-      setTimeout(() => {
-        bnccTypeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 100);
-    }
-  }, [selectedFilters.bnccType]);
-
-  useEffect(() => {
-    if (selectedFilters.bnccCodes && selectedFilters.bnccCodes.length > 0 && searchButtonRef.current) {
-      setTimeout(() => {
-        searchButtonRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 100);
-    }
-  }, [selectedFilters.bnccCodes]);
-
-  // Dados dos filtros
+  // ====== Dados ======
   const filterTypeOptions: FilterOption[] = [
-    { value: 'curricular', label: 'Componente Curricular' },
-    { value: 'bncc', label: 'Habilidades BNCC (Códigos)' },
+    { value: "curricular", label: "Componente Curricular" },
+    { value: "bncc", label: "Habilidades BNCC (Códigos)" },
   ];
 
+  // Matérias (usadas tanto no curricular quanto no BNCC opcional)
   const curricularOptions: FilterOption[] = [
-    { value: 'matematica', label: 'Matemática', count: 245 },
-    { value: 'portugues', label: 'Língua Portuguesa', count: 312 },
-    { value: 'ingles', label: 'Língua Inglesa', count: 189 },
-    { value: 'educacao-fisica', label: 'Educação Física', count: 156 },
-    { value: 'geografia', label: 'Geografia', count: 198 },
-    { value: 'historia', label: 'História', count: 203 },
-    { value: 'arte', label: 'Arte', count: 167 },
-    { value: 'ciencias', label: 'Ciências', count: 221 },
+    { value: "matematica", label: "Matemática", count: 245 },
+    { value: "portugues", label: "Língua Portuguesa", count: 312 },
+    { value: "ingles", label: "Língua Inglesa", count: 189 },
+    { value: "educacao-fisica", label: "Educação Física", count: 156 },
+    { value: "geografia", label: "Geografia", count: 198 },
+    { value: "historia", label: "História", count: 203 },
+    { value: "arte", label: "Arte", count: 167 },
+    { value: "ciencias", label: "Ciências", count: 221 },
   ];
 
-  const componentOptions: Record<string, FilterOption[]> = {
+  // Temáticas dependem da matéria escolhida
+  const thematicOptionsByComponent: Record<string, FilterOption[]> = {
     portugues: [
-      { value: 'interpretacao-texto', label: 'Interpretação de texto', count: 87 },
-      { value: 'estrategia-leitura', label: 'Estratégia de leitura', count: 65 },
-      { value: 'construcao-sentidos', label: 'Construção de sentidos', count: 54 },
-      { value: 'estruturas-sintaticas', label: 'Estruturas sintáticas', count: 43 },
-      { value: 'ordem-sentenca', label: 'Ordem da sentença', count: 38 },
+      { value: "interpretacao-texto", label: "Interpretação de texto", count: 87 },
+      { value: "estrategia-leitura", label: "Estratégia de leitura", count: 65 },
+      { value: "construcao-sentidos", label: "Construção de sentidos", count: 54 },
+      { value: "estruturas-sintaticas", label: "Estruturas sintáticas", count: 43 },
+      { value: "ordem-sentenca", label: "Ordem da sentença", count: 38 },
     ],
     matematica: [
-      { value: 'algebra', label: 'Álgebra', count: 92 },
-      { value: 'geometria', label: 'Geometria', count: 78 },
-      { value: 'estatistica', label: 'Estatística', count: 45 },
-      { value: 'probabilidade', label: 'Probabilidade', count: 30 },
+      { value: "algebra", label: "Álgebra", count: 92 },
+      { value: "geometria", label: "Geometria", count: 78 },
+      { value: "estatistica", label: "Estatística", count: 45 },
+      { value: "probabilidade", label: "Probabilidade", count: 30 },
     ],
     ingles: [
-      { value: 'compreensao-oral', label: 'Compreensão oral', count: 56 },
-      { value: 'compreensao-escrita', label: 'Compreensão escrita', count: 48 },
-      { value: 'producao-oral', label: 'Produção oral', count: 42 },
-      { value: 'producao-escrita', label: 'Produção escrita', count: 43 },
+      { value: "compreensao-oral", label: "Compreensão oral", count: 56 },
+      { value: "compreensao-escrita", label: "Compreensão escrita", count: 48 },
+      { value: "producao-oral", label: "Produção oral", count: 42 },
+      { value: "producao-escrita", label: "Produção escrita", count: 43 },
     ],
-    'educacao-fisica': [
-      { value: 'esportes', label: 'Esportes', count: 45 },
-      { value: 'ginastica', label: 'Ginástica', count: 38 },
-      { value: 'danca', label: 'Dança', count: 35 },
-      { value: 'jogos', label: 'Jogos e brincadeiras', count: 38 },
+    "educacao-fisica": [
+      { value: "esportes", label: "Esportes", count: 45 },
+      { value: "ginastica", label: "Ginástica", count: 38 },
+      { value: "danca", label: "Dança", count: 35 },
+      { value: "jogos", label: "Jogos e brincadeiras", count: 38 },
     ],
     geografia: [
-      { value: 'cartografia', label: 'Cartografia', count: 52 },
-      { value: 'geopolitica', label: 'Geopolítica', count: 48 },
-      { value: 'meio-ambiente', label: 'Meio ambiente', count: 55 },
-      { value: 'urbanizacao', label: 'Urbanização', count: 43 },
+      { value: "cartografia", label: "Cartografia", count: 52 },
+      { value: "geopolitica", label: "Geopolítica", count: 48 },
+      { value: "meio-ambiente", label: "Meio ambiente", count: 55 },
+      { value: "urbanizacao", label: "Urbanização", count: 43 },
     ],
     historia: [
-      { value: 'brasil-colonia', label: 'Brasil Colônia', count: 51 },
-      { value: 'brasil-imperio', label: 'Brasil Império', count: 48 },
-      { value: 'brasil-republica', label: 'Brasil República', count: 54 },
-      { value: 'historia-geral', label: 'História Geral', count: 50 },
+      { value: "brasil-colonia", label: "Brasil Colônia", count: 51 },
+      { value: "brasil-imperio", label: "Brasil Império", count: 48 },
+      { value: "brasil-republica", label: "Brasil República", count: 54 },
+      { value: "historia-geral", label: "História Geral", count: 50 },
     ],
     arte: [
-      { value: 'artes-visuais', label: 'Artes Visuais', count: 42 },
-      { value: 'musica', label: 'Música', count: 38 },
-      { value: 'teatro', label: 'Teatro', count: 44 },
-      { value: 'danca-arte', label: 'Dança', count: 43 },
+      { value: "artes-visuais", label: "Artes Visuais", count: 42 },
+      { value: "musica", label: "Música", count: 38 },
+      { value: "teatro", label: "Teatro", count: 44 },
+      { value: "danca-arte", label: "Dança", count: 43 },
     ],
     ciencias: [
-      { value: 'materia-energia', label: 'Matéria e energia', count: 58 },
-      { value: 'vida-evolucao', label: 'Vida e evolução', count: 62 },
-      { value: 'terra-universo', label: 'Terra e universo', count: 55 },
-      { value: 'tecnologia', label: 'Tecnologia', count: 46 },
-    ],
-  };
-
-  const thematicOptions: Record<string, FilterOption[]> = {
-    'interpretacao-texto': [
-      { value: 'estrategia-leitura', label: 'Estratégia de leitura', count: 34 },
-      { value: 'analise-critica', label: 'Análise crítica', count: 28 },
-      { value: 'inferencia', label: 'Inferência', count: 25 },
-    ],
-    'estrategia-leitura': [
-      { value: 'skimming', label: 'Skimming', count: 22 },
-      { value: 'scanning', label: 'Scanning', count: 20 },
-      { value: 'predicao', label: 'Predição', count: 23 },
-    ],
-    'construcao-sentidos': [
-      { value: 'contexto', label: 'Contexto', count: 18 },
-      { value: 'coesao-coerencia', label: 'Coesão e coerência', count: 20 },
-      { value: 'intertextualidade', label: 'Intertextualidade', count: 16 },
-    ],
-    'estruturas-sintaticas': [
-      { value: 'analise-sintatica', label: 'Análise sintática', count: 15 },
-      { value: 'periodo-composto', label: 'Período composto', count: 14 },
-      { value: 'regencia-concordancia', label: 'Regência e concordância', count: 14 },
-    ],
-    'ordem-sentenca': [
-      { value: 'organizacao-textual', label: 'Organização textual', count: 12 },
-      { value: 'pontuacao', label: 'Pontuação', count: 13 },
-      { value: 'conectivos', label: 'Conectivos', count: 13 },
-    ],
-    'algebra': [
-      { value: 'equacoes', label: 'Equações', count: 30 },
-      { value: 'funcoes', label: 'Funções', count: 32 },
-      { value: 'expressoes', label: 'Expressões algébricas', count: 30 },
-    ],
-    'geometria': [
-      { value: 'plana', label: 'Geometria plana', count: 28 },
-      { value: 'espacial', label: 'Geometria espacial', count: 25 },
-      { value: 'analitica', label: 'Geometria analítica', count: 25 },
-    ],
-    'estatistica': [
-      { value: 'graficos', label: 'Gráficos e tabelas', count: 15 },
-      { value: 'medidas', label: 'Medidas estatísticas', count: 15 },
-      { value: 'analise-dados', label: 'Análise de dados', count: 15 },
-    ],
-    'probabilidade': [
-      { value: 'eventos', label: 'Eventos', count: 10 },
-      { value: 'combinatoria', label: 'Combinatória', count: 10 },
-      { value: 'probabilidade-condicional', label: 'Probabilidade condicional', count: 10 },
-    ],
-    'compreensao-oral': [
-      { value: 'listening', label: 'Compreensão auditiva', count: 19 },
-      { value: 'pronuncia', label: 'Pronúncia', count: 18 },
-      { value: 'dialogo', label: 'Diálogo', count: 19 },
-    ],
-    'compreensao-escrita': [
-      { value: 'reading', label: 'Leitura', count: 16 },
-      { value: 'vocabulario', label: 'Vocabulário', count: 16 },
-      { value: 'gramatica', label: 'Gramática', count: 16 },
-    ],
-    'producao-oral': [
-      { value: 'speaking', label: 'Fala', count: 14 },
-      { value: 'conversacao', label: 'Conversação', count: 14 },
-      { value: 'apresentacao', label: 'Apresentação', count: 14 },
-    ],
-    'producao-escrita': [
-      { value: 'writing', label: 'Escrita', count: 14 },
-      { value: 'redacao', label: 'Redação', count: 15 },
-      { value: 'estrutura-textual', label: 'Estrutura textual', count: 14 },
-    ],
-    'esportes': [
-      { value: 'futebol', label: 'Futebol', count: 15 },
-      { value: 'volei', label: 'Vôlei', count: 15 },
-      { value: 'basquete', label: 'Basquete', count: 15 },
-    ],
-    'ginastica': [
-      { value: 'artistica', label: 'Ginástica artística', count: 13 },
-      { value: 'ritmica', label: 'Ginástica rítmica', count: 12 },
-      { value: 'acrobatica', label: 'Ginástica acrobática', count: 13 },
-    ],
-    'danca': [
-      { value: 'popular', label: 'Dança popular', count: 12 },
-      { value: 'contemporanea', label: 'Dança contemporânea', count: 11 },
-      { value: 'folclorica', label: 'Dança folclórica', count: 12 },
-    ],
-    'jogos': [
-      { value: 'cooperativos', label: 'Jogos cooperativos', count: 13 },
-      { value: 'competitivos', label: 'Jogos competitivos', count: 12 },
-      { value: 'pre-desportivos', label: 'Jogos pré-desportivos', count: 13 },
-    ],
-    'cartografia': [
-      { value: 'mapas', label: 'Mapas', count: 17 },
-      { value: 'coordenadas', label: 'Coordenadas geográficas', count: 18 },
-      { value: 'escala', label: 'Escala', count: 17 },
-    ],
-    'geopolitica': [
-      { value: 'territorial', label: 'Organização territorial', count: 16 },
-      { value: 'conflitos', label: 'Conflitos', count: 16 },
-      { value: 'blocos-economicos', label: 'Blocos econômicos', count: 16 },
-    ],
-    'meio-ambiente': [
-      { value: 'sustentabilidade', label: 'Sustentabilidade', count: 18 },
-      { value: 'preservacao', label: 'Preservação', count: 19 },
-      { value: 'impactos', label: 'Impactos ambientais', count: 18 },
-    ],
-    'urbanizacao': [
-      { value: 'cidades', label: 'Desenvolvimento urbano', count: 14 },
-      { value: 'metropoles', label: 'Metrópoles', count: 15 },
-      { value: 'problemas-urbanos', label: 'Problemas urbanos', count: 14 },
-    ],
-    'brasil-colonia': [
-      { value: 'descobrimento', label: 'Descobrimento', count: 17 },
-      { value: 'ciclos-economicos', label: 'Ciclos econômicos', count: 17 },
-      { value: 'escravidao', label: 'Escravidão', count: 17 },
-    ],
-    'brasil-imperio': [
-      { value: 'independencia', label: 'Independência', count: 16 },
-      { value: 'primeiro-reinado', label: 'Primeiro reinado', count: 16 },
-      { value: 'segundo-reinado', label: 'Segundo reinado', count: 16 },
-    ],
-    'brasil-republica': [
-      { value: 'velha-republica', label: 'República Velha', count: 18 },
-      { value: 'era-vargas', label: 'Era Vargas', count: 18 },
-      { value: 'ditadura-militar', label: 'Ditadura militar', count: 18 },
-    ],
-    'historia-geral': [
-      { value: 'antiguidade', label: 'Antiguidade', count: 17 },
-      { value: 'idade-media', label: 'Idade Média', count: 17 },
-      { value: 'idade-moderna', label: 'Idade Moderna', count: 16 },
-    ],
-    'artes-visuais': [
-      { value: 'pintura', label: 'Pintura', count: 14 },
-      { value: 'escultura', label: 'Escultura', count: 14 },
-      { value: 'fotografia', label: 'Fotografia', count: 14 },
-    ],
-    'musica': [
-      { value: 'teoria-musical', label: 'Teoria musical', count: 13 },
-      { value: 'historia-musica', label: 'História da música', count: 12 },
-      { value: 'pratica-instrumental', label: 'Prática instrumental', count: 13 },
-    ],
-    'teatro': [
-      { value: 'dramaturgia', label: 'Dramaturgia', count: 15 },
-      { value: 'interpretacao', label: 'Interpretação', count: 14 },
-      { value: 'producao-cenografia', label: 'Produção e cenografia', count: 15 },
-    ],
-    'danca-arte': [
-      { value: 'expressao-corporal', label: 'Expressão corporal', count: 14 },
-      { value: 'coreografia', label: 'Coreografia', count: 15 },
-      { value: 'historia-danca', label: 'História da dança', count: 14 },
-    ],
-    'materia-energia': [
-      { value: 'fisica-basica', label: 'Física básica', count: 19 },
-      { value: 'quimica-basica', label: 'Química básica', count: 20 },
-      { value: 'transformacoes', label: 'Transformações', count: 19 },
-    ],
-    'vida-evolucao': [
-      { value: 'biologia-celular', label: 'Biologia celular', count: 21 },
-      { value: 'genetica', label: 'Genética', count: 20 },
-      { value: 'evolucao', label: 'Evolução', count: 21 },
-    ],
-    'terra-universo': [
-      { value: 'astronomia', label: 'Astronomia', count: 18 },
-      { value: 'geologia', label: 'Geologia', count: 19 },
-      { value: 'clima', label: 'Clima e tempo', count: 18 },
-    ],
-    'tecnologia': [
-      { value: 'inovacao', label: 'Inovação', count: 15 },
-      { value: 'tecnologia-sociedade', label: 'Tecnologia e sociedade', count: 16 },
-      { value: 'sustentabilidade-tech', label: 'Tecnologia sustentável', count: 15 },
+      { value: "materia-energia", label: "Matéria e energia", count: 58 },
+      { value: "vida-evolucao", label: "Vida e evolução", count: 62 },
+      { value: "terra-universo", label: "Terra e universo", count: 55 },
+      { value: "tecnologia", label: "Tecnologia", count: 46 },
     ],
   };
 
   const yearOptions: FilterOption[] = [
-    { value: 'EF6', label: 'EF6' },
-    { value: 'EF7', label: 'EF7' },
-    { value: 'EF8', label: 'EF8' },
-    { value: 'EF9', label: 'EF9' },
-    { value: 'EM1', label: 'EM1' },
-    { value: 'EM2', label: 'EM2' },
-    { value: 'EM3', label: 'EM3' },
+    { value: "EF6", label: "EF6" },
+    { value: "EF7", label: "EF7" },
+    { value: "EF8", label: "EF8" },
+    { value: "EF9", label: "EF9" },
+    { value: "EM1", label: "EM1" },
+    { value: "EM2", label: "EM2" },
+    { value: "EM3", label: "EM3" },
   ];
 
   const bnccTypeOptions: FilterOption[] = [
-    { value: 'geral', label: 'Habilidade BNCC Geral', count: 456 },
-    { value: 'computacao', label: 'Habilidade BNCC Computação', count: 189 },
+    { value: "geral", label: "Habilidade BNCC Geral", count: 456 },
+    { value: "computacao", label: "Habilidade BNCC Computação", count: 189 },
   ];
 
-  const bnccCodeOptions: FilterOption[] = [
-    { value: 'EM13LP28', label: 'EM13LP28' },
-    { value: 'EF69LP30', label: 'EF69LP30' },
-    { value: 'EM13LP30', label: 'EM13LP30' },
-    { value: 'EF67LP20', label: 'EF67LP20' },
-    { value: 'EF67LP28', label: 'EF67LP28' },
-    { value: 'EM13LP33', label: 'EM13LP33' },
-    { value: 'EF06CO01', label: 'EF06CO01' },
-    { value: 'EF06CO04', label: 'EF06CO04' },
-    { value: 'EF06CO02', label: 'EF06CO02' },
-    { value: 'EF07CO02', label: 'EF07CO02' },
-    { value: 'EF08CO03', label: 'EF08CO03' },
-    { value: 'EF69CO04', label: 'EF69CO04' },
+  const bnccCodeOptions: BnccCode[] = [
+    { value: "EM13LP28", label: "EM13LP28", bnccType: "geral", component: "portugues" },
+    { value: "EF69LP30", label: "EF69LP30", bnccType: "geral", component: "portugues" },
+    { value: "EM13LP30", label: "EM13LP30", bnccType: "geral", component: "portugues" },
+    { value: "EF67LP20", label: "EF67LP20", bnccType: "geral", component: "portugues" },
+    { value: "EF67LP28", label: "EF67LP28", bnccType: "geral", component: "portugues" },
+    { value: "EM13LP33", label: "EM13LP33", bnccType: "geral", component: "portugues" },
+
+    { value: "EF06CO01", label: "EF06CO01", bnccType: "computacao", component: "ciencias" },
+    { value: "EF06CO04", label: "EF06CO04", bnccType: "computacao", component: "ciencias" },
+    { value: "EF06CO02", label: "EF06CO02", bnccType: "computacao", component: "ciencias" },
+    { value: "EF07CO02", label: "EF07CO02", bnccType: "computacao", component: "ciencias" },
+    { value: "EF08CO03", label: "EF08CO03", bnccType: "computacao", component: "ciencias" },
+    { value: "EF69CO04", label: "EF69CO04", bnccType: "computacao", component: "ciencias" },
   ];
 
-  // Funções auxiliares
-  const handleFilterSelect = (filterName: keyof SelectedFilters, value: string) => {
+  const filteredBnccCodes = bnccCodeOptions.filter((c) => {
+    if (!selectedFilters.bnccType) return false;
+    return c.bnccType === selectedFilters.bnccType;
+  });
+
+  // ====== Helpers ======
+  const resetModal = () => {
+    setCurrentStep(1);
+    setSelectedFilters({ filterType: "" });
+    setIsSearching(false);
+  };
+
+  const handleFilterSelect = (filterName: keyof SelectedFilters, value: any) => {
     setSelectedFilters((prev) => {
-      const newFilters: SelectedFilters = { ...prev, [filterName]: value };
+      const next: SelectedFilters = { ...prev, [filterName]: value };
 
-      // Limpar filtros dependentes
+      // trocou tipo de fluxo
       if (filterName === 'filterType') {
         return { filterType: value };
       }
-      if (filterName === 'curricular') {
-        delete newFilters.component;
-        delete newFilters.thematic;
-        delete newFilters.year;
-      }
+
+      // CURRICULAR: ao trocar component limpa thematic/year
       if (filterName === 'component') {
-        delete newFilters.thematic;
-        delete newFilters.year;
+        delete next.thematic;
+        delete next.year;
       }
       if (filterName === 'thematic') {
-        delete newFilters.year;
+        delete next.year;
       }
 
-      return newFilters;
+      // BNCC: ao trocar bnccType ou bnccComponent, limpa códigos
+      if (filterName === "bnccType") {
+        delete next.bnccCode; // limpa o código quando troca o tipo
+      }
+
+      return next;
     });
-    setOpenDropdown(null);
+
   };
 
-  const handleBnccCodeToggle = (code: string) => {
-    setSelectedFilters((prev) => {
-      const currentCodes = prev.bnccCodes || [];
-      const newCodes = currentCodes.includes(code)
-        ? currentCodes.filter((c) => c !== code)
-        : [...currentCodes, code];
-
-      return { ...prev, bnccCodes: newCodes };
-    });
-  };
 
   const handleYearSelect = (year: string) => {
     setSelectedFilters((prev) => ({ ...prev, year }));
   };
 
-  const clearFilters = () => {
-    setSelectedFilters({ filterType: '' });
-    setSearchTerms({});
+  // scroll suave quando escolhe bnccType e quando chega nos códigos
+  useEffect(() => {
+    if (selectedFilters.filterType === "bncc" && selectedFilters.bnccType && bnccTypeRef.current) {
+      setTimeout(() => bnccTypeRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 80);
+    }
+  }, [selectedFilters.bnccType, selectedFilters.filterType]);
+
+  useEffect(() => {
+    if (currentStep === 2 && selectedFilters.filterType === "bncc" && selectedFilters.bnccType && codesRef.current) {
+      setTimeout(() => codesRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+    }
+  }, [currentStep, selectedFilters.filterType, selectedFilters.bnccType]);
+
+
+  const getSearchLabel = () => {
+    if (selectedFilters.filterType === "curricular" && selectedFilters.component) {
+      const comp = curricularOptions.find((o) => o.value === selectedFilters.component)?.label ?? "Busca";
+      const them = selectedFilters.component && selectedFilters.thematic
+        ? thematicOptionsByComponent[selectedFilters.component]?.find((o) => o.value === selectedFilters.thematic)?.label
+        : "";
+      const yr = selectedFilters.year ? ` (${selectedFilters.year})` : "";
+      return them ? `${comp} - ${them}${yr}` : `${comp}${yr}`;
+    }
+
+    if (selectedFilters.filterType === "bncc" && selectedFilters.bnccType) {
+      const typeLabel = bnccTypeOptions.find((o) => o.value === selectedFilters.bnccType)?.label ?? "BNCC";
+      return selectedFilters.bnccCode
+        ? `${typeLabel} - ${selectedFilters.bnccCode}`
+        : typeLabel;
+    }
+
+    return "Nova busca";
+  };
+
+  const isSearchEnabled = () => {
+    if (selectedFilters.filterType === "curricular") {
+      return !!(selectedFilters.component && selectedFilters.thematic && selectedFilters.year);
+    }
+    if (selectedFilters.filterType === "bncc") {
+      return !!(selectedFilters.bnccType && selectedFilters.bnccCode);
+    }
+    return false;
   };
 
   const createQuestionFromFilters = (filters: SelectedFilters = selectedFilters) => {
-    // Obter labels dos filtros selecionados
-    const curricularLabel = curricularOptions.find((o) => o.value === filters.curricular)?.label || '';
-    const componentLabel = filters.curricular && filters.component
-      ? componentOptions[filters.curricular]?.find((o) => o.value === filters.component)?.label
-      : '';
+    // Labels para curricular
+    const componentLabel =
+      curricularOptions.find((o) => o.value === filters.component)?.label || "";
+
     const thematicLabel =
       filters.component && filters.thematic
-        ? thematicOptions[filters.component]?.find((o) => o.value === filters.thematic)?.label
+        ? thematicOptionsByComponent[filters.component]?.find((o) => o.value === filters.thematic)?.label
         : undefined;
 
-    const safeThematicLabel: string =
-      thematicLabel && thematicLabel.trim() !== '' ? thematicLabel : 'a temática selecionada';
+    const safeThematicLabel = thematicLabel?.trim() ? thematicLabel : "a temática selecionada";
 
     const categoryMap: Record<string, { category: string; color: string; competency: string }> = {
-      portugues: { category: 'Comunicação e Colaboração', color: '#00BCD4', competency: 'Interagir por meio de tecnologias digitais' },
-      matematica: { category: 'Informações e Dados', color: '#FFC107', competency: 'Navegar, pesquisar e filtrar dados' },
-      ingles: { category: 'Comunicação e Colaboração', color: '#00BCD4', competency: 'Colaborar através de tecnologias digitais' },
-      ciencias: { category: 'Informações e Dados', color: '#FFC107', competency: 'Avaliar dados e informações' },
-      historia: { category: 'Resolução de Problemas', color: '#E91E63', competency: 'Identificar necessidades e respostas tecnológicas' },
-      geografia: { category: 'Informações e Dados', color: '#FFC107', competency: 'Gerenciar dados e informações' },
+      portugues: {
+        category: "Comunicação e Colaboração",
+        color: "#00BCD4",
+        competency: "Interagir por meio de tecnologias digitais",
+      },
+      matematica: {
+        category: "Informações e Dados",
+        color: "#FFC107",
+        competency: "Navegar, pesquisar e filtrar dados",
+      },
+      ingles: {
+        category: "Comunicação e Colaboração",
+        color: "#00BCD4",
+        competency: "Colaborar através de tecnologias digitais",
+      },
+      ciencias: {
+        category: "Informações e Dados",
+        color: "#FFC107",
+        competency: "Avaliar dados e informações",
+      },
+      historia: {
+        category: "Resolução de Problemas",
+        color: "#E91E63",
+        competency: "Identificar necessidades e respostas tecnológicas",
+      },
+      geografia: {
+        category: "Informações e Dados",
+        color: "#FFC107",
+        competency: "Gerenciar dados e informações",
+      },
     };
 
-    const categoryInfo = categoryMap[filters.curricular || 'portugues'] || categoryMap.portugues;
+    const categoryInfo = categoryMap[filters.component || "portugues"] || categoryMap.portugues;
 
-    if (filters.filterType === 'curricular') {
+    if (filters.filterType === "curricular") {
       return {
-        fromPage: 'transversalidade',
+        fromPage: "transversalidade",
         category: categoryInfo.category,
         categoryColor: categoryInfo.color,
         competency: categoryInfo.competency,
         questions: [
           {
             id: 1,
-            text: `[${curricularLabel} - ${componentLabel}] ${safeThematicLabel}: Qual alternativa representa melhor essa competência?`,
+            text: `[${componentLabel}] ${safeThematicLabel}: Qual alternativa representa melhor essa competência?`,
             options: [
-              { letter: 'A', text: `Aplicar ${safeThematicLabel.toLowerCase()} apenas de forma teórica`, isCorrect: false },
-              { letter: 'B', text: `Integrar ${safeThematicLabel.toLowerCase()} com tecnologias digitais`, isCorrect: true },
-              { letter: 'C', text: 'Ignorar metodologias digitais', isCorrect: false },
-              { letter: 'D', text: 'Usar tecnologia sem intencionalidade pedagógica', isCorrect: false },
+              { letter: "A", text: `Aplicar ${safeThematicLabel.toLowerCase()} apenas de forma teórica`, isCorrect: false },
+              { letter: "B", text: `Integrar ${safeThematicLabel.toLowerCase()} com tecnologias digitais`, isCorrect: true },
+              { letter: "C", text: "Ignorar metodologias digitais", isCorrect: false },
+              { letter: "D", text: "Usar tecnologia sem intencionalidade pedagógica", isCorrect: false },
             ],
-            explanation: `A alternativa correta demonstra o uso adequado da competência no contexto educacional.`,
+            explanation: "A alternativa correta demonstra o uso adequado da competência no contexto educacional.",
             transversality: {
-              curricular: curricularLabel,
               component: componentLabel,
               thematic: safeThematicLabel,
               year: filters.year,
@@ -510,350 +527,301 @@ export default function TransversalityPage({
       };
     }
 
-    // Fluxo BNCC
-    const bnccTypeLabel = bnccTypeOptions.find((o) => o.value === filters.bnccType)?.label || '';
-    const selectedCodes = filters.bnccCodes?.join(', ') || '';
+    // BNCC
+    const bnccTypeLabel = bnccTypeOptions.find((o) => o.value === filters.bnccType)?.label || "";
+    const selectedCode = filters.bnccCode || "";
 
     return {
-      category: 'Cultura Digital',
-      categoryColor: '#8B27FF',
-      competency: 'Competências Gerais da BNCC',
-      level: 'Intermediário',
+      fromPage: "transversalidade", // ✅ ADICIONE ISSO
+      category: "Cultura Digital",
+      categoryColor: "#8B27FF",
+      competency: "Competências Gerais da BNCC",
+      level: "Intermediário",
       totalQuestions: 1,
       questions: [
         {
           id: 1,
-          text: `[${bnccTypeLabel} - ${selectedCodes}] Considerando as habilidades BNCC selecionadas, qual alternativa melhor demonstra a aplicação dessas competências?`,
+          text: `[${bnccTypeLabel} - ${filters.bnccCode ?? ""}] Considerando a habilidade BNCC selecionada, qual alternativa melhor demonstra a aplicação dessa competência?`,
           options: [
-            { letter: 'A', text: 'Utilizar tecnologias digitais apenas para entretenimento' },
-            { letter: 'B', text: 'Compreender e aplicar as tecnologias digitais de forma crítica, reflexiva e ética nas diversas práticas sociais' },
-            { letter: 'C', text: 'Evitar o uso de tecnologias no processo de aprendizagem' },
-            { letter: 'D', text: 'Usar tecnologias sem considerar aspectos éticos' },
-            { letter: 'E', text: 'Limitar o uso de tecnologias apenas a atividades recreativas' },
+            { letter: "A", text: "Utilizar tecnologias digitais apenas para entretenimento" },
+            { letter: "B", text: "Compreender e aplicar as tecnologias digitais de forma crítica, reflexiva e ética nas diversas práticas sociais" },
+            { letter: "C", text: "Evitar o uso de tecnologias no processo de aprendizagem" },
+            { letter: "D", text: "Usar tecnologias sem considerar aspectos éticos" },
+            { letter: "E", text: "Limitar o uso de tecnologias apenas a atividades recreativas" },
           ],
-          correctAnswer: 'B',
-          explanation: `Esta alternativa reflete adequadamente as competências gerais da BNCC relacionadas à cultura digital...`,
-          category: 'Cultura Digital',
-          categoryColor: '#8B27FF',
-          competency: 'Competências Gerais da BNCC',
+          correctAnswer: "B",
+          explanation:
+            "Esta alternativa reflete adequadamente as competências gerais da BNCC relacionadas à cultura digital...",
+          category: "Cultura Digital",
+          categoryColor: "#8B27FF",
+          competency: "Competências Gerais da BNCC",
           transversality: {
             bnccType: bnccTypeLabel,
-            bnccCodes: filters.bnccCodes,
+            bnccCode: filters.bnccCode,
           },
         },
       ],
-    };
-  };
 
+    };
+
+  };
 
   const handleViewHistory = (filters: SelectedFilters) => {
     const questionData = createQuestionFromFilters(filters);
-    navigateTo('quiz', questionData);
+    navigateTo("quiz", questionData);
   };
 
   const handleSearch = () => {
     setIsSearching(true);
 
-    // Simular busca
     setTimeout(() => {
       setIsSearching(false);
 
-      // Salvar no histórico
-      const newHistory = {
+      const newHistory: HistoryItem = {
         date: new Date(),
         filters: { ...selectedFilters },
         label: getSearchLabel(),
       };
+
       setSearchHistory([newHistory, ...searchHistory.slice(0, 4)]);
 
-      // Criar dados da questão baseados nos filtros
       const questionData = createQuestionFromFilters();
-
-      // Navegar para a tela de questão isolada
-      navigateTo('quiz', questionData);
-    }, 800);
+      setShowModal(false);
+      navigateTo("quiz", questionData);
+    }, 650);
   };
 
-  const getSearchLabel = () => {
-    if (selectedFilters.filterType === 'curricular' && selectedFilters.curricular) {
-      const curricular = curricularOptions.find((o) => o.value === selectedFilters.curricular);
-      return curricular?.label || 'Busca';
-    }
-    if (selectedFilters.filterType === 'bncc' && selectedFilters.bnccType) {
-      return 'Busca por BNCC';
-    }
-    return 'Nova busca';
-  };
+  // ====== UI Steps ======
+  const stepsArray = Array.from({ length: totalSteps }, (_, i) => i + 1);
 
-  const isSearchEnabled = () => {
-    if (selectedFilters.filterType === 'curricular') {
-      return !!(selectedFilters.curricular && selectedFilters.component && selectedFilters.thematic && selectedFilters.year);
+  const canGoNext = () => {
+    if (currentStep === 1) return !!selectedFilters.filterType;
+
+    if (selectedFilters.filterType === "curricular") {
+      // step 2 já é o final
+      return isSearchEnabled();
     }
-    if (selectedFilters.filterType === 'bncc') {
-      return !!(selectedFilters.bnccType && selectedFilters.bnccCodes && selectedFilters.bnccCodes.length > 0);
-    }
+
+    // BNCC
+    if (currentStep === 2) return isSearchEnabled();
     return false;
   };
 
-  // Verificar se há questões disponíveis para a seleção
-  const hasQuestionsAvailable = () => {
-    // Só verificar quando todos os filtros estão completos
-    if (selectedFilters.filterType === 'curricular') {
-      // Só verificar se TODOS os filtros obrigatórios estão preenchidos
-      if (!selectedFilters.curricular || !selectedFilters.component || !selectedFilters.thematic || !selectedFilters.year) {
-        return true; // Ainda não completou todos os filtros, não mostrar aviso
-      }
-
-      // Exemplo: algumas combinações específicas não têm questões
-      // Aqui você pode adicionar lógica para verificar combinações sem questões
-      if (selectedFilters.curricular === 'educacao-fisica' && selectedFilters.component === 'esportes') {
-        return false;
-      }
-      if (selectedFilters.curricular === 'arte' && selectedFilters.component === 'artes-visuais') {
-        return false;
-      }
-
-      // Por padrão, tem questões disponíveis
-      return true;
+  const primaryButtonLabel = () => {
+    if (selectedFilters.filterType === "curricular") {
+      return currentStep === 2 ? "Procurar Questão" : "Próximo";
     }
-
-    if (selectedFilters.filterType === 'bncc') {
-      // Só verificar se TODOS os filtros obrigatórios estão preenchidos
-      if (!selectedFilters.bnccType || !selectedFilters.bnccCodes || selectedFilters.bnccCodes.length === 0) {
-        return true; // Ainda não completou todos os filtros, não mostrar aviso
-      }
-
-      // Todas as opções BNCC têm questões por enquanto
-      return true;
-    }
-
-    return true;
+    // BNCC
+    return currentStep === totalSteps ? "Procurar Questão" : "Próximo";
   };
 
-  const filterOptions = (options: FilterOption[], searchTerm: string) => {
-    if (!searchTerm) return options;
-    return options.filter((opt) =>
-      opt.label.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  const handlePrimary = () => {
+    if (selectedFilters.filterType === "curricular") {
+      if (currentStep === 1) return setCurrentStep(2);
+      return handleSearch();
+    }
+
+    // BNCC
+    if (currentStep === 1) return setCurrentStep(2);
+    return handleSearch();
+
   };
 
   const renderStep = () => {
-    switch (currentStep) {
-      case 1:
+    // STEP 1: Tipo
+    if (currentStep === 1) {
+      return (
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              Selecione o Tipo de Filtro
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400">
+              Escolha como deseja buscar os desafios de transversalidade
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {filterTypeOptions.map((option) => (
+              <motion.button
+                key={option.value}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  handleFilterSelect("filterType", option.value as SelectedFilters["filterType"]);
+                  setCurrentStep(2);
+                }}
+                className={`p-8 rounded-2xl border-2 transition-all text-left ${selectedFilters.filterType === option.value
+                  ? "border-[#8B27FF] bg-purple-50 dark:bg-purple-900/20"
+                  : "border-gray-200 dark:border-gray-700 hover:border-[#8B27FF] bg-white dark:bg-gray-800"
+                  }`}
+              >
+                <h4 className="font-bold text-lg text-gray-900 dark:text-white mb-2">
+                  {option.label}
+                </h4>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {option.value === "curricular"
+                    ? "Selecione matéria, temática e ano"
+                    : "Selecione tipo BNCC e código"}
+                </p>
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    // STEP 2: Curricular OU BNCC
+    if (currentStep === 2) {
+      if (selectedFilters.filterType === "curricular") {
+        const thematics = selectedFilters.component
+          ? thematicOptionsByComponent[selectedFilters.component] || []
+          : [];
+
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Selecione o Tipo de Filtro</h3>
-              <p className="text-gray-600 dark:text-gray-400">Escolha como deseja buscar as questões de transversalidade</p>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                Filtros do Componente Curricular
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400">
+                Selecione matéria, temática e ano
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filterTypeOptions.map((option) => (
-                <motion.button
-                  key={option.value}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => {
-                    handleFilterSelect('filterType', option.value);
-                    setCurrentStep(2);
-                  }}
-                  className={`p-8 rounded-2xl border-2 transition-all text-left ${selectedFilters.filterType === option.value
-                    ? 'border-[#8B27FF] bg-purple-50 dark:bg-purple-900/20'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-[#8B27FF] bg-white dark:bg-gray-800'
-                    }`}
-                >
-                  <h4 className="font-bold text-lg text-gray-900 dark:text-white mb-2">{option.label}</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {option.value === 'curricular'
-                      ? 'Navegue por componentes curriculares e temáticas específicas'
-                      : 'Selecione habilidades baseadas nos códigos da BNCC'}
-                  </p>
-                </motion.button>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 2:
-        if (selectedFilters.filterType === 'curricular') {
-          return (
-            <div className="space-y-6">
+            <div className="space-y-4">
+              {/* Matéria */}
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Componente Curricular e Temática</h3>
-                <p className="text-gray-600 dark:text-gray-400">Selecione o componente, matéria e tema específico</p>
-              </div>
-
-              <div className="space-y-4">
-                {/* Componente Curricular */}
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-                    Componente Curricular <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    value={selectedFilters.curricular || ''}
-                    onChange={(e) => handleFilterSelect('curricular', e.target.value)}
-                    className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
-                  >
-                    <option value="">Selecione...</option>
-                    {curricularOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
-                        {option.label} {option.count && `(${option.count})`}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {selectedFilters.curricular && componentOptions[selectedFilters.curricular] && (
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-                      Componente <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      value={selectedFilters.component || ''}
-                      onChange={(e) => handleFilterSelect('component', e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
-                    >
-                      <option value="">Selecione...</option>
-                      {componentOptions[selectedFilters.curricular].map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label} {option.count && `(${option.count})`}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-
-                {selectedFilters.component && thematicOptions[selectedFilters.component] && (
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-                      Temática <span className="text-red-500">*</span>
-                    </label>
-                    <select
-                      value={selectedFilters.thematic || ''}
-                      onChange={(e) => handleFilterSelect('thematic', e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
-                    >
-                      <option value="">Selecione...</option>
-                      {thematicOptions[selectedFilters.component].map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label} {option.count && `(${option.count})`}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-              </div>
-            </div>
-          );
-        } else {
-          return (
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Habilidades BNCC</h3>
-                <p className="text-gray-600 dark:text-gray-400">Selecione o tipo de habilidade BNCC desejado</p>
-              </div>
-
-              <div className="space-y-4">
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-                  Tipo de Habilidade BNCC <span className="text-red-500">*</span>
+                  Componente <span className="text-red-500">*</span>
                 </label>
                 <select
-                  value={selectedFilters.bnccType || ''}
-                  onChange={(e) => handleFilterSelect('bnccType', e.target.value)}
+                  value={selectedFilters.component || ""}
+                  onChange={(e) => handleFilterSelect("component", e.target.value)}
                   className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
                 >
                   <option value="">Selecione...</option>
-                  {bnccTypeOptions.map((option) => (
+                  {curricularOptions.map((option) => (
                     <option key={option.value} value={option.value}>
-                      {option.label} {option.count && `(${option.count})`}
+                      {option.label} {option.count ? `(${option.count})` : ""}
                     </option>
                   ))}
                 </select>
               </div>
-            </div>
-          );
-        }
 
-      case 3:
-        if (selectedFilters.filterType === 'curricular') {
-          return (
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Ano Escolar</h3>
-                <p className="text-gray-600 dark:text-gray-400">Selecione o ano ou série desejado</p>
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-[#F9F7FF] dark:bg-gray-800 border-2 border-[#E8E0FF] dark:border-gray-700 rounded-2xl p-6"
-              >
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {yearOptions.map((year) => (
-                    <button
-                      key={year.value}
-                      onClick={() => handleYearSelect(year.value)}
-                      className={`h-16 rounded-xl font-bold text-lg transition-all duration-200 ${selectedFilters.year === year.value
-                        ? 'bg-[#8B27FF] text-white border-2 border-[#8B27FF] shadow-lg shadow-purple-500/30'
-                        : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-600 hover:border-[#8B27FF]'
-                        }`}
-                    >
-                      {year.label}
-                    </button>
-                  ))}
+              {/* Temática */}
+              {selectedFilters.component && (
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                    Temática <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={selectedFilters.thematic || ""}
+                    onChange={(e) => handleFilterSelect("thematic", e.target.value)}
+                    className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
+                  >
+                    <option value="">Selecione...</option>
+                    {thematics.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label} {option.count ? `(${option.count})` : ""}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-              </motion.div>
-            </div>
-          );
-        } else {
-          return (
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Códigos BNCC</h3>
-                <p className="text-gray-600 dark:text-gray-400">Selecione um ou mais códigos de habilidades</p>
-              </div>
+              )}
 
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-[#F9F7FF] dark:bg-gray-800 border-2 border-[#E8E0FF] dark:border-gray-700 rounded-2xl p-6"
-              >
-                <div className="space-y-2 max-h-96 overflow-y-auto">
-                  {bnccCodeOptions.map((code) => (
-                    <button
-                      key={code.value}
-                      onClick={() => handleBnccCodeToggle(code.value)}
-                      className={`w-full flex items-center gap-3 p-4 rounded-xl transition-all duration-150 ${selectedFilters.bnccCodes?.includes(code.value)
-                        ? 'bg-[#E8E0FF] dark:bg-purple-900/30 border-2 border-[#8B27FF]'
-                        : 'bg-gray-50 dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:bg-[#F9F7FF] dark:hover:bg-gray-600'
-                        }`}
-                    >
-                      <div
-                        className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-colors ${selectedFilters.bnccCodes?.includes(code.value)
-                          ? 'bg-[#8B27FF] border-[#8B27FF]'
-                          : 'border-gray-300 dark:border-gray-500'
-                          }`}
-                      >
-                        {selectedFilters.bnccCodes?.includes(code.value) && (
-                          <Check className="w-4 h-4 text-white" strokeWidth={3} />
-                        )}
-                      </div>
-                      <span className="font-mono text-sm font-medium text-gray-700 dark:text-gray-200">
-                        {code.label}
-                      </span>
-                    </button>
-                  ))}
+              {/* Ano */}
+              {selectedFilters.thematic && (
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                    Ano <span className="text-red-500">*</span>
+                  </label>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-[#F9F7FF] dark:bg-gray-800 border-2 border-[#E8E0FF] dark:border-gray-700 rounded-2xl p-4 sm:p-6"
+                  >
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      {yearOptions.map((y) => (
+                        <button
+                          key={y.value}
+                          onClick={() => handleYearSelect(y.value)}
+                          className={`h-14 rounded-xl font-bold transition-all duration-200 ${selectedFilters.year === y.value
+                            ? "bg-[#8B27FF] text-white shadow-lg shadow-purple-500/30"
+                            : "bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-600 hover:border-[#8B27FF]"
+                            }`}
+                        >
+                          {y.label}
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
                 </div>
-              </motion.div>
+              )}
             </div>
-          );
-        }
+          </div>
+        );
+      }
 
-      default:
-        return null;
+      // BNCC (tudo no Step 2)
+      return (
+        <div className="space-y-6" ref={bnccTypeRef}>
+          <div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              Filtros BNCC
+            </h3>
+            <p className="text-gray-600 dark:text-gray-400">
+              Selecione o tipo de habilidade e escolha um código BNCC
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {/* Tipo BNCC */}
+            <div>
+              <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+                Tipo de Habilidade BNCC <span className="text-red-500">*</span>
+              </label>
+              <select
+                value={selectedFilters.bnccType || ""}
+                onChange={(e) => handleFilterSelect("bnccType", e.target.value)}
+                className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
+              >
+                <option value="">Selecione...</option>
+                {bnccTypeOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label} {option.count ? `(${option.count})` : ""}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Código BNCC (input + lista filtrável + 1 seleção) */}
+            {selectedFilters.bnccType && (
+              <div className="pt-2" ref={codesRef}>
+                <BnccSingleSelect
+                  label="Código BNCC"
+                  placeholder="Digite um código… (ex: EM13LP28)"
+                  options={filteredBnccCodes.map((c) => ({ value: c.value, label: c.label }))}
+                  value={selectedFilters.bnccCode}
+                  onChange={(next) => handleFilterSelect("bnccCode", next)}
+                />
+
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                  Escolha apenas 1 código para habilitar a busca.
+                </p>
+              </div>
+            )}
+
+          </div>
+        </div>
+      );
     }
-  };
 
+    // fallback (evita retornar undefined em qualquer caso)
+    return null;
+  };
+  // ====== Layout ======
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
       <Sidebar
@@ -866,9 +834,9 @@ export default function TransversalityPage({
       <div className="flex-1 flex flex-col min-w-0 pt-20">
         <Header
           onMenuClick={() => setSidebarOpen(!sidebarOpen)}
-          userName={userName || 'Professor'}
+          userName={userName || "Professor"}
           navigateTo={navigateTo}
-          onLogout={() => navigateTo('login')}
+          onLogout={() => navigateTo("login")}
         />
 
         <main className="flex-1 overflow-auto">
@@ -881,21 +849,20 @@ export default function TransversalityPage({
                   Encontre questões por componentes curriculares, temáticas e habilidades BNCC
                 </p>
               </div>
+
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {
                   setShowModal(true);
-                  setCurrentStep(1);
-                  setSelectedFilters({ filterType: '' });
+                  resetModal();
                 }}
                 className="flex items-center gap-2 bg-gradient-to-r from-[#8B27FF] to-[#A855F7] hover:from-[#7B1FE8] hover:to-[#9D3FFF] text-white px-6 py-3 rounded-xl transition-all shadow-lg"
               >
                 <Sparkles className="w-5 h-5" />
-                Buscar Questões
+                Buscar Desafios
               </motion.button>
             </div>
-
 
             {/* Modal com Steps */}
             <AnimatePresence>
@@ -908,25 +875,27 @@ export default function TransversalityPage({
                   onClick={() => setShowModal(false)}
                 >
                   <motion.div
-                    initial={{ scale: 0.9, opacity: 0 }}
+                    initial={{ scale: 0.92, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.9, opacity: 0 }}
+                    exit={{ scale: 0.92, opacity: 0 }}
                     onClick={(e) => e.stopPropagation()}
-                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
                   >
                     {/* Header do Modal */}
-                    <div className="sticky top-0 bg-gradient-to-r from-[#8B27FF] to-[#A855F7] px-8 py-6 flex items-center justify-between z-50">
-                      <div>
-                        <h2 className="text-2xl font-bold text-white mb-2">Buscar Questões de Transversalidade</h2>
-                        <div className="flex gap-2">
-                          {[1, 2, 3].map((step) => (
+                    <div className="shrink-0 bg-gradient-to-r from-[#8B27FF] to-[#A855F7] px-6 sm:px-8 py-5 flex items-center justify-between">
+                      <div className="min-w-0">
+                        <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 truncate">
+                          Buscar Desafios de Transversalidade
+                        </h2>
+                        <div className="flex gap-2 items-center">
+                          {stepsArray.map((step) => (
                             <div
                               key={step}
                               className={`h-2 rounded-full transition-all ${step === currentStep
-                                ? 'bg-white w-8'
+                                ? "bg-white w-8"
                                 : step < currentStep
-                                  ? 'bg-purple-300 w-6'
-                                  : 'bg-purple-200 w-4'
+                                  ? "bg-purple-300 w-6"
+                                  : "bg-purple-200 w-4"
                                 }`}
                             />
                           ))}
@@ -935,170 +904,140 @@ export default function TransversalityPage({
                           Passo {currentStep} de {totalSteps}
                         </p>
                       </div>
+
                       <button
                         onClick={() => setShowModal(false)}
                         className="w-10 h-10 rounded-xl bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors"
+                        aria-label="Fechar"
                       >
                         <X className="w-6 h-6" />
                       </button>
                     </div>
 
-                    {/* Conteúdo do Step */}
-                    <div className="p-8">
+                    {/* Conteúdo */}
+                    <div className="flex-1 overflow-y-auto px-6 sm:px-8 py-6 pb-[calc(7.5rem+env(safe-area-inset-bottom))]">
                       <AnimatePresence mode="wait">
                         <motion.div
                           key={currentStep}
                           initial={{ opacity: 0, x: 20 }}
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: -20 }}
-                          transition={{ duration: 0.3 }}
+                          transition={{ duration: 0.25 }}
                         >
                           {renderStep()}
                         </motion.div>
                       </AnimatePresence>
                     </div>
 
-                    {/* Footer do Modal */}
-                    <div className="sticky bottom-0 bg-gray-50 dark:bg-gray-700/50 px-8 py-6 flex gap-4 border-t border-gray-200 dark:border-gray-700">
-                      <button
-                        onClick={() => {
-                          if (currentStep > 1) {
-                            setCurrentStep(currentStep - 1);
-                          } else {
-                            setShowModal(false);
-                          }
-                        }}
-                        className="flex items-center gap-2 px-6 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors font-medium"
-                      >
-                        <ChevronLeft className="w-5 h-5" />
-                        {currentStep === 1 ? 'Cancelar' : 'Voltar'}
-                      </button>
+                    {/* Footer */}
+                    <div
+                      ref={footerRef}
+                      className="shrink-0 bg-gray-50 dark:bg-gray-700/50 px-6 sm:px-8 py-5 border-t border-gray-200 dark:border-gray-700 pb-[calc(1.25rem+env(safe-area-inset-bottom))]"
+                    >
+                      <div className="flex gap-3">
+                        <button
+                          onClick={() => {
+                            if (currentStep > 1) setCurrentStep((s) => s - 1);
+                            else setShowModal(false);
+                          }}
+                          className="flex items-center gap-2 px-5 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors font-medium"
+                        >
+                          <ChevronLeft className="w-5 h-5" />
+                          {currentStep === 1 ? "Cancelar" : "Voltar"}
+                        </button>
 
-                      <div className="flex-1" />
+                        <div className="flex-1" />
 
-                      <button
-                        onClick={() => {
-                          if (currentStep < totalSteps) {
-                            if (currentStep === 1 && selectedFilters.filterType) {
-                              setCurrentStep(currentStep + 1);
-                            } else if (
-                              currentStep === 2 &&
-                              ((selectedFilters.filterType === 'curricular' &&
-                                selectedFilters.curricular &&
-                                selectedFilters.component &&
-                                selectedFilters.thematic) ||
-                                (selectedFilters.filterType === 'bncc' && selectedFilters.bnccType))
-                            ) {
-                              setCurrentStep(currentStep + 1);
-                            }
-                          } else {
-                            handleSearch();
-                          }
-                        }}
-                        disabled={
-                          currentStep === 1
-                            ? !selectedFilters.filterType
-                            : currentStep === 2
-                              ? selectedFilters.filterType === 'curricular'
-                                ? !selectedFilters.curricular ||
-                                !selectedFilters.component ||
-                                !selectedFilters.thematic
-                                : !selectedFilters.bnccType
-                              : selectedFilters.filterType === 'curricular'
-                                ? !selectedFilters.year
-                                : !(
-                                  selectedFilters.bnccCodes &&
-                                  selectedFilters.bnccCodes.length > 0
-                                )
-                        }
-                        className={`flex items-center gap-2 px-8 py-3 rounded-xl font-bold text-lg transition-all ${currentStep === totalSteps
-                          ? isSearching
-                            ? 'bg-gray-400 dark:bg-gray-600 text-white cursor-not-allowed'
-                            : 'bg-[#8B27FF] text-white hover:bg-[#6B1FBF] hover:-translate-y-1 shadow-lg shadow-purple-500/30'
-                          : 'bg-[#8B27FF] text-white hover:bg-[#6B1FBF] hover:-translate-y-1 shadow-lg shadow-purple-500/30'
-                          } disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0`}
-                      >
-                        {isSearching ? (
-                          <>
-                            <motion.div
-                              animate={{ rotate: 360 }}
-                              transition={{ duration: 1, repeat: Infinity }}
-                            >
+                        <button
+                          onClick={handlePrimary}
+                          disabled={!canGoNext() || isSearching}
+                          className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-base sm:text-lg transition-all ${!canGoNext() || isSearching
+                            ? "bg-gray-400 dark:bg-gray-600 text-white cursor-not-allowed"
+                            : "bg-[#8B27FF] text-white hover:bg-[#6B1FBF] hover:-translate-y-0.5 shadow-lg shadow-purple-500/30"
+                            }`}
+                        >
+                          {isSearching ? (
+                            <>
+                              <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity }}>
+                                <Search className="w-5 h-5" />
+                              </motion.div>
+                              Buscando...
+                            </>
+                          ) : (
+                            <>
                               <Search className="w-5 h-5" />
-                            </motion.div>
-                            Buscando...
-                          </>
-                        ) : currentStep === totalSteps ? (
-                          <>
-                            <Search className="w-5 h-5" />
-                            Procurar Questão
-                            <ArrowRight className="w-5 h-5" />
-                          </>
-                        ) : (
-                          <>
-                            Próximo
-                            <ChevronRight className="w-5 h-5" />
-                          </>
-                        )}
-                      </button>
+                              Procurar Questão
+                              <ArrowRight className="w-5 h-5" />
+                            </>
+                          )}
+                        </button>
+                      </div>
                     </div>
                   </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
 
-
             {/* Histórico de Buscas */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mt-16"
-            >
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-                Histórico de Buscas
-              </h2>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Histórico de Buscas
+                </h2>
+              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {searchHistory.map((item, index) => (
-                  <motion.div
-                    key={index}
-                    whileHover={{ y: -4 }}
-                    className="relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 hover:border-[#8B27FF] hover:shadow-lg transition-all text-left"
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {searchHistory.map((item, idx) => (
+                  <div
+                    key={`${item.label}-${idx}`}
+                    className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm hover:shadow-md transition-all"
                   >
-                    {/* Botão verde (visualizar busca) */}
-                    <button
-                      type="button"
-                      aria-label="Visualizar busca"
-                      onClick={() => handleViewHistory(item.filters)}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg flex items-center justify-center transition"
-                    >
-                      <Eye className="w-5 h-5" />
-                    </button>
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="min-w-0">
+                        <div className="flex items-start gap-2 text-gray-900 dark:text-white font-bold">
+                          <Clock className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" />
+                          <span className="whitespace-normal break-words leading-snug">
+                            {item.label}
+                          </span>
+                        </div>
 
-                    <div className="flex items-start gap-3 mb-3 pr-16">
-                      <Clock className="w-5 h-5 text-gray-400 mt-0.5" />
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                          {item.label}
-                        </h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {new Date(item.date).toLocaleDateString('pt-BR')}
-                        </p>
+                        <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                          {item.date.toLocaleDateString("pt-BR")}
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => handleViewHistory(item.filters)}
+                          className="mt-3 text-sm font-semibold text-[#8B27FF] hover:text-[#6B1FBF] transition-colors"
+                        >
+                          Buscar novamente →
+                        </button>
                       </div>
-                    </div>
 
-                    {/* Texto/ação (se quiser, pode clicar também) */}
-                    <button
-                      type="button"
-                      onClick={() => handleViewHistory(item.filters)}
-                      className="text-xs text-[#8B27FF] font-medium hover:underline"
-                    >
-                      Buscar novamente →
-                    </button>
-                  </motion.div>
+                      {/* ✅ Botão "Ver" (padrão roxo com borda, igual sua 2ª imagem) */}
+                      <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => handleViewHistory(item.filters)}
+                        className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-[#8B27FF] text-[#8B27FF] bg-transparent hover:bg-[#8B27FF]/10 transition-colors font-bold"
+                        aria-label="Ver questão"
+                      >
+                        <Eye className="w-4 h-4" />
+                        Ver
+                      </motion.button>
+                    </div>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+
+              {searchHistory.length === 0 && (
+                <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-10 text-center">
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Nenhuma busca recente ainda.
+                  </p>
+                </div>
+              )}
+            </div>
 
           </div>
         </main>
@@ -1106,3 +1045,6 @@ export default function TransversalityPage({
     </div>
   );
 }
+
+
+

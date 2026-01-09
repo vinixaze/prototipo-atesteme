@@ -19,6 +19,7 @@ import {
   Sparkles,
   Layers,
   Award,
+  Target
 } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 
@@ -77,9 +78,10 @@ export default function NiveisTab({
     <div className="animate-fadeIn">
       <div className="mb-6 sm:mb-8">
         <h2 className="text-[28px] font-bold text-[#333] dark:text-gray-200 mb-3">Competências por Nível</h2>
-        <p className="text-[15px] text-[#666] dark:text-gray-400">
-          Complete os desafios nas 16 competências para desbloquear o próximo Nível
-        </p>
+        <div className="flex items-center gap-2 text-sm text-[#8B27FF] dark:text-[#A855F7]">
+          <Target className="w-4 h-4" />
+          <span className="font-semibold">Complete os desafios nas 16 competências para desbloquear o próximo Nível</span>
+        </div>
       </div>
 
       {/* SEÇÃO 1 - SEUS NÍVEIS DE COMPETÊNCIA */}
@@ -109,11 +111,13 @@ export default function NiveisTab({
         <div
           className="relative bg-gradient-to-r from-[#F0ABFC] to-[#E879F9] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
-          {/* Ícone decorativo - Estrela */}
+          {/* Ícone decorativo - Estrela grande à direita */}
           <Star
-            className="absolute top-3 right-3 w-[50px] h-[50px] text-[#FBBF24] opacity-100 fill-[#FBBF24] transition-all duration-300 group-hover:scale-125 group-hover:rotate-[-15deg]"
-            strokeWidth={0}
+            className="absolute top-3 right-3 w-[45px] h-[45px] opacity-40 transition-transform duration-300 group-hover:scale-110"
+            style={{ color: "#3b034eff" }}
+            fill="currentColor"
           />
+
 
           {/* Conteúdo */}
           <div className="relative z-10">
@@ -319,8 +323,8 @@ export default function NiveisTab({
                           {/* Barra lateral decorativa */}
                           <div
                             className={`absolute left-0 top-0 bottom-0 w-1.5 rounded-l-xl transition-all duration-300 ${comp.completed ? 'bg-gradient-to-b from-green-400 to-green-600' :
-                                comp.status === 'in-progress' ? 'bg-gradient-to-b from-indigo-400 to-indigo-600' :
-                                  'bg-gradient-to-b from-gray-300 to-gray-400'
+                              comp.status === 'in-progress' ? 'bg-gradient-to-b from-indigo-400 to-indigo-600' :
+                                'bg-gradient-to-b from-gray-300 to-gray-400'
                               }`}
                           />
 
@@ -407,44 +411,53 @@ export default function NiveisTab({
                               {comp.completed && (
                                 <div className="space-y-3">
                                   {/* Stats Row */}
-                                  <div className="grid grid-cols-2 sm:flex sm:flex-row flex-wrap items-start sm:items-center gap-2 sm:gap-3">
-                                    {/* Stars - sem texto no mobile */}
-                                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
+                                  <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:flex-wrap items-start sm:items-center sm:gap-3">
+
+                                    {/* Stars */}
+                                    <div className="inline-flex min-w-0 flex items-center gap-1 sm:gap-1.5 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
                                       {[1, 2, 3].map((starNum) => (
                                         <Star
                                           key={starNum}
-                                          className={`w-4 h-4 transition-all duration-300 ${starNum <= comp.starsEarned
-                                              ? 'fill-[#FFD700] text-[#FFD700]'
-                                              : 'fill-none text-gray-300'
+                                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all duration-300 ${starNum <= comp.starsEarned
+                                            ? 'fill-[#FFD700] text-[#FFD700]'
+                                            : 'fill-none text-gray-300'
                                             }`}
                                           strokeWidth={1.5}
                                         />
                                       ))}
+
                                       <span className="hidden sm:inline ml-1 text-xs sm:text-sm font-bold text-gray-700">
                                         {comp.starsEarned}/3 estrelas
                                       </span>
                                     </div>
 
                                     {/* Date */}
-                                    <div className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
+                                    <div className="inline-flex items-center gap-1.5 px-2.5 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600 max-w-full">
                                       <Calendar className="w-4 h-4 text-purple-500 flex-shrink-0" />
-                                      <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200">{comp.completedDate}</span>
+                                      <span className="text-[11px] sm:text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap tabular-nums">
+                                        {comp.completedDate}
+                                      </span>
                                     </div>
 
-                                    {/* Time Spent - Single Line */}
-                                    <div className="flex items-center gap-1.5 px-2.5 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600 whitespace-nowrap">
-                                      <Clock className="w-3.5 h-3.5 md:w-4 md:h-4 text-cyan-500 flex-shrink-0" />
-                                      <span className="text-[10px] md:text-xs font-medium text-gray-700 dark:text-gray-200">{comp.timeSpent}</span>
+
+
+                                    {/* Time Spent */}
+                                    <div className="w-full min-w-0 flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
+                                      <Clock className="w-4 h-4 text-cyan-500 flex-shrink-0" />
+                                      <span className="text-[10px] md:text-xs font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap">
+                                        {comp.timeSpent}
+                                      </span>
                                     </div>
 
-                                    {/* Digcoins Earned */}
-                                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
+                                    {/* Digcoins */}
+                                    <div className="w-full min-w-0 flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
                                       <Coins className="w-4 h-4 text-[#8B27FF] flex-shrink-0" />
                                       <span className="text-xs sm:text-sm font-bold text-[#8B27FF] whitespace-nowrap">
-                                        +{comp.digcoinsEarned} <span className="text-[10px] font-semibold">Digcoins</span>
+                                        +{comp.digcoinsEarned} <span className="text-[10px] font-semibold">Pontos</span>
                                       </span>
                                     </div>
                                   </div>
+
 
                                   {/* View Result Button */}
                                   <button
@@ -460,31 +473,41 @@ export default function NiveisTab({
                                 </div>
                               )}
 
-                              {/* In Progress Details - Timer e Botão embaixo dos cards */}
+                              {/* In Progress Details - Botão e Timer com mesmo tamanho/posição */}
                               {!comp.completed && comp.status === 'in-progress' && (
-                                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-                                  {/* Botão Continuar - Índigo */}
+                                <div className="grid grid-cols-2 gap-2">
+                                  {/* Botão Continuar */}
                                   {handleStartChallenge && (
                                     <button
                                       onClick={(e) => {
                                         e.stopPropagation();
                                         handleStartChallenge(comp);
                                       }}
-                                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-xl hover:from-indigo-600 hover:to-indigo-700 hover:shadow-lg transition-all text-sm sm:text-base font-bold"
+                                      className="w-full h-10 inline-flex items-center justify-center gap-2 px-3
+                                        bg-gradient-to-r from-indigo-500 to-indigo-600 text-white
+                                        rounded-lg shadow-sm border border-gray-200/40 dark:border-gray-600/40
+                                        hover:from-indigo-600 hover:to-indigo-700 hover:shadow-md transition-all
+                                        text-[12px] font-bold"
                                     >
                                       <PlayCircle className="w-4 h-4 flex-shrink-0" />
-                                      <span>Continuar</span>
+                                      <span className="whitespace-nowrap">Continuar</span>
                                     </button>
                                   )}
 
-                                  {/* Timer ao lado */}
-                                  <CompetencyTimer
-                                    competencyName={comp.title}
-                                    mockTime={comp.title === 'Colaborar' ? 1800 : undefined}
-                                    className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-700 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600"
-                                  />
+                                  {/* Timer (sempre aparece) */}
+                                  <div className="w-full h-10 min-w-0 inline-flex items-center justify-center">
+                                    <CompetencyTimer
+                                      competencyName={comp.title}
+                                      // se não tiver tempo salvo, força 30min no mock
+                                      mockTime={1800}
+                                      className="w-full h-10 flex items-center justify-center gap-2 px-3
+                                          bg-white dark:bg-gray-700 rounded-lg shadow-sm
+                                          border border-gray-200 dark:border-gray-600 min-w-0"
+                                    />
+                                  </div>
                                 </div>
                               )}
+
 
                               {/* Not Started - Botão Iniciar */}
                               {!comp.completed && comp.status === 'not-started' && (

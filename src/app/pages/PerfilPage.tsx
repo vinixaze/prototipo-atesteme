@@ -62,6 +62,7 @@ interface FormErrors {
   [key: string]: string;
 }
 
+
 export default function PerfilPage({
   navigateTo,
   userName = 'André Silva',
@@ -79,6 +80,9 @@ export default function PerfilPage({
   const [showBannersModal, setShowBannersModal] = useState(false);
   const [showAvatarsModal, setShowAvatarsModal] = useState(false);
   const [showNomeSocial, setShowNomeSocial] = useState(false);
+  const [emailVerificado, setEmailVerificado] = useState(false);
+  const [telefoneVerificado, setTelefoneVerificado] = useState(false);
+
 
   // Webcam states
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -239,8 +243,35 @@ export default function PerfilPage({
   const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
   const [acessoEnviado, setAcessoEnviado] = useState(false);
   const [enviandoAcesso, setEnviandoAcesso] = useState(false);
+  const [telefoneResponsavelVerificado, setTelefoneResponsavelVerificado] = useState(false);
+
 
   const firstName = userName.split(' ')[0];
+
+  const [verified, setVerified] = useState({
+    email: false,
+    telefone: false,
+    emailResponsavel: false,
+    telefoneResponsavel: false,
+  });
+
+  const handleLocalVerify = (
+    field: 'email' | 'telefone' | 'emailResponsavel' | 'telefoneResponsavel'
+  ) => {
+    const value = formData[field as keyof FormData] as string;
+
+    // reaproveita sua validação atual
+    const error = validateField(field, value);
+    if (error) {
+      setErrors(prev => ({ ...prev, [field]: error }));
+      setTouchedFields(prev => new Set(prev).add(field));
+      setToast({ message: error, type: 'error' });
+      return;
+    }
+
+    setVerified(prev => ({ ...prev, [field]: true }));
+    setToast({ message: 'Verificado com sucesso!', type: 'success' });
+  };
 
   // Validação de CPF
   const validateCPF = (cpf: string): boolean => {
@@ -465,6 +496,8 @@ export default function PerfilPage({
       const error = validateField(name, maskedValue);
       setErrors(prev => ({ ...prev, [name]: error }));
     }
+    setVerified(prev => ({ ...prev, [name]: false }));
+
   };
 
   // Handle blur
@@ -978,6 +1011,7 @@ export default function PerfilPage({
                   </div>
 
                   {/* Dados do Responsável (bloco destacado se menor de idade) ou Email/Telefone normal */}
+                  {/* Dados do Responsável (bloco destacado se menor de idade) ou Email/Telefone normal */}
                   {isDataNascimentoValida(formData.dataNascimento) && !isMenorDeIdade && (
                     <>
                       {/* Email - Maior de idade */}
@@ -985,31 +1019,57 @@ export default function PerfilPage({
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           E-mail
                         </label>
+
                         <div className="relative">
                           <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
                             <Mail className="w-5 h-5 text-gray-400" />
                           </div>
+
                           <input
                             type="email"
                             name="email"
                             value={formData.email}
-                            onChange={handleInputChange}
+                            onChange={(e) => {
+                              handleInputChange(e);
+                              // opcional: se quiser "desverificar" ao editar
+                              setEmailVerificado(false);
+                            }}
                             onBlur={handleBlur}
                             placeholder="email@exemplo.com"
                             className={`
-                              w-full h-12 pl-12 pr-4 rounded-xl border-2 text-gray-800 dark:text-gray-200 text-base
-                              transition-all duration-300 focus:outline-none
-                              ${errors.email && touchedFields.has('email')
+            w-full h-12 pl-12 pr-4 rounded-xl border-2 text-gray-800 dark:text-gray-200 text-base
+            transition-all duration-300 focus:outline-none
+            ${errors.email && touchedFields.has('email')
                                 ? 'border-red-500 dark:border-red-600 bg-red-50 dark:bg-red-900/30 focus:ring-4 focus:ring-red-100 dark:focus:ring-red-900/50'
                                 : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:ring-4 focus:ring-purple-100 dark:focus:ring-purple-900/50'
                               }
-                            `}
+          `}
                           />
-                          {errors.email && touchedFields.has('email') && (
-                            <div className="flex items-center gap-2 mt-2 text-red-600 text-xs animate-slideDown">
-                              <AlertCircle className="w-3 h-3" />
-                              <span>{errors.email}</span>
-                            </div>
+                        </div>
+
+                        {errors.email && touchedFields.has('email') && (
+                          <div className="flex items-center gap-2 mt-2 text-red-600 text-xs animate-slideDown">
+                            <AlertCircle className="w-3 h-3" />
+                            <span>{errors.email}</span>
+                          </div>
+                        )}
+
+                        {/* Botão + status */}
+                        <div className="mt-3 flex items-center gap-3">
+                          <button
+                            type="button"
+                            onClick={() => setEmailVerificado(true)}
+                            disabled={!formData.email || !!errors.email || !validateEmail(formData.email)}
+                            className="px-4 py-2 rounded-lg font-semibold text-sm transition-all bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Enviar
+                          </button>
+
+                          {emailVerificado && (
+                            <span className="text-sm font-bold text-green-600 dark:text-green-400 inline-flex items-center gap-2">
+                              <CheckCircle2 className="w-4 h-4" />
+                              Verificado
+                            </span>
                           )}
                         </div>
                       </div>
@@ -1019,36 +1079,63 @@ export default function PerfilPage({
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           Telefone
                         </label>
+
                         <div className="relative">
                           <div className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
                             <Phone className="w-5 h-5 text-gray-400" />
                           </div>
+
                           <input
                             type="tel"
                             name="telefone"
                             value={formData.telefone}
-                            onChange={handleInputChange}
+                            onChange={(e) => {
+                              handleInputChange(e);
+                              // opcional: se quiser "desverificar" ao editar
+                              setTelefoneVerificado(false);
+                            }}
                             onBlur={handleBlur}
                             placeholder="(00) 00000-0000"
                             className={`
-                              w-full h-12 pl-12 pr-4 rounded-xl border-2 text-gray-800 dark:text-gray-200 text-base
-                              transition-all duration-300 focus:outline-none
-                              ${errors.telefone && touchedFields.has('telefone')
+            w-full h-12 pl-12 pr-4 rounded-xl border-2 text-gray-800 dark:text-gray-200 text-base
+            transition-all duration-300 focus:outline-none
+            ${errors.telefone && touchedFields.has('telefone')
                                 ? 'border-red-500 dark:border-red-600 bg-red-50 dark:bg-red-900/30 focus:ring-4 focus:ring-red-100 dark:focus:ring-red-900/50'
                                 : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:ring-4 focus:ring-purple-100 dark:focus:ring-purple-900/50'
                               }
-                            `}
+          `}
                           />
-                          {errors.telefone && touchedFields.has('telefone') && (
-                            <div className="flex items-center gap-2 mt-2 text-red-600 text-xs animate-slideDown">
-                              <AlertCircle className="w-3 h-3" />
-                              <span>{errors.telefone}</span>
-                            </div>
+                        </div>
+
+                        {errors.telefone && touchedFields.has('telefone') && (
+                          <div className="flex items-center gap-2 mt-2 text-red-600 text-xs animate-slideDown">
+                            <AlertCircle className="w-3 h-3" />
+                            <span>{errors.telefone}</span>
+                          </div>
+                        )}
+
+                        {/* Botão + status */}
+                        <div className="mt-3 flex items-center gap-3">
+                          <button
+                            type="button"
+                            onClick={() => setTelefoneVerificado(true)}
+                            disabled={!formData.telefone || !!errors.telefone || formData.telefone.replace(/\D/g, '').length < 10}
+                            className="px-4 py-2 rounded-lg font-semibold text-sm transition-all bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Enviar
+                          </button>
+
+                          {telefoneVerificado && (
+                            <span className="text-sm font-bold text-green-600 dark:text-green-400 inline-flex items-center gap-2">
+                              <CheckCircle2 className="w-4 h-4" />
+                              Verificado
+                            </span>
                           )}
                         </div>
                       </div>
                     </>
                   )}
+
 
                   {/* Bloco Destacado - Dados do Responsável (menor de idade) */}
                   {isDataNascimentoValida(formData.dataNascimento) && isMenorDeIdade && (
@@ -1094,40 +1181,6 @@ export default function PerfilPage({
                             )}
                           </div>
 
-                          {/* Botão Enviar Acesso */}
-                          {formData.emailResponsavel && !errors.emailResponsavel && validateEmail(formData.emailResponsavel) && (
-                            <button
-                              onClick={handleEnviarAcessoPais}
-                              disabled={enviandoAcesso || acessoEnviado}
-                              className={`
-                                mt-3 w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-sm
-                                transition-all duration-300 shadow-md
-                                ${acessoEnviado
-                                  ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 cursor-default'
-                                  : enviandoAcesso
-                                    ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 cursor-wait'
-                                    : 'bg-blue-500 dark:bg-blue-600 text-white hover:bg-blue-600 dark:hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5'
-                                }
-                              `}
-                            >
-                              {enviandoAcesso ? (
-                                <>
-                                  <Loader2 className="w-4 h-4 animate-spin" />
-                                  Enviando...
-                                </>
-                              ) : acessoEnviado ? (
-                                <>
-                                  <CheckCircle2 className="w-4 h-4" />
-                                  Acesso enviado com sucesso!
-                                </>
-                              ) : (
-                                <>
-                                  <Send className="w-4 h-4" />
-                                  Enviar acesso de monitoramento aos pais
-                                </>
-                              )}
-                            </button>
-                          )}
                         </div>
 
                         {/* Telefone do Responsável */}
@@ -1163,6 +1216,40 @@ export default function PerfilPage({
                             )}
                           </div>
                         </div>
+                        {/* Botão Enviar Acesso */}
+                        {formData.emailResponsavel && !errors.emailResponsavel && validateEmail(formData.emailResponsavel) && (
+                          <button
+                            onClick={handleEnviarAcessoPais}
+                            disabled={enviandoAcesso || acessoEnviado}
+                            className={`
+                                mt-3 w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-sm
+                                transition-all duration-300 shadow-md
+                                ${acessoEnviado
+                                ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 cursor-default'
+                                : enviandoAcesso
+                                  ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 cursor-wait'
+                                  : 'bg-blue-500 dark:bg-blue-600 text-white hover:bg-blue-600 dark:hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5'
+                              }
+                              `}
+                          >
+                            {enviandoAcesso ? (
+                              <>
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                Enviando...
+                              </>
+                            ) : acessoEnviado ? (
+                              <>
+                                <CheckCircle2 className="w-4 h-4" />
+                                Acesso enviado com sucesso!
+                              </>
+                            ) : (
+                              <>
+                                <Send className="w-4 h-4" />
+                                Enviar acesso de monitoramento
+                              </>
+                            )}
+                          </button>
+                        )}
                       </div>
                     </div>
                   )}

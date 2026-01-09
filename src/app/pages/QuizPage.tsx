@@ -74,22 +74,30 @@ export default function QuizPage({
       ...selectedAnswers,
       [currentQuestion]: selectedAnswer,
     };
+
     setSelectedAnswers(updatedAnswers);
-
-    const newStatuses = [...stepStatuses];
-    newStatuses[currentQuestion - 1] = { status: 'answered' };
-    setStepStatuses(newStatuses);
-
     setSelectedAnswer('');
 
-    if (isFillingSkipped) {
-      const unansweredQuestions = questions.filter((q: any) => q.id !== currentQuestion && !updatedAnswers[q.id]);
+    // Atualiza status do passo atual como answered
+    setStepStatuses((prev) => {
+      const next = [...prev];
+      next[currentQuestion - 1] = { status: 'answered' };
+      return next;
+    });
 
-      if (unansweredQuestions.length > 0) {
-        const nextUnanswered = unansweredQuestions[0];
+    // Decide o que fazer depois de salvar
+    const unanswered = questions.filter((q: any) => !updatedAnswers[q.id]);
+
+    // Se está preenchendo puladas, segue nelas
+    if (isFillingSkipped) {
+      if (unanswered.length > 0) {
+        const nextUnanswered = unanswered[0];
         setTimeout(() => {
-          newStatuses[nextUnanswered.id - 1] = { status: 'current' };
-          setStepStatuses(newStatuses);
+          setStepStatuses((prev) => {
+            const next = [...prev];
+            next[nextUnanswered.id - 1] = { status: 'current' };
+            return next;
+          });
           setCurrentQuestion(nextUnanswered.id);
         }, 300);
       } else {
@@ -98,16 +106,48 @@ export default function QuizPage({
           finalizarTeste(updatedAnswers);
         }, 300);
       }
-    } else {
-      if (currentQuestion < questions.length) {
-        setTimeout(() => {
-          newStatuses[currentQuestion] = { status: 'current' };
-          setStepStatuses(newStatuses);
-          setCurrentQuestion(currentQuestion + 1);
-        }, 300);
-      }
+      return;
     }
+
+    // ✅ Se terminou a última questão:
+    if (currentQuestion === questions.length) {
+      // Se ainda tem sem resposta, vai pra primeira sem resposta
+      if (unanswered.length > 0) {
+        setIsFillingSkipped(true);
+        toast.warning('Você tem questões sem resposta!', {
+          description: `Complete as ${unanswered.length} questão${unanswered.length > 1 ? 'ões' : ''} restante${unanswered.length > 1 ? 's' : ''} para finalizar.`,
+          duration: 5000,
+        });
+
+        const firstUnanswered = unanswered[0];
+        setTimeout(() => {
+          setStepStatuses((prev) => {
+            const next = [...prev];
+            next[firstUnanswered.id - 1] = { status: 'current' };
+            return next;
+          });
+          setCurrentQuestion(firstUnanswered.id);
+        }, 300);
+
+        return;
+      }
+
+      // ✅ Se não tem sem resposta, finaliza
+      setTimeout(() => finalizarTeste(updatedAnswers), 300);
+      return;
+    }
+
+    // Se não é a última, vai pra próxima
+    setTimeout(() => {
+      setStepStatuses((prev) => {
+        const next = [...prev];
+        next[currentQuestion] = { status: 'current' }; // próximo índice (currentQuestion + 1) => posição currentQuestion
+        return next;
+      });
+      setCurrentQuestion((prev) => prev + 1);
+    }, 300);
   };
+
 
   const handleSkip = () => {
     if (currentQuestion < questions.length) {

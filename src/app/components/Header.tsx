@@ -5,6 +5,7 @@ import {
   Bell,
   User,
   Coins,
+  Wallet,
   Plus,
   Minus,
   Moon,
@@ -255,26 +256,39 @@ export default function Header({
             <div className="relative" ref={digcoinsRef}>
               <div
                 onClick={() => setShowDigcoinsDropdown(!showDigcoinsDropdown)}
-                className="flex items-center gap-1 md:gap-2 bg-yellow-400 hover:bg-yellow-500 px-2 md:px-4 py-1.5 md:py-2 rounded-full transition-colors cursor-pointer"
+                className="flex items-center gap-1 md:gap-2 bg-gradient-to-r from-[#FCD34D] to-[#FBBF24] hover:brightness-105 px-2 md:px-4 py-1.5 md:py-2 rounded-full transition-all cursor-pointer shadow-md hover:shadow-lg"
               >
-                <Coins className="w-4 h-4 text-gray-900" />
-                <span className="text-xs md:text-base font-bold text-gray-900">
-                  1247
-                </span>
+                <Wallet className="w-4 h-4 text-gray-900" />
+                <span className="text-xs md:text-base font-bold text-gray-900">543</span>
               </div>
+
+
 
               {showDigcoinsDropdown && (
                 <div className="fixed md:absolute left-4 right-4 md:left-auto md:right-0 mt-2 md:w-80 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
                   <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 p-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                        <Coins className="w-6 h-6 text-white" />
+                      <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center relative -top-5">
+                        <Wallet className="w-6 h-6 text-white" />
                       </div>
+
                       <div>
-                        <p className="text-sm text-white/90">Saldo Total</p>
+                        <p className="text-sm text-white/90">Saldo Atual</p>
                         <p className="text-2xl font-bold text-white">
                           1247 Pontos
                         </p>
+                        <button
+                          onClick={() => {
+                            setShowDigcoinsDropdown(false);
+                            navigateTo?.("progresso");
+                            // se você tiver como passar estado/param, melhor:
+                            // navigateTo?.("progresso", { initialTab: "digcoins" });
+                          }}
+                          className="mt-3 w-full bg-white/20 hover:bg-white/30 text-white font-bold text-sm py-2 rounded-lg transition-colors"
+                        >
+                          Ver mais
+                        </button>
+
                       </div>
                     </div>
                   </div>
