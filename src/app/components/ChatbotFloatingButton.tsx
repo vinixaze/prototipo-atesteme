@@ -80,7 +80,7 @@ export default function ChatbotFloatingButton({
 
   return (
     <div
-      className="fixed bottom-4 right-1/2 z-50 translate-x-1/2 md:bottom-3.5 md:right-20 md:translate-x-0"
+      className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-1/2 z-50 translate-x-1/2 md:bottom-3.5 md:right-20 md:translate-x-0"
       aria-live="polite"
     >
       <button
