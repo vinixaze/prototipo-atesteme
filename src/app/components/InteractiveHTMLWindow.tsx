@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Maximize2, X, Check } from 'lucide-react';
 import RotateScreenHint from './RotateScreenHint';
 
@@ -37,7 +38,7 @@ export default function InteractiveHTMLWindow({
     ? 'flex-1 min-h-0 overflow-hidden iframe-expanded'
     : 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-inner';
 
-  return (
+  const content = (
     <div className={containerClasses}>
       {/* Header */}
       <div
@@ -101,4 +102,10 @@ export default function InteractiveHTMLWindow({
       {isExpanded && showRotateHint && <RotateScreenHint />}
     </div>
   );
+
+  if (isExpanded && typeof document !== 'undefined') {
+    return createPortal(content, document.body);
+  }
+
+  return content;
 }
