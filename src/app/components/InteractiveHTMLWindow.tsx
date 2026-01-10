@@ -28,20 +28,37 @@ export default function InteractiveHTMLWindow({
     }
   }, [htmlContent]);
 
-  return (
-    <>
-      {/* Versão Normal (Desktop e Mobile) */}
-      <div className={`my-6 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-4 shadow-lg border border-gray-200 dark:border-gray-700 ${isExpanded ? 'hidden' : 'block'}`}>
-        {/* Header */}
-        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-300 dark:border-gray-600">
-          <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
-          </div>
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-2">{title}</span>
+  const containerClasses = isExpanded
+    ? 'fixed inset-0 z-50 bg-black/95 md:hidden flex flex-col'
+    : 'my-6 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-4 shadow-lg border border-gray-200 dark:border-gray-700';
 
-          {/* Botão Expandir (apenas mobile) */}
+  return (
+    <div className={containerClasses}>
+      {/* Header */}
+      <div
+        className={
+          isExpanded
+            ? 'bg-gray-900 p-4 flex items-center justify-between border-b border-gray-700'
+            : 'flex items-center gap-2 mb-3 pb-2 border-b border-gray-300 dark:border-gray-600'
+        }
+      >
+        <div className="flex gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-red-500"></div>
+          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+        </div>
+        <span className={isExpanded ? 'text-white font-medium ml-2' : 'text-sm font-medium text-gray-700 dark:text-gray-300 ml-2'}>
+          {title}
+        </span>
+
+        {isExpanded ? (
+          <button
+            onClick={() => setIsExpanded(false)}
+            className="text-white p-2 hover:bg-gray-800 rounded-lg transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        ) : (
           <button
             onClick={() => setIsExpanded(true)}
             className="ml-auto md:hidden text-sm px-3 py-1.5 bg-[#8B27FF] hover:bg-[#7B1FE8] text-white rounded-lg flex items-center gap-1 transition-colors"
@@ -49,56 +66,32 @@ export default function InteractiveHTMLWindow({
             <Maximize2 className="w-4 h-4" />
             Expandir
           </button>
-        </div>
-
-        {/* Iframe normal */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-inner">
-          <iframe
-            ref={iframeRef}
-            className="w-full border-0"
-            style={{ minHeight: '400px', height: '500px' }}
-            title={title}
-            sandbox="allow-scripts allow-same-origin"
-          />
-        </div>
+        )}
       </div>
 
-      {/* Modal Expandido (apenas mobile) */}
+      {/* Iframe */}
+      <div className={isExpanded ? 'flex-1 overflow-hidden' : 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-inner'}>
+        <iframe
+          ref={iframeRef}
+          className={isExpanded ? 'w-full h-full border-0' : 'w-full border-0'}
+          style={isExpanded ? undefined : { minHeight: '400px', height: '500px' }}
+          title={title}
+          sandbox="allow-scripts allow-same-origin"
+        />
+      </div>
+
+      {/* Botão Fechar na parte inferior */}
       {isExpanded && (
-        <div className="fixed inset-0 z-50 bg-black/95 md:hidden flex flex-col">
-          {/* Header do Modal */}
-          <div className="bg-gray-900 p-4 flex items-center justify-between border-b border-gray-700">
-            <span className="text-white font-medium">{title}</span>
-            <button
-              onClick={() => setIsExpanded(false)}
-              className="text-white p-2 hover:bg-gray-800 rounded-lg transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Iframe Expandido */}
-          <div className="flex-1 overflow-hidden">
-            <iframe
-              ref={iframeRef}
-              className="w-full h-full border-0"
-              title={title}
-              sandbox="allow-scripts allow-same-origin"
-            />
-          </div>
-
-          {/* Botão Fechar na parte inferior */}
-          <div className="bg-gray-900 p-4 border-t border-gray-700">
-            <button
-              onClick={() => setIsExpanded(false)}
-              className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center justify-center gap-2 transition-colors"
-            >
-              <Check className="w-5 h-5" />
-              Concluir e Voltar
-            </button>
-          </div>
+        <div className="bg-gray-900 p-4 border-t border-gray-700">
+          <button
+            onClick={() => setIsExpanded(false)}
+            className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center justify-center gap-2 transition-colors"
+          >
+            <Check className="w-5 h-5" />
+            Concluir e Voltar
+          </button>
         </div>
       )}
-    </>
+    </div>
   );
 }
