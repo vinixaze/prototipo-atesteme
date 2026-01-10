@@ -271,6 +271,7 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
         currentQuestion={currentIndex + 1}          // número para UI
         totalQuestions={questions.length}
         questionText={currentQuestionData?.text}
+        questionHtml={currentQuestionData?.html}
         options={currentQuestionData?.options}
         selectedAnswer={selectedAnswer}
         onSelectAnswer={handleSelectAnswer}

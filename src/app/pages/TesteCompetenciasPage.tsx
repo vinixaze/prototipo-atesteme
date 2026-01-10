@@ -3,6 +3,7 @@ import { toast, Toaster } from 'sonner';
 import TestQuestion from '../components/TestQuestion';
 import TestCongrats from '../components/TestCongrats';
 import TestResult from '../components/TestResult';
+import { saveCompetencyResult } from '../utils/competencyStorage';  
 
 interface TesteCompetenciasPageProps {
   navigateTo: (page: string, data?: any) => void;
@@ -15,6 +16,7 @@ interface Question {
   competency: string;
   text: string;
   image?: string;
+  interactiveHtml?: string;
   options: {
     letter: string;
     text: string;
@@ -24,19 +26,196 @@ interface Question {
 
 export const questions: Question[] = [
   {
-    id: 1,
-    category: 'INFORMAÇÕES E DADOS',
-    categoryColor: '#FFD700',
-    competency: '1.1 Navegar, pesquisar e filtrar dados',
-    text: 'Qual é a melhor prática ao buscar informações na internet?',
-    options: [
-      { letter: 'a', text: 'Usar apenas o primeiro resultado da pesquisa', isCorrect: false },
-      { letter: 'b', text: 'Verificar múltiplas fontes confiáveis', isCorrect: true },
-      { letter: 'c', text: 'Confiar apenas em redes sociais', isCorrect: false },
-      { letter: 'd', text: 'Copiar o primeiro resultado encontrado', isCorrect: false },
-      { letter: 'e', text: 'Aceitar qualquer informação sem verificar', isCorrect: false },
-    ],
-  },
+  id: 1,
+  category: 'INFORMAÇÕES E DADOS',
+  categoryColor: '#FFD700',
+  competency: '1.1 Navegar, pesquisar e filtrar dados',
+  text: 'Luana está utilizando filtros em uma loja online para encontrar botas na cor azul. Execute a simulação abaixo, aplique os filtros corretamente e responda: qual o número total de resultados encontrados?',
+  interactiveHtml: `
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: sans-serif;
+            background-color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .search-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .window {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .title-bar {
+            background-color: rgb(252 216 30);
+            color: #000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 15px;
+        }
+        .title {
+            font-weight: bold;
+        }
+        .buttons {
+            display: flex;
+        }
+        .close-button, .minimize-button, .maximize-button {
+            width: 15px;
+            height: 15px;
+            margin-left: 8px;
+            border-radius: 50%;
+        }
+        .close-button { background-color: #ff3b30; }
+        .minimize-button { background-color: #003aff; }
+        .maximize-button { background-color: #4cd964; }
+        .content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .filter-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .filter-section p {
+            margin: 0;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: white;
+        }
+        button {
+            padding: 12px;
+            background-color: rgb(252 216 30);
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: rgb(212, 180, 20);
+        }
+        .divider {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+        .result-section {
+            text-align: center;
+        }
+        #result-text {
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+        @media (max-width: 350px) {
+            .search-title { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <h1 id="search-title" class="search-title">Luana quer pesquisar Botas na cor Azul</h1>
+    <div class="window">
+        <div class="title-bar">
+            <span class="title">Filtro:</span>
+            <div class="buttons">
+                <div class="close-button"></div>
+                <div class="minimize-button"></div>
+                <div class="maximize-button"></div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="filter-section">
+                <p>Selecione um tipo de calçado:</p>
+                <select id="shoe-filter">
+                    <option value="tennis">Tênis</option>
+                    <option value="shoes">Sapatos</option>
+                    <option value="boots">Botas</option>
+                    <option value="sandals">Sandálias</option>
+                    <option value="flats">Sapatilhas</option>
+                </select>
+                <p>Selecione uma cor:</p>
+                <select id="color-filter">
+                    <option value="blue">Azul</option>
+                    <option value="green">Verde</option>
+                    <option value="red">Vermelho</option>
+                    <option value="black">Preto</option>
+                    <option value="pink">Rosa</option>
+                    <option value="yellow">Amarelo</option>
+                    <option value="purple">Roxo</option>
+                    <option value="white">Branco</option>
+                </select>
+                <button id="apply-filters-button">Aplicar</button>
+            </div>
+            <hr class="divider">
+            <div class="result-section">
+                <p id="result-text"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const applyFiltersButton = document.getElementById("apply-filters-button");
+            const shoeFilter = document.getElementById("shoe-filter");
+            const colorFilter = document.getElementById("color-filter");
+            const resultText = document.getElementById("result-text");
+            const shoeResults = { "tennis": 26, "shoes": 39, "boots": 22, "sandals": 14, "flats": 24 };
+            const colorResults = { "blue": 8, "green": 6, "red": 9, "black": 19, "pink": 8, "yellow": 6, "purple": 4, "white": 14 };
+            applyFiltersButton.addEventListener("click", function () {
+                const selectedShoe = shoeFilter.value;
+                const selectedColor = colorFilter.value;
+                let shoeCount = shoeResults[selectedShoe] || 0;
+                let colorCount = colorResults[selectedColor] || 0;
+                resultText.textContent = "Foi encontrado " + (shoeCount + colorCount) + " resultados.";
+            });
+        });
+    </script>
+</body>
+</html>
+`,
+  options: [
+    { letter: 'a', text: 'Foi encontrado 26 resultados.', isCorrect: false },
+    { letter: 'b', text: 'Foi encontrado 30 resultados.', isCorrect: true },
+    { letter: 'c', text: 'Foi encontrado 15 resultados.', isCorrect: false },
+    { letter: 'd', text: 'Foi encontrado 22 resultados.', isCorrect: false },
+    { letter: 'e', text: 'Foi encontrado 8 resultados.', isCorrect: false },
+  ],
+},
   {
     id: 2,
     category: 'INFORMAÇÕES E DADOS',
@@ -431,6 +610,22 @@ export default function TesteCompetenciasPage({ navigateTo }: TesteCompetenciasP
       };
     });
 
+    const competencyGroups = questions.reduce((acc, q) => {
+      if (!acc[q.competency]) {
+        acc[q.competency] = { correct: 0, errors: 0, cat: q.category, col: q.categoryColor };
+      }
+      const userAnswer = answers[q.id];
+      const isCorrect = q.options.find(opt => opt.isCorrect)?.letter === userAnswer;
+      if (isCorrect) acc[q.competency].correct++;
+      else acc[q.competency].errors++;
+      return acc;
+    }, {} as Record<string, any>);
+
+    Object.keys(competencyGroups).forEach(compName => {
+      const group = competencyGroups[compName];
+      saveCompetencyResult(compName, group.cat, group.col, group.correct, group.errors);
+    });
+
     setTestResults({
       results,
       correctAnswers,
@@ -483,6 +678,7 @@ export default function TesteCompetenciasPage({ navigateTo }: TesteCompetenciasP
         totalQuestions={16}
         questionText={currentQuestionData?.text}
         questionImage={currentQuestionData?.image}
+        questionHtml={currentQuestionData?.html}
         options={currentQuestionData?.options}
         selectedAnswer={selectedAnswer}
         onSelectAnswer={handleSelectAnswer}

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import RotateScreenHint from './RotateScreenHint';
+import { Maximize2, X, Check } from 'lucide-react';
 
 interface InteractiveHTMLWindowProps {
   htmlContent: string;
@@ -14,7 +14,6 @@ export default function InteractiveHTMLWindow({
 }: InteractiveHTMLWindowProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isFinalized, setIsFinalized] = useState(false);
 
   useEffect(() => {
     if (iframeRef.current) {
@@ -30,63 +29,76 @@ export default function InteractiveHTMLWindow({
   }, [htmlContent]);
 
   return (
-    <div className="my-6 bg-gradient-to-br from-gray-100 to-gray-50 rounded-2xl p-4 shadow-lg border border-gray-200 relative">
-      {/* Header da janela */}
-      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-300">
-        <div className="flex gap-1.5">
-          <div className="w-3 h-3 rounded-full bg-red-500"></div>
-          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-          <div className="w-3 h-3 rounded-full bg-green-500"></div>
-        </div>
-        <span className="text-sm font-medium text-gray-700 ml-2">{title}</span>
+    <>
+      {/* Versão Normal (Desktop e Mobile) */}
+      <div className={`my-6 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-4 shadow-lg border border-gray-200 dark:border-gray-700 ${isExpanded ? 'hidden' : 'block'}`}>
+        {/* Header */}
+        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-300 dark:border-gray-600">
+          <div className="flex gap-1.5">
+            <div className="w-3 h-3 rounded-full bg-red-500"></div>
+            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+          </div>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-2">{title}</span>
 
-        {/* Mobile controls: expand / finalize */}
-        <div className="ml-auto flex items-center gap-2 md:hidden">
-          {!isExpanded && (
-            <button
-              onClick={() => setIsExpanded(true)}
-              className="text-sm px-3 py-1 bg-[#8B27FF] text-white rounded-lg"
-            >
-              Expandir
-            </button>
-          )}
-          {isExpanded && (
-            <>
-              <button
-                onClick={() => {
-                  // finalizar mantém iframe carregado
-                  setIsFinalized(true);
-                  setIsExpanded(false);
-                }}
-                className="text-sm px-3 py-1 bg-green-600 text-white rounded-lg"
-              >
-                Finalizar
-              </button>
-              <button
-                onClick={() => setIsExpanded(false)}
-                className="text-sm px-3 py-1 bg-gray-200 text-gray-800 rounded-lg"
-              >
-                Fechar
-              </button>
-            </>
-          )}
+          {/* Botão Expandir (apenas mobile) */}
+          <button
+            onClick={() => setIsExpanded(true)}
+            className="ml-auto md:hidden text-sm px-3 py-1.5 bg-[#8B27FF] hover:bg-[#7B1FE8] text-white rounded-lg flex items-center gap-1 transition-colors"
+          >
+            <Maximize2 className="w-4 h-4" />
+            Expandir
+          </button>
         </div>
-      </div> 
 
-      {/* Iframe com o HTML */}
-      {/* Mantemos o iframe montado sempre; em mobile podemos torná-lo 'expandido' via classes */}
-      <div className={`bg-white rounded-xl overflow-hidden shadow-inner ${isExpanded ? 'fixed inset-0 z-50 bg-black/80 p-6 flex items-center justify-center' : ''}`}>
-        <iframe
-          ref={iframeRef}
-          className={`w-full border-0 ${isExpanded ? 'h-full rounded-xl' : ''}`}
-          style={{ minHeight: isExpanded ? '100vh' : '600px', height: isExpanded ? '100%' : '100%' }}
-          title={title}
-          sandbox="allow-scripts allow-same-origin"
-        />
+        {/* Iframe normal */}
+        <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-inner">
+          <iframe
+            ref={iframeRef}
+            className="w-full border-0"
+            style={{ minHeight: '400px', height: '500px' }}
+            title={title}
+            sandbox="allow-scripts allow-same-origin"
+          />
+        </div>
       </div>
 
-      {/* Aviso para girar a tela (condicional) */}
-      {showRotateHint && <RotateScreenHint />}
-    </div>
+      {/* Modal Expandido (apenas mobile) */}
+      {isExpanded && (
+        <div className="fixed inset-0 z-50 bg-black/95 md:hidden flex flex-col">
+          {/* Header do Modal */}
+          <div className="bg-gray-900 p-4 flex items-center justify-between border-b border-gray-700">
+            <span className="text-white font-medium">{title}</span>
+            <button
+              onClick={() => setIsExpanded(false)}
+              className="text-white p-2 hover:bg-gray-800 rounded-lg transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Iframe Expandido */}
+          <div className="flex-1 overflow-hidden">
+            <iframe
+              ref={iframeRef}
+              className="w-full h-full border-0"
+              title={title}
+              sandbox="allow-scripts allow-same-origin"
+            />
+          </div>
+
+          {/* Botão Fechar na parte inferior */}
+          <div className="bg-gray-900 p-4 border-t border-gray-700">
+            <button
+              onClick={() => setIsExpanded(false)}
+              className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center justify-center gap-2 transition-colors"
+            >
+              <Check className="w-5 h-5" />
+              Concluir e Voltar
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

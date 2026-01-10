@@ -4,7 +4,7 @@ export interface CompetencyStatus {
   competency: string;
   category: string;
   categoryColor: string;
-  status: 'not-started' | 'completed' | 'failed' | 'attempted' | 'in-progress'; // in-progress = teste iniciado mas não finalizado
+status: 'not-started' | 'completed' | 'failed' | 'attempted' | 'in-progress' | 'blocked';
   correctCount?: number;
   errorCount?: number;
   attempts?: number; // Número de tentativas
@@ -26,7 +26,20 @@ export const getAllCompetencies = (): CompetencyStatus[] => {
 // Obter status de uma competência específica
 export const getCompetencyStatus = (competencyName: string): CompetencyStatus | null => {
   const competencies = getAllCompetencies();
-  return competencies.find(c => c.competency === competencyName) || null;
+const competency = competencies.find(c => c.competency === competencyName);
+if (!competency) return null;
+
+if (
+  competency.status === 'blocked' &&
+  competency.blockedUntil &&
+  new Date() >= new Date(competency.blockedUntil)
+) {
+  competency.status = 'not-started';
+  competency.blockedUntil = undefined;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(competencies));
+}
+
+return competency;
 };
 
 // Salvar resultado de uma competência
@@ -44,23 +57,26 @@ export const saveCompetencyResult = (
   // Incrementar tentativas
   const attempts = (existing?.attempts || 0) + 1;
   
-  // Determinar status
-  let status: 'completed' | 'failed' | 'attempted' = 'completed';
-  let blockedUntil: string | undefined;
-  
-  if (errorCount >= 2) {
-    // Se já tentou antes e errou novamente, AGORA sim bloqueia
-    if (existing && (existing.status === 'attempted' || existing.status === 'failed')) {
-      status = 'failed';
-      // Calcular data de bloqueio (5 dias a partir de hoje)
-      const futureDate = new Date();
-      futureDate.setDate(futureDate.getDate() + 5);
-      blockedUntil = futureDate.toISOString();
-    } else {
-      // Primeira tentativa com erro - marca como "attempted" mas NÃO bloqueia
-      status = 'attempted';
-    }
+  let status: CompetencyStatus['status'] = 'completed';
+let blockedUntil = existing?.blockedUntil;
+
+// Caso tenha erros suficientes
+if (errorCount >= 2) {
+  // Segunda tentativa falha → bloqueia
+  if (existing?.failedAttempts && existing.failedAttempts >= 1) {
+    status = 'blocked';
+
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 5);
+    blockedUntil = futureDate.toISOString();
+  } 
+  // Primeira tentativa falha
+  else {
+    status = 'attempted';
+    blockedUntil = undefined;
   }
+}
+
   
   const competencyData: CompetencyStatus = {
     competency,
@@ -70,8 +86,7 @@ export const saveCompetencyResult = (
     correctCount,
     errorCount,
     attempts,
-    failedAttempts: errorCount >= 2 ? (existing?.failedAttempts || 0) + 1 : existing?.failedAttempts || 0,
-    lastAttemptDate: new Date().toISOString(),
+    failedAttempts: errorCount >= 2 ? (existing?.failedAttempts || 0) + 1 : existing?.failedAttempts || 0,    lastAttemptDate: new Date().toISOString(),
     blockedUntil
   };
   
@@ -88,9 +103,10 @@ export const saveCompetencyResult = (
 export const isCompetencyBlocked = (competencyName: string): boolean => {
   const status = getCompetencyStatus(competencyName);
   
-  if (!status || status.status !== 'failed' || !status.blockedUntil) {
-    return false;
-  }
+  if (!status || status.status !== 'blocked' || !status.blockedUntil) {
+  return false;
+}
+
   
   const blockedDate = new Date(status.blockedUntil);
   const now = new Date();

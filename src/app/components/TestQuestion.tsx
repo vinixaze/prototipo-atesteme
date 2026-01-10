@@ -2,6 +2,7 @@ import { MessageSquare } from 'lucide-react';
 import AnswerOption from './AnswerOption';
 import ProgressStepper from './ProgressStepper';
 import TestHeader from './TestHeader';
+import InteractiveHTMLWindow from './InteractiveHTMLWindow'; 
 
 interface TestQuestionProps {
   // Question Data
@@ -9,6 +10,7 @@ interface TestQuestionProps {
   totalQuestions: number;
   questionText: string;
   questionImage?: string;
+  questionHtml?: string; 
   options: Array<{
     letter: string;
     text: string;
@@ -42,6 +44,7 @@ export default function TestQuestion({
   questionImage,
   options,
   selectedAnswer,
+  questionHtml,
   onSelectAnswer,
   onSaveAnswer,
   onSkip,
@@ -85,6 +88,13 @@ export default function TestQuestion({
           <h2 className="text-lg sm:text-xl text-gray-800 dark:text-gray-200 leading-relaxed mb-6 sm:mb-8">
             {questionText}
           </h2>
+          {questionHtml && (
+            <InteractiveHTMLWindow
+              htmlContent={questionHtml}
+              title="Simulação Interativa"
+              showRotateHint={false}
+            />
+          )}
 
           {/* Imagem (se houver) */}
           {questionImage && (
@@ -94,7 +104,7 @@ export default function TestQuestion({
                 alt="Question illustration"
                 className="max-w-full md:max-w-2xl rounded-xl shadow-md"
               />
-            </div>
+            </div>           
           )}
 
           {/* Opções de Resposta */}

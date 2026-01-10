@@ -1,6 +1,7 @@
-// pages/HabilidadesPage.tsx
 import React, { useState, useRef } from "react";
 import Header from "../components/Header";
+import { isCompetencyBlocked } from '../utils/competencyStorage';
+import BlockCompetencyModal from '../components/BlockedCompetencyModal';
 import Sidebar from "../components/Sidebar";
 import { CompetencyTimer } from "../components/CompetencyTimer";
 import { getCompetencyStatus, getDaysUntilUnblock } from "../utils/competencyStorage";
@@ -58,6 +59,16 @@ export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPag
   const [showBlockedModal, setShowBlockedModal] = useState(false);
 
   const [showNocoes, setShowNocoes] = useState(true);
+
+  const [selectedBlockedComp, setSelectedBlockedComp] = useState<any>(null);
+
+  const handleCompetencyClick = (comp: any) => {
+    if (isCompetencyBlocked(comp.name)) {
+      setSelectedBlockedComp(comp);
+      return;
+    }
+    navigateTo('quiz', { competency: comp });
+  };
 
   const categories: Category[] = [
     {
