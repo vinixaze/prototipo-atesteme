@@ -44,15 +44,18 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
       explanation: 'Ao selecionar "Botas" (22 resultados) e "Azul" (8 resultados), o sistema soma os valores: 22 + 8 = 30 resultados.',
       htmlContent: `<!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Filtros</title>
+    <title>Windows Simulation</title>
     <style>
+        /* Estilos gerais */
         body {
             margin: 0;
             padding: 20px;
             font-family: sans-serif;
+            /* Fonte solicitada */
             background-color: #e0e0e0;
             display: flex;
             flex-direction: column;
@@ -62,28 +65,39 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
             box-sizing: border-box;
         }
 
+        /* Título da busca fora da janela */
         .search-title {
             text-align: center;
             margin-bottom: 20px;
             font-size: 1.25rem;
+            /* Responsivo */
             font-weight: bold;
             color: #333;
         }
 
+        /* Estilo da janela */
         .window {
             width: 100%;
+            /* Ocupa 100% do espaço disponível... */
             max-width: 400px;
+            /* ...até o limite de 400px (tablet/desktop) */
             height: auto;
+            /* Altura se ajusta ao conteúdo */
             background-color: #f0f0f0;
             border: 1px solid #ccc;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             border-radius: 4px;
+            /* Leve arredondamento para mobile */
             overflow: hidden;
+            /* Garante que filhos não vazem */
         }
 
+        /* Barra de título */
         .title-bar {
-            background-color: rgb(252, 216, 30);
+            background-color: rgb(252 216 30);
+            /* Cor solicitada */
             color: #000;
+            /* Texto preto para contraste com amarelo */
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -105,6 +119,7 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
             height: 15px;
             margin-left: 8px;
             border-radius: 50%;
+            /* Estilo bolinha mac/win moderno */
         }
 
         .close-button {
@@ -119,12 +134,14 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
             background-color: #4cd964;
         }
 
+        /* Conteúdo da janela */
         .content {
             padding: 20px;
             display: flex;
             flex-direction: column;
         }
 
+        /* Estilo para os filtros */
         .filter-section {
             display: flex;
             flex-direction: column;
@@ -140,16 +157,19 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
         select {
             padding: 10px;
             font-size: 16px;
+            /* Tamanho bom para toque no celular */
             border: 1px solid #ccc;
             border-radius: 5px;
             width: 100%;
+            /* Largura total no mobile */
             box-sizing: border-box;
             background-color: white;
         }
 
         button {
             padding: 12px;
-            background-color: rgb(252, 216, 30);
+            background-color: rgb(252 216 30);
+            /* Cor solicitada */
             color: black;
             border: none;
             border-radius: 5px;
@@ -157,12 +177,14 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
             transition: background-color 0.3s ease;
             font-weight: bold;
             width: 100%;
+            /* Botão full width para mobile */
             margin-top: 10px;
             font-size: 16px;
         }
 
         button:hover {
             background-color: rgb(212, 180, 20);
+            /* Amarelo um pouco mais escuro */
         }
 
         .divider {
@@ -179,9 +201,9 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
             font-weight: bold;
             font-size: 18px;
             color: #333;
-            min-height: 27px;
         }
 
+        /* Ajustes específicos para telas muito pequenas */
         @media (max-width: 350px) {
             .search-title {
                 font-size: 1rem;
@@ -189,6 +211,7 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
         }
     </style>
 </head>
+
 <body>
     <h1 id="search-title" class="search-title">Luana quer pesquisar Botas na cor Azul</h1>
 
@@ -269,12 +292,13 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
                 if (!shoeCount) shoeCount = 0;
                 if (!colorCount) colorCount = 0;
 
-                const resultMessage = \`Foi encontrado \${shoeCount + colorCount} resultados.\`;
+                const resultMessage = 'Foi encontrado ' + (shoeCount + colorCount) + ' resultados.';
                 resultText.textContent = resultMessage;
             });
         });
     </script>
 </body>
+
 </html>`,
       showRotateHint: true,
       options: [
