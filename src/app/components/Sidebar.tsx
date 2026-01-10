@@ -44,6 +44,33 @@ export default function Sidebar({
     }
   }, [showMore]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+
+    const updateBodyClass = () => {
+      document.body.classList.toggle('has-mobile-bottom-nav', mediaQuery.matches);
+    };
+
+    updateBodyClass();
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', updateBodyClass);
+    } else {
+      mediaQuery.addListener(updateBodyClass);
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener('change', updateBodyClass);
+      } else {
+        mediaQuery.removeListener(updateBodyClass);
+      }
+      document.body.classList.remove('has-mobile-bottom-nav');
+    };
+  }, []);
+
   // Safety: ensure scroll is restored on unmount
   useEffect(() => {
     return () => {

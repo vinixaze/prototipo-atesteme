@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Maximize2, X, Check } from 'lucide-react';
+import RotateScreenHint from './RotateScreenHint';
 
 interface InteractiveHTMLWindowProps {
   htmlContent: string;
@@ -29,8 +30,12 @@ export default function InteractiveHTMLWindow({
   }, [htmlContent]);
 
   const containerClasses = isExpanded
-    ? 'fixed inset-0 z-50 bg-black/95 md:hidden flex flex-col'
+    ? 'fixed inset-0 z-50 bg-black/95 md:hidden flex flex-col relative'
     : 'my-6 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-4 shadow-lg border border-gray-200 dark:border-gray-700';
+
+  const iframeWrapperClasses = isExpanded
+    ? 'flex-1 overflow-hidden'
+    : 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-inner w-full aspect-[9/16] sm:aspect-video';
 
   return (
     <div className={containerClasses}>
@@ -70,11 +75,10 @@ export default function InteractiveHTMLWindow({
       </div>
 
       {/* Iframe */}
-      <div className={isExpanded ? 'flex-1 overflow-hidden' : 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-inner'}>
+      <div className={iframeWrapperClasses}>
         <iframe
           ref={iframeRef}
-          className={isExpanded ? 'w-full h-full border-0' : 'w-full border-0'}
-          style={isExpanded ? undefined : { minHeight: '400px', height: '500px' }}
+          className="w-full h-full border-0"
           title={title}
           sandbox="allow-scripts allow-same-origin"
         />
@@ -92,6 +96,8 @@ export default function InteractiveHTMLWindow({
           </button>
         </div>
       )}
+
+      {isExpanded && showRotateHint && <RotateScreenHint />}
     </div>
   );
 }

@@ -208,6 +208,12 @@
   }
 }
 
+@media (max-width: 767px) {
+  body.has-mobile-bottom-nav #root {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  }
+}
+
 /* Prevent text selection on mobile (for buttons/interactive elements) */
 .no-select-mobile {
   @apply sm:select-auto select-none;
