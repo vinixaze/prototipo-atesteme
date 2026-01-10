@@ -536,7 +536,7 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
 
 
                 {/* Efeitos de fundo sutis */}
-                <div className="absolute inset-0 opacity-5">
+                <div className="absolute inset-0 hidden opacity-5 md:block">
                   <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500 rounded-full blur-2xl"></div>
                   <div className="absolute bottom-0 left-0 w-20 h-20 bg-purple-400 rounded-full blur-2xl"></div>
                 </div>
