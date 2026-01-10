@@ -34,7 +34,7 @@ export default function InteractiveHTMLWindow({
     : 'my-6 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-4 shadow-lg border border-gray-200 dark:border-gray-700';
 
   const iframeWrapperClasses = isExpanded
-    ? 'flex-1 min-h-0 overflow-hidden'
+    ? 'flex-1 min-h-0 overflow-hidden iframe-expanded'
     : 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-inner';
 
   return (
@@ -69,7 +69,7 @@ export default function InteractiveHTMLWindow({
             className="ml-auto md:hidden text-sm px-3 py-1.5 bg-[#8B27FF] hover:bg-[#7B1FE8] text-white rounded-lg flex items-center gap-1 transition-colors"
           >
             <Maximize2 className="w-4 h-4" />
-            Expandir
+            Expandir ou vire a tela
           </button>
         )}
       </div>
