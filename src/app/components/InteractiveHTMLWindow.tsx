@@ -14,6 +14,7 @@ export default function InteractiveHTMLWindow({
 }: InteractiveHTMLWindowProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isLandscape, setIsLandscape] = useState(false);
 
   useEffect(() => {
     if (iframeRef.current) {
@@ -28,9 +29,47 @@ export default function InteractiveHTMLWindow({
     }
   }, [htmlContent]);
 
+  useEffect(() => {
+    if (!isExpanded) {
+      setIsLandscape(false);
+      return;
+    }
+
+    const mediaQuery = window.matchMedia('(orientation: landscape)');
+    const updateOrientation = () => setIsLandscape(mediaQuery.matches);
+
+    updateOrientation();
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', updateOrientation);
+    } else {
+      mediaQuery.addListener(updateOrientation);
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener('change', updateOrientation);
+      } else {
+        mediaQuery.removeListener(updateOrientation);
+      }
+    };
+  }, [isExpanded]);
+
   const containerClasses = isExpanded
-    ? 'fixed inset-0 z-50 bg-black/95 md:hidden flex flex-col'
+    ? 'fixed inset-0 z-50 bg-black/95 md:hidden flex flex-col relative'
     : 'my-6 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-4 shadow-lg border border-gray-200 dark:border-gray-700';
+
+  const expandedHeaderClasses = isLandscape
+    ? 'absolute inset-x-0 top-0 z-10 bg-gray-900/90 backdrop-blur p-2 flex items-center justify-between border-b border-gray-700'
+    : 'bg-gray-900 p-4 flex items-center justify-between border-b border-gray-700';
+
+  const expandedIframeClasses = isLandscape
+    ? 'flex-1 overflow-hidden pt-12 pb-16'
+    : 'flex-1 overflow-hidden';
+
+  const expandedFooterClasses = isLandscape
+    ? 'absolute inset-x-0 bottom-0 z-10 bg-gray-900/90 backdrop-blur p-2 border-t border-gray-700'
+    : 'bg-gray-900 p-4 border-t border-gray-700';
 
   return (
     <div className={containerClasses}>
@@ -38,7 +77,7 @@ export default function InteractiveHTMLWindow({
       <div
         className={
           isExpanded
-            ? 'bg-gray-900 p-4 flex items-center justify-between border-b border-gray-700'
+            ? expandedHeaderClasses
             : 'flex items-center gap-2 mb-3 pb-2 border-b border-gray-300 dark:border-gray-600'
         }
       >
@@ -70,7 +109,13 @@ export default function InteractiveHTMLWindow({
       </div>
 
       {/* Iframe */}
-      <div className={isExpanded ? 'flex-1 overflow-hidden' : 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-inner'}>
+      <div
+        className={
+          isExpanded
+            ? expandedIframeClasses
+            : 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-inner'
+        }
+      >
         <iframe
           ref={iframeRef}
           className={isExpanded ? 'w-full h-full border-0' : 'w-full border-0'}
@@ -82,7 +127,7 @@ export default function InteractiveHTMLWindow({
 
       {/* Botão Fechar na parte inferior */}
       {isExpanded && (
-        <div className="bg-gray-900 p-4 border-t border-gray-700">
+        <div className={expandedFooterClasses}>
           <button
             onClick={() => setIsExpanded(false)}
             className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center justify-center gap-2 transition-colors"

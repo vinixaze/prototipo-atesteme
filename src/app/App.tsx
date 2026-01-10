@@ -91,6 +91,7 @@ export default function App() {
   };
 
   const chatbotHiddenPages = new Set<Page>([
+    "login",
     "teste-competencias",
     "nocoes-basicas",
     "quiz",
