@@ -15,7 +15,7 @@ export default function ChatbotFloatingButton({
   const hideTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 640px)");
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
     const updateIsMobile = () => setIsMobile(mediaQuery.matches);
 
     updateIsMobile();
@@ -80,7 +80,7 @@ export default function ChatbotFloatingButton({
 
   return (
     <div
-      className="fixed bottom-4 right-4 z-50 sm:bottom-3.5 sm:right-20"
+      className="fixed bottom-4 right-1/2 z-50 translate-x-1/2 md:bottom-3.5 md:right-20 md:translate-x-0"
       aria-live="polite"
     >
       <button
@@ -90,14 +90,14 @@ export default function ChatbotFloatingButton({
           setIsClosed(true);
         }}
         aria-label="Fechar botão do chatbot"
-        className="rounded-full border-0 bg-transparent p-0 opacity-90 transition-all duration-200 ease-in-out hover:opacity-100"
+        className="rounded-full border-0 bg-transparent p-0 opacity-100 transition-all duration-200 ease-in-out md:opacity-80 md:hover:opacity-100"
       >
         <img
           src="https://i.postimg.cc/C5xPXFxB/Group-262.png"
-          alt="Chatbot"
-          className="h-auto w-24 max-w-[55vw] rounded-full bg-white/90 p-1.5 shadow-md transition-opacity duration-200 ease-in-out sm:w-[250px] sm:max-w-none sm:rounded-none sm:bg-transparent sm:p-0 sm:shadow-none"
+          alt="Chat Atesteme"
+          className="h-auto w-[180px] max-w-[80vw] rounded-2xl bg-white/90 p-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.25)] transition-opacity duration-200 ease-in-out md:w-[250px] md:max-w-none md:rounded-none md:bg-transparent md:p-0 md:shadow-none"
           loading="lazy"
-          style={{ opacity: isVisible ? 1 : 0 }}
+          style={{ opacity: isMobile ? 1 : isVisible ? 1 : 0 }}
         />
       </button>
     </div>
