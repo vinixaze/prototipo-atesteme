@@ -22,6 +22,7 @@ import AcessibilidadePage from "./pages/AcessibilidadePage";
 import PerfilPage from "./pages/PerfilPage";
 import TransversalityPage from "./pages/TransversalityPage";
 import SingleQuestionPage from "./pages/SingleQuestionPage";
+import ChatbotFloatingButton from "./components/ChatbotFloatingButton";
 // Temporarily disabled to isolate Invalid Hook Call during dev
 // import PWAManager from "./components/PWAManager";
 
@@ -88,6 +89,12 @@ export default function App() {
   const switchModule = (module: "atesteme" | "prosaeb") => {
     setActiveModule(module);
   };
+
+  const chatbotHiddenPages = new Set<Page>([
+    "teste-competencias",
+    "nocoes-basicas",
+    "quiz",
+  ]);
 
   return (
     <div className="min-h-screen">
@@ -248,6 +255,7 @@ export default function App() {
           userRole={userRole}
         />
       )}
+      {!chatbotHiddenPages.has(currentPage) && <ChatbotFloatingButton />}
     </div>
   );
 }
