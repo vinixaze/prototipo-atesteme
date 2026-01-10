@@ -30,7 +30,7 @@ export default function InteractiveHTMLWindow({
   }, [htmlContent]);
 
   const containerClasses = isExpanded
-    ? 'fixed inset-0 z-50 bg-black/95 flex flex-col relative'
+    ? 'fixed inset-0 z-[9999] bg-black/95 flex flex-col relative'
     : 'my-6 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-4 shadow-lg border border-gray-200 dark:border-gray-700';
 
   const iframeWrapperClasses = isExpanded
