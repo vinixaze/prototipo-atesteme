@@ -30,12 +30,12 @@ export default function InteractiveHTMLWindow({
   }, [htmlContent]);
 
   const containerClasses = isExpanded
-    ? 'fixed inset-0 z-50 bg-black/95 md:hidden flex flex-col relative'
+    ? 'fixed inset-0 z-50 bg-black/95 flex flex-col relative'
     : 'my-6 bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-4 shadow-lg border border-gray-200 dark:border-gray-700';
 
   const iframeWrapperClasses = isExpanded
-    ? 'flex-1 overflow-hidden'
-    : 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-inner w-full aspect-[9/16] sm:aspect-video';
+    ? 'flex-1 min-h-0 overflow-hidden'
+    : 'bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-inner';
 
   return (
     <div className={containerClasses}>
@@ -78,7 +78,8 @@ export default function InteractiveHTMLWindow({
       <div className={iframeWrapperClasses}>
         <iframe
           ref={iframeRef}
-          className="w-full h-full border-0"
+          className={isExpanded ? 'w-full h-full border-0' : 'w-full border-0'}
+          style={isExpanded ? undefined : { minHeight: '400px', height: '500px' }}
           title={title}
           sandbox="allow-scripts allow-same-origin"
         />
