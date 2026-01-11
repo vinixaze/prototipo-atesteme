@@ -153,6 +153,78 @@
       overscroll-behavior-y: none;
       -webkit-overflow-scrolling: touch;
     }
+
+    /* Chat widget */
+    .webchat-header {
+      position: fixed;
+      bottom: 14px;
+      right: 82px;
+      z-index: 1000;
+    }
+
+    .webchat-header img.desktop-image {
+      width: 100%;
+      max-width: 250px;
+    }
+
+    #close-button {
+      background-color: transparent !important;
+      border: none;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: all 0.2s ease-in-out;
+      padding: 0;
+    }
+
+    #close-button:hover {
+      opacity: 1;
+    }
+
+    #header-image {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      display: block;
+      border-radius: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .webchat-header {
+        right: 16px;
+        bottom: calc(16px + env(safe-area-inset-bottom) + 72px);
+        transform: none;
+      }
+
+      .webchat-header img.desktop-image {
+        display: none;
+      }
+
+      #close-button {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8169f7 0%, #6b56e8 100%);
+        box-shadow: 0 10px 30px rgba(20, 15, 40, 0.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        opacity: 1;
+      }
+
+      #header-image {
+        width: 26px;
+        height: 26px;
+        opacity: 1 !important;
+        border-radius: 50%;
+        background: transparent;
+        box-shadow: none;
+        transform: translateY(0);
+      }
+
+      .chat-label {
+        display: none;
+      }
+    }
   </style>
 </head>
 
@@ -169,6 +241,15 @@
 
   <!-- React App Root -->
   <div id="root"></div>
+
+  <!-- Chat Widget -->
+  <div class="webchat-header" role="region" aria-label="Atendimento Tina">
+    <button id="close-button" aria-label="Abrir/Fechar chat">
+      <img class="desktop-image" id="desktop-image" src="https://i.postimg.cc/C5xPXFxB/Group-262.png"
+        alt="Chat Atesteme" />
+      <img id="header-image" src="https://bot-flow.s3.connectacx.com/atesteme/iconeatesteme.jpeg" alt="Tina" />
+    </button>
+  </div>
 
   <!-- Service Worker Registration -->
   <script>
@@ -246,6 +327,56 @@
       { passive: false }
     );
   </script>
+
+  <!-- Chat configuration -->
+  <script>
+    window.chatCompany = 'cb897082-7784-11ef-961a-0efa6ad28f4f';
+    window.chatChannel = '58cbe76c-1a40-4ffb-a345-a59df5c69351';
+    window.chatNotificationSound = 'https://bot-flow.s3.connectacx.com/connectacx/notificacao.mp3';
+    window.chatHeaderColor = '#8169f7';
+    window.chatHeaderIcon = 'https://bot-flow.s3.connectacx.com/atesteme/iconeatesteme.jpeg';
+    window.chatTitle = 'Tina';
+    window.chatFooterText = 'Prazer em atender';
+  </script>
+
+  <script>
+    const closeButton = document.getElementById('close-button');
+    const container = document.querySelector('.webchat-header');
+    const desktopImage = document.getElementById('desktop-image');
+    const compactImage = document.getElementById('header-image');
+
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+    closeButton.addEventListener('click', function () {
+      container.style.display = 'none';
+    });
+
+    if (!isMobile) {
+      let hideTimeout;
+      function showImage() {
+        desktopImage.style.opacity = '1';
+        clearTimeout(hideTimeout);
+      }
+      function hideImage() {
+        desktopImage.style.opacity = '0';
+      }
+
+      document.addEventListener('mousemove', function () {
+        showImage();
+        hideTimeout = setTimeout(hideImage, 2000);
+      });
+    } else {
+      desktopImage.style.opacity = '0';
+      compactImage.style.opacity = '1';
+
+      closeButton.addEventListener('touchstart', function (ev) {
+        ev.preventDefault();
+      });
+    }
+  </script>
+
+  <!-- External chat script -->
+  <script src="https://hub.notificame.com.br/schedule/webchat.js"></script>
 
   <!-- Main App Script -->
   <script type="module" src="/src/main.tsx"></script>
