@@ -7,8 +7,10 @@ type ChatbotFloatingButtonProps = {
 export default function ChatbotFloatingButton({
   onClick,
 }: ChatbotFloatingButtonProps) {
+  const [isHidden, setIsHidden] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [imageOpacity, setImageOpacity] = useState(0);
+  const [desktopOpacity, setDesktopOpacity] = useState(0);
+  const [compactOpacity, setCompactOpacity] = useState(0);
   const hideTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -33,17 +35,18 @@ export default function ChatbotFloatingButton({
 
   useEffect(() => {
     if (isMobile) {
-      setImageOpacity(1);
+      setDesktopOpacity(0);
+      setCompactOpacity(1);
       return;
     }
 
     const handleMouseMove = () => {
-      setImageOpacity(1);
+      setDesktopOpacity(1);
       if (hideTimeoutRef.current) {
         window.clearTimeout(hideTimeoutRef.current);
       }
       hideTimeoutRef.current = window.setTimeout(() => {
-        setImageOpacity(0);
+        setDesktopOpacity(0);
       }, 2000);
     };
 
@@ -57,78 +60,108 @@ export default function ChatbotFloatingButton({
     };
   }, [isMobile]);
 
+  if (isHidden) {
+    return null;
+  }
+
   return (
     <>
       <style>
         {`
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-          }
+          * { box-sizing: border-box; }
 
-          .chat-trigger {
+          .webchat-header {
             position: fixed;
             bottom: 14px;
             right: 82px;
             z-index: 1000;
           }
 
-          .chat-trigger button {
-            background: transparent;
+          .webchat-header img.desktop-image {
+            width: 100%;
+            max-width: 250px;
+          }
+
+          #close-button {
+            background-color: transparent !important;
             border: none;
             cursor: pointer;
-            opacity: 0.85;
-            transition: opacity 0.2s ease;
+            opacity: 0.8;
+            transition: all 0.2s ease-in-out;
+            padding: 0;
           }
 
-          .chat-trigger button:hover {
-            opacity: 1;
-          }
+          #close-button:hover { opacity: 1; }
 
-          .chat-trigger img {
-            max-width: 250px;
+          #header-image {
             opacity: 0;
             transition: opacity 0.2s ease;
+            display: block;
+            border-radius: 12px;
           }
 
           @media (max-width: 768px) {
-            .chat-trigger {
+            .webchat-header {
               right: 16px;
               bottom: 16px;
             }
 
-            .chat-trigger button {
+            .webchat-header img.desktop-image { display: none; }
+
+            #close-button {
               width: 56px;
               height: 56px;
               border-radius: 50%;
-              background: #8169f7;
-              box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+              background: linear-gradient(135deg, #8169f7 0%, #6b56e8 100%);
+              box-shadow: 0 10px 30px rgba(20,15,40,0.25);
               display: flex;
               align-items: center;
               justify-content: center;
+              padding: 0;
               opacity: 1;
             }
 
-            .chat-trigger img {
-              max-width: 28px;
+            #header-image {
+              width: 26px;
+              height: 26px;
               opacity: 1 !important;
+              border-radius: 50%;
+              background: transparent;
+              box-shadow: none;
+              transform: translateY(0);
             }
+
+            .chat-label { display: none; }
           }
         `}
       </style>
-      <div className="chat-trigger">
+      <div className="webchat-header" role="region" aria-label="Atendimento Tina">
         <button
-          id="chatButton"
+          id="close-button"
           type="button"
-          aria-label="Abrir chat"
-          onClick={onClick}
+          aria-label="Abrir/Fechar chat"
+          onClick={() => {
+            onClick?.();
+            setIsHidden(true);
+          }}
+          onTouchStart={(event) => {
+            if (isMobile) {
+              event.preventDefault();
+            }
+          }}
         >
           <img
-            id="chatImage"
+            className="desktop-image"
+            id="desktop-image"
+            src="https://i.postimg.cc/C5xPXFxB/Group-262.png"
+            alt="Chat Atesteme"
+            style={{ opacity: desktopOpacity }}
+          />
+          <img
+            id="header-image"
             src="https://bot-flow.s3.connectacx.com/atesteme/iconeatesteme.jpeg"
-            alt="Abrir chat"
-            style={{ opacity: imageOpacity }}
+            alt="Tina"
+            style={{ opacity: compactOpacity }}
           />
         </button>
       </div>
