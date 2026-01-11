@@ -9,7 +9,7 @@ export default function ChatbotFloatingButton({
 }: ChatbotFloatingButtonProps) {
   const [isHidden, setIsHidden] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [desktopOpacity, setDesktopOpacity] = useState(0);
+  const [desktopOpacity, setDesktopOpacity] = useState(1);
   const [compactOpacity, setCompactOpacity] = useState(0);
   const hideTimeoutRef = useRef<number | null>(null);
 
@@ -40,8 +40,7 @@ export default function ChatbotFloatingButton({
       return;
     }
 
-    const handleMouseMove = () => {
-      setDesktopOpacity(1);
+    const startHideTimer = () => {
       if (hideTimeoutRef.current) {
         window.clearTimeout(hideTimeoutRef.current);
       }
@@ -49,6 +48,14 @@ export default function ChatbotFloatingButton({
         setDesktopOpacity(0);
       }, 2000);
     };
+
+    const handleMouseMove = () => {
+      setDesktopOpacity(1);
+      startHideTimer();
+    };
+
+    setDesktopOpacity(1);
+    startHideTimer();
 
     document.addEventListener("mousemove", handleMouseMove);
 
