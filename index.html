@@ -187,6 +187,30 @@
       border-radius: 12px;
     }
 
+    .desktop-message {
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+      padding: 10px 14px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(20, 15, 40, 0.2);
+      font-size: 14px;
+      font-weight: 600;
+      color: #2f214f;
+      max-width: 260px;
+    }
+
+    .desktop-message img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
     @media (max-width: 768px) {
       .webchat-header {
         right: 16px;
@@ -212,13 +236,7 @@
       }
 
       #header-image {
-        width: 26px;
-        height: 26px;
-        opacity: 1 !important;
-        border-radius: 50%;
-        background: transparent;
-        box-shadow: none;
-        transform: translateY(0);
+        display: none;
       }
 
       .chat-label {
@@ -247,6 +265,10 @@
     <button id="close-button" aria-label="Abrir/Fechar chat">
       <img class="desktop-image" id="desktop-image" src="https://i.postimg.cc/C5xPXFxB/Group-262.png"
         alt="Chat Atesteme" />
+      <div class="desktop-message" id="desktop-message">
+        <img src="https://bot-flow.s3.connectacx.com/atesteme/iconeatesteme.jpeg" alt="Tina" />
+        <span>essa é a tina, a assistente virtual da Atesteme</span>
+      </div>
       <img id="header-image" src="https://bot-flow.s3.connectacx.com/atesteme/iconeatesteme.jpeg" alt="Tina" />
     </button>
   </div>
@@ -344,6 +366,7 @@
     const container = document.querySelector('.webchat-header');
     const desktopImage = document.getElementById('desktop-image');
     const compactImage = document.getElementById('header-image');
+    const desktopMessage = document.getElementById('desktop-message');
 
     const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
@@ -355,10 +378,12 @@
       let hideTimeout;
       function showImage() {
         desktopImage.style.opacity = '1';
+        desktopMessage.style.opacity = '1';
         clearTimeout(hideTimeout);
       }
       function hideImage() {
         desktopImage.style.opacity = '0';
+        desktopMessage.style.opacity = '0';
       }
 
       document.addEventListener('mousemove', function () {
@@ -367,7 +392,7 @@
       });
     } else {
       desktopImage.style.opacity = '0';
-      compactImage.style.opacity = '1';
+      compactImage.style.opacity = '0';
 
       closeButton.addEventListener('touchstart', function (ev) {
         ev.preventDefault();
