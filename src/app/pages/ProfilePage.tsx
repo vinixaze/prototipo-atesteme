@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
+import { avatarOptions, bannerLevels, collectibleAvatars } from '../data/profileData';
 import Toast from '../components/Toast';
 import {
   User,
@@ -33,7 +34,7 @@ import {
   UserCheck
 } from 'lucide-react';
 
-interface PerfilPageProps {
+interface ProfilePageProps {
   navigateTo: (page: string) => void;
   userName?: string;
   userRole?: 'admin' | 'user';
@@ -63,11 +64,11 @@ interface FormErrors {
 }
 
 
-export default function PerfilPage({
+export default function ProfilePage({
   navigateTo,
   userName = 'André Silva',
   userRole = 'user'
-}: PerfilPageProps) {
+}: ProfilePageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [photoMode, setPhotoMode] = useState<null | 'webcam' | 'avatar'>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -84,141 +85,14 @@ export default function PerfilPage({
   const [telefoneVerificado, setTelefoneVerificado] = useState(false);
 
 
-  // Webcam states
+  // Estados da webcam
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Avatar options
-  const avatarOptions = [
-    { id: 1, name: 'Aventureiro', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix' },
-    { id: 2, name: 'Tech Girl', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka' },
-    { id: 3, name: 'Professor', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bob' },
-    { id: 4, name: 'Estudante', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jasper' },
-    { id: 5, name: 'Designer', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Annie' },
-    { id: 6, name: 'Dev', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Max' },
-    { id: 7, name: 'Manager', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Lily' },
-    { id: 8, name: 'Analista', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Sophie' },
-    { id: 9, name: 'Líder', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=George' },
-    { id: 10, name: 'Criativo', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Chloe' },
-    { id: 11, name: 'Estrategista', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Oliver' },
-    { id: 12, name: 'Inovador', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Luna' },
-  ];
 
-  // Banners disponíveis (Níveis 1 a 8)
-  const bannerLevels = [
-    {
-      id: 1,
-      level: 1,
-      name: 'Banner Nível 1 - Iniciante',
-      gradient: 'from-gray-400 to-gray-600',
-      unlocked: true,
-      cost: 0
-    },
-    {
-      id: 2,
-      level: 2,
-      name: 'Banner Nível 2 - Aprendiz',
-      gradient: 'from-blue-400 to-blue-600',
-      unlocked: true,
-      cost: 100
-    },
-    {
-      id: 3,
-      level: 3,
-      name: 'Banner Nível 3 - Competente',
-      gradient: 'from-purple-400 to-purple-600',
-      unlocked: false,
-      cost: 100
-    },
-    {
-      id: 4,
-      level: 4,
-      name: 'Banner Nível 4 - Avançado',
-      gradient: 'from-orange-400 to-orange-600',
-      unlocked: false,
-      cost: 100
-    },
-    {
-      id: 5,
-      level: 5,
-      name: 'Banner Nível 5 - Expert',
-      gradient: 'from-yellow-400 to-yellow-600',
-      unlocked: false,
-      cost: 100
-    },
-    {
-      id: 6,
-      level: 6,
-      name: 'Banner Nível 6 - Mestre',
-      gradient: 'from-green-400 to-green-600',
-      unlocked: false,
-      cost: 150
-    },
-    {
-      id: 7,
-      level: 7,
-      name: 'Banner Nível 7 - Lendário',
-      gradient: 'from-red-400 to-red-600',
-      unlocked: false,
-      cost: 200
-    },
-    {
-      id: 8,
-      level: 8,
-      name: 'Banner Nível 8 - Supremo',
-      gradient: 'from-pink-400 to-pink-600',
-      unlocked: false,
-      cost: 250
-    },
-  ];
 
-  // Avatares colecionáveis disponíveis
-  const collectibleAvatars = [
-    {
-      id: 1,
-      name: 'Avatar Padrão',
-      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Default',
-      unlocked: true,
-      cost: 0
-    },
-    {
-      id: 2,
-      name: 'Ada Lovelace',
-      url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Ada',
-      unlocked: true,
-      cost: 150
-    },
-    {
-      id: 3,
-      name: 'Alan Turing',
-      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alan',
-      unlocked: false,
-      cost: 150
-    },
-    {
-      id: 4,
-      name: 'Grace Hopper',
-      url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Grace',
-      unlocked: false,
-      cost: 150
-    },
-    {
-      id: 5,
-      name: 'Steve Jobs',
-      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Steve',
-      unlocked: false,
-      cost: 150
-    },
-    {
-      id: 6,
-      name: 'Bill Gates',
-      url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bill',
-      unlocked: false,
-      cost: 150
-    },
-  ];
 
   const [formData, setFormData] = useState<FormData>({
     nome: userName,
@@ -476,7 +350,7 @@ export default function PerfilPage({
     }
   };
 
-  // Handle input change
+  // Lidar com mudança de campo
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     let maskedValue = value;
@@ -500,7 +374,7 @@ export default function PerfilPage({
 
   };
 
-  // Handle blur
+  // Lidar com perda de foco
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setTouchedFields(prev => new Set(prev).add(name));
@@ -548,7 +422,7 @@ export default function PerfilPage({
     }
   };
 
-  // Handle save
+  // Salvar alterações
   const handleSave = async () => {
     // Validar todos os campos
     const newErrors: FormErrors = {};
@@ -573,7 +447,7 @@ export default function PerfilPage({
     setToast({ message: 'Perfil atualizado com sucesso!', type: 'success' });
   };
 
-  // Handle cancel
+  // Cancelar alterações
   const handleCancel = () => {
     // Restaurar dados originais (em produção, você carregaria do estado original)
     setHasChanges(false);
@@ -581,7 +455,7 @@ export default function PerfilPage({
     setTouchedFields(new Set());
   };
 
-  // Webcam functions
+  // Funções da webcam
   const startWebcam = async () => {
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
@@ -652,7 +526,7 @@ export default function PerfilPage({
     };
   }, [photoMode]);
 
-  // Handle photo upload
+  // Lidar com upload de foto
   const handlePhotoSelect = (newPhotoUrl: string) => {
     setPhotoUrl(newPhotoUrl);
     setPhotoStatus('uploaded');

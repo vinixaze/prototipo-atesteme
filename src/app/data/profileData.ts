@@ -1,0 +1,177 @@
+export interface AvatarOption {
+  id: number;
+  name: string;
+  url: string;
+}
+
+export interface BannerLevel {
+  id: number;
+  level: number;
+  name: string;
+  gradient: string;
+  unlocked: boolean;
+  cost: number;
+}
+
+export interface CollectibleAvatar {
+  id: number;
+  name: string;
+  url: string;
+  unlocked: boolean;
+  cost: number;
+}
+
+export const avatarOptions: AvatarOption[] = [
+  { id: 1, name: 'Aventureiro', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Felix' },
+  { id: 2, name: 'Tech Girl', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka' },
+  { id: 3, name: 'Professor', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bob' },
+  { id: 4, name: 'Estudante', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jasper' },
+  { id: 5, name: 'Designer', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Annie' },
+  { id: 6, name: 'Dev', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Max' },
+  { id: 7, name: 'Manager', url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Lily' },
+  { id: 8, name: 'Analista', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Sophie' },
+  { id: 9, name: 'Líder', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=George' },
+  { id: 10, name: 'Criativo', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Chloe' },
+  { id: 11, name: 'Estrategista', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Oliver' },
+  { id: 12, name: 'Inovador', url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Luna' },
+];
+
+export const bannerLevels: BannerLevel[] = [
+  {
+    id: 1,
+    level: 1,
+    name: 'Banner Nível 1 - Iniciante',
+    gradient: 'from-gray-400 to-gray-600',
+    unlocked: true,
+    cost: 0
+  },
+  {
+    id: 2,
+    level: 2,
+    name: 'Banner Nível 2 - Aprendiz',
+    gradient: 'from-blue-400 to-blue-600',
+    unlocked: true,
+    cost: 100
+  },
+  {
+    id: 3,
+    level: 3,
+    name: 'Banner Nível 3 - Competente',
+    gradient: 'from-purple-400 to-purple-600',
+    unlocked: false,
+    cost: 100
+  },
+  {
+    id: 4,
+    level: 4,
+    name: 'Banner Nível 4 - Avançado',
+    gradient: 'from-orange-400 to-orange-600',
+    unlocked: false,
+    cost: 100
+  },
+  {
+    id: 5,
+    level: 5,
+    name: 'Banner Nível 5 - Expert',
+    gradient: 'from-yellow-400 to-yellow-600',
+    unlocked: false,
+    cost: 100
+  },
+  {
+    id: 6,
+    level: 6,
+    name: 'Banner Nível 6 - Mestre',
+    gradient: 'from-green-400 to-green-600',
+    unlocked: false,
+    cost: 150
+  },
+  {
+    id: 7,
+    level: 7,
+    name: 'Banner Nível 7 - Lendário',
+    gradient: 'from-red-400 to-red-600',
+    unlocked: false,
+    cost: 200
+  },
+  {
+    id: 8,
+    level: 8,
+    name: 'Banner Nível 8 - Supremo',
+    gradient: 'from-pink-400 to-pink-600',
+    unlocked: false,
+    cost: 250
+  },
+];
+
+export const collectibleAvatars: CollectibleAvatar[] = [
+  {
+    id: 1,
+    name: 'Avatar Padrão',
+    url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Default',
+    unlocked: true,
+    cost: 0
+  },
+  {
+    id: 2,
+    name: 'Ada Lovelace',
+    url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Ada',
+    unlocked: true,
+    cost: 150
+  },
+  {
+    id: 3,
+    name: 'Alan Turing',
+    url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alan',
+    unlocked: false,
+    cost: 150
+  },
+  {
+    id: 4,
+    name: 'Grace Hopper',
+    url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Grace',
+    unlocked: false,
+    cost: 200
+  },
+  {
+    id: 5,
+    name: 'Marie Curie',
+    url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Marie',
+    unlocked: false,
+    cost: 250
+  },
+  {
+    id: 6,
+    name: 'Albert Einstein',
+    url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Einstein',
+    unlocked: false,
+    cost: 300
+  },
+  {
+    id: 7,
+    name: 'Nikola Tesla',
+    url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Tesla',
+    unlocked: false,
+    cost: 350
+  },
+  {
+    id: 8,
+    name: 'Katherine Johnson',
+    url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Katherine',
+    unlocked: false,
+    cost: 400
+  },
+  {
+    id: 9,
+    name: 'Mary Jackson',
+    url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Mary',
+    unlocked: false,
+    cost: 450
+  },
+  {
+    id: 10,
+    name: 'Dorothy Vaughan',
+    url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Dorothy',
+    unlocked: false,
+    cost: 500
+  },
+];

@@ -1,6 +1,4 @@
-import { useState } from 'react';
-import React from "react";
-import { useRef, useMemo, useEffect } from 'react';
+import { useState, useRef, useMemo, useEffect } from 'react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { motion, AnimatePresence } from 'motion/react';
@@ -27,7 +25,7 @@ import {
 
 } from 'lucide-react';
 
-interface PlanoAulaPageProps {
+interface LessonPlanPageProps {
   navigateTo: (page: string) => void;
   userRole?: 'admin' | 'user';
 }
@@ -45,32 +43,32 @@ interface PlanoAula {
 }
 
 interface FormData {
-  // Etapa 1: Informações Básicas
+  // Etapa 1: Informações básicas
   componenteCurricular: string;
   ano: string;
   tema: string;
 
-  // Etapa 2: Configurações da Aula
+  // Etapa 2: Configurações da aula
   duracao: string;
   duracaoCustom: string;
   recursoDidatico: string[];
   formaAvaliacao: string[];
 
-  // Etapa 3: BNCC e Habilidades
+  // Etapa 3: BNCC e habilidades
   objetoConhecimento: string;
   habilidadesBNCCGeral: string[];
   habilidadesBNCCComputacao: string[];
 
-  // Etapa 4: Contexto Educacional
+  // Etapa 4: Contexto educacional
   etapaEnsino: string;
   tempoAula: string;
   metodologia: string[];
 
-  // Etapa 5: Atividades e Adaptações
+  // Etapa 5: Atividades e adaptações
   tiposAtividades: string[];
   adaptacoes: string[];
 
-  // Etapa 6: Localização (Opcional)
+  // Etapa 6: Localização (opcional)
   unidadeFederativa: string;
   cidade: string;
   escola: string;
@@ -241,7 +239,7 @@ function BnccMultiSelect({
   );
 }
 
-export default function PlanoAulaPage({ navigateTo, userRole }: PlanoAulaPageProps) {
+export default function LessonPlanPage({ navigateTo, userRole }: LessonPlanPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showGeneratorModal, setShowGeneratorModal] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);

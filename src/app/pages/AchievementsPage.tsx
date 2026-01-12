@@ -3,12 +3,12 @@ import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { Trophy, Lock, Award, Flame, Star, Target, Zap, Medal } from 'lucide-react';
 
-interface ConquistasPageProps {
+interface AchievementsPageProps {
   navigateTo: (page: string) => void;
   userRole?: 'admin' | 'user';
 }
 
-export default function ConquistasPage({ navigateTo, userRole }: ConquistasPageProps) {
+export default function AchievementsPage({ navigateTo, userRole }: AchievementsPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const conquistas = [

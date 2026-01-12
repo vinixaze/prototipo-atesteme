@@ -2,27 +2,27 @@ import { useState } from "react";
 import LoginPage from "./pages/LoginPage";
 import WelcomePage from "./pages/WelcomePage";
 import DashboardPage from "./pages/DashboardPage";
-import ConquistasPage from "./pages/ConquistasPage";
-import HabilidadesPage from "./pages/HabilidadesPage";
-import ProgressoPage from "./pages/ProgressoPage";
-import NocoesBasicasPage from "./pages/NocoesBasicasPage";
-import NocoesBasicasCongratsPage from "./pages/NocoesBasicasCongratsPage";
-import NocoesBasicasResultPage from "./pages/NocoesBasicasResultPage";
-import TesteCompetenciasPage from "./pages/TesteCompetenciasPage";
-import TesteCompetenciasCongratsPage from "./pages/TesteCompetenciasCongratsPage";
-import TesteCompetenciasDetailedResultPage from "./pages/TesteCompetenciasDetailedResultPage";
+import AchievementsPage from "./pages/AchievementsPage";
+import SkillsPage from "./pages/SkillsPage";
+import ProgressPage from "./pages/ProgressPage";
+import BasicConceptsPage from "./pages/BasicConceptsPage";
+import BasicConceptsCongratsPage from "./pages/BasicConceptsCongratsPage";
+import BasicConceptsResultPage from "./pages/BasicConceptsResultPage";
+import CompetencyTestPage from "./pages/CompetencyTestPage";
+import CompetencyTestCongratsPage from "./pages/CompetencyTestCongratsPage";
+import CompetencyTestDetailedResultPage from "./pages/CompetencyTestDetailedResultPage";
 import QuizWarningPage from "./pages/QuizWarningPage";
 import QuizPage from "./pages/QuizPage";
 import QuizResultPage from "./pages/QuizResultPage";
-import ConteudosPage from "./pages/ConteudosPage";
-import ExamesPage from "./pages/ExamesPage";
-import PlanoAulaPage from "./pages/PlanoAulaPage";
-import FAQPage from "./pages/FAQPage";
-import AcessibilidadePage from "./pages/AcessibilidadePage";
-import PerfilPage from "./pages/PerfilPage";
+import ContentPage from "./pages/ContentPage";
+import ExamsPage from "./pages/ExamsPage";
+import LessonPlanPage from "./pages/LessonPlanPage";
+import FaqPage from "./pages/FaqPage";
+import AccessibilityPage from "./pages/AccessibilityPage";
+import ProfilePage from "./pages/ProfilePage";
 import TransversalityPage from "./pages/TransversalityPage";
 import SingleQuestionPage from "./pages/SingleQuestionPage";
-// Temporarily disabled to isolate Invalid Hook Call during dev
+// Desabilitado temporariamente para isolar Invalid Hook Call durante o desenvolvimento
 // import PWAManager from "./components/PWAManager";
 
 type Page =
@@ -91,7 +91,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen">
-      {/* PWA Manager temporarily disabled for debugging Invalid Hook Call */}
+      {/* PWA Manager desabilitado temporariamente para depurar Invalid Hook Call */}
       {/* <PWAManager /> */}
 
       {currentPage === "login" && (
@@ -141,13 +141,13 @@ export default function App() {
         />
       )}
       {currentPage === "conquistas" && (
-        <ConquistasPage navigateTo={navigateTo} userRole={userRole} />
+        <AchievementsPage navigateTo={navigateTo} userRole={userRole} />
       )}
       {currentPage === "habilidades" && (
-        <HabilidadesPage navigateTo={navigateTo} userRole={userRole} />
+        <SkillsPage navigateTo={navigateTo} userRole={userRole} />
       )}
       {currentPage === "progresso" && (
-        <ProgressoPage
+        <ProgressPage
           navigateTo={navigateTo}
           userName={userName}
           initialTab="niveis"
@@ -155,7 +155,7 @@ export default function App() {
         />
       )}
       {currentPage === "progresso-conquistas" && (
-        <ProgressoPage
+        <ProgressPage
           navigateTo={navigateTo}
           userName={userName}
           initialTab="conquistas"
@@ -163,28 +163,28 @@ export default function App() {
         />
       )}
       {currentPage === "nocoes-basicas" && (
-        <NocoesBasicasPage navigateTo={navigateTo} />
+        <BasicConceptsPage navigateTo={navigateTo} />
       )}
       {currentPage === "nocoes-basicas-congrats" && (
-        <NocoesBasicasCongratsPage
+        <BasicConceptsCongratsPage
           navigateTo={navigateTo}
           testData={testData}
         />
       )}
       {currentPage === "nocoes-basicas-result" && (
-        <NocoesBasicasResultPage navigateTo={navigateTo} testData={testData} />
+        <BasicConceptsResultPage navigateTo={navigateTo} testData={testData} />
       )}
       {currentPage === "teste-competencias" && (
-        <TesteCompetenciasPage navigateTo={navigateTo} />
+        <CompetencyTestPage navigateTo={navigateTo} />
       )}
       {currentPage === "teste-competencias-congrats" && (
-        <TesteCompetenciasCongratsPage
+        <CompetencyTestCongratsPage
           navigateTo={navigateTo}
           testData={testData}
         />
       )}
       {currentPage === "teste-competencias-result" && (
-        <TesteCompetenciasDetailedResultPage
+        <CompetencyTestDetailedResultPage
           navigateTo={navigateTo}
           testData={testData}
         />
@@ -203,21 +203,21 @@ export default function App() {
         />
       )}
       {currentPage === "conteudo" && (
-        <ConteudosPage
+        <ContentPage
           navigateTo={navigateTo}
           filterData={testData}
           userRole={userRole}
         />
       )}
       {currentPage === "plano-aula" && (
-        <PlanoAulaPage
+        <LessonPlanPage
           navigateTo={navigateTo}
           filterData={testData}
           userRole={userRole}
         />
       )}
       {currentPage === "exames" && (
-        <ExamesPage navigateTo={navigateTo} userRole={userRole} />
+        <ExamsPage navigateTo={navigateTo} userRole={userRole} />
       )}
       {currentPage === "transversality" && (
         <TransversalityPage
@@ -236,13 +236,13 @@ export default function App() {
         />
       )}
       {currentPage === "faq" && (
-        <FAQPage navigateTo={navigateTo} userRole={userRole} />
+        <FaqPage navigateTo={navigateTo} userRole={userRole} />
       )}
       {currentPage === "acessibilidade" && (
-        <AcessibilidadePage navigateTo={navigateTo} userRole={userRole} />
+        <AccessibilityPage navigateTo={navigateTo} userRole={userRole} />
       )}
       {currentPage === "perfil" && (
-        <PerfilPage
+        <ProfilePage
           userName={userName}
           navigateTo={navigateTo}
           userRole={userRole}

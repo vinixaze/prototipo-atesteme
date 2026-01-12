@@ -30,11 +30,11 @@ import {
   type PowerUp
 } from '../utils/powerupsStorage';
 
-interface DigcoinsTabProps {
+interface CoinsTabProps {
   totalDigcoins: number;
 }
 
-export default function DigcoinsTab({ totalDigcoins }: DigcoinsTabProps) {
+export default function CoinsTab({ totalDigcoins }: CoinsTabProps) {
   const [showAllHistory, setShowAllHistory] = useState(false);
   const [userDigcoins, setUserDigcoins] = useState(0);
   const [purchaseSuccess, setPurchaseSuccess] = useState<number | null>(null);

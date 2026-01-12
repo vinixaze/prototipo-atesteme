@@ -31,7 +31,7 @@ export default function Sidebar({
 }: SidebarProps) {
   const [showMore, setShowMore] = useState(false);
 
-  // Prevent background scrolling when mobile modal is open
+  // Evitar rolagem de fundo quando o modal móvel estiver aberto
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (showMore) {
@@ -44,7 +44,7 @@ export default function Sidebar({
     }
   }, [showMore]);
 
-  // Safety: ensure scroll is restored on unmount
+  // Garantir restauração da rolagem ao desmontar o componente
   useEffect(() => {
     return () => {
       document.body.style.overflow = '';
@@ -66,7 +66,7 @@ export default function Sidebar({
 
   return (
     <>
-      {/* Overlay (only for md and up) */}
+      {/* Camada de fundo (apenas para md e acima) */}
       {isOpen && (
         <div
           className="hidden md:block fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
@@ -74,7 +74,7 @@ export default function Sidebar({
         />
       )}
 
-      {/* Sidebar */}
+      {/* Barra lateral */}
       <aside
         className={`
           fixed top-0 left-0 h-screen
@@ -87,7 +87,7 @@ export default function Sidebar({
           hidden md:flex
         `}
       >
-        {/* Close Button */}
+        {/* Botão de fechar */}
         <div className="p-6 flex justify-end">
           <button
             onClick={onClose}
@@ -97,7 +97,7 @@ export default function Sidebar({
           </button>
         </div>
 
-        {/* Menu Items */}
+        {/* Itens do menu */}
         <nav className="flex-1 px-4 pt-16 flex flex-col">
           <ul className="space-y-2 flex-1">
             {menuItems.map((item) => (
@@ -128,7 +128,7 @@ export default function Sidebar({
             ))}
           </ul>
 
-          {/* Bottom Items - Side by Side */}
+          {/* Itens inferiores lado a lado */}
           <div className="grid grid-cols-2 gap-2 pb-6">
             {bottomItems.map((item) => (
               <button
@@ -149,7 +149,7 @@ export default function Sidebar({
         </nav>
       </aside>
 
-      {/* Mobile bottom nav */}
+      {/* Navegação inferior no mobile */}
       <div
         className="
     fixed bottom-3 left-1/2 -translate-x-1/2 md:hidden z-50
@@ -228,7 +228,7 @@ export default function Sidebar({
       </div>
 
 
-      {/* Mobile More Modal */}
+      {/* Modal de opções no mobile */}
       {showMore && (
         <div className="fixed inset-0 z-[90] flex items-end md:hidden pointer-events-auto">
           <div className="absolute inset-0 bg-black/40 z-[80]" onClick={() => setShowMore(false)} />
@@ -271,7 +271,7 @@ export default function Sidebar({
         </div>
       )}
 
-      {/* lock body scroll when modal open (mobile) via effect */}
+      {/* Bloquear rolagem do corpo quando o modal móvel estiver aberto */}
 
     </>
   );

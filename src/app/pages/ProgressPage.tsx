@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import React from "react";
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import RankingTab from '../components/RankingTab';
-import ConquistasTab from '../components/ConquistasTab';
-import NiveisTab from '../components/NiveisTab';
-import DigcoinsTab from '../components/DigcoinsTab';
+import AchievementsTab from '../components/AchievementsTab';
+import LevelsTab from '../components/LevelsTab';
+import CoinsTab from '../components/CoinsTab';
 import { startCompetencyTimer, getCompetencyStatus } from '../utils/competencyStorage';
 import {
   ChevronDown,
@@ -45,7 +44,7 @@ import {
   Database,
 } from 'lucide-react';
 
-interface ProgressoPageProps {
+interface ProgressPageProps {
   navigateTo: (page: string, data?: any) => void;
   initialTab?: 'niveis' | 'conquistas';
   userName?: string;
@@ -88,16 +87,16 @@ interface Achievement {
   rarity: 'comum' | 'raro' | 'épico' | 'lendário';
 }
 
-export default function ProgressoPage({ navigateTo, initialTab = 'niveis', userName = 'André', userRole = 'user' }: ProgressoPageProps) {
+export default function ProgressPage({ navigateTo, initialTab = 'niveis', userName = 'André', userRole = 'user' }: ProgressPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedLevel, setExpandedLevel] = useState<number | null>(1);
   const [activeTab, setActiveTab] = useState<'niveis' | 'conquistas' | 'ranking' | 'digcoins'>(initialTab);
   const [rankingCategory, setRankingCategory] = useState<'escola' | 'turma' | 'rede'>('turma');
 
-  // Get first name only
+  // Usar apenas o primeiro nome
   const firstName = userName.split(' ')[0];
 
-  // Base levels data
+  // Dados base dos níveis
   const baseLevels: Level[] = [
     {
       number: 1,
@@ -370,7 +369,7 @@ export default function ProgressoPage({ navigateTo, initialTab = 'niveis', userN
     navigateTo(page);
   };
 
-  // Helper function to get category icon based on category name
+  // Função auxiliar para obter o ícone da categoria pelo nome
   const getCategoryIcon = (categoryName: string) => {
     switch (categoryName) {
       case 'INFORMAÇÕES E DADOS':
@@ -543,7 +542,7 @@ export default function ProgressoPage({ navigateTo, initialTab = 'niveis', userN
               <div className="p-4 md:p-6 lg:p-8">
                 {/* CONTEÚDO DA ABA NÍVEIS */}
                 {activeTab === 'niveis' && (
-                  <NiveisTab
+                  <LevelsTab
                     levels={levels}
                     expandedLevel={expandedLevel}
                     toggleLevel={toggleLevel}
@@ -555,7 +554,7 @@ export default function ProgressoPage({ navigateTo, initialTab = 'niveis', userN
 
                 {/* CONTEÚDO DA ABA CONQUISTAS */}
                 {activeTab === 'conquistas' && (
-                  <ConquistasTab
+                  <AchievementsTab
                     achievements={achievements}
                     unlockedAchievements={unlockedAchievements}
                   />
@@ -572,7 +571,7 @@ export default function ProgressoPage({ navigateTo, initialTab = 'niveis', userN
 
                 {/* CONTEÚDO DA ABA DIGCOINS */}
                 {activeTab === 'digcoins' && (
-                  <DigcoinsTab
+                  <CoinsTab
                     totalDigcoins={143}
                   />
                 )}

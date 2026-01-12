@@ -4,7 +4,7 @@ import TestQuestion from '../components/TestQuestion';
 import TestCongrats from '../components/TestCongrats';
 import TestResult from '../components/TestResult';
 
-interface NocoesBasicasPageProps {
+interface BasicConceptsPageProps {
   navigateTo: (page: string, data?: any) => void;
 }
 
@@ -80,7 +80,7 @@ const explanations = [
 
 type PageState = 'question' | 'congrats' | 'result';
 
-export default function NocoesBasicasPage({ navigateTo }: NocoesBasicasPageProps) {
+export default function BasicConceptsPage({ navigateTo }: BasicConceptsPageProps) {
   const [pageState, setPageState] = useState<PageState>('question');
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');

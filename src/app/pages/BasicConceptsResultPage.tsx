@@ -1,7 +1,7 @@
 import TestResult from '../components/TestResult';
-import { questions } from './NocoesBasicasPage';
+import { questions } from './BasicConceptsPage';
 
-interface NocoesBasicasResultPageProps {
+interface BasicConceptsResultPageProps {
   navigateTo: (page: string, data?: any) => void;
   testData?: {
     correctAnswers: number;
@@ -21,10 +21,10 @@ interface NocoesBasicasResultPageProps {
   };
 }
 
-export default function NocoesBasicasResultPage({
+export default function BasicConceptsResultPage({
   navigateTo,
   testData,
-}: NocoesBasicasResultPageProps) {
+}: BasicConceptsResultPageProps) {
   const correctAnswers = testData?.correctAnswers || 2;
   const totalQuestions = testData?.totalQuestions || 3;
   const results = testData?.results || [];

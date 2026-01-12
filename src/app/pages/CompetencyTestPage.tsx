@@ -5,7 +5,7 @@ import TestCongrats from '../components/TestCongrats';
 import TestResult from '../components/TestResult';
 import { saveCompetencyResult } from '../utils/competencyStorage';  
 
-interface TesteCompetenciasPageProps {
+interface CompetencyTestPageProps {
   navigateTo: (page: string, data?: any) => void;
 }
 
@@ -430,7 +430,7 @@ export const questions: Question[] = [
 
 type PageState = 'question' | 'congrats' | 'result';
 
-export default function TesteCompetenciasPage({ navigateTo }: TesteCompetenciasPageProps) {
+export default function CompetencyTestPage({ navigateTo }: CompetencyTestPageProps) {
   const [pageState, setPageState] = useState<PageState>('question');
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');

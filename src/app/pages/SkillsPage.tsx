@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import Header from "../components/Header";
 import { isCompetencyBlocked } from '../utils/competencyStorage';
 import BlockCompetencyModal from '../components/BlockedCompetencyModal';
@@ -30,7 +30,7 @@ import {
   ArrowUp,
 } from "lucide-react";
 
-interface HabilidadesPageProps {
+interface SkillsPageProps {
   navigateTo: (page: string, data?: any) => void;
   userRole?: "admin" | "user";
 }
@@ -48,12 +48,12 @@ interface Category {
   competencias: Competencia[];
 }
 
-export default function HabilidadesPage({ navigateTo, userRole }: HabilidadesPageProps) {
+export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedArea, setSelectedArea] = useState("Todas");
 
-  // (você hoje não usa o modal de warning, mas mantive pra não quebrar nada)
+  // Modal de aviso mantido para evitar regressões
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [selectedCompetency, setSelectedCompetency] = useState<any>(null);
   const [showBlockedModal, setShowBlockedModal] = useState(false);

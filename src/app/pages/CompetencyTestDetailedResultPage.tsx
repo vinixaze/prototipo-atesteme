@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import TestResult from '../components/TestResult';
 
-interface TesteCompetenciasDetailedResultPageProps {
+interface CompetencyTestDetailedResultPageProps {
   navigateTo: (page: string) => void;
   testData?: {
     answered: number;
@@ -12,12 +12,12 @@ interface TesteCompetenciasDetailedResultPageProps {
 }
 
 // Importar questões
-import { questions } from './TesteCompetenciasPage';
+import { questions } from './CompetencyTestPage';
 
-export default function TesteCompetenciasDetailedResultPage({
+export default function CompetencyTestDetailedResultPage({
   navigateTo,
   testData,
-}: TesteCompetenciasDetailedResultPageProps) {
+}: CompetencyTestDetailedResultPageProps) {
   const answered = testData?.answered || 16;
   const correct = testData?.correct || 12;
   const total = testData?.total || 16;
@@ -48,16 +48,6 @@ export default function TesteCompetenciasDetailedResultPage({
     };
   });
 
-  return (
-    <TestResult
-      navigateTo={navigateTo}
-      testName="Teste de Competências Digitais"
-      correctAnswers={correct}
-      totalQuestions={total}
-      results={results}
-      onBackClick={() => navigateTo('dashboard')}
-    />
-  );
   return (
     <TestResult
       navigateTo={navigateTo}

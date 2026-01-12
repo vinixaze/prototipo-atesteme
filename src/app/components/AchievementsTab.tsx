@@ -14,15 +14,15 @@ interface Achievement {
   rarity?: 'comum' | 'raro' | 'épico' | 'lendário';
 }
 
-interface ConquistasTabProps {
+interface AchievementsTabProps {
   achievements: Achievement[];
   unlockedAchievements: number;
 }
 
-export default function ConquistasTab({ achievements, unlockedAchievements }: ConquistasTabProps) {
+export default function AchievementsTab({ achievements, unlockedAchievements }: AchievementsTabProps) {
   const progressPercentage = Math.round((unlockedAchievements / achievements.length) * 100);
 
-  // Função para retornar pontos baseado na raridade
+  // Função para retornar pontos com base na raridade
   const getPointsByRarity = (rarity?: 'comum' | 'raro' | 'épico' | 'lendário'): number => {
     switch (rarity) {
       case 'comum': return 10;
@@ -54,9 +54,9 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
         </div>
       </div>
 
-      {/* SEÇÃO 2 - SUAS MISSÕES */}
+      {/* Seção 2 - Suas missões */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        {/* CARD 1 - MISSÕES (Rosa Claro) */}
+        {/* Cartão 1 - Missões (rosa claro) */}
         <div
           className="relative bg-gradient-to-r from-[#F0ABFC] to-[#E879F9] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
@@ -78,7 +78,7 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
           </div>
         </div>
 
-        {/* CARD 2 - BLOQUEADAS (Cinza) */}
+        {/* Cartão 2 - Bloqueadas (cinza) */}
         <div
           className="relative bg-gradient-to-r from-[#9CA3AF] to-[#6B7280] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
@@ -110,7 +110,7 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
           </div>
         </div>
 
-        {/* CARD 3 - MEDALHAS */}
+        {/* Cartão 3 - Medalhas */}
 
         <div
           className="relative bg-gradient-to-r from-[#3B82F6] to-[#2563EB] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"

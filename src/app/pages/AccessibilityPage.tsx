@@ -14,7 +14,7 @@ import {
   Accessibility
 } from 'lucide-react';
 
-interface AcessibilidadePageProps {
+interface AccessibilityPageProps {
   navigateTo: (page: string) => void;
   userRole?: 'admin' | 'user';
 }
@@ -32,7 +32,7 @@ interface AccessibilityTool {
   features: string[];
 }
 
-export default function AcessibilidadePage({ navigateTo, userRole }: AcessibilidadePageProps) {
+export default function AccessibilityPage({ navigateTo, userRole }: AccessibilityPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedTool, setSelectedTool] = useState<string>('vlibras');
 

@@ -27,7 +27,7 @@ import {
   BookOpen,
 } from 'lucide-react';
 
-interface ExamesPageProps {
+interface ExamsPageProps {
   navigateTo: (page: string) => void;
   userRole?: 'admin' | 'user';
 }
@@ -83,7 +83,7 @@ interface ExamDetails {
   questions: ExamQuestion[];
 }
 
-export default function ExamesPage({ navigateTo, userRole }: ExamesPageProps) {
+export default function ExamsPage({ navigateTo, userRole }: ExamsPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [filterStatus, setFilterStatus] = useState<'all' | 'Aprovado' | 'Reprovado' | 'Pendente'>('all');
   const [searchTerm, setSearchTerm] = useState('');

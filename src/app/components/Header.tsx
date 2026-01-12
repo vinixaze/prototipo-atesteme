@@ -76,7 +76,7 @@ export default function Header({
 
   const [showMoreModules, setShowMoreModules] = useState(false);
 
-  // ===== NOTIFICATIONS (corrigido) =====
+  // ===== Notificações (corrigido) =====
   const INITIAL_NOTIFS = 3;
   const [selectedNotification, setSelectedNotification] =
     useState<Notification | null>(null);
@@ -85,12 +85,12 @@ export default function Header({
   const listContainerRef = useRef<HTMLDivElement | null>(null);
   const loadMoreAnchorRef = useRef<HTMLDivElement | null>(null);
 
-  // Refs dropdowns
+  // Referências dos dropdowns
   const digcoinsRef = useRef<HTMLDivElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
   const userRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdowns when clicking outside
+  // Fechar dropdowns ao clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -114,12 +114,12 @@ export default function Header({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Apply font size to root element
+  // Aplicar tamanho da fonte no elemento raiz
   useEffect(() => {
     document.documentElement.style.fontSize = `${fontSize}%`;
   }, [fontSize]);
 
-  // Apply dark mode e salvar no localStorage
+  // Aplicar modo escuro e salvar no localStorage
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
@@ -130,7 +130,7 @@ export default function Header({
     }
   }, [isDarkMode]);
 
-  // Prevent background scroll when modulos modal is open
+  // Evitar rolagem de fundo quando o modal de módulos estiver aberto
   useEffect(() => {
     if (!showModulosModal) return;
 
@@ -142,7 +142,7 @@ export default function Header({
     };
   }, [showModulosModal]);
 
-  // Reset notifications state when open dropdown
+  // Resetar estado das notificações ao abrir dropdown
   useEffect(() => {
     if (showNotificationsDropdown) {
       setShowAllNotifications(false);
@@ -150,7 +150,7 @@ export default function Header({
     }
   }, [showNotificationsDropdown]);
 
-  // Handle scroll to hide/show header
+  // Controlar rolagem para ocultar/mostrar o cabeçalho
   useEffect(() => {
     function handleScroll() {
       const currentScrollY = window.scrollY;
@@ -168,7 +168,7 @@ export default function Header({
   const decreaseFontSize = () => setFontSize((prev) => Math.max(prev - 10, 80));
   const toggleDarkMode = () => setIsDarkMode((prev) => !prev);
 
-  // Mock data
+  // Dados simulados
   const digcoinsHistory = [
     { id: 1, activity: "Quiz de Informações e Dados", coins: 50, date: "22/12/2024" },
     { id: 2, activity: "Conquista: Primeira Competência", coins: 100, date: "20/12/2024" },
@@ -241,7 +241,7 @@ export default function Header({
           }`}
       >
         <div className="px-4 py-4 flex items-center justify-between gap-3">
-          {/* Left: Menu + Logo */}
+          {/* Esquerda: menu e logo */}
           <div className="flex items-center gap-3">
             <button
               onClick={onMenuClick}
@@ -272,9 +272,9 @@ export default function Header({
             </div>
           </div>
 
-          {/* Right */}
+          {/* Direita */}
           <div className="flex items-center gap-1.5 md:gap-3">
-            {/* Dark Mode */}
+            {/* Modo escuro */}
             <button
               onClick={toggleDarkMode}
               className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
@@ -287,7 +287,7 @@ export default function Header({
               )}
             </button>
 
-            {/* Font size - desktop */}
+            {/* Tamanho da fonte - desktop */}
             <div className="hidden md:flex items-center gap-1 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg">
               <button
                 onClick={increaseFontSize}
@@ -375,7 +375,7 @@ export default function Header({
               )}
             </div>
 
-            {/* Notifications */}
+            {/* Notificações */}
             <div className="relative" ref={notificationsRef}>
               <button
                 onClick={() =>
@@ -389,7 +389,7 @@ export default function Header({
 
               {showNotificationsDropdown && (
                 <div className="fixed md:absolute left-4 right-4 md:left-auto md:right-0 mt-2 md:w-96 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 flex flex-col max-h-[80vh]">
-                  {/* Header */}
+                  {/* Cabeçalho */}
                   <div className="bg-gradient-to-r from-[#8B27FF] to-[#A855F7] p-4">
                     <div className="flex items-center gap-3">
                       {selectedNotification ? (
@@ -420,7 +420,7 @@ export default function Header({
                     </div>
                   </div>
 
-                  {/* Body scroll */}
+                  {/* Rolagem do corpo */}
                   <div
                     ref={listContainerRef}
                     className="p-4 flex-1 overflow-y-auto overscroll-contain"
@@ -537,7 +537,7 @@ export default function Header({
               )}
             </div>
 
-            {/* User */}
+            {/* Usuário */}
             <div className="relative" ref={userRef}>
               <button
                 onClick={() => setShowUserDropdown((v) => !v)}

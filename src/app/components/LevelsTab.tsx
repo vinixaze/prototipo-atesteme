@@ -48,7 +48,7 @@ interface Level {
   competencias: Competencia[];
 }
 
-interface NiveisTabProps {
+interface LevelsTabProps {
   levels: Level[];
   expandedLevel: number | null;
   toggleLevel: (levelNumber: number) => void;
@@ -57,14 +57,14 @@ interface NiveisTabProps {
   handleStartChallenge?: (comp: Competencia) => void;
 }
 
-export default function NiveisTab({
+export default function LevelsTab({
   levels,
   expandedLevel,
   toggleLevel,
   handleViewResult,
   currentLevel,
   handleStartChallenge
-}: NiveisTabProps) {
+}: LevelsTabProps) {
   // Calcular estatísticas gerais
   const totalCompetencias = levels.reduce((acc, level) => acc + level.total, 0);
   const completedCompetencias = levels.reduce((acc, level) => acc + level.progress, 0);
@@ -84,9 +84,9 @@ export default function NiveisTab({
         </div>
       </div>
 
-      {/* SEÇÃO 1 - SEUS NÍVEIS DE COMPETÊNCIA */}
+      {/* Seção 1 - Seus níveis de competência */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        {/* CARD 1 - COMPETÊNCIAS CONQUISTADAS */}
+        {/* Cartão 1 - Competências conquistadas */}
         <div
           className="relative bg-gradient-to-r from-[#9333EA] to-[#7E22CE] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl"
         >
@@ -107,7 +107,7 @@ export default function NiveisTab({
           </div>
         </div>
 
-        {/* CARD 2 - ESTRELAS RECEBIDAS */}
+        {/* Cartão 2 - Estrelas recebidas */}
         <div
           className="relative bg-gradient-to-r from-[#F0ABFC] to-[#E879F9] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
@@ -130,7 +130,7 @@ export default function NiveisTab({
           </div>
         </div>
 
-        {/* CARD 3 - COMPETÊNCIAS DESBLOQUEADAS */}
+        {/* Cartão 3 - Competências desbloqueadas */}
         <div
           className="relative bg-gradient-to-r from-[#9CA3AF] to-[#6B7280] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden transition-all duration-300 hover:-translate-y-1 shadow-lg hover:shadow-xl"
           style={{ cursor: 'not-allowed' }}

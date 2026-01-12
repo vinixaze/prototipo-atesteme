@@ -30,7 +30,7 @@ import {
 import * as Accordion from '@radix-ui/react-accordion';
 import * as Dialog from '@radix-ui/react-dialog';
 
-interface FAQPageProps {
+interface FaqPageProps {
   navigateTo: (page: string) => void;
   userRole?: 'admin' | 'user';
 }
@@ -60,7 +60,7 @@ interface VideoChapter {
   category: 'intro' | 'cadastro' | 'navegacao' | 'desafios' | 'certificacao' | 'dicas';
 }
 
-export default function FAQPage({ navigateTo, userRole }: FAQPageProps) {
+export default function FaqPage({ navigateTo, userRole }: FaqPageProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Todas');
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
