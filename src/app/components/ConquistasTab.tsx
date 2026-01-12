@@ -1,4 +1,4 @@
-import { Trophy, Star, Sparkles, Crown, Award, Flag, Users, PieChart, Target, TrendingUp, ChevronDown, ChevronUp, Medal } from 'lucide-react';
+import { ChevronDown, ChevronUp, Crown, Medal, Trophy } from 'lucide-react';
 import { useState } from 'react';
 import { AchievementCard } from './conquistas/AchievementCard';
 import { ConquistasSummaryCards } from './conquistas/ConquistasSummaryCards';
@@ -23,8 +23,6 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
     }
   };
 
-  // Estado para controlar a visibilidade dos detalhes das conquistas
-  const [showDetails, setShowDetails] = useState(false);
   const [showAllMissions, setShowAllMissions] = useState(false);
 
   // Definir quantas missões mostrar inicialmente
