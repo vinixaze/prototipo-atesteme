@@ -3,6 +3,9 @@ import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { avatarOptions, bannerLevels, collectibleAvatars } from '../data/profileData';
 import Toast from '../components/Toast';
+import ProfilePhotoModals from '../components/profile/ProfilePhotoModals';
+import ProfileBannersModal from '../components/profile/ProfileBannersModal';
+import ProfileAvatarsModal from '../components/profile/ProfileAvatarsModal';
 import {
   User,
   Mail,
@@ -24,12 +27,8 @@ import {
   Loader2,
   CheckCircle2,
   AlertCircle,
-  X,
   Image as ImageIcon,
   Lock,
-  Unlock,
-  RefreshCcw,
-  Sparkles,
   Send,
   UserCheck
 } from 'lucide-react';
@@ -1282,137 +1281,21 @@ export default function ProfilePage({
         />
       )}
 
-      {/* Webcam Overlay */}
-      {photoMode === 'webcam' && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-scaleIn">
-            <div className="flex items-center justify-between p-6 border-b-2 border-gray-100 dark:border-gray-700">
-              <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
-                {capturedImage ? 'Confirmar Foto' : 'Capturar Foto'}
-              </h3>
-              <button
-                onClick={() => {
-                  stopWebcam();
-                  setPhotoMode(null);
-                  setCapturedImage(null);
-                }}
-                className="w-10 h-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center transition-colors"
-              >
-                <X className="w-6 h-6 text-gray-600 dark:text-gray-400" />
-              </button>
-            </div>
-            <div className="p-6">
-              {!capturedImage ? (
-                <div className="space-y-4">
-                  <div className="relative bg-black rounded-xl overflow-hidden aspect-video">
-                    <video
-                      ref={videoRef}
-                      autoPlay
-                      playsInline
-                      muted
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex gap-3">
-                    <button
-                      onClick={capturePhoto}
-                      className="flex-1 bg-[#8B27FF] text-white py-3 rounded-xl font-bold hover:bg-[#6B1FBF] transition-all duration-300 flex items-center justify-center gap-2"
-                    >
-                      <Camera className="w-5 h-5" />
-                      Capturar Foto
-                    </button>
-                    <button
-                      onClick={() => {
-                        stopWebcam();
-                        setPhotoMode(null);
-                      }}
-                      className="px-6 py-3 border-2 border-gray-300 rounded-xl font-medium hover:bg-gray-50 transition-colors"
-                    >
-                      Cancelar
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <div className="relative bg-gray-100 rounded-xl overflow-hidden aspect-square max-w-md mx-auto">
-                    <img
-                      src={capturedImage}
-                      alt="Preview"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => confirmPhoto(capturedImage)}
-                      className="flex-1 bg-[#8B27FF] text-white py-3 rounded-xl font-bold hover:bg-[#6B1FBF] transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-purple-500/30"
-                    >
-                      <Check className="w-5 h-5" />
-                      Confirmar
-                    </button>
-                    <button
-                      onClick={() => {
-                        setCapturedImage(null);
-                        setPhotoMode('webcam');
-                      }}
-                      className="px-6 py-3 border-2 border-gray-300 rounded-xl font-medium hover:bg-gray-50 transition-colors"
-                    >
-                      Tentar Novamente
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Avatar Selection Overlay */}
-      {photoMode === 'avatar' && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden animate-scaleIn">
-            <div className="flex items-center justify-between p-6 border-b-2 border-gray-100">
-              <h3 className="text-2xl font-bold text-gray-800">Escolher Avatar</h3>
-              <button
-                onClick={() => setPhotoMode(null)}
-                className="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors"
-              >
-                <X className="w-6 h-6 text-gray-600" />
-              </button>
-            </div>
-            <div className="p-6">
-              <p className="text-sm text-gray-600 mb-4">Escolha um avatar da nossa galeria:</p>
-              <div className="max-h-[60vh] overflow-y-auto pr-2">
-                <div className="grid grid-cols-3 sm:grid-cols-4 gap-4">
-                  {avatarOptions.map((avatar) => (
-                    <button
-                      key={avatar.id}
-                      onClick={() => confirmPhoto(avatar.url)}
-                      className="relative bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl overflow-hidden aspect-square border-4 border-transparent hover:border-purple-200 transition-all duration-300 hover:scale-105 hover:shadow-xl group"
-                    >
-                      <img
-                        src={avatar.url}
-                        alt={avatar.name}
-                        className="w-full h-full object-cover p-2"
-                      />
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent text-white text-xs font-bold px-2 py-2 text-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        {avatar.name}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="flex gap-3 pt-4 border-t-2 border-gray-100 mt-4">
-                <button
-                  onClick={() => setPhotoMode(null)}
-                  className="w-full py-3 border-2 border-gray-300 rounded-xl font-medium hover:bg-gray-50 transition-colors"
-                >
-                  Cancelar
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <ProfilePhotoModals
+        photoMode={photoMode}
+        capturedImage={capturedImage}
+        videoRef={videoRef}
+        avatarOptions={avatarOptions}
+        onClose={() => setPhotoMode(null)}
+        onCapture={capturePhoto}
+        onConfirmPhoto={confirmPhoto}
+        onRetry={() => {
+          setCapturedImage(null);
+          setPhotoMode('webcam');
+        }}
+        onSelectAvatar={confirmPhoto}
+        onStopWebcam={stopWebcam}
+      />
 
       {/* Hidden file input */}
       <input
@@ -1423,192 +1306,29 @@ export default function ProfilePage({
         className="hidden"
       />
 
-      {/* Modal de Banners */}
-      {showBannersModal && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 animate-fadeIn">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-scaleIn">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6 pb-5 border-b-2 border-gray-100 dark:border-gray-700">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900/40 dark:to-orange-800/40 rounded-full flex items-center justify-center">
-                    <ImageIcon className="w-6 h-6 text-[#FF9800]" strokeWidth={2} />
-                  </div>
-                  Banners de Nível
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 ml-15">Personalize seu perfil com banners exclusivos</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => navigateTo('digcoins')}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#8B27FF] text-white rounded-xl font-medium text-sm hover:bg-[#6B1FBF] transition-all duration-300 hover:scale-105"
-                >
-                  <RefreshCcw className="w-4 h-4" />
-                  <span className="sm:hidden">Mais</span>
-                  <span className="hidden sm:inline">Obter Mais</span>
-                </button>
+      <ProfileBannersModal
+        isOpen={showBannersModal}
+        banners={bannerLevels}
+        selectedBanner={selectedBanner}
+        onSelectBanner={(id) => {
+          setSelectedBanner(id);
+          setHasChanges(true);
+        }}
+        onClose={() => setShowBannersModal(false)}
+        onGetMore={() => navigateTo('digcoins')}
+      />
 
-                <button
-                  onClick={() => setShowBannersModal(false)}
-                  className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300"
-                >
-                  <X className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                </button>
-              </div>
-            </div>
-
-            {/* Grid de Banners */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {bannerLevels.map((banner) => (
-                <button
-                  key={banner.id}
-                  onClick={() => {
-                    if (banner.unlocked) {
-                      setSelectedBanner(banner.id);
-                      setHasChanges(true);
-                    }
-                  }}
-                  disabled={!banner.unlocked}
-                  className={`
-                    relative p-4 rounded-xl border-2 transition-all duration-300 group
-                    ${!banner.unlocked
-                      ? 'border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-700/50 opacity-60 cursor-not-allowed'
-                      : selectedBanner === banner.id
-                        ? 'border-[#8B27FF] dark:border-[#A855F7] bg-purple-50 dark:bg-purple-900/30 shadow-lg shadow-purple-500/20 scale-105'
-                        : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-700 hover:border-purple-300 dark:hover:border-purple-600 hover:scale-105'
-                    }
-                  `}
-                >
-                  {!banner.unlocked && (
-                    <div className="absolute top-2 right-2 z-10 bg-gray-600 dark:bg-gray-800 rounded-full p-1.5">
-                      <Lock className="w-3 h-3 text-white" />
-                    </div>
-                  )}
-
-                  <div
-                    className={`
-                      w-full h-16 rounded-lg mb-3 flex items-center justify-center
-                      bg-gradient-to-r ${banner.gradient}
-                      ${!banner.unlocked ? 'grayscale' : ''}
-                    `}
-                  >
-                    <Sparkles className="w-6 h-6 text-white opacity-80" />
-                  </div>
-
-                  <div className="text-center">
-                    <p className={`text-sm font-bold ${selectedBanner === banner.id ? 'text-[#8B27FF] dark:text-[#A855F7]' : 'text-gray-800 dark:text-gray-200'}`}>
-                      Nível {banner.level}
-                    </p>
-                    {!banner.unlocked && (
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        {banner.cost} Digcoins
-                      </p>
-                    )}
-                    {banner.unlocked && selectedBanner === banner.id && (
-                      <div className="flex items-center justify-center gap-1 mt-1">
-                        <Check className="w-3 h-3 text-[#8B27FF] dark:text-[#A855F7]" />
-                        <span className="text-xs text-[#8B27FF] dark:text-[#A855F7] font-medium">Em uso</span>
-                      </div>
-                    )}
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal de Avatares */}
-      {showAvatarsModal && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 animate-fadeIn">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-scaleIn">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6 pb-5 border-b-2 border-gray-100 dark:border-gray-700">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 dark:from-pink-900/40 dark:to-pink-800/40 rounded-full flex items-center justify-center">
-                    <User className="w-6 h-6 text-[#E91E63]" strokeWidth={2} />
-                  </div>
-                  Avatares Colecionáveis
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 ml-15">Figuras históricas da tecnologia</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => navigateTo('digcoins')}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#8B27FF] text-white rounded-xl font-medium text-sm hover:bg-[#6B1FBF] transition-all duration-300 hover:scale-105"
-                >
-                  <RefreshCcw className="w-4 h-4" />
-                  <span className="sm:hidden">Mais</span>
-                  <span className="hidden sm:inline">Obter Mais</span>
-                </button>
-
-
-                <button
-                  onClick={() => setShowAvatarsModal(false)}
-                  className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300"
-                >
-                  <X className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                </button>
-              </div>
-            </div>
-
-            {/* Grid de Avatares */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {collectibleAvatars.map((avatar) => (
-                <button
-                  key={avatar.id}
-                  onClick={() => {
-                    if (avatar.unlocked) {
-                      setSelectedAvatar(avatar.id);
-                      setHasChanges(true);
-                    }
-                  }}
-                  disabled={!avatar.unlocked}
-                  className={`
-                    relative p-3 rounded-xl border-2 transition-all duration-300 group
-                    ${!avatar.unlocked
-                      ? 'border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-700/50 opacity-60 cursor-not-allowed'
-                      : selectedAvatar === avatar.id
-                        ? 'border-[#8B27FF] dark:border-[#A855F7] bg-purple-50 dark:bg-purple-900/30 shadow-lg shadow-purple-500/20 scale-105'
-                        : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-700 hover:border-purple-300 dark:hover:border-purple-600 hover:scale-105'
-                    }
-                  `}
-                >
-                  {!avatar.unlocked && (
-                    <div className="absolute top-2 right-2 z-10 bg-gray-600 dark:bg-gray-800 rounded-full p-1">
-                      <Lock className="w-3 h-3 text-white" />
-                    </div>
-                  )}
-
-                  <div className={`w-full aspect-square rounded-lg overflow-hidden mb-2 ${!avatar.unlocked ? 'grayscale' : ''}`}>
-                    <img
-                      src={avatar.url}
-                      alt={avatar.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-
-                  <p className={`text-xs font-medium text-center line-clamp-2 ${selectedAvatar === avatar.id ? 'text-[#8B27FF] dark:text-[#A855F7]' : 'text-gray-700 dark:text-gray-300'}`}>
-                    {avatar.name}
-                  </p>
-
-                  {!avatar.unlocked && (
-                    <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-1">
-                      {avatar.cost} DC
-                    </p>
-                  )}
-                  {avatar.unlocked && selectedAvatar === avatar.id && (
-                    <div className="flex items-center justify-center gap-1 mt-1">
-                      <Check className="w-3 h-3 text-[#8B27FF] dark:text-[#A855F7]" />
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      <ProfileAvatarsModal
+        isOpen={showAvatarsModal}
+        avatars={collectibleAvatars}
+        selectedAvatar={selectedAvatar}
+        onSelectAvatar={(id) => {
+          setSelectedAvatar(id);
+          setHasChanges(true);
+        }}
+        onClose={() => setShowAvatarsModal(false)}
+        onGetMore={() => navigateTo('digcoins')}
+      />
 
       <style>{`
         @keyframes fadeIn {

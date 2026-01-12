@@ -12,7 +12,7 @@ interface CompetencyTestDetailedResultPageProps {
 }
 
 // Importar questões
-import { questions } from './CompetencyTestPage';
+import { competencyTestQuestions as questions } from '../data/competencyTestQuestions';
 
 export default function CompetencyTestDetailedResultPage({
   navigateTo,
