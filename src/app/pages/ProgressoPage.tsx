@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import React from "react";
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import RankingTab from '../components/RankingTab';
@@ -7,85 +6,16 @@ import ConquistasTab from '../components/ConquistasTab';
 import NiveisTab from '../components/NiveisTab';
 import DigcoinsTab from '../components/DigcoinsTab';
 import { startCompetencyTimer, getCompetencyStatus } from '../utils/competencyStorage';
-import {
-  ChevronDown,
-  Lock,
-  Check,
-  Search,
-  BarChart3,
-  FolderOpen,
-  MessageCircle,
-  Fingerprint,
-  Share2,
-  Users,
-  Code,
-  Image as ImageIcon,
-  FileEdit,
-  Files,
-  Shield,
-  Heart,
-  Wrench,
-  TrendingUp,
-  Star,
-  Trophy,
-  Award,
-  Zap,
-  Target,
-  Crown,
-  Flame,
-  Clock,
-  Calendar,
-  Coins,
-  Eye,
-  Medal,
-  Sparkles,
-  BookOpen,
-  IdCard,
-  Crosshair,
-  Database,
-} from 'lucide-react';
+import { Database, FileEdit, Shield, Users, Wrench } from 'lucide-react';
+import { achievements } from '../data/progresso/achievements';
+import { baseLevels } from '../data/progresso/levels';
+import type { Competencia } from '../data/progresso/types';
 
 interface ProgressoPageProps {
   navigateTo: (page: string, data?: any) => void;
   initialTab?: 'niveis' | 'conquistas';
   userName?: string;
   userRole?: 'admin' | 'user';
-}
-
-interface Competencia {
-  id: number;
-  title: string;
-  category: string;
-  categoryColor: string;
-  icon: any;
-  completed: boolean;
-  starsEarned: number;
-  totalStars: 3;
-  status: 'completed' | 'in-progress' | 'not-started';
-  completedDate?: string;
-  timeSpent?: string;
-  digcoinsEarned?: number;
-}
-
-interface Level {
-  number: number;
-  name: string;
-  unlocked: boolean;
-  progress: number;
-  total: number;
-  percentage: number;
-  competencias: Competencia[];
-}
-
-interface Achievement {
-  id: number;
-  title: string;
-  description: string;
-  icon: any;
-  unlocked: boolean;
-  date?: string;
-  color: string;
-  rarity: 'comum' | 'raro' | 'épico' | 'lendário';
 }
 
 export default function ProgressoPage({ navigateTo, initialTab = 'niveis', userName = 'André', userRole = 'user' }: ProgressoPageProps) {
@@ -98,87 +28,6 @@ export default function ProgressoPage({ navigateTo, initialTab = 'niveis', userN
   const firstName = userName.split(' ')[0];
 
   // Base levels data
-  const baseLevels: Level[] = [
-    {
-      number: 1,
-      name: 'Nível 1',
-      unlocked: true,
-      progress: 7,
-      total: 16,
-      percentage: 43,
-      competencias: [
-        { id: 1, title: 'Programar sistemas', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: Code, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '15/12/2025', timeSpent: '08min 32s', digcoinsEarned: 9 },
-        { id: 2, title: 'Adaptar arquivos', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: Files, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '16/12/2025', timeSpent: '07min 18s', digcoinsEarned: 9 },
-        { id: 3, title: 'Compartilhar e publicar', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Share2, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '16/12/2025', timeSpent: '06min 45s', digcoinsEarned: 9 },
-        { id: 4, title: 'Interagir', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: MessageCircle, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '17/12/2025', timeSpent: '05min 52s', digcoinsEarned: 9 },
-        { id: 5, title: 'Realizar pesquisa e monitoramento', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: Search, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '17/12/2025', timeSpent: '09min 15s', digcoinsEarned: 9 },
-        { id: 6, title: 'Gerir a identidade digital', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Fingerprint, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '18/12/2025', timeSpent: '07min 03s', digcoinsEarned: 9 },
-        { id: 7, title: 'Gerenciar dados', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: FolderOpen, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '18/12/2025', timeSpent: '08min 27s', digcoinsEarned: 9 },
-        { id: 8, title: 'Colaborar', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Users, completed: false, starsEarned: 2, totalStars: 3, status: 'in-progress' },
-        { id: 9, title: 'Realizar o tratamento de dados', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: BarChart3, completed: false, starsEarned: 1, totalStars: 3, status: 'in-progress' },
-        { id: 10, title: 'Editar texto multimídia', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: ImageIcon, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 11, title: 'Editar texto escrito', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: FileEdit, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 12, title: 'Proteger o ambiente digital', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Shield, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 13, title: 'Proteger dados pessoais e privacidade', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Lock, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 14, title: 'Proteger a saúde e o meio ambiente', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Heart, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 15, title: 'Resolver problemas técnicos', category: 'RESOLUÇÃO DE PROBLEMAS', categoryColor: '#E91E63', icon: Wrench, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 16, title: 'Evoluir em um ambiente digital', category: 'RESOLUÇÃO DE PROBLEMAS', categoryColor: '#E91E63', icon: TrendingUp, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      ],
-    },
-    {
-      number: 2,
-      name: 'Nível 2',
-      unlocked: false,
-      progress: 0,
-      total: 16,
-      percentage: 0,
-      competencias: [
-        { id: 17, title: 'Programar sistemas avançado', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: Code, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 18, title: 'Adaptar arquivos complexos', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: Files, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 19, title: 'Gestão de redes sociais', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Share2, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 20, title: 'Comunicação profissional', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: MessageCircle, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 21, title: 'Pesquisa avançada', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: Search, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 22, title: 'Gestão de identidade profissional', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Fingerprint, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 23, title: 'Análise de dados', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: BarChart3, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 24, title: 'Colaboração em projetos', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Users, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 25, title: 'Visualização de dados', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: BarChart3, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 26, title: 'Produção audiovisual', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: ImageIcon, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 27, title: 'Redação digital', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: FileEdit, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 28, title: 'Segurança de redes', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Shield, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 29, title: 'Privacidade digital', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Lock, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 30, title: 'Ergonomia digital', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Heart, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 31, title: 'Troubleshooting avançado', category: 'RESOLUÇÃO DE PROBLEMAS', categoryColor: '#E91E63', icon: Wrench, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 32, title: 'Adaptação tecnológica', category: 'RESOLUÇÃO DE PROBLEMAS', categoryColor: '#E91E63', icon: TrendingUp, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      ],
-    },
-    {
-      number: 3,
-      name: 'Nível 3',
-      unlocked: false,
-      progress: 0,
-      total: 16,
-      percentage: 0,
-      competencias: [
-        { id: 33, title: 'Desenvolvimento full-stack', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: Code, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 34, title: 'Integração de sistemas', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: Files, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 35, title: 'Marketing digital', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Share2, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 36, title: 'Comunicação estratégica', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: MessageCircle, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 37, title: 'Big data research', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: Search, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 38, title: 'Personal branding', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Fingerprint, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 39, title: 'Data science', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: BarChart3, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 40, title: 'Gestão de equipes remotas', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Users, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 41, title: 'Inteligência de dados', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: BarChart3, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 42, title: 'Produção transmídia', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: ImageIcon, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 43, title: 'Storytelling digital', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: FileEdit, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 44, title: 'Cybersecurity', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Shield, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 45, title: 'LGPD e compliance', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Lock, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 46, title: 'Sustentabilidade digital', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Heart, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 47, title: 'Inovação tecnológica', category: 'RESOLUÇÃO DE PROBLEMAS', categoryColor: '#E91E63', icon: Wrench, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-        { id: 48, title: 'Transformação digital', category: 'RESOLUÇÃO DE PROBLEMAS', categoryColor: '#E91E63', icon: TrendingUp, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      ],
-    },
-  ];
-
   // Map baseLevels com status dinâmico das competências
   const levels = baseLevels.map(level => ({
     ...level,
@@ -193,136 +42,6 @@ export default function ProgressoPage({ navigateTo, initialTab = 'niveis', userN
       return comp;
     }),
   }));
-
-  const achievements: Achievement[] = [
-    // 1. PRIMEIROS PASSOS (Onboarding) - 3 missões
-    {
-      id: 1,
-      title: 'Primeira Conquista',
-      description: 'Complete seu primeiro bloco de desafios com sucesso!',
-      icon: Trophy,
-      unlocked: true,
-      date: '14/11/2025',
-      color: '#FFD700',
-      rarity: 'comum',
-    },
-    {
-      id: 2,
-      title: 'Identidade Digital',
-      description: 'Complete 100% dos dados do seu perfil',
-      icon: IdCard,
-      unlocked: true,
-      date: '15/11/2025',
-      color: '#8B27FF',
-      rarity: 'comum',
-    },
-    {
-      id: 3,
-      title: 'Explorador Curioso',
-      description: 'Visite a seção "Conteúdos" e estude sobre uma competência por 30 minutos',
-      icon: BookOpen,
-      unlocked: false,
-      color: '#00BCD4',
-      rarity: 'comum',
-    },
-    
-    // 2. HÁBITO E CONSISTÊNCIA (Streak) - 2 missões
-    {
-      id: 4,
-      title: 'Sequência de 7 Dias',
-      description: 'Visite uma competência e estude as dicas de conteúdos por 7 dias',
-      icon: Flame,
-      unlocked: true,
-      date: '18/11/2025',
-      color: '#FF6B35',
-      rarity: 'raro',
-    },
-    {
-      id: 5,
-      title: 'Maratonista',
-      description: 'Responda com sucesso 3 competências diferentes em um dia',
-      icon: Zap,
-      unlocked: false,
-      color: '#FFD700',
-      rarity: 'raro',
-    },
-    
-    // 3. JORNADA DE COMPETÊNCIA (Níveis 1 ao 5) - 5 missões
-    {
-      id: 6,
-      title: 'Nível 1: Aprendiz Digital',
-      description: 'Complete todas as 16 competências do Nível 1',
-      icon: Award,
-      unlocked: false,
-      color: '#4CAF50',
-      rarity: 'épico',
-    },
-    {
-      id: 7,
-      title: 'Nível 2: Praticante',
-      description: 'Complete todas as 16 competências do Nível 2',
-      icon: Target,
-      unlocked: false,
-      color: '#00BCD4',
-      rarity: 'épico',
-    },
-    {
-      id: 8,
-      title: 'Nível 3: Especialista',
-      description: 'Complete todas as 16 competências do Nível 3',
-      icon: Star,
-      unlocked: false,
-      color: '#FF9800',
-      rarity: 'épico',
-    },
-    {
-      id: 9,
-      title: 'Nível 4: Analista',
-      description: 'Complete todas as 16 competências do Nível 4',
-      icon: TrendingUp,
-      unlocked: false,
-      color: '#9C27B0',
-      rarity: 'épico',
-    },
-    {
-      id: 10,
-      title: 'Nível 5: Mestre Digital',
-      description: 'Complete todas as 16 competências do Nível 5',
-      icon: Crown,
-      unlocked: false,
-      color: '#8B27FF',
-      rarity: 'lendário',
-    },
-    
-    // 4. PERFORMANCE E EXCELÊNCIA - 3 missões
-    {
-      id: 11,
-      title: 'Tiro Certo',
-      description: 'Acerte 3/3 em um bloco de desafios sem errar',
-      icon: Crosshair,
-      unlocked: false,
-      color: '#E91E63',
-      rarity: 'raro',
-    },
-    {
-      id: 12,
-      title: 'Perfeccionista (Por Área)',
-      description: '3 estrelas em todas as competências de uma Área (ex: Comunicação)',
-      icon: Sparkles,
-      unlocked: false,
-      color: '#FFD700',
-      rarity: 'épico',
-    },
-    {
-      id: 13,
-      title: 'Lenda do Nível',
-      description: '3 estrelas em TODAS as competências de um Nível inteiro',
-      icon: Medal,
-      unlocked: false,
-      color: '#8B27FF',
-      rarity: 'lendário',
-    },
-  ];
 
   // Dados de ranking mock
   const rankingData = {
