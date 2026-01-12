@@ -27,11 +27,14 @@ export default function DashboardPage({ userName, navigateTo, userRole, onLogout
   const [showParentalControl, setShowParentalControl] = useState(false);
   const [showNocoesBasicasBanner, setShowNocoesBasicasBanner] = useState(true);
 
-  // Verificar se o banner de noções básicas foi fechado
+  // Verificar se os banners foram fechados
   useEffect(() => {
+    const welcomeBannerClosed =
+      localStorage.getItem('welcomeBannerClosed') === 'true';
     const nocoesBasicasClosed =
-      sessionStorage.getItem('nocoesBasicasBannerClosed') === 'true';
+      localStorage.getItem('nocoesBasicasBannerClosed') === 'true';
 
+    setShowWelcomeBanner(!welcomeBannerClosed);
     setShowNocoesBasicasBanner(!nocoesBasicasClosed);
   }, []);
 
