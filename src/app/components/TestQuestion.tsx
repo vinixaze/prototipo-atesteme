@@ -146,7 +146,7 @@ export default function TestQuestion({
         </div>
 
         {/* Botão Flutuante: Enviar Observação */}
-        <button className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 px-4 py-2 sm:px-6 sm:py-3 bg-white dark:bg-gray-800 text-[#8B27FF] dark:text-[#A855F7] border-2 border-[#8B27FF] dark:border-[#A855F7] rounded-full shadow-lg hover:bg-[#F3E8FF] dark:hover:bg-gray-700 transition-colors flex items-center gap-2 text-xs sm:text-sm z-10">
+        <button className="fixed bottom-24 right-4 sm:bottom-8 sm:right-8 px-4 py-2 sm:px-6 sm:py-3 bg-white dark:bg-gray-800 text-[#8B27FF] dark:text-[#A855F7] border-2 border-[#8B27FF] dark:border-[#A855F7] rounded-full shadow-lg hover:bg-[#F3E8FF] dark:hover:bg-gray-700 transition-colors flex items-center gap-2 text-xs sm:text-sm z-10">
           <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
           <span className="hidden sm:inline">Enviar Observação</span>
           

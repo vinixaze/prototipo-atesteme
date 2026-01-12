@@ -36,11 +36,14 @@ export default function Sidebar({
     if (typeof window === 'undefined') return;
     if (showMore) {
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('chat-suppressed');
       return () => {
         document.body.style.overflow = '';
+        document.body.classList.remove('chat-suppressed');
       };
     } else {
       document.body.style.overflow = '';
+      document.body.classList.remove('chat-suppressed');
     }
   }, [showMore]);
 

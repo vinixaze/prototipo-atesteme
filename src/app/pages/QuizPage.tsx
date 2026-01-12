@@ -6,7 +6,8 @@ import TestCongrats from '../components/TestCongrats';
 import TestResult from '../components/TestResult';
 
 const BACK_ROUTE_MAP: Record<string, string> = {
-  transversalidade: 'transversalidade',
+  transversalidade: 'transversality',
+  transversality: 'transversality',
   habilidades: 'habilidades',
   dashboard: 'dashboard',
 };

@@ -22,6 +22,7 @@ import AcessibilidadePage from "./pages/AcessibilidadePage";
 import PerfilPage from "./pages/PerfilPage";
 import TransversalityPage from "./pages/TransversalityPage";
 import SingleQuestionPage from "./pages/SingleQuestionPage";
+import FloatingChatButton from "./components/FloatingChatButton";
 // Temporarily disabled to isolate Invalid Hook Call during dev
 // import PWAManager from "./components/PWAManager";
 
@@ -89,10 +90,18 @@ export default function App() {
     setActiveModule(module);
   };
 
+  const hideChatButton =
+    currentPage.includes("teste") ||
+    currentPage.includes("quiz") ||
+    currentPage.includes("nocoes-basicas") ||
+    currentPage === "single-question";
+
   return (
     <div className="min-h-screen">
       {/* PWA Manager temporarily disabled for debugging Invalid Hook Call */}
       {/* <PWAManager /> */}
+
+      {!hideChatButton && <FloatingChatButton />}
 
       {currentPage === "login" && (
         <LoginPage onLogin={handleLogin} navigateTo={navigateTo} />
