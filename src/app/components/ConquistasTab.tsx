@@ -1,18 +1,8 @@
-import { Trophy, Star, Lock, Sparkles, Crown, Award, Zap, Medal, Flag, Users, PieChart, Target, TrendingUp, ChevronDown, ChevronUp, LockOpen } from 'lucide-react';
-import { LucideIcon } from 'lucide-react';
+import { Trophy, Star, Sparkles, Crown, Award, Flag, Users, PieChart, Target, TrendingUp, ChevronDown, ChevronUp, Medal } from 'lucide-react';
 import { useState } from 'react';
-
-interface Achievement {
-  id: number;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  color: string;
-  unlocked: boolean;
-  date?: string;
-  category?: string;
-  rarity?: 'comum' | 'raro' | 'épico' | 'lendário';
-}
+import { AchievementCard } from './conquistas/AchievementCard';
+import { ConquistasSummaryCards } from './conquistas/ConquistasSummaryCards';
+import type { Achievement } from './conquistas/types';
 
 interface ConquistasTabProps {
   achievements: Achievement[];
@@ -54,202 +44,18 @@ export default function ConquistasTab({ achievements, unlockedAchievements }: Co
         </div>
       </div>
 
-      {/* SEÇÃO 2 - SUAS MISSÕES */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        {/* CARD 1 - MISSÕES (Rosa Claro) */}
-        <div
-          className="relative bg-gradient-to-r from-[#F0ABFC] to-[#E879F9] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
-        >
-          {/* Ícone decorativo - Raio - Centralizado verticalmente */}
-          <Zap
-            className="absolute top-3 right-3 w-[50px] h-[50px] text-white opacity-50 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
-            strokeWidth={2}
-          />
-
-          {/* Conteúdo */}
-          <div className="relative z-10">
-            <div className="text-[44px] font-bold text-white leading-none mb-1">
-              10/40
-            </div>
-
-            <div className="text-[13px] font-medium text-white/90">
-              Missões Concluídas
-            </div>
-          </div>
-        </div>
-
-        {/* CARD 2 - BLOQUEADAS (Cinza) */}
-        <div
-          className="relative bg-gradient-to-r from-[#9CA3AF] to-[#6B7280] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
-        >
-          {/* Ícone decorativo - Cadeado com Raio dentro */}
-          <div className="absolute top-3 right-3 w-[45px] h-[45px]">
-            <LockOpen
-              className="w-[45px] h-[45px] text-white opacity-50 transition-opacity duration-300"
-              strokeWidth={2}
-            />
-
-            <Zap
-              className="absolute top-[23px] left-1/2 -translate-x-1/2 w-[16px] h-[16px] text-white opacity-80"
-              strokeWidth={2.5}
-              fill="white"
-            />
-
-
-          </div>
-
-          {/* Conteúdo */}
-          <div className="relative z-10">
-            <div className="text-[44px] font-bold text-white leading-none mb-1">
-              2/30
-            </div>
-
-            <div className="text-[13px] font-medium text-white/90">
-              Missões Desbloqueadas
-            </div>
-          </div>
-        </div>
-
-        {/* CARD 3 - MEDALHAS */}
-
-        <div
-          className="relative bg-gradient-to-r from-[#3B82F6] to-[#2563EB] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
-        >
-          {/* Ícone decorativo - Medalha */}
-          <Medal
-            className="absolute top-3 right-3 w-[50px] h-[50px] text-white opacity-50 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12"
-            strokeWidth={2}
-          />
-
-          {/* Conteúdo */}
-          <div className="relative z-10">
-            <div className="text-[44px] font-bold text-white leading-none mb-1">
-              11
-            </div>
-
-            <div className="text-[13px] font-medium text-white/90">
-              Medalhas
-            </div>
-          </div>
-        </div>
-
-      </div>
+      <ConquistasSummaryCards />
 
       {/* Achievements Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {displayedAchievements.map((achievement, index) => {
-          const AchIcon = achievement.icon;
-          const isUnlocked = achievement.unlocked;
-
-          return (
-            <div
-              key={achievement.id}
-              className={`
-                relative rounded-2xl p-6 text-center transition-all duration-300
-                ${isUnlocked
-                  ? 'bg-white dark:bg-gray-800 border-2 shadow-lg hover:-translate-y-2 hover:shadow-2xl cursor-pointer group'
-                  : 'bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 shadow-sm opacity-60 hover:opacity-70'
-                }
-              `}
-              style={{
-                borderColor: isUnlocked ? achievement.color : undefined,
-                animationDelay: `${index * 50}ms`,
-              }}
-            >
-              {/* Icon Container com animação */}
-              <div className="flex justify-center mb-4">
-                <div
-                  className={`
-                    relative w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-300
-                    ${isUnlocked
-                      ? 'shadow-lg group-hover:scale-110 group-hover:rotate-6'
-                      : 'shadow-sm'
-                    }
-                  `}
-                  style={{
-                    backgroundColor: isUnlocked
-                      ? achievement.color + '20'
-                      : '#E5E7EB',
-                  }}
-                >
-                  {/* Efeito de brilho para conquistas desbloqueadas */}
-                  {isUnlocked && (
-                    <>
-                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transition-opacity duration-300 rounded-2xl" />
-                      <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
-                        <span className="text-white text-xs">✓</span>
-                      </div>
-                    </>
-                  )}
-
-                  {isUnlocked ? (
-                    <AchIcon
-                      className="w-10 h-10 group-hover:scale-110 transition-transform duration-300"
-                      style={{ color: achievement.color }}
-                      strokeWidth={1.5}
-                    />
-                  ) : (
-                    <Lock className="w-8 h-8 text-gray-400" />
-                  )}
-                </div>
-              </div>
-
-              {/* Title com gradiente para desbloqueadas */}
-              <h4
-                className={`
-                  text-lg mb-2 font-bold transition-all duration-300
-                  ${isUnlocked ? 'group-hover:scale-105' : 'text-gray-500'}
-                `}
-                style={{
-                  color: isUnlocked ? achievement.color : undefined,
-                }}
-              >
-                {achievement.title}
-              </h4>
-
-              {/* Description */}
-              <p className={`text-sm mb-3 ${isUnlocked ? 'text-gray-600 dark:text-gray-300' : 'text-gray-400 dark:text-gray-500'}`}>
-                {achievement.description}
-              </p>
-
-              {/* Medalha e Pontos - Informação de Recompensa */}
-              <div className={`
-                flex items-center justify-center gap-2 px-3 py-2 rounded-lg mb-3
-                ${isUnlocked
-                  ? 'bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border border-yellow-200 dark:border-yellow-800'
-                  : 'bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700'
-                }
-              `}>
-                <Medal className={`w-4 h-4 ${isUnlocked ? 'text-yellow-600 dark:text-yellow-400' : 'text-gray-400'}`} />
-                <span className={`text-xs font-bold ${isUnlocked ? 'text-yellow-700 dark:text-yellow-300' : 'text-gray-500 dark:text-gray-400'}`}>
-                  Medalha: +{getPointsByRarity(achievement.rarity)} pontos
-                </span>
-              </div>
-
-              {/* Date Badge para conquistas desbloqueadas */}
-              {isUnlocked && achievement.date && (
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                    <p className="text-xs text-gray-500 dark:text-gray-400 font-semibold">
-                      {achievement.date}
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Locked State Message */}
-              {!isUnlocked && (
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-xs text-gray-400 dark:text-gray-500 flex items-center justify-center gap-2">
-                    <Lock className="w-3 h-3" />
-                    <span>Continue progredindo</span>
-                  </p>
-                </div>
-              )}
-            </div>
-          );
-        })}
+        {displayedAchievements.map((achievement, index) => (
+          <AchievementCard
+            key={achievement.id}
+            achievement={achievement}
+            index={index}
+            points={getPointsByRarity(achievement.rarity)}
+          />
+        ))}
       </div>
 
       {/* Botão Ver Mais / Ver Menos */}
