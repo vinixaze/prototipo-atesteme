@@ -431,7 +431,7 @@ export default function RankingTab({
           `}
           >
             <span className="flex-shrink-0 text-lg sm:text-xl">👥</span>
-            <span className="min-w-0 whitespace-normal break-words leading-tight text-center">
+            <span className="min-w-0 whitespace-nowrap leading-tight text-center">
               Turma
             </span>
           </button>
@@ -451,7 +451,7 @@ export default function RankingTab({
               `}
           >
             <span className="flex-shrink-0 text-lg sm:text-xl">🏫</span>
-            <span className="min-w-0 whitespace-normal break-words leading-tight text-center">
+            <span className="min-w-0 whitespace-nowrap leading-tight text-center">
               Escola
             </span>
           </button>
@@ -471,7 +471,7 @@ export default function RankingTab({
             `}
           >
             <span className="flex-shrink-0 text-lg sm:text-xl">🌐</span>
-            <span className="min-w-0 whitespace-normal break-words leading-tight text-center">
+            <span className="min-w-0 whitespace-nowrap leading-tight text-center">
               Rede
             </span>
           </button>
