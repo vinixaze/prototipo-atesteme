@@ -261,7 +261,7 @@ export default function AssessmentPage({ navigateTo }: AssessmentPageProps) {
         totalQuestions={16}
         questionText={currentQuestionData?.text}
         questionImage={currentQuestionData?.image}
-        questionHtml={currentQuestionData?.html}
+        questionHtml={currentQuestionData?.interactiveHtml}
         options={currentQuestionData?.options}
         selectedAnswer={selectedAnswer}
         onSelectAnswer={handleSelectAnswer}
