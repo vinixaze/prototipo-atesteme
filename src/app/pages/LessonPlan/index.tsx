@@ -89,7 +89,7 @@ type BnccMultiSelectProps = {
 
 function BnccMultiSelect({
   label,
-  placeholder = "Digite um código ou palavra-chave�?�",
+  placeholder = "Digite um código ou palavra-chave...",
   type,
   selected,
   onChange,
@@ -291,14 +291,14 @@ export default function LessonPlanPage({
       let prompt = `Crie um plano de aula completo e detalhado com as seguintes especificações:\n\n`;
 
       // Informações Básicas
-      prompt += `�Y"s INFORMA�?�.ES BÁSICAS:\n`;
+      prompt += `INFORMAÇÕES BÁSICAS:\n`;
       if (formData.componenteCurricular) prompt += `- Componente Curricular: ${formData.componenteCurricular}\n`;
       if (formData.ano) prompt += `- Ano/Série: ${formData.ano}\n`;
       if (formData.tema) prompt += `- Tema da Aula: ${formData.tema}\n`;
       prompt += `\n`;
 
       // Configurações da Aula
-      prompt += `⏱️ CONFIGURA�?�.ES DA AULA:\n`;
+      prompt += `CONFIGURAÇÕES DA AULA:\n`;
       if (formData.duracao) prompt += `- Duração: ${formData.duracao === 'outro' ? formData.duracaoCustom : formData.duracao}\n`;
       if (formData.recursoDidatico.length > 0) prompt += `- Recursos Didáticos: ${formData.recursoDidatico.join(', ')}\n`;
       if (formData.formaAvaliacao.length > 0) prompt += `- Formas de Avaliação: ${formData.formaAvaliacao.join(', ')}\n`;
@@ -306,7 +306,7 @@ export default function LessonPlanPage({
 
       // BNCC e Habilidades
       if (formData.objetoConhecimento || formData.habilidadesBNCCGeral.length > 0 || formData.habilidadesBNCCComputacao.length > 0) {
-        prompt += `�YZ� BNCC E HABILIDADES:\n`;
+        prompt += `BNCC E HABILIDADES:\n`;
         if (formData.objetoConhecimento) prompt += `- Objeto de Conhecimento: ${formData.objetoConhecimento}\n`;
         if (formData.habilidadesBNCCGeral.length > 0) prompt += `- Habilidades BNCC Geral: ${formData.habilidadesBNCCGeral.join(', ')}\n`;
         if (formData.habilidadesBNCCComputacao.length > 0) prompt += `- Habilidades BNCC Computação : ${formData.habilidadesBNCCComputacao.join(', ')}\n`;
@@ -315,7 +315,7 @@ export default function LessonPlanPage({
 
       // Contexto Educacional
       if (formData.etapaEnsino || formData.tempoAula || formData.metodologia.length > 0) {
-        prompt += `�Y�� CONTEXTO EDUCACIONAL:\n`;
+        prompt += `CONTEXTO EDUCACIONAL:\n`;
 
         if (formData.tempoAula) prompt += `- Tempo de Aula: ${formData.tempoAula}\n`;
         if (formData.metodologia.length > 0) prompt += `- Metodologias: ${formData.metodologia.join(', ')}\n`;
@@ -324,7 +324,7 @@ export default function LessonPlanPage({
 
       // Atividades e Adaptações
       if (formData.tiposAtividades.length > 0 || formData.adaptacoes.length > 0) {
-        prompt += `�o� ATIVIDADES E ADAPTA�?�.ES:\n`;
+        prompt += `ATIVIDADES E ADAPTAÇÕES:\n`;
         if (formData.tiposAtividades.length > 0) prompt += `- Tipos de Atividades: ${formData.tiposAtividades.join(', ')}\n`;
         if (formData.adaptacoes.length > 0) prompt += `- Adaptações Necessárias: ${formData.adaptacoes.join(', ')}\n`;
         prompt += `\n`;
@@ -332,14 +332,14 @@ export default function LessonPlanPage({
 
       // Localização
       if (formData.unidadeFederativa || formData.cidade || formData.escola) {
-        prompt += `�Y"� LOCALIZA�?�fO:\n`;
+        prompt += `LOCALIZAÇÃO:\n`;
         if (formData.unidadeFederativa) prompt += `- Estado: ${formData.unidadeFederativa}\n`;
         if (formData.cidade) prompt += `- Cidade: ${formData.cidade}\n`;
         if (formData.escola) prompt += `- Escola: ${formData.escola}\n`;
         prompt += `\n`;
       }
 
-      prompt += `\n�Y"� Por favor, estruture o plano de aula incluindo:\n`;
+      prompt += `\nPor favor, estruture o plano de aula incluindo:\n`;
       prompt += `1. Objetivos de Aprendizagem\n`;
       prompt += `2. Conteúdos Programáticos\n`;
       prompt += `3. Metodologia Detalhada\n`;

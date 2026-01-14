@@ -16,7 +16,7 @@
 export const questions: Question[] = [
   {
   id: 1,
-  category: 'INFORMA�?�.ES E DADOS',
+  category: 'INFORMAÇÕES E DADOS',
   categoryColor: '#FFD700',
   competency: '1.1 Navegar, pesquisar e filtrar dados',
   text: 'Luana está utilizando filtros em uma loja online para encontrar botas na cor azul. Execute a simulação abaixo, aplique os filtros corretamente e responda: qual o número total de resultados encontrados?',
@@ -207,7 +207,7 @@ export const questions: Question[] = [
 },
   {
     id: 2,
-    category: 'INFORMA�?�.ES E DADOS',
+    category: 'INFORMAÇÕES E DADOS',
     categoryColor: '#FFD700',
     competency: '1.2 Avaliar dados e informações',
     text: 'Como você pode identificar uma notícia falsa (fake news)?',
@@ -221,7 +221,7 @@ export const questions: Question[] = [
   },
   {
     id: 3,
-    category: 'INFORMA�?�.ES E DADOS',
+    category: 'INFORMAÇÕES E DADOS',
     categoryColor: '#FFD700',
     competency: '1.3 Gerenciar dados e informações',
     text: 'Qual é a melhor forma de organizar seus arquivos digitais?',
@@ -235,7 +235,7 @@ export const questions: Question[] = [
   },
   {
     id: 4,
-    category: 'COMUNICA�?�fO E COLABORA�?�fO',
+    category: 'COMUNICAÇÃO E COLABORAÇÃO',
     categoryColor: '#00BCD4',
     competency: '2.1 Interagir através de tecnologias',
     text: 'Qual ferramenta é mais apropriada para videoconferências profissionais?',
@@ -249,7 +249,7 @@ export const questions: Question[] = [
   },
   {
     id: 5,
-    category: 'COMUNICA�?�fO E COLABORA�?�fO',
+    category: 'COMUNICAÇÃO E COLABORAÇÃO',
     categoryColor: '#00BCD4',
     competency: '2.2 Compartilhar através de tecnologias',
     text: 'Ao compartilhar um documento para trabalho colaborativo, você deve:',
@@ -263,7 +263,7 @@ export const questions: Question[] = [
   },
   {
     id: 6,
-    category: 'COMUNICA�?�fO E COLABORA�?�fO',
+    category: 'COMUNICAÇÃO E COLABORAÇÃO',
     categoryColor: '#00BCD4',
     competency: '2.3 Participar da cidadania através de tecnologias',
     text: 'Como a tecnologia pode promover a cidadania digital?',
@@ -277,7 +277,7 @@ export const questions: Question[] = [
   },
   {
     id: 7,
-    category: 'COMUNICA�?�fO E COLABORA�?�fO',
+    category: 'COMUNICAÇÃO E COLABORAÇÃO',
     categoryColor: '#00BCD4',
     competency: '2.4 Colaborar através de tecnologias',
     text: 'Qual é uma boa prática em trabalho colaborativo online?',
@@ -291,7 +291,7 @@ export const questions: Question[] = [
   },
   {
     id: 8,
-    category: 'CRIA�?�fO DE CONTE�sDO',
+    category: 'CRIAÇÃO DE CONTEÚDO',
     categoryColor: '#FF9800',
     competency: '3.1 Desenvolver conteúdo digital',
     text: 'Qual ferramenta é adequada para criar uma apresentação digital?',
@@ -305,7 +305,7 @@ export const questions: Question[] = [
   },
   {
     id: 9,
-    category: 'CRIA�?�fO DE CONTE�sDO',
+    category: 'CRIAÇÃO DE CONTEÚDO',
     categoryColor: '#FF9800',
     competency: '3.2 Integrar e reelaborar conteúdo digital',
     text: 'Ao usar conteúdo de terceiros, você deve:',
@@ -319,7 +319,7 @@ export const questions: Question[] = [
   },
   {
     id: 10,
-    category: 'CRIA�?�fO DE CONTE�sDO',
+    category: 'CRIAÇÃO DE CONTEÚDO',
     categoryColor: '#FF9800',
     competency: '3.3 Direitos autorais e licenças',
     text: 'O que significa uma licença Creative Commons?',
@@ -333,7 +333,7 @@ export const questions: Question[] = [
   },
   {
     id: 11,
-    category: 'CRIA�?�fO DE CONTE�sDO',
+    category: 'CRIAÇÃO DE CONTEÚDO',
     categoryColor: '#FF9800',
     competency: '3.4 Programação',
     text: 'Qual linguagem de programação é comumente usada para web?',
@@ -347,7 +347,7 @@ export const questions: Question[] = [
   },
   {
     id: 12,
-    category: 'PROTE�?�fO E SEGURAN�?A',
+    category: 'PROTEÇÃO E SEGURANÇA',
     categoryColor: '#4CAF50',
     competency: '4.1 Proteger dispositivos',
     text: 'Qual é uma boa prática para proteger seus dispositivos?',
@@ -361,7 +361,7 @@ export const questions: Question[] = [
   },
   {
     id: 13,
-    category: 'PROTE�?�fO E SEGURAN�?A',
+    category: 'PROTEÇÃO E SEGURANÇA',
     categoryColor: '#4CAF50',
     competency: '4.2 Proteger dados pessoais',
     text: 'Como criar uma senha segura?',
@@ -375,7 +375,7 @@ export const questions: Question[] = [
   },
   {
     id: 14,
-    category: 'PROTE�?�fO E SEGURAN�?A',
+    category: 'PROTEÇÃO E SEGURANÇA',
     categoryColor: '#4CAF50',
     competency: '4.3 Proteger saúde e bem-estar',
     text: 'Para evitar problemas de saúde no uso de tecnologia:',
@@ -389,7 +389,7 @@ export const questions: Question[] = [
   },
   {
     id: 15,
-    category: 'PROTE�?�fO E SEGURAN�?A',
+    category: 'PROTEÇÃO E SEGURANÇA',
     categoryColor: '#4CAF50',
     competency: '4.4 Proteger o ambiente',
     text: 'Como a tecnologia pode ser ambientalmente responsável?',
@@ -403,7 +403,7 @@ export const questions: Question[] = [
   },
   {
     id: 16,
-    category: 'RESOLU�?�fO DE PROBLEMAS',
+    category: 'RESOLUÇÃO DE PROBLEMAS',
     categoryColor: '#E91E63',
     competency: '5.1 Resolver problemas técnicos',
     text: 'Quando um programa não responde, você deve:',

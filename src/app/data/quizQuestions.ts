@@ -12,7 +12,7 @@
 }
 
 export const quizQuestions: Record<string, QuizQuestion[]> = {
-  // INFORMA�?�.ES E DADOS
+  // INFORMAÇÕES E DADOS
   'Realizar pesquisa e monitoramento': [
     {
       id: 1,
@@ -389,7 +389,7 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
     },
   ],
 
-  // COMUNICA�?�fO E COLABORA�?�fO
+  // COMUNICAÇÃO E COLABORAÇÃO
   'Interagir': [
     {
       id: 1,
@@ -546,7 +546,7 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
     },
   ],
 
-  // CRIA�?�fO DE CONTE�sDO
+  // CRIAÇÃO DE CONTEÚDO
   'Programar sistemas': [
     {
       id: 1,
@@ -703,7 +703,7 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
     },
   ],
 
-  // PROTE�?�fO E SEGURAN�?A
+  // PROTEÇÃO E SEGURANÇA
   'Proteger o ambiente digital': [
     {
       id: 1,
@@ -773,11 +773,11 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
       text: 'Por que você não deve usar Wi-Fi público para acessar informações sensíveis?',
       explanation: 'Wi-Fi público pode ser inseguro e permitir interceptação de dados, aumentando o risco de roubo de informações pessoais.',
       options: [
-        { letter: 'a', text: '�? muito lento', isCorrect: false },
+        { letter: 'a', text: 'É muito lento', isCorrect: false },
         { letter: 'b', text: 'Pode ser inseguro e permitir interceptação de dados', isCorrect: true },
-        { letter: 'c', text: '�? ilegal', isCorrect: false },
+        { letter: 'c', text: 'É ilegal', isCorrect: false },
         { letter: 'd', text: 'Gasta muita bateria', isCorrect: false },
-        { letter: 'e', text: '�? muito caro', isCorrect: false },
+        { letter: 'e', text: 'É muito caro', isCorrect: false },
       ],
     },
   ],
@@ -821,7 +821,7 @@ export const quizQuestions: Record<string, QuizQuestion[]> = {
     },
   ],
 
-  // RESOLU�?�fO DE PROBLEMAS
+  // RESOLUÇÃO DE PROBLEMAS
   'Resolver problemas técnicos': [
     {
       id: 1,

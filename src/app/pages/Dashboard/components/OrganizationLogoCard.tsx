@@ -28,7 +28,7 @@ export function OrganizationLogoCard() {
         </p>
 
         <h2 className="text-gray-600 dark:text-gray-400 text-base font-medium uppercase tracking-tight mb-0.5">
-          ORGANIZA�?�fO
+          ORGANIZAÇÃO
         </h2>
 
         <div className="flex items-center justify-center gap-1">

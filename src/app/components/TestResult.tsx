@@ -45,13 +45,13 @@ export default function TestResult({
   // Helper function to get category icon
   const getCategoryIcon = (categoryName: string) => {
     switch (categoryName) {
-      case 'INFORMA�?�.ES E DADOS':
+      case 'INFORMAÇÕES E DADOS':
         return Database;
-      case 'COMUNICA�?�fO E COLABORA�?�fO':
+      case 'COMUNICAÇÃO E COLABORAÇÃO':
         return Users;
-      case 'CRIA�?�fO DE CONTE�sDO':
+      case 'CRIAÇÃO DE CONTEÚDO':
         return FileEdit;
-      case 'PROTE�?�fO E SEGURAN�?A':
+      case 'PROTEÇÃO E SEGURANÇA':
         return Shield;
       default:
         return Layers;
@@ -347,7 +347,7 @@ export default function TestResult({
                 {challengePopup.question.explanation && (
                   <div className="p-4 bg-blue-50 dark:bg-blue-950 border-l-4 border-blue-500 dark:border-blue-600 rounded">
                     <h4 className="font-semibold text-blue-700 dark:text-blue-400 mb-2">
-                      � Detalhes:
+                      🔎 Detalhes:
                     </h4>
                     <p className="text-blue-800 dark:text-blue-300 text-sm leading-relaxed">
                       {challengePopup.question.explanation}

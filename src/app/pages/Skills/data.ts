@@ -32,7 +32,7 @@ export interface Category {
 
 export const categories: Category[] = [
   {
-    name: "INFORMA�?�.ES E DADOS",
+    name: "INFORMAÇÕES E DADOS",
     color: "#FFD700",
     bgColor: "#FFF9E6",
     icon: BarChart3,
@@ -43,7 +43,7 @@ export const categories: Category[] = [
     ],
   },
   {
-    name: "COMUNICA�?�fOO E COLABORA�?�fO",
+    name: "COMUNICAÇÃO E COLABORAÇÃO",
     color: "#00BCD4",
     bgColor: "#E0F7FA",
     icon: Users,
@@ -55,7 +55,7 @@ export const categories: Category[] = [
     ],
   },
   {
-    name: "CRIA�?�fO DE CONTE�sDO",
+    name: "CRIAÇÃO DE CONTEÚDO",
     color: "#FF9800",
     bgColor: "#FFF3E0",
     icon: FileEdit,
@@ -67,7 +67,7 @@ export const categories: Category[] = [
     ],
   },
   {
-    name: "PROTE�?�Z�?ŸO E SEGURAN�?�ZA",
+    name: "PROTEÇÃO E SEGURANÇA",
     color: "#4CAF50",
     bgColor: "#E8F5E9",
     icon: Shield,
@@ -78,7 +78,7 @@ export const categories: Category[] = [
     ],
   },
   {
-    name: "RESOLU�?�fO DE PROBLEMAS",
+    name: "RESOLUÇÃO DE PROBLEMAS",
     color: "#E91E63",
     bgColor: "#FCE4EC",
     icon: Wrench,
