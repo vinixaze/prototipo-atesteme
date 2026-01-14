@@ -6,6 +6,7 @@ import {
   Sparkles,
   RotateCcw,
   TimerReset,
+  Wand2,
   X,
 } from "lucide-react";
 import {
@@ -75,7 +76,7 @@ export default function PowerUpsButton() {
         className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-[#8B27FF] to-[#B05FFF] text-white shadow-lg hover:shadow-xl transition-all"
         aria-label="Abrir ferramentas"
       >
-        <Sparkles className="w-5 h-5" />
+        <Wand2 className="w-5 h-5" />
         {totalPowerups > 0 && (
           <span className="absolute -top-1 -right-1 text-[10px] font-bold bg-red-500 text-white rounded-full min-w-[18px] h-[18px] flex items-center justify-center">
             {totalPowerups}
