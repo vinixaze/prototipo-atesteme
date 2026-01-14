@@ -1,4 +1,6 @@
-export interface Content {
+import { LucideIcon } from 'lucide-react';
+
+export interface ContentItem {
   id: string;
   title: string;
   competency: string;
@@ -10,9 +12,8 @@ export interface Content {
   link: string;
 }
 
-export interface Category {
+export interface ContentCategory {
   name: string;
   color: string;
-  icon: any;
+  icon: LucideIcon;
 }
-

@@ -1,4 +1,4 @@
-import { CheckCircle2, XCircle, ArrowRight, BookOpen, MessageSquare, Eye, X, Layers, Target, Database, Users, FileEdit, Shield } from 'lucide-react';
+﻿import { CheckCircle2, XCircle, ArrowRight, BookOpen, MessageSquare, Eye, X, Layers, Target, Database, Users, FileEdit, Shield } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'motion/react';
 
@@ -45,13 +45,13 @@ export default function TestResult({
   // Helper function to get category icon
   const getCategoryIcon = (categoryName: string) => {
     switch (categoryName) {
-      case 'INFORMAÇÕES E DADOS':
+      case 'INFORMA�?�.ES E DADOS':
         return Database;
-      case 'COMUNICAÇÃO E COLABORAÇÃO':
+      case 'COMUNICA�?�fO E COLABORA�?�fO':
         return Users;
-      case 'CRIAÇÃO DE CONTEÚDO':
+      case 'CRIA�?�fO DE CONTE�sDO':
         return FileEdit;
-      case 'PROTEÇÃO E SEGURANÇA':
+      case 'PROTE�?�fO E SEGURAN�?A':
         return Shield;
       default:
         return Layers;

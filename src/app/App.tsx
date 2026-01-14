@@ -1,27 +1,27 @@
-import { useState } from "react";
-import LoginPage from "./pages/LoginPage";
-import WelcomePage from "./pages/WelcomePage";
-import DashboardPage from "./pages/DashboardPage";
-import ConquistasPage from "./pages/ConquistasPage";
-import HabilidadesPage from "./pages/HabilidadesPage";
-import ProgressoPage from "./pages/ProgressoPage";
-import NocoesBasicasPage from "./pages/NocoesBasicasPage";
-import NocoesBasicasCongratsPage from "./pages/NocoesBasicasCongratsPage";
-import NocoesBasicasResultPage from "./pages/NocoesBasicasResultPage";
-import TesteCompetenciasPage from "./pages/TesteCompetenciasPage";
-import TesteCompetenciasCongratsPage from "./pages/TesteCompetenciasCongratsPage";
-import TesteCompetenciasDetailedResultPage from "./pages/TesteCompetenciasDetailedResultPage";
-import QuizWarningPage from "./pages/QuizWarningPage";
-import QuizPage from "./pages/QuizPage";
-import QuizResultPage from "./pages/QuizResultPage";
-import ConteudosPage from "./pages/ConteudosPage";
-import ExamesPage from "./pages/ExamesPage";
-import PlanoAulaPage from "./pages/PlanoAulaPage";
-import FAQPage from "./pages/FAQPage";
-import AcessibilidadePage from "./pages/AcessibilidadePage";
-import PerfilPage from "./pages/PerfilPage";
-import TransversalityPage from "./pages/TransversalityPage";
-import SingleQuestionPage from "./pages/SingleQuestionPage";
+import { useEffect, useState } from "react";
+import LoginPage from "./pages/Login";
+import WelcomePage from "./pages/Welcome";
+import DashboardPage from "./pages/Dashboard";
+import AchievementsPage from "./pages/Achievements";
+import SkillsPage from "./pages/Skills";
+import ProgressPage from "./pages/Progress";
+import BasicsPage from "./pages/Basics";
+import BasicsCongratsPage from "./pages/BasicsCongrats";
+import BasicsResultPage from "./pages/BasicsResult";
+import AssessmentPage from "./pages/Assessment";
+import AssessmentCongratsPage from "./pages/AssessmentCongrats";
+import AssessmentResultPage from "./pages/AssessmentResult";
+import QuizWarningPage from "./pages/QuizWarning";
+import QuizPage from "./pages/Quiz";
+import QuizResultPage from "./pages/QuizResult";
+import ConteudosPage from "./pages/Contents";
+import ExamesPage from "./pages/Exams";
+import LessonPlanPage from "./pages/LessonPlan";
+import FAQPage from "./pages/FAQ";
+import AccessibilityPage from "./pages/Accessibility";
+import ProfilePage from "./pages/Profile";
+import TransversalityPage from "./pages/Transversality";
+import SingleQuestionPage from "./pages/SingleQuestion";
 import FloatingChatButton from "./components/FloatingChatButton";
 // Temporarily disabled to isolate Invalid Hook Call during dev
 // import PWAManager from "./components/PWAManager";
@@ -46,6 +46,7 @@ type Page =
   | "quiz"
   | "quiz-result"
   | "conteudos"
+  | "conteudo"
   | "plano-aula"
   | "exames"
   | "transversality"
@@ -57,8 +58,65 @@ type Page =
   | "privacy"
   | "terms";
 
+const PAGE_ROUTES: Record<Page, string> = {
+  login: "/login",
+  signup: "/signup",
+  "forgot-password": "/forgot-password",
+  welcome: "/welcome",
+  dashboard: "/dashboard",
+  conquistas: "/progress/achievements",
+  habilidades: "/skills",
+  progresso: "/progress/ranking",
+  "progresso-conquistas": "/progress/conquests",
+  "nocoes-basicas": "/basics",
+  "nocoes-basicas-congrats": "/basics/congrats",
+  "nocoes-basicas-result": "/basics/result",
+  "teste-competencias": "/assessment",
+  "teste-competencias-congrats": "/assessment/congrats",
+  "teste-competencias-result": "/assessment/result",
+  "quiz-warning": "/quiz/warning",
+  quiz: "/quiz",
+  "quiz-result": "/quiz/result",
+  conteudos: "/contents",
+  conteudo: "/contents",
+  "plano-aula": "/lesson-plan",
+  exames: "/exams",
+  transversality: "/transversality",
+  "single-question": "/question",
+  faq: "/faq",
+  acessibilidade: "/accessibility",
+  perfil: "/profile",
+  support: "/support",
+  privacy: "/privacy",
+  terms: "/terms",
+};
+
+const normalizePath = (value: string) => value.replace(/\/$/, "") || "/";
+
+const ROUTE_TO_PAGE: Record<string, Page> = Object.entries(PAGE_ROUTES).reduce(
+  (acc, [page, path]) => {
+    acc[normalizePath(path)] = page as Page;
+    return acc;
+  },
+  {} as Record<string, Page>
+);
+
+ROUTE_TO_PAGE["/"] = "login";
+
+const resolvePageFromPath = (path: string): Page => {
+  const normalized = normalizePath(path);
+  return ROUTE_TO_PAGE[normalized] ?? "login";
+};
+
+const getInitialPage = (): Page => {
+  if (typeof window === "undefined") {
+    return "login";
+  }
+  return resolvePageFromPath(window.location.pathname);
+};
+
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<Page>("login");
+  const [currentPage, setCurrentPage] = useState<Page>(getInitialPage);
   const [userName, setUserName] = useState("André");
   const [userRole, setUserRole] = useState<"admin" | "user">("user");
   const [testData, setTestData] = useState<any>(null);
@@ -84,11 +142,30 @@ export default function App() {
     }
     setPreviousPage(currentPage);
     setCurrentPage(page);
+    if (typeof window !== "undefined") {
+      const targetRoute = PAGE_ROUTES[page];
+      if (targetRoute) {
+        window.history.pushState({}, "", targetRoute);
+      }
+    }
   };
 
   const switchModule = (module: "atesteme" | "prosaeb") => {
     setActiveModule(module);
   };
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handlePopState = () => {
+      setCurrentPage(resolvePageFromPath(window.location.pathname));
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   const hideChatButton =
     currentPage.includes("teste") ||
@@ -150,13 +227,13 @@ export default function App() {
         />
       )}
       {currentPage === "conquistas" && (
-        <ConquistasPage navigateTo={navigateTo} userRole={userRole} />
+        <AchievementsPage navigateTo={navigateTo} userRole={userRole} />
       )}
       {currentPage === "habilidades" && (
-        <HabilidadesPage navigateTo={navigateTo} userRole={userRole} />
+        <SkillsPage navigateTo={navigateTo} userRole={userRole} />
       )}
       {currentPage === "progresso" && (
-        <ProgressoPage
+        <ProgressPage
           navigateTo={navigateTo}
           userName={userName}
           initialTab="niveis"
@@ -164,7 +241,7 @@ export default function App() {
         />
       )}
       {currentPage === "progresso-conquistas" && (
-        <ProgressoPage
+        <ProgressPage
           navigateTo={navigateTo}
           userName={userName}
           initialTab="conquistas"
@@ -172,28 +249,28 @@ export default function App() {
         />
       )}
       {currentPage === "nocoes-basicas" && (
-        <NocoesBasicasPage navigateTo={navigateTo} />
+        <BasicsPage navigateTo={navigateTo} />
       )}
       {currentPage === "nocoes-basicas-congrats" && (
-        <NocoesBasicasCongratsPage
+        <BasicsCongratsPage
           navigateTo={navigateTo}
           testData={testData}
         />
       )}
       {currentPage === "nocoes-basicas-result" && (
-        <NocoesBasicasResultPage navigateTo={navigateTo} testData={testData} />
+        <BasicsResultPage navigateTo={navigateTo} testData={testData} />
       )}
       {currentPage === "teste-competencias" && (
-        <TesteCompetenciasPage navigateTo={navigateTo} />
+        <AssessmentPage navigateTo={navigateTo} />
       )}
       {currentPage === "teste-competencias-congrats" && (
-        <TesteCompetenciasCongratsPage
+        <AssessmentCongratsPage
           navigateTo={navigateTo}
           testData={testData}
         />
       )}
       {currentPage === "teste-competencias-result" && (
-        <TesteCompetenciasDetailedResultPage
+        <AssessmentResultPage
           navigateTo={navigateTo}
           testData={testData}
         />
@@ -219,7 +296,7 @@ export default function App() {
         />
       )}
       {currentPage === "plano-aula" && (
-        <PlanoAulaPage
+        <LessonPlanPage
           navigateTo={navigateTo}
           filterData={testData}
           userRole={userRole}
@@ -248,10 +325,10 @@ export default function App() {
         <FAQPage navigateTo={navigateTo} userRole={userRole} />
       )}
       {currentPage === "acessibilidade" && (
-        <AcessibilidadePage navigateTo={navigateTo} userRole={userRole} />
+        <AccessibilityPage navigateTo={navigateTo} userRole={userRole} />
       )}
       {currentPage === "perfil" && (
-        <PerfilPage
+        <ProfilePage
           userName={userName}
           navigateTo={navigateTo}
           userRole={userRole}

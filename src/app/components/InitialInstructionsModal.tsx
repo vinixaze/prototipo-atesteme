@@ -1,4 +1,4 @@
-import { X, Info, AlertTriangle, BookOpen } from 'lucide-react';
+﻿import { X, Info, AlertTriangle, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface InitialInstructionsModalProps {
@@ -58,7 +58,7 @@ export default function InitialInstructionsModal({
             className="relative z-[10000] bg-white rounded-3xl max-w-[540px] w-full shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* SEÇÃO 1 - HEADER COLORIDO */}
+            {/* SE�?�fO 1 - HEADER COLORIDO */}
             <div
               className="relative h-[120px] flex items-center justify-center px-6"
               style={{ background: getCategoryGradient(categoryColor) }}
@@ -84,7 +84,7 @@ export default function InitialInstructionsModal({
               </h2>
             </div>
 
-            {/* SEÇÃO 2 - CORPO DO MODAL */}
+            {/* SE�?�fO 2 - CORPO DO MODAL */}
             <div className="p-8">
               {/* BLOCO 1 - DICA (roxo claro) */}
               <div className="bg-[#F3E8FF] border-l-4 border-[#8B27FF] rounded-xl p-5 mb-5 flex gap-4">
@@ -104,7 +104,7 @@ export default function InitialInstructionsModal({
                 </div>
               </div>
 
-              {/* BLOCO 2 - ATENÇÃO (laranja/amarelo) */}
+              {/* BLOCO 2 - ATEN�?�fO (laranja/amarelo) */}
               <div className="bg-[#FFF9E6] border-l-4 border-[#FF9800] rounded-xl p-5 mb-6 flex gap-4">
                 <AlertTriangle className="w-6 h-6 text-[#FF9800] flex-shrink-0 mt-0.5" strokeWidth={2} />
                 <div>
@@ -116,26 +116,26 @@ export default function InitialInstructionsModal({
                 </div>
               </div>
 
-              {/* BLOCO 3 - INFORMAÇÕES DO DESAFIO */}
+              {/* BLOCO 3 - INFORMA�?�.ES DO DESAFIO */}
               <div className="mt-6">
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
-                    <span className="text-[#8B27FF] text-xl leading-none mt-0.5">•</span>
+                    <span className="text-[#8B27FF] text-xl leading-none mt-0.5">�?�</span>
                     <span className="text-[15px] text-[#555] leading-relaxed">3 desafios seguidos</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="text-[#8B27FF] text-xl leading-none mt-0.5">•</span>
+                    <span className="text-[#8B27FF] text-xl leading-none mt-0.5">�?�</span>
                     <span className="text-[15px] text-[#555] leading-relaxed">Sem limite de tempo</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <span className="text-[#8B27FF] text-xl leading-none mt-0.5">•</span>
+                    <span className="text-[#8B27FF] text-xl leading-none mt-0.5">�?�</span>
                     <span className="text-[15px] text-[#555] leading-relaxed">Resultado exibido ao final</span>
                   </li>
                 </ul>
               </div>
             </div>
 
-            {/* SEÇÃO 3 - RODAPÉ COM BOTÕES */}
+            {/* SE�?�fO 3 - RODAP�? COM BOT�.ES */}
             <div className="px-8 pb-8 flex gap-4">
               {/* Botão Cancelar */}
               <button
@@ -151,7 +151,7 @@ export default function InitialInstructionsModal({
                 className="flex-1 bg-[#8B27FF] hover:bg-[#6B1FBF] text-white px-6 py-3.5 rounded-xl text-[15px] font-bold transition-all duration-200 hover:-translate-y-0.5 shadow-[0_4px_16px_rgba(139,39,255,0.3)] hover:shadow-[0_6px_20px_rgba(139,39,255,0.4)] flex items-center justify-center gap-2"
               >
                 Iniciar
-                <span className="text-lg">→</span>
+                <span className="text-lg">�?'</span>
               </button>
             </div>
           </motion.div>
