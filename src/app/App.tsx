@@ -136,14 +136,14 @@ export default function App() {
     setUserName("");
   };
 
-  const navigateTo = (page: Page, data?: any) => {
+  const navigateTo = (page: string, data?: any) => {
     if (data) {
       setTestData(data);
     }
     setPreviousPage(currentPage);
-    setCurrentPage(page);
+    setCurrentPage(page as Page);
     if (typeof window !== "undefined") {
-      const targetRoute = PAGE_ROUTES[page];
+      const targetRoute = PAGE_ROUTES[page as Page];
       if (targetRoute) {
         window.history.pushState({}, "", targetRoute);
       }

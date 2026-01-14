@@ -29,6 +29,7 @@ import { BNCC_SKILLS, initialPlans } from "./data";
 interface LessonPlanPageProps {
   navigateTo: (page: string) => void;
   userRole?: 'admin' | 'user';
+  filterData?: any;
 }
 
 interface PlanoAula {

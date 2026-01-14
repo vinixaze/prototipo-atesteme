@@ -1,5 +1,6 @@
 import { MessageSquare } from 'lucide-react';
 import AnswerOption from './AnswerOption';
+import PowerUpsButton from './PowerUpsButton';
 import ProgressStepper from './ProgressStepper';
 import TestHeader from './TestHeader';
 import InteractiveHTMLWindow from './InteractiveHTMLWindow'; 
@@ -85,9 +86,12 @@ export default function TestQuestion({
           key={currentQuestion}
         >
           {/* Enunciado */}
-          <h2 className="text-lg sm:text-xl text-gray-800 dark:text-gray-200 leading-relaxed mb-6 sm:mb-8">
-            {questionText}
-          </h2>
+          <div className="flex items-start justify-between gap-4 mb-6 sm:mb-8">
+            <h2 className="flex-1 text-lg sm:text-xl text-gray-800 dark:text-gray-200 leading-relaxed">
+              {questionText}
+            </h2>
+            <PowerUpsButton />
+          </div>
           {questionHtml && (
             <InteractiveHTMLWindow
               htmlContent={questionHtml}
