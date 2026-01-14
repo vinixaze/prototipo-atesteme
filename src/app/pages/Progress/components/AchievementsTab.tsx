@@ -54,9 +54,9 @@ export default function AchievementsTab({ achievements, unlockedAchievements }: 
         </div>
       </div>
 
-      {/* SE�?�fO 2 - SUAS MISS�.ES */}
+      {/* SEÇÃO 2 - SUAS MISSÕES */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        {/* CARD 1 - MISS�.ES (Rosa Claro) */}
+        {/* CARD 1 - MISSÕES (Rosa Claro) */}
         <div
           className="relative bg-gradient-to-r from-[#F0ABFC] to-[#E879F9] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >
@@ -177,7 +177,7 @@ export default function AchievementsTab({ achievements, unlockedAchievements }: 
                     <>
                       <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transition-opacity duration-300 rounded-2xl" />
                       <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
-                        <span className="text-white text-xs">�o"</span>
+                        <span className="text-white text-xs">✓</span>
                       </div>
                     </>
                   )}
@@ -294,7 +294,7 @@ export default function AchievementsTab({ achievements, unlockedAchievements }: 
             <Trophy className="w-12 h-12 text-yellow-600 animate-bounce" />
           </div>
           <p className="text-lg text-yellow-800 font-semibold">
-            �YZ? Você desbloqueou TODAS as {achievements.length} missões disponíveis! �YZ?
+            🎉 Você desbloqueou TODAS as {achievements.length} missões disponíveis! 🎉
           </p>
           <p className="text-yellow-700 mt-2">
             Você é um verdadeiro mestre das competências digitais!

@@ -106,7 +106,7 @@ export default function CoinsTab({ totalDigcoins }: CoinsTabProps) {
       name: 'Desbloqueio Teoria',
       cost: 50,
       category: 'Conteúdo de Apoio',
-      categoryTag: 'CONTE�sDO DE APOIO',
+      categoryTag: 'CONTEÚDO DE APOIO',
       categoryColor: '#00BCD4',
       icon: BookOpen,
       description: 'Libera um link sugerido de conteúdo para ajudar na resolução do desafio.',
@@ -120,7 +120,7 @@ export default function CoinsTab({ totalDigcoins }: CoinsTabProps) {
       name: 'Badge Currículo',
       cost: 1000,
       category: 'Certificação (Permanente)',
-      categoryTag: 'CERTIFICA�?�fO E CARREIRA',
+      categoryTag: 'CERTIFICAÇÃO E CARREIRA',
       categoryColor: '#4CAF50',
       icon: FileText,
       description: 'Modelo personalizado de certificado com suas medalhas integradas.',
@@ -134,7 +134,7 @@ export default function CoinsTab({ totalDigcoins }: CoinsTabProps) {
       name: 'Banners de Nível (1 ao 5)',
       cost: 100,
       category: 'Personalização Visual',
-      categoryTag: 'IDENTIDADE E SEGURAN�?A',
+      categoryTag: 'IDENTIDADE E SEGURANÇA',
       categoryColor: '#FF9800',
       icon: ImageIcon,
       description: 'Planos de fundo temáticos que refletem seu nível atual.',
@@ -147,7 +147,7 @@ export default function CoinsTab({ totalDigcoins }: CoinsTabProps) {
       name: 'Avatares Colecionáveis',
       cost: 150,
       category: 'Personalização Visual',
-      categoryTag: 'IDENTIDADE E SEGURAN�?A',
+      categoryTag: 'IDENTIDADE E SEGURANÇA',
       categoryColor: '#FF9800',
       icon: ImageIcon,
       description: 'Imagens estilizadas de figuras importantes relacionadas à tecnologia para o perfil.',
@@ -176,23 +176,23 @@ export default function CoinsTab({ totalDigcoins }: CoinsTabProps) {
 
   // Dados de histórico de ganhos de digcoins
   const digcoinsHistory = [
-    { id: 1, date: '18/12/2024', description: 'Competência: Gerenciar dados', amount: 9, category: 'INFORMA�?�.ES E DADOS', categoryColor: '#FFD700', icon: Coins },
-    { id: 2, date: '18/12/2024', description: 'Competência: Gerir a identidade digital', amount: 9, category: 'COMUNICA�?�fO E COLABORA�?�fO', categoryColor: '#00BCD4', icon: Coins },
-    { id: 3, date: '17/12/2024', description: 'Competência: Realizar pesquisa e monitoramento', amount: 9, category: 'INFORMA�?�.ES E DADOS', categoryColor: '#FFD700', icon: Coins },
-    { id: 4, date: '17/12/2024', description: 'Competência: Interagir', amount: 9, category: 'COMUNICA�?�fO E COLABORA�?�fO', categoryColor: '#00BCD4', icon: Coins },
-    { id: 5, date: '16/12/2024', description: 'Competência: Compartilhar e publicar', amount: 9, category: 'COMUNICA�?�fO E COLABORA�?�fO', categoryColor: '#00BCD4', icon: Coins },
-    { id: 6, date: '16/12/2024', description: 'Competência: Adaptar arquivos', amount: 9, category: 'CRIA�?�fO DE CONTE�sDO', categoryColor: '#FF9800', icon: Coins },
-    { id: 7, date: '15/12/2024', description: 'Competência: Programar sistemas', amount: 9, category: 'CRIA�?�fO DE CONTE�sDO', categoryColor: '#FF9800', icon: Coins },
-    { id: 8, date: '14/12/2024', description: 'Bônus: Sequência de 7 dias', amount: 15, category: 'B�"NUS', categoryColor: '#8B27FF', icon: Coins },
+    { id: 1, date: '18/12/2024', description: 'Competência: Gerenciar dados', amount: 9, category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: Coins },
+    { id: 2, date: '18/12/2024', description: 'Competência: Gerir a identidade digital', amount: 9, category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Coins },
+    { id: 3, date: '17/12/2024', description: 'Competência: Realizar pesquisa e monitoramento', amount: 9, category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: Coins },
+    { id: 4, date: '17/12/2024', description: 'Competência: Interagir', amount: 9, category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Coins },
+    { id: 5, date: '16/12/2024', description: 'Competência: Compartilhar e publicar', amount: 9, category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Coins },
+    { id: 6, date: '16/12/2024', description: 'Competência: Adaptar arquivos', amount: 9, category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: Coins },
+    { id: 7, date: '15/12/2024', description: 'Competência: Programar sistemas', amount: 9, category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: Coins },
+    { id: 8, date: '14/12/2024', description: 'Bônus: Sequência de 7 dias', amount: 15, category: 'BÔNUS', categoryColor: '#8B27FF', icon: Coins },
     { id: 9, date: '10/12/2024', description: 'Medalha: Primeira Conquista', amount: 10, category: 'MEDALHA', categoryColor: '#FFD700', icon: Coins },
   ];
 
   // Estatísticas
   const fromCompetencies = digcoinsHistory
-    .filter(item => item.category !== 'B�"NUS' && item.category !== 'MEDALHA')
+    .filter(item => item.category !== 'BÔNUS' && item.category !== 'MEDALHA')
     .reduce((acc, item) => acc + item.amount, 0);
   const fromBonuses = digcoinsHistory
-    .filter(item => item.category === 'B�"NUS' || item.category === 'MEDALHA')
+    .filter(item => item.category === 'BÔNUS' || item.category === 'MEDALHA')
     .reduce((acc, item) => acc + item.amount, 0);
 
   // Calcular totais de recebidos e gastos
@@ -215,7 +215,7 @@ export default function CoinsTab({ totalDigcoins }: CoinsTabProps) {
         </div>
       </div>
 
-      {/* SE�?�fO 3 - SEUS PONTOS */}
+      {/* SEÇÃO 3 - SEUS PONTOS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 
         <div
@@ -241,7 +241,7 @@ export default function CoinsTab({ totalDigcoins }: CoinsTabProps) {
           </div>
         </div>
 
-        {/* CARD 3 - PONTOS UTILIZADOS (�,MBAR / GASTOS) */}
+        {/* CARD 3 - PONTOS UTILIZADOS (ÂMBAR / GASTOS) */}
         <div
           className="relative bg-gradient-to-r from-[#9CA3AF] to-[#4B5563] rounded-[20px] p-5 min-h-[100px] flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:scale-[1.02] shadow-lg hover:shadow-xl group"
         >

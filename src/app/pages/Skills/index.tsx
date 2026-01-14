@@ -120,7 +120,7 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
           <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-6">
             {/* Header + Card Noções Básicas */}
             <div className="flex flex-col lg:flex-row gap-6 mb-8 items-start">
-              {/* ESQUERDA �?" TÍTULO */}
+              {/* ESQUERDA - TÍTULO */}
               <div className="w-full lg:w-[70%]">
                 <h1 className="text-3xl md:text-4xl font-semibold text-[#8B27FF] mb-2">
                   Competências Digitais
@@ -182,11 +182,11 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
                     className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B27FF] focus:border-transparent bg-gray-50 dark:bg-gray-700 dark:text-gray-200 transition-all"
                   >
                     <option>Todas</option>
-                    <option>INFORMA�?�.ES E DADOS</option>
-                    <option>COMUNICA�?�fO E COLABORA�?�fO</option>
-                    <option>CRIA�?�fO DE CONTE�sDO</option>
-                    <option>PROTE�?�fO E SEGURAN�?A</option>
-                    <option>RESOLU�?�fO DE PROBLEMAS</option>
+                    <option>INFORMAÇÕES E DADOS</option>
+                    <option>COMUNICAÇÃO E COLABORAÇÃO</option>
+                    <option>CRIAÇÃO DE CONTEÚDO</option>
+                    <option>PROTEÇÃO E SEGURANÇA</option>
+                    <option>RESOLUÇÃO DE PROBLEMAS</option>
                   </select>
                 </div>
 
@@ -278,7 +278,7 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
   );
 }
 
-/** �o. Componente fora do map (evita hook dentro de loop e bugs aleatórios) */
+/** Obs. Componente fora do map (evita hook dentro de loop e bugs aleatórios) */
 function CategorySection({
   category,
   categoryIndex,
@@ -320,7 +320,7 @@ function CategorySection({
         {category.competencias.map((comp, compIndex) => {
           const status = getCompetencyStatus(comp.title);
 
-          // �o. BLOQUEADO DE VERDADE: se ainda tem tempo pra desbloquear
+          // Obs. BLOQUEADO DE VERDADE: se ainda tem tempo pra desbloquear
           const daysUntilUnblock = getDaysUntilUnblock(comp.title);
           const isBlocked = daysUntilUnblock > 0;
 
@@ -460,7 +460,7 @@ function CategorySection({
                   >
                     <span className="flex items-center justify-center gap-1.5">
                       {!isBlocked && <PlayCircle className="w-4 h-4" />}
-                      {isBlocked ? "REFOR�?O NECESSÁRIO" : "INICIAR"}
+                      {isBlocked ? "REFORÇO NECESSÁRIO" : "INICIAR"}
                     </span>
                   </motion.button>
                 )}

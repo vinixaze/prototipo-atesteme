@@ -40,7 +40,7 @@ export default function ReinforcementModal({
             className="relative z-[10000] bg-white rounded-3xl max-w-[540px] w-full shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* SE�?�fO 1 - HEADER AMARELO */}
+            {/* SEÇÃO 1 - HEADER AMARELO */}
             <div
               className="relative h-[180px] flex flex-col items-center justify-center px-6"
               style={{ background: 'linear-gradient(135deg, #FFD700 0%, #FFA000 100%)' }}
@@ -59,7 +59,7 @@ export default function ReinforcementModal({
               </div>
             </div>
 
-            {/* SE�?�fO 2 - CORPO DO MODAL */}
+            {/* SEÇÃO 2 - CORPO DO MODAL */}
             <div className="p-8 text-center">
               {/* Título */}
               <h2 className="text-[26px] font-bold text-[#333] mb-5">
@@ -68,7 +68,7 @@ export default function ReinforcementModal({
 
               {/* Parágrafo 1 */}
               <p className="text-[15px] text-[#555] leading-relaxed mb-4">
-                �? importante estudar os conteúdos desta competência antes de tentar novamente.
+                É importante estudar os conteúdos desta competência antes de tentar novamente.
               </p>
 
               {/* Parágrafo 2 com destaque */}
@@ -77,7 +77,7 @@ export default function ReinforcementModal({
                 <span className="font-bold text-[#8B27FF]">{daysRemaining} {daysRemaining === 1 ? 'dia' : 'dias'}</span>.
               </p>
 
-              {/* SE�?�fO 3 - BOT�.ES */}
+              {/* SEÇÃO 3 - BOTÕES */}
               <div className="flex flex-col gap-3">
                 {/* Botão Acessar Conteúdos (primário) */}
                 <button

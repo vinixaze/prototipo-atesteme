@@ -114,15 +114,15 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
   // Helper function to get category icon based on category name
   const getCategoryIcon = (categoryName: string) => {
     switch (categoryName) {
-      case 'INFORMA�?�.ES E DADOS':
+      case 'INFORMAÇÕES E DADOS':
         return Database;
-      case 'COMUNICA�?�fO E COLABORA�?�fO':
+      case 'COMUNICAÇÃO E COLABORAÇÃO':
         return Users;
-      case 'CRIA�?�fO DE CONTE�sDO':
+      case 'CRIAÇÃO DE CONTEÚDO':
         return FileEdit;
-      case 'PROTE�?�fO E SEGURAN�?A':
+      case 'PROTEÇÃO E SEGURANÇA':
         return Shield;
-      case 'RESOLU�?�fO DE PROBLEMAS':
+      case 'RESOLUÇÃO DE PROBLEMAS':
         return Wrench;
       default:
         return Database;
@@ -194,7 +194,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
 
         <main className="flex-1 overflow-auto">
           <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8">
-            {/* SE�?�fO 1 - CONTEXTO DO USUÁRIO E NÍVEL ATUAL */}
+            {/* SEÇÃO 1 - CONTEXTO DO USUÁRIO E NÍVEL ATUAL */}
             <div className="bg-gradient-to-br from-purple-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 md:p-8 mb-8 shadow-sm dark:shadow-gray-950">
               {/* Upper Part */}
               <div className="flex items-center gap-4 mb-6">
@@ -213,7 +213,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
               </p>
             </div>
 
-            {/* SE�?�fO 2 - ABAS DE NAVEGA�?�fO */}
+            {/* SEÇÃO 2 - ABAS DE NAVEGAÇÃO */}
             <div className="bg-white dark:bg-gray-800 rounded-t-2xl shadow-sm dark:shadow-gray-950">
               <div className="border-b-2 border-gray-100 dark:border-gray-700 overflow-x-auto scrollbar-hide">
                 <div className="flex min-w-max sm:min-w-0">
@@ -282,7 +282,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
 
               {/* Tab Content */}
               <div className="p-4 md:p-6 lg:p-8">
-                {/* CONTE�sDO DA ABA NÍVEIS */}
+                {/* CONTEÚDO DA ABA NÍVEIS */}
                 {activeTab === 'niveis' && (
                   <LevelsTab
                     levels={levels}
@@ -294,7 +294,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
                   />
                 )}
 
-                {/* CONTE�sDO DA ABA CONQUISTAS */}
+                {/* CONTEÚDO DA ABA CONQUISTAS */}
                 {activeTab === 'conquistas' && (
                   <AchievementsTab
                     achievements={achievements}
@@ -302,7 +302,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
                   />
                 )}
 
-                {/* CONTE�sDO DA ABA RANKING */}
+                {/* CONTEÚDO DA ABA RANKING */}
                 {activeTab === 'ranking' && (
                   <RankingTab 
                     rankingCategory={rankingCategory}
@@ -311,7 +311,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
                   />
                 )}
 
-                {/* CONTE�sDO DA ABA DIGCOINS */}
+                {/* CONTEÚDO DA ABA DIGCOINS */}
                 {activeTab === 'digcoins' && (
                   <CoinsTab
                     totalDigcoins={143}
@@ -342,4 +342,3 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
     </div>
   );
 }
-

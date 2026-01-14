@@ -39,22 +39,22 @@ export const baseLevels: Level[] = [
     total: 16,
     percentage: 43,
     competencias: [
-      { id: 1, title: 'Programar sistemas', category: 'CRIA�?�fO DE CONTE�sDO', categoryColor: '#FF9800', icon: Code, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '15/12/2025', timeSpent: '08min 32s', digcoinsEarned: 9 },
-      { id: 2, title: 'Adaptar arquivos', category: 'CRIA�?�fO DE CONTE�sDO', categoryColor: '#FF9800', icon: Files, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '16/12/2025', timeSpent: '07min 18s', digcoinsEarned: 9 },
-      { id: 3, title: 'Compartilhar e publicar', category: 'COMUNICA�?�fO E COLABORA�?�fO', categoryColor: '#00BCD4', icon: Share2, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '16/12/2025', timeSpent: '06min 45s', digcoinsEarned: 9 },
-      { id: 4, title: 'Interagir', category: 'COMUNICA�?�fO E COLABORA�?�fO', categoryColor: '#00BCD4', icon: MessageCircle, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '17/12/2025', timeSpent: '05min 52s', digcoinsEarned: 9 },
-      { id: 5, title: 'Realizar pesquisa e monitoramento', category: 'INFORMA�?�.ES E DADOS', categoryColor: '#FFD700', icon: Search, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '17/12/2025', timeSpent: '09min 15s', digcoinsEarned: 9 },
-      { id: 6, title: 'Gerir a identidade digital', category: 'COMUNICA�?�fO E COLABORA�?�fO', categoryColor: '#00BCD4', icon: Fingerprint, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '18/12/2025', timeSpent: '07min 03s', digcoinsEarned: 9 },
-      { id: 7, title: 'Gerenciar dados', category: 'INFORMA�?�.ES E DADOS', categoryColor: '#FFD700', icon: FolderOpen, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '18/12/2025', timeSpent: '08min 27s', digcoinsEarned: 9 },
-      { id: 8, title: 'Colaborar', category: 'COMUNICA�?�fO E COLABORA�?�fO', categoryColor: '#00BCD4', icon: Users, completed: false, starsEarned: 2, totalStars: 3, status: 'in-progress' },
-      { id: 9, title: 'Realizar o tratamento de dados', category: 'INFORMA�?�.ES E DADOS', categoryColor: '#FFD700', icon: BarChart3, completed: false, starsEarned: 1, totalStars: 3, status: 'in-progress' },
-      { id: 10, title: 'Editar texto multimídia', category: 'CRIA�?�fO DE CONTE�sDO', categoryColor: '#FF9800', icon: ImageIcon, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 11, title: 'Editar texto escrito', category: 'CRIA�?�fO DE CONTE�sDO', categoryColor: '#FF9800', icon: FileEdit, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 12, title: 'Proteger o ambiente digital', category: 'PROTE�?�fO E SEGURAN�?A', categoryColor: '#4CAF50', icon: Shield, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 13, title: 'Proteger dados pessoais e privacidade', category: 'PROTE�?�fO E SEGURAN�?A', categoryColor: '#4CAF50', icon: Lock, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 14, title: 'Proteger a saúde e o meio ambiente', category: 'PROTE�?�fO E SEGURAN�?A', categoryColor: '#4CAF50', icon: Heart, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 15, title: 'Resolver problemas técnicos', category: 'RESOLU�?�fO DE PROBLEMAS', categoryColor: '#E91E63', icon: Wrench, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 16, title: 'Evoluir em um ambiente digital', category: 'RESOLU�?�fO DE PROBLEMAS', categoryColor: '#E91E63', icon: TrendingUp, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 1, title: 'Programar sistemas', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: Code, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '15/12/2025', timeSpent: '08min 32s', digcoinsEarned: 9 },
+      { id: 2, title: 'Adaptar arquivos', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: Files, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '16/12/2025', timeSpent: '07min 18s', digcoinsEarned: 9 },
+      { id: 3, title: 'Compartilhar e publicar', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Share2, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '16/12/2025', timeSpent: '06min 45s', digcoinsEarned: 9 },
+      { id: 4, title: 'Interagir', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: MessageCircle, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '17/12/2025', timeSpent: '05min 52s', digcoinsEarned: 9 },
+      { id: 5, title: 'Realizar pesquisa e monitoramento', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: Search, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '17/12/2025', timeSpent: '09min 15s', digcoinsEarned: 9 },
+      { id: 6, title: 'Gerir a identidade digital', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Fingerprint, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '18/12/2025', timeSpent: '07min 03s', digcoinsEarned: 9 },
+      { id: 7, title: 'Gerenciar dados', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: FolderOpen, completed: true, starsEarned: 3, totalStars: 3, status: 'completed', completedDate: '18/12/2025', timeSpent: '08min 27s', digcoinsEarned: 9 },
+      { id: 8, title: 'Colaborar', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Users, completed: false, starsEarned: 2, totalStars: 3, status: 'in-progress' },
+      { id: 9, title: 'Realizar o tratamento de dados', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: BarChart3, completed: false, starsEarned: 1, totalStars: 3, status: 'in-progress' },
+      { id: 10, title: 'Editar texto multimídia', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: ImageIcon, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 11, title: 'Editar texto escrito', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: FileEdit, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 12, title: 'Proteger o ambiente digital', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Shield, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 13, title: 'Proteger dados pessoais e privacidade', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Lock, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 14, title: 'Proteger a saúde e o meio ambiente', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Heart, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 15, title: 'Resolver problemas técnicos', category: 'RESOLUÇÃO DE PROBLEMAS', categoryColor: '#E91E63', icon: Wrench, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 16, title: 'Evoluir em um ambiente digital', category: 'RESOLUÇÃO DE PROBLEMAS', categoryColor: '#E91E63', icon: TrendingUp, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
     ],
   },
   {
@@ -65,22 +65,22 @@ export const baseLevels: Level[] = [
     total: 16,
     percentage: 0,
     competencias: [
-      { id: 17, title: 'Programar sistemas avançado', category: 'CRIA�?�fO DE CONTE�sDO', categoryColor: '#FF9800', icon: Code, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 18, title: 'Adaptar arquivos complexos', category: 'CRIA�?�fO DE CONTE�sDO', categoryColor: '#FF9800', icon: Files, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 19, title: 'Gestão de redes sociais', category: 'COMUNICA�?�fO E COLABORA�?�fO', categoryColor: '#00BCD4', icon: Share2, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 20, title: 'Comunicação profissional', category: 'COMUNICA�?�fO E COLABORA�?�fO', categoryColor: '#00BCD4', icon: MessageCircle, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 21, title: 'Pesquisa avançada', category: 'INFORMA�?�.ES E DADOS', categoryColor: '#FFD700', icon: Search, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 22, title: 'Gestão de identidade profissional', category: 'COMUNICA�?�fO E COLABORA�?�fO', categoryColor: '#00BCD4', icon: Fingerprint, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 23, title: 'Análise de dados', category: 'INFORMA�?�.ES E DADOS', categoryColor: '#FFD700', icon: BarChart3, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 24, title: 'Colaboração em projetos', category: 'COMUNICA�?�fO E COLABORA�?�fO', categoryColor: '#00BCD4', icon: Users, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 25, title: 'Visualização de dados', category: 'INFORMA�?�.ES E DADOS', categoryColor: '#FFD700', icon: BarChart3, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 26, title: 'Produção audiovisual', category: 'CRIA�?�fO DE CONTE�sDO', categoryColor: '#FF9800', icon: ImageIcon, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 27, title: 'Redação digital', category: 'CRIA�?�fO DE CONTE�sDO', categoryColor: '#FF9800', icon: FileEdit, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 28, title: 'Segurança de redes', category: 'PROTE�?�fO E SEGURAN�?A', categoryColor: '#4CAF50', icon: Shield, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 29, title: 'Privacidade digital', category: 'PROTE�?�fO E SEGURAN�?A', categoryColor: '#4CAF50', icon: Lock, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 30, title: 'Ergonomia digital', category: 'PROTE�?�fO E SEGURAN�?A', categoryColor: '#4CAF50', icon: Heart, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 31, title: 'Troubleshooting avançado', category: 'RESOLU�?�fO DE PROBLEMAS', categoryColor: '#E91E63', icon: Wrench, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
-      { id: 32, title: 'Adaptação tecnológica', category: 'RESOLU�?�fO DE PROBLEMAS', categoryColor: '#E91E63', icon: TrendingUp, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 17, title: 'Programar sistemas avançado', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: Code, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 18, title: 'Adaptar arquivos complexos', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: Files, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 19, title: 'Gestão de redes sociais', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Share2, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 20, title: 'Comunicação profissional', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: MessageCircle, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 21, title: 'Pesquisa avançada', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: Search, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 22, title: 'Gestão de identidade profissional', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Fingerprint, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 23, title: 'Análise de dados', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: BarChart3, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 24, title: 'Colaboração em projetos', category: 'COMUNICAÇÃO E COLABORAÇÃO', categoryColor: '#00BCD4', icon: Users, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 25, title: 'Visualização de dados', category: 'INFORMAÇÕES E DADOS', categoryColor: '#FFD700', icon: BarChart3, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 26, title: 'Produção audiovisual', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: ImageIcon, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 27, title: 'Redação digital', category: 'CRIAÇÃO DE CONTEÚDO', categoryColor: '#FF9800', icon: FileEdit, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 28, title: 'Segurança de redes', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Shield, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 29, title: 'Privacidade digital', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Lock, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 30, title: 'Ergonomia digital', category: 'PROTEÇÃO E SEGURANÇA', categoryColor: '#4CAF50', icon: Heart, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 31, title: 'Troubleshooting avançado', category: 'RESOLUÇÃO DE PROBLEMAS', categoryColor: '#E91E63', icon: Wrench, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
+      { id: 32, title: 'Adaptação tecnológica', category: 'RESOLUÇÃO DE PROBLEMAS', categoryColor: '#E91E63', icon: TrendingUp, completed: false, starsEarned: 0, totalStars: 3, status: 'not-started' },
     ],
   },
   {
@@ -143,7 +143,7 @@ export const achievements: Achievement[] = [
     rarity: 'comum',
   },
   
-  // 2. HÁBITO E CONSIST�SNCIA (Streak) - 2 missões
+  // 2. HÁBITO E CONSISTÊNCIA (Streak) - 2 missões
   {
     id: 4,
     title: 'Sequência de 7 Dias',
@@ -164,7 +164,7 @@ export const achievements: Achievement[] = [
     rarity: 'raro',
   },
   
-  // 3. JORNADA DE COMPET�SNCIA (Níveis 1 ao 5) - 5 missões
+  // 3. JORNADA DE COMPETÊNCIA (Níveis 1 ao 5) - 5 missões
   {
     id: 6,
     title: 'Nível 1: Aprendiz Digital',
@@ -211,7 +211,7 @@ export const achievements: Achievement[] = [
     rarity: 'lendário',
   },
   
-  // 4. PERFORMANCE E EXCEL�SNCIA - 3 missões
+  // 4. PERFORMANCE E EXCELÊNCIA - 3 missões
   {
     id: 11,
     title: 'Tiro Certo',

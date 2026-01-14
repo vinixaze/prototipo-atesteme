@@ -3,13 +3,13 @@ import { RecommendedCompetency } from '../types';
 
 export const baseRecommendedCompetencies: RecommendedCompetency[] = [
   {
-    category: 'INFORMA�?�.ES E DADOS',
+    category: 'INFORMAÇÕES E DADOS',
     title: 'Realizar pesquisa e monitoramento',
     icon: Search,
     color: '#FFD700',
   },
   {
-    category: 'COMUNICA�?�fO E COLABORA�?�fO',
+    category: 'COMUNICAÇÃO E COLABORAÇÃO',
     title: 'Interagir',
     icon: MessageCircle,
     color: '#00BCD4',

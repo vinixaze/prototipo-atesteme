@@ -15,13 +15,13 @@ interface TestHeaderProps {
 }
 
 const categoryColors: Record<string, string> = {
-  'NO�?�.ES BÁSICAS': '#8B27FF',
-  'TESTE DIAGN�"STICO': '#8B27FF',
-  'INFORMA�?�.ES E DADOS': '#FFD700',
-  'COMUNICA�?�fO E COLABORA�?�fO': '#00BCD4',
-  'CRIA�?�fO DE CONTE�sDO': '#FF9800',
-  'PROTE�?�fO E SEGURAN�?A': '#4CAF50',
-  'RESOLU�?�fO DE PROBLEMAS': '#E91E63',
+  'NOÇÕES BÁSICAS': '#8B27FF',
+  'TESTE DIAGNÓSTICO': '#8B27FF',
+  'INFORMAÇÕES E DADOS': '#FFD700',
+  'COMUNICAÇÃO E COLABORAÇÃO': '#00BCD4',
+  'CRIAÇÃO DE CONTEÚDO': '#FF9800',
+  'PROTEÇÃO E SEGURANÇA': '#4CAF50',
+  'RESOLUÇÃO DE PROBLEMAS': '#E91E63',
 };
 
 export default function TestHeader({
