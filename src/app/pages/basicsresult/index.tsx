@@ -1,5 +1,5 @@
 import TestResult from "../shared/components/TestResult";
-import { explanations, questions } from "../Basics/data";
+import { explanations, questions } from "../basics/data";
 
 interface BasicsResultPageProps {
   navigateTo: (page: string, data?: any) => void;
