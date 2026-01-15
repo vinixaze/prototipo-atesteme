@@ -12,7 +12,7 @@ interface AssessmentResultPageProps {
 }
 
 // Importar questões
-import { questions } from "../Assessment/data";
+import { questions } from "../assessment/data";
 
 export default function AssessmentResultPage({
   navigateTo,
