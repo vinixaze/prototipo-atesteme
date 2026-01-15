@@ -28,7 +28,7 @@ export default function ContentFilters({
           <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 pointer-events-none" />
 
           <span className="absolute left-10 right-10 top-1/2 -translate-y-1/2 text-sm font-semibold text-gray-800 dark:text-gray-100 pointer-events-none truncate">
-            {selectedCompetency ? selectedCompetency : 'CompetÇ¦ncias'}
+            {selectedCompetency ? selectedCompetency : 'Competências'}
           </span>
 
           <select
@@ -39,7 +39,7 @@ export default function ContentFilters({
              text-transparent"
           >
             <option value="" disabled hidden>
-              CompetÇ¦ncias
+              Competências
             </option>
 
             {availableCompetencies.map((competency) => (

@@ -74,7 +74,7 @@ export default function CompetencyCard({
                 <Layers className="text-white w-3.5 h-3.5 md:w-4 md:h-4" strokeWidth={2} />
               </div>
               <div className="flex-1 min-w-0 hidden md:block">
-                <p className="text-[8px] md:text-[10px] uppercase font-semibold leading-none mb-0.5 text-white/90">Ç?rea</p>
+                <p className="text-[8px] md:text-[10px] uppercase font-semibold leading-none mb-0.5 text-white/90">Área</p>
                 <p className="text-[8px] md:text-xs text-white font-medium leading-tight truncate">
                   {competency.category}
                 </p>
@@ -94,7 +94,7 @@ export default function CompetencyCard({
                 <Award className="text-white w-3.5 h-3.5 md:w-4 md:h-4" strokeWidth={2} />
               </div>
               <div className="flex-1 min-w-0 hidden md:block">
-                <p className="text-[8px] md:text-[10px] uppercase font-semibold leading-none mb-0.5 text-white/90">CompetÇ¦ncia</p>
+                <p className="text-[8px] md:text-[10px] uppercase font-semibold leading-none mb-0.5 text-white/90">Competência</p>
                 <p className="text-[8px] md:text-xs text-white font-medium leading-tight">
                   {competency.title}
                 </p>
@@ -220,4 +220,3 @@ export default function CompetencyCard({
     </div>
   );
 }
-

@@ -152,6 +152,68 @@ function RequireAuth({
   return children;
 }
 
+function RequireQuizWarning({
+  isAuthenticated,
+  quizData,
+  children,
+}: {
+  isAuthenticated: boolean;
+  quizData: any;
+  children: ReactElement;
+}) {
+  const location = useLocation();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+  }
+  if (!quizData) {
+    return <Navigate to="/skills" replace />;
+  }
+  return children;
+}
+
+function RequireQuizStart({
+  isAuthenticated,
+  quizData,
+  quizAccessGranted,
+  children,
+}: {
+  isAuthenticated: boolean;
+  quizData: any;
+  quizAccessGranted: boolean;
+  children: ReactElement;
+}) {
+  const location = useLocation();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+  }
+  if (!quizData) {
+    return <Navigate to="/skills" replace />;
+  }
+  if (!quizAccessGranted) {
+    return <Navigate to="/quiz/warning" replace />;
+  }
+  return children;
+}
+
+function RequireAssessmentStart({
+  isAuthenticated,
+  assessmentAccessGranted,
+  children,
+}: {
+  isAuthenticated: boolean;
+  assessmentAccessGranted: boolean;
+  children: ReactElement;
+}) {
+  const location = useLocation();
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+  }
+  if (!assessmentAccessGranted) {
+    return <Navigate to="/welcome" replace />;
+  }
+  return children;
+}
+
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -160,20 +222,38 @@ export default function App() {
     [location.pathname]
   );
 
-  const [userName, setUserName] = useState("André");
+  const [userName, setUserName] = useState("");
   const [userRole, setUserRole] = useState<"admin" | "user">("user");
   const [testData, setTestData] = useState<any>(null);
+  const [quizData, setQuizData] = useState<any>(null);
   const [previousPage, setPreviousPage] = useState<Page>("dashboard");
+  const [quizAccessGranted, setQuizAccessGranted] = useState(false);
+  const [assessmentAccessGranted, setAssessmentAccessGranted] = useState(false);
   const [activeModule, setActiveModule] = useState<"atesteme" | "prosaeb">(
     "atesteme"
   );
   const isAuthenticated = userName.trim().length > 0;
 
   const navigateTo = (page: string, data?: any) => {
-    if (data) {
-      setTestData(data);
-    }
     setPreviousPage(currentPage);
+    if (data) {
+      if (["quiz-warning", "quiz", "quiz-result"].includes(page)) {
+        setQuizData(data);
+      } else {
+        setTestData(data);
+      }
+    }
+
+    if (page === "quiz-warning") {
+      setQuizAccessGranted(false);
+    }
+    if (page === "quiz") {
+      setQuizAccessGranted(currentPage === "quiz-warning");
+    }
+    if (page === "teste-competencias") {
+      setAssessmentAccessGranted(currentPage === "welcome");
+    }
+
     const targetRoute = PAGE_ROUTES[page as Page];
     if (targetRoute) {
       navigate(targetRoute);
@@ -188,6 +268,10 @@ export default function App() {
 
   const handleLogout = () => {
     setUserName("");
+    setTestData(null);
+    setQuizData(null);
+    setQuizAccessGranted(false);
+    setAssessmentAccessGranted(false);
     navigateTo("login");
   };
 
@@ -357,41 +441,54 @@ export default function App() {
         <Route
           path="/assessment"
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <RequireAssessmentStart
+              isAuthenticated={isAuthenticated}
+              assessmentAccessGranted={assessmentAccessGranted}
+            >
               <AssessmentPage navigateTo={navigateTo} />
-            </RequireAuth>
+            </RequireAssessmentStart>
           }
         />
         <Route
           path="/assessment/congrats"
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <RequireAssessmentStart
+              isAuthenticated={isAuthenticated}
+              assessmentAccessGranted={assessmentAccessGranted}
+            >
               <AssessmentCongratsPage navigateTo={navigateTo} testData={testData} />
-            </RequireAuth>
+            </RequireAssessmentStart>
           }
         />
         <Route
           path="/assessment/result"
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <RequireAssessmentStart
+              isAuthenticated={isAuthenticated}
+              assessmentAccessGranted={assessmentAccessGranted}
+            >
               <AssessmentResultPage navigateTo={navigateTo} testData={testData} />
-            </RequireAuth>
+            </RequireAssessmentStart>
           }
         />
         <Route
           path="/quiz/warning"
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
-              <QuizWarningPage navigateTo={navigateTo} competencyData={testData} />
-            </RequireAuth>
+            <RequireQuizWarning isAuthenticated={isAuthenticated} quizData={quizData}>
+              <QuizWarningPage navigateTo={navigateTo} competencyData={quizData} />
+            </RequireQuizWarning>
           }
         />
         <Route
           path="/quiz"
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
-              <QuizPage navigateTo={navigateTo} competencyData={testData} />
-            </RequireAuth>
+            <RequireQuizStart
+              isAuthenticated={isAuthenticated}
+              quizData={quizData}
+              quizAccessGranted={quizAccessGranted}
+            >
+              <QuizPage navigateTo={navigateTo} competencyData={quizData} />
+            </RequireQuizStart>
           }
         />
         <Route
@@ -400,7 +497,7 @@ export default function App() {
             <RequireAuth isAuthenticated={isAuthenticated}>
               <QuizResultPage
                 navigateTo={navigateTo}
-                testData={testData}
+                testData={quizData}
                 previousPage={previousPage}
               />
             </RequireAuth>

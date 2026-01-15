@@ -71,7 +71,7 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
   ) => {
     setSelectedCompetency({ competency, category, categoryColor, competencyIcon, categoryIcon });
 
-    // voc� j� navega pro warning page (�timo)
+    // você já navega pro warning page (ótimo)
     navigateTo("quiz-warning", {
       competency,
       category,
@@ -118,9 +118,9 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
 
         <main className="flex-1 overflow-auto">
           <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-6">
-            {/* Header + Card No��es B�sicas */}
+            {/* Header + Card Noções Básicas */}
             <div className="flex flex-col lg:flex-row gap-6 mb-8 items-start">
-              {/* ESQUERDA - T�TULO */}
+              {/* ESQUERDA - TÍTULO */}
               <div className="w-full lg:w-[70%]">
                 <h1 className="text-3xl md:text-4xl font-semibold text-[#8B27FF] mb-2">
                   Competências Digitais
@@ -278,7 +278,7 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
   );
 }
 
-/** Obs. Componente fora do map (evita hook dentro de loop e bugs aleat�rios) */
+/** Obs. Componente fora do map (evita hook dentro de loop e bugs aleatórios) */
 function CategorySection({
   category,
   categoryIndex,
@@ -330,7 +330,7 @@ function CategorySection({
           // Mock: manter seu teste
           const isInProgress = status?.status === "in-progress" || comp.title === "Compartilhar e publicar";
 
-          // Background do �cone (respeitando bloqueado)
+          // Background do ícone (respeitando bloqueado)
           let iconBgClass = "";
           if (!isBlocked) {
             if (category.color === "#FFD700") iconBgClass = "bg-[#FFF9E6] dark:bg-yellow-900/30";
@@ -340,7 +340,7 @@ function CategorySection({
             else if (category.color === "#E91E63") iconBgClass = "bg-[#FCE4EC] dark:bg-pink-900/30";
           }
 
-          // Gradiente do bot�o (respeitando bloqueado)
+          // Gradiente do botão (respeitando bloqueado)
           let buttonGradient = "";
           if (category.color === "#FFD700") buttonGradient = "linear-gradient(135deg, #FFE57F 0%, #FF9800 100%)";
           else if (category.color === "#00BCD4") buttonGradient = "linear-gradient(135deg, #4DD0E1 0%, #0288D1 100%)";
@@ -385,7 +385,7 @@ function CategorySection({
 
               {/* Body */}
               <div className="relative z-10 p-5 flex flex-col items-center gap-4">
-                {/* �cone */}
+                {/* Ícone */}
                 <motion.div
                   whileHover={{
                     rotate: isBlocked ? 0 : [0, -10, 10, -10, 0],
@@ -404,7 +404,7 @@ function CategorySection({
                   />
                 </motion.div>
 
-                {/* T�tulo */}
+                {/* Título */}
                 <h4
                   className={`text-[15px] font-semibold text-center leading-[1.3] min-h-[40px] px-1 ${
                     isBlocked ? "text-gray-500 dark:text-gray-400" : "text-gray-800 dark:text-gray-200"
@@ -425,7 +425,7 @@ function CategorySection({
                   )}
                 </div>
 
-                {/* Bot�o */}
+                {/* Botão */}
                 {isInProgress ? (
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -568,4 +568,3 @@ function BlockedCompetencyModal({
     </div>
   );
 }
-

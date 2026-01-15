@@ -45,12 +45,12 @@ interface PlanoAula {
 }
 
 interface FormData {
-  // Etapa 1: Informa��es B�sicas
+  // Etapa 1: Informações Básicas
   componenteCurricular: string;
   ano: string;
   tema: string;
 
-  // Etapa 2: Configura��es da Aula
+  // Etapa 2: Configurações da Aula
   duracao: string;
   duracaoCustom: string;
   recursoDidatico: string[];
@@ -66,11 +66,11 @@ interface FormData {
   tempoAula: string;
   metodologia: string[];
 
-  // Etapa 5: Atividades e Adapta��es
+  // Etapa 5: Atividades e Adaptações
   tiposAtividades: string[];
   adaptacoes: string[];
 
-  // Etapa 6: Localiza��o (Opcional)
+  // Etapa 6: Localização (Opcional)
   unidadeFederativa: string;
   cidade: string;
   escola: string;
@@ -330,7 +330,7 @@ export default function LessonPlanPage({
         prompt += `\n`;
       }
 
-      // Localizaçã o
+      // Localização
       if (formData.unidadeFederativa || formData.cidade || formData.escola) {
         prompt += `LOCALIZAÇÃO:\n`;
         if (formData.unidadeFederativa) prompt += `- Estado: ${formData.unidadeFederativa}\n`;
@@ -500,7 +500,7 @@ export default function LessonPlanPage({
                 </div>
               </div>
 
-              {/* Recursos Did�ticos */}
+              {/* Recursos Didáticos */}
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
                   Recursos Didáticos
@@ -520,7 +520,7 @@ export default function LessonPlanPage({
                 </div>
               </div>
 
-              {/* Formas de Avalia��o */}
+              {/* Formas de Avaliação */}
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
                   Formas de Avaliação
@@ -574,7 +574,7 @@ export default function LessonPlanPage({
                 onChange={(next) => setFormData({ ...formData, habilidadesBNCCGeral: next })}
               />
 
-              {/* Habilidades BNCC Computa��o (busca digitando) */}
+              {/* Habilidades BNCC Computação (busca digitando) */}
               <BnccMultiSelect
                 label="Habilidades da BNCC Computação"
                 type="computacao"
@@ -667,7 +667,7 @@ export default function LessonPlanPage({
                 </div>
               </div>
 
-              {/* Adapta��es */}
+              {/* Adaptações */}
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
                   Adaptações para Necessidades Especiais
@@ -1094,4 +1094,3 @@ export default function LessonPlanPage({
     </div>
   );
 }
-

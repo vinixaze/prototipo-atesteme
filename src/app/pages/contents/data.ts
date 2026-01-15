@@ -173,7 +173,7 @@ export const contentItems: ContentItem[] = [
     link: '#'
   },
 
-  // COMUNICA��O E COLABORA��O - Gerir a identidade digital
+  // COMUNICAÇÃO E COLABORAÇÃO - Gerir a identidade digital
   {
     id: '14',
     title: 'Sua presença digital: primeiros passos',
@@ -219,7 +219,7 @@ export const contentItems: ContentItem[] = [
     link: '#'
   },
 
-  // COMUNICA��O E COLABORA��O - Compartilhar e publicar
+  // COMUNICAÇÃO E COLABORAÇÃO - Compartilhar e publicar
   {
     id: '18',
     title: 'Como compartilhar arquivos com segurança',
@@ -679,7 +679,7 @@ export const contentItems: ContentItem[] = [
     link: '#'
   },
 
-  // RESOLU��O DE PROBLEMAS - Evoluir em um ambiente digital
+  // RESOLUÇÃO DE PROBLEMAS - Evoluir em um ambiente digital
   {
     id: '58',
     title: 'Aprendizado contínuo em tecnologia',
@@ -903,4 +903,3 @@ export const contentCategories: ContentCategory[] = [
     { name: 'PROTEÇÃO E SEGURANÇA', color: '#4CAF50', icon: Shield },
     { name: 'RESOLUÇÃO DE PROBLEMAS', color: '#E91E63', icon: Wrench },
   ];
-

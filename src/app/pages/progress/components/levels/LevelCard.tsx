@@ -87,7 +87,7 @@ export default function LevelCard({
 
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-                {level.progress}/{level.total} competÇ¦ncias
+                {level.progress}/{level.total} competências
               </span>
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function LevelCard({
           </div>
           <div className="flex justify-between items-center">
             <span className="text-sm text-gray-600 font-medium">
-              {level.progress}/{level.total} competÇ¦ncias
+              {level.progress}/{level.total} competências
             </span>
           </div>
         </div>

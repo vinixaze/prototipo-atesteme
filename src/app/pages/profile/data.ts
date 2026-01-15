@@ -7,7 +7,7 @@ export const avatarOptions = [
   { id: 6, name: "Dev", url: "https://api.dicebear.com/7.x/adventurer/svg?seed=Max" },
   { id: 7, name: "Manager", url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Lily" },
   { id: 8, name: "Analista", url: "https://api.dicebear.com/7.x/adventurer/svg?seed=Sophie" },
-  { id: 9, name: "LÇðder", url: "https://api.dicebear.com/7.x/avataaars/svg?seed=George" },
+  { id: 9, name: "Líder", url: "https://api.dicebear.com/7.x/avataaars/svg?seed=George" },
   { id: 10, name: "Criativo", url: "https://api.dicebear.com/7.x/adventurer/svg?seed=Chloe" },
   { id: 11, name: "Estrategista", url: "https://api.dicebear.com/7.x/adventurer/svg?seed=Oliver" },
   { id: 12, name: "Inovador", url: "https://api.dicebear.com/7.x/adventurer/svg?seed=Luna" },
@@ -83,7 +83,7 @@ export const bannerLevels = [
 export const collectibleAvatars = [
   {
     id: 1,
-    name: "Avatar PadrÇœo",
+    name: "Avatar Padrão",
     url: "https://api.dicebear.com/7.x/avataaars/svg?seed=Default",
     unlocked: true,
     cost: 0,

@@ -25,7 +25,7 @@ export interface Level {
   competencias: Competency[];
 }
 
-export type AchievementRarity = 'comum' | 'raro' | 'epico' | 'lendario' | 'Ç¸pico' | 'lendÇ­rio';
+export type AchievementRarity = 'comum' | 'raro' | 'épico' | 'lendário';
 
 export interface Achievement {
   id: number;

@@ -13,7 +13,7 @@ export default function ExamPageHeader() {
           Meus Exames
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
-          Acompanhe seu histÇürico de certificaÇõÇæes e testes
+          Acompanhe seu histórico de certificações e testes
         </p>
       </div>
     </motion.div>
