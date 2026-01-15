@@ -31,3 +31,20 @@ export interface VerifiedState {
   emailResponsavel: boolean;
   telefoneResponsavel: boolean;
 }
+
+export interface AvatarOption {
+  id: number;
+  name: string;
+  url: string;
+  unlocked?: boolean;
+  cost?: number;
+}
+
+export interface BannerLevel {
+  id: number;
+  level: number;
+  name: string;
+  gradient: string;
+  unlocked: boolean;
+  cost: number;
+}

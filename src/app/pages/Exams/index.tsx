@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar';
+import Header from '../shared/components/Header';
+import Sidebar from '../shared/components/Sidebar';
 import ExamCtaCards from './components/ExamCtaCards';
 import ExamPageHeader from './components/ExamPageHeader';
 import ExamStatsCards from './components/ExamStatsCards';
@@ -97,3 +97,4 @@ export default function ExamsPage({ navigateTo, userRole }: ExamsPageProps) {
     </div>
   );
 }
+

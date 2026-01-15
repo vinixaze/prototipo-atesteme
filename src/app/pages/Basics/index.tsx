@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { toast, Toaster } from "sonner";
-import TestQuestion from "../../components/TestQuestion";
-import TestCongrats from "../../components/TestCongrats";
-import TestResult from "../../components/TestResult";
+import TestQuestion from "../shared/components/TestQuestion";
+import TestCongrats from "../shared/components/TestCongrats";
+import TestResult from "../shared/components/TestResult";
 import { explanations, questions } from "./data";
 
 interface BasicsPageProps {
@@ -262,3 +262,4 @@ export default function BasicsPage({ navigateTo }: BasicsPageProps) {
     </>
   );
 }
+

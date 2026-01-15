@@ -1,11 +1,11 @@
-ï»¿import { useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import {
   PageState,
   Question,
   StepStatusEntry,
   TestResultsSummary
-} from '../types/nocoesBasicas';
+} from '../pages/basics/types';
 
 interface UseNocoesBasicasTestArgs {
   questions: Question[];
@@ -74,9 +74,9 @@ export default function useNocoesBasicasTest({ questions, explanations }: UseNoc
       if (unansweredQuestions.length > 0) {
         setIsFillingSkipped(true);
 
-        toast.warning('VocÃª tem questÃµes sem resposta!', {
+        toast.warning('Você tem questões sem resposta!', {
           description: `Complete as ${unansweredQuestions.length} quest${
-            unansweredQuestions.length > 1 ? 'Ãµes' : 'Ã£o'
+            unansweredQuestions.length > 1 ? 'ões' : 'ão'
           } restante${unansweredQuestions.length > 1 ? 's' : ''} para finalizar.`,
           duration: 5000
         });
@@ -138,9 +138,9 @@ export default function useNocoesBasicasTest({ questions, explanations }: UseNoc
     if (unansweredQuestions.length > 0) {
       setIsFillingSkipped(true);
 
-      toast.warning('VocÃª tem questÃµes sem resposta!', {
+      toast.warning('Você tem questões sem resposta!', {
         description: `Complete as ${unansweredQuestions.length} quest${
-          unansweredQuestions.length > 1 ? 'Ãµes' : 'Ã£o'
+          unansweredQuestions.length > 1 ? 'ões' : 'ão'
         } restante${unansweredQuestions.length > 1 ? 's' : ''} para finalizar.`,
         duration: 5000
       });

@@ -1,4 +1,4 @@
-import { Exam } from '../../../types/exams';
+import { Exam } from '../types';
 
 export const exams: Exam[] = [
   {
@@ -52,3 +52,4 @@ export const exams: Exam[] = [
     score: 78,
   },
 ];
+

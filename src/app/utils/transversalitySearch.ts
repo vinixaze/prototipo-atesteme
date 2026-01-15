@@ -1,4 +1,4 @@
-import { SelectedFilters } from '../types/transversality';
+import { SelectedFilters } from '../pages/transversality/types';
 
 interface OptionItem {
   value: string;

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Header from "../../components/Header";
-import Sidebar from "../../components/Sidebar";
+import Header from "../shared/components/Header";
+import Sidebar from "../shared/components/Sidebar";
 import { Award, Flame, Lock, Medal, Star, Target, Trophy, Zap } from "lucide-react";
 
 interface AchievementsPageProps {
@@ -238,3 +238,4 @@ export default function AchievementsPage({
     </div>
   );
 }
+

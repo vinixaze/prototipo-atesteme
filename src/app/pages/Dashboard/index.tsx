@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar';
-import ParentalControlPanel from '../../components/ParentalControlPanel';
+import Header from '../shared/components/Header';
+import Sidebar from '../shared/components/Sidebar';
+import ParentalControlPanel from './components/ParentalControlPanel';
 import { WelcomeBanner } from './components/WelcomeBanner';
 import { BasicsBanner } from "./components/BasicsBanner";
 import { LevelCard } from './components/LevelCard';
@@ -144,3 +144,4 @@ export default function DashboardPage({
     </div>
   );
 }
+

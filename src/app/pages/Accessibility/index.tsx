@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import Header from "../../components/Header";
-import Sidebar from "../../components/Sidebar";
+import Header from "../shared/components/Header";
+import Sidebar from "../shared/components/Sidebar";
 import { 
   Eye, 
   Volume2, 
@@ -395,3 +395,4 @@ export default function AccessibilityPage({
     </div>
   );
 }
+

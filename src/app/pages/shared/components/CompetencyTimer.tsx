@@ -1,7 +1,7 @@
 import React from 'react';
 import { Clock } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { getCompetencyStatus } from '../utils/competencyStorage';
+import { getCompetencyStatus } from '../../../utils/competencyStorage';
 
 interface CompetencyTimerProps {
   competencyName: string;

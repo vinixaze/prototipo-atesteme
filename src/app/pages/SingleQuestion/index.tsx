@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, Book, Calendar, CheckCircle, Tag, XCircle } from "lucide-react";
-import Header from "../../components/Header";
+import Header from "../shared/components/Header";
 
 interface SingleQuestionPageProps {
   navigateTo: (page: string) => void;
@@ -288,3 +288,4 @@ export default function SingleQuestionPage({
     </div>
   );
 }
+

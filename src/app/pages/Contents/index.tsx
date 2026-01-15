@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar';
+import Header from '../shared/components/Header';
+import Sidebar from '../shared/components/Sidebar';
 import ContentHeader from './components/ContentHeader';
 import CategoryTabs from './components/CategoryTabs';
 import ContentFilters from './components/ContentFilters';
@@ -99,3 +99,4 @@ export default function ContentsPage({ navigateTo, filterData, userRole }: Conte
     </div>
   );
 }
+

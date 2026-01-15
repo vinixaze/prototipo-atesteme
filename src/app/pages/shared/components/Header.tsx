@@ -27,9 +27,9 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-import prosaebLogo from "../../assets/c8fa7f66c2fe8238b13cdb022c41e85fac6b0ed1.png";
-import logoDarkMode from "../../assets/logo-darkmode.png";
-import logoLightMode from "../../assets/logo-lightmode.png";
+import prosaebLogo from "../../../../assets/c8fa7f66c2fe8238b13cdb022c41e85fac6b0ed1.png";
+import logoDarkMode from "../../../../assets/logo-darkmode.png";
+import logoLightMode from "../../../../assets/logo-lightmode.png";
 
 interface HeaderProps {
   onMenuClick?: () => void;

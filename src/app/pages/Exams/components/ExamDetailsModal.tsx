@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { X, CheckCircle2, XCircle, FileCheck, Clock, Star, Target, Check, BookOpen, Download, RotateCcw } from 'lucide-react';
-import { Exam, ExamDetails } from '../../../types/exams';
+import { Exam, ExamDetails } from '../types';
 
 interface ExamDetailsModalProps {
   exam: Exam;
@@ -297,4 +297,5 @@ export default function ExamDetailsModal({ exam, details, isOpen, onClose }: Exa
     </AnimatePresence>
   );
 }
+
 

@@ -1,6 +1,6 @@
 import { AlertTriangle } from "lucide-react";
 import { useEffect } from "react";
-import TestResult from "../../components/TestResult";
+import TestResult from "../shared/components/TestResult";
 import { saveCompetencyResult } from "../../utils/competencyStorage";
 
 interface QuizResultPageProps {
@@ -87,3 +87,4 @@ export default function QuizResultPage({ navigateTo, testData }: QuizResultPageP
     />
   );
 }
+

@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
-import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar';
+import Header from '../shared/components/Header';
+import Sidebar from '../shared/components/Sidebar';
 import { HeroSection } from './components/HeroSection';
 import { TipsGrid } from './components/TipsGrid';
 import { VideoTutorialSection } from './components/VideoTutorialSection';
@@ -108,3 +108,4 @@ export default function FAQPage({ navigateTo, userRole }: FAQPageProps) {
     </div>
   );
 }
+

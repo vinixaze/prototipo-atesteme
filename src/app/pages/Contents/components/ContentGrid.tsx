@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { ExternalLink, FileText, Globe, Play } from 'lucide-react';
-import { ContentCategory, ContentItem } from '../../../types/content';
+import { ContentCategory, ContentItem } from '../types';
 
 interface ContentGridProps {
   contents: ContentItem[];
@@ -73,3 +73,4 @@ export default function ContentGrid({ contents, currentCategory }: ContentGridPr
     </div>
   );
 }
+

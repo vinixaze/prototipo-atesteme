@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { ContentCategory } from '../../../types/content';
+import { ContentCategory } from '../types';
 
 interface CategoryTabsProps {
   categories: ContentCategory[];
@@ -54,3 +54,4 @@ export default function CategoryTabs({
     </motion.div>
   );
 }
+

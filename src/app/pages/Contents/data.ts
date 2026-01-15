@@ -1,82 +1,82 @@
-Ôªøimport { Database, Users, FileEdit, Shield, Wrench } from 'lucide-react';
-import { ContentCategory, ContentItem } from '../../types/content';
+import { Database, Users, FileEdit, Shield, Wrench } from 'lucide-react';
+import { ContentCategory, ContentItem } from './types';
 
 export const contentItems: ContentItem[] = [
-  // INFORMA√á√ïES E DADOS - Realizar o tratamento de dados
+  // INFORMA«’ES E DADOS - Realizar o tratamento de dados
   {
     id: '1',
-    title: 'Introdu√ß√£o ao tratamento de dados no Excel',
+    title: 'IntroduÁ„o ao tratamento de dados no Excel',
     competency: 'Realizar o tratamento de dados',
     level: 1,
-    category: 'INFORMA√á√ïES E DADOS',
+    category: 'INFORMA«’ES E DADOS',
     categoryColor: '#FFD700',
-    format: 'V√≠deo',
-    description: 'Aprenda os fundamentos de organiza√ß√£o e an√°lise de dados.',
+    format: 'VÌdeo',
+    description: 'Aprenda os fundamentos de organizaÁ„o e an·lise de dados.',
     link: '#'
   },
   {
     id: '2',
-    title: 'F√≥rmulas b√°sicas e fun√ß√µes do Excel',
+    title: 'FÛrmulas b·sicas e funÁıes do Excel',
     competency: 'Realizar o tratamento de dados',
     level: 1,
-    category: 'INFORMA√á√ïES E DADOS',
+    category: 'INFORMA«’ES E DADOS',
     categoryColor: '#FFD700',
     format: 'Site',
-    description: 'Conte√∫do web sobre f√≥rmulas essenciais.',
+    description: 'Conte˙do web sobre fÛrmulas essenciais.',
     link: '#'
   },
   {
     id: '3',
-    title: 'Gr√°ficos e visualiza√ß√£o de dados',
+    title: 'Gr·ficos e visualizaÁ„o de dados',
     competency: 'Realizar o tratamento de dados',
     level: 2,
-    category: 'INFORMA√á√ïES E DADOS',
+    category: 'INFORMA«’ES E DADOS',
     categoryColor: '#FFD700',
     format: 'Tutorial',
-    description: 'Como criar visualiza√ß√µes eficazes dos seus dados.',
+    description: 'Como criar visualizaÁıes eficazes dos seus dados.',
     link: '#'
   },
   {
     id: '4',
-    title: 'An√°lise avan√ßada com tabelas din√¢micas',
+    title: 'An·lise avanÁada com tabelas din‚micas',
     competency: 'Realizar o tratamento de dados',
     level: 3,
-    category: 'INFORMA√á√ïES E DADOS',
+    category: 'INFORMA«’ES E DADOS',
     categoryColor: '#FFD700',
     format: 'Site',
-    description: 'T√©cnicas avan√ßadas de an√°lise de dados.',
+    description: 'TÈcnicas avanÁadas de an·lise de dados.',
     link: '#'
   },
   {
     id: '5',
-    title: 'Automa√ß√£o e macros para dados',
+    title: 'AutomaÁ„o e macros para dados',
     competency: 'Realizar o tratamento de dados',
     level: 4,
-    category: 'INFORMA√á√ïES E DADOS',
+    category: 'INFORMA«’ES E DADOS',
     categoryColor: '#FFD700',
     format: 'Curso',
-    description: 'Automatize processos complexos de an√°lise.',
+    description: 'Automatize processos complexos de an·lise.',
     link: '#'
   },
   {
     id: '5-5',
-    title: 'Big Data e ci√™ncia de dados',
+    title: 'Big Data e ciÍncia de dados',
     competency: 'Realizar o tratamento de dados',
     level: 5,
-    category: 'INFORMA√á√ïES E DADOS',
+    category: 'INFORMA«’ES E DADOS',
     categoryColor: '#FFD700',
-    format: 'Especializa√ß√£o',
-    description: 'Domine an√°lise de grandes volumes de dados e machine learning.',
+    format: 'EspecializaÁ„o',
+    description: 'Domine an·lise de grandes volumes de dados e machine learning.',
     link: '#'
   },
 
-  // INFORMA√á√ïES E DADOS - Gerenciar dados
+  // INFORMA«’ES E DADOS - Gerenciar dados
   {
     id: '6',
-    title: 'Organiza√ß√£o b√°sica de arquivos digitais',
+    title: 'OrganizaÁ„o b·sica de arquivos digitais',
     competency: 'Gerenciar dados',
     level: 1,
-    category: 'INFORMA√á√ïES E DADOS',
+    category: 'INFORMA«’ES E DADOS',
     categoryColor: '#FFD700',
     format: 'Artigo',
     description: 'Aprenda a organizar suas pastas e arquivos.',
@@ -87,29 +87,29 @@ export const contentItems: ContentItem[] = [
     title: 'Backup e armazenamento em nuvem',
     competency: 'Gerenciar dados',
     level: 2,
-    category: 'INFORMA√á√ïES E DADOS',
+    category: 'INFORMA«’ES E DADOS',
     categoryColor: '#FFD700',
-    format: 'V√≠deo',
+    format: 'VÌdeo',
     description: 'Proteja seus dados com backup eficiente.',
     link: '#'
   },
   {
     id: '8',
-    title: 'Sistemas de gest√£o de banco de dados',
+    title: 'Sistemas de gest„o de banco de dados',
     competency: 'Gerenciar dados',
     level: 3,
-    category: 'INFORMA√á√ïES E DADOS',
+    category: 'INFORMA«’ES E DADOS',
     categoryColor: '#FFD700',
     format: 'Tutorial',
-    description: 'Introdu√ß√£o a sistemas de banco de dados.',
+    description: 'IntroduÁ„o a sistemas de banco de dados.',
     link: '#'
   },
   {
     id: '9',
-    title: 'Governan√ßa e compliance de dados',
+    title: 'GovernanÁa e compliance de dados',
     competency: 'Gerenciar dados',
     level: 4,
-    category: 'INFORMA√á√ïES E DADOS',
+    category: 'INFORMA«’ES E DADOS',
     categoryColor: '#FFD700',
     format: 'Guia',
     description: 'Gerencie dados conforme normas e regulamentos.',
@@ -120,66 +120,66 @@ export const contentItems: ContentItem[] = [
     title: 'Arquitetura de dados empresarial',
     competency: 'Gerenciar dados',
     level: 5,
-    category: 'INFORMA√á√ïES E DADOS',
+    category: 'INFORMA«’ES E DADOS',
     categoryColor: '#FFD700',
-    format: 'Especializa√ß√£o',
-    description: 'Projete e implemente arquiteturas de dados escal√°veis e robustas.',
+    format: 'EspecializaÁ„o',
+    description: 'Projete e implemente arquiteturas de dados escal·veis e robustas.',
     link: '#'
   },
 
-  // COMUNICA√á√ÉO E COLABORA√á√ÉO - Interagir
+  // COMUNICA«√O E COLABORA«√O - Interagir
   {
     id: '10',
-    title: 'Comunica√ß√£o digital: e-mail e mensagens',
+    title: 'ComunicaÁ„o digital: e-mail e mensagens',
     competency: 'Interagir',
     level: 1,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
     format: 'Site',
-    description: 'Fundamentos da comunica√ß√£o digital.',
+    description: 'Fundamentos da comunicaÁ„o digital.',
     link: '#'
   },
   {
     id: '11',
-    title: 'Etiqueta em videoconfer√™ncias',
+    title: 'Etiqueta em videoconferÍncias',
     competency: 'Interagir',
     level: 2,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
-    format: 'V√≠deo',
-    description: 'Boas pr√°ticas em reuni√µes virtuais.',
+    format: 'VÌdeo',
+    description: 'Boas pr·ticas em reuniıes virtuais.',
     link: '#'
   },
   {
     id: '12',
-    title: 'Comunica√ß√£o assertiva no digital',
+    title: 'ComunicaÁ„o assertiva no digital',
     competency: 'Interagir',
     level: 3,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
     format: 'Artigo',
-    description: 'Desenvolva habilidades de comunica√ß√£o online.',
+    description: 'Desenvolva habilidades de comunicaÁ„o online.',
     link: '#'
   },
   {
     id: '13',
-    title: 'Gest√£o de comunidades online',
+    title: 'Gest„o de comunidades online',
     competency: 'Interagir',
     level: 4,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
     format: 'Curso',
     description: 'Lidere e modere comunidades digitais.',
     link: '#'
   },
 
-  // COMUNICA√á√ÉO E COLABORA√á√ÉO - Gerir a identidade digital
+  // COMUNICA«√O E COLABORA«√O - Gerir a identidade digital
   {
     id: '14',
-    title: 'Sua presen√ßa digital: primeiros passos',
+    title: 'Sua presenÁa digital: primeiros passos',
     competency: 'Gerir a identidade digital',
     level: 1,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
     format: 'Guia',
     description: 'Construa sua identidade digital de forma segura.',
@@ -187,13 +187,13 @@ export const contentItems: ContentItem[] = [
   },
   {
     id: '15',
-    title: 'Reputa√ß√£o online e privacidade',
+    title: 'ReputaÁ„o online e privacidade',
     competency: 'Gerir a identidade digital',
     level: 2,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
-    format: 'V√≠deo',
-    description: 'Gerencie sua reputa√ß√£o nas redes sociais.',
+    format: 'VÌdeo',
+    description: 'Gerencie sua reputaÁ„o nas redes sociais.',
     link: '#'
   },
   {
@@ -201,7 +201,7 @@ export const contentItems: ContentItem[] = [
     title: 'Personal branding digital',
     competency: 'Gerir a identidade digital',
     level: 3,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
     format: 'Tutorial',
     description: 'Crie uma marca pessoal forte online.',
@@ -209,72 +209,72 @@ export const contentItems: ContentItem[] = [
   },
   {
     id: '17',
-    title: 'Gest√£o profissional de m√∫ltiplas identidades',
+    title: 'Gest„o profissional de m˙ltiplas identidades',
     competency: 'Gerir a identidade digital',
     level: 4,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
     format: 'Curso',
     description: 'Administre diferentes perfis profissionais.',
     link: '#'
   },
 
-  // COMUNICA√á√ÉO E COLABORA√á√ÉO - Compartilhar e publicar
+  // COMUNICA«√O E COLABORA«√O - Compartilhar e publicar
   {
     id: '18',
-    title: 'Como compartilhar arquivos com seguran√ßa',
+    title: 'Como compartilhar arquivos com seguranÁa',
     competency: 'Compartilhar e publicar',
     level: 1,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
     format: 'Artigo',
-    description: 'M√©todos seguros de compartilhamento.',
+    description: 'MÈtodos seguros de compartilhamento.',
     link: '#'
   },
   {
     id: '19',
-    title: 'Publica√ß√£o em redes sociais',
+    title: 'PublicaÁ„o em redes sociais',
     competency: 'Compartilhar e publicar',
     level: 2,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
-    format: 'V√≠deo',
-    description: 'Aprenda a publicar conte√∫do eficaz.',
+    format: 'VÌdeo',
+    description: 'Aprenda a publicar conte˙do eficaz.',
     link: '#'
   },
   {
     id: '20',
-    title: 'Licen√ßas e direitos autorais digitais',
+    title: 'LicenÁas e direitos autorais digitais',
     competency: 'Compartilhar e publicar',
     level: 3,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
     format: 'Guia',
-    description: 'Entenda licen√ßas Creative Commons e copyright.',
+    description: 'Entenda licenÁas Creative Commons e copyright.',
     link: '#'
   },
   {
     id: '21',
-    title: 'Estrat√©gias de conte√∫do e distribui√ß√£o',
+    title: 'EstratÈgias de conte˙do e distribuiÁ„o',
     competency: 'Compartilhar e publicar',
     level: 4,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
     format: 'Curso',
-    description: 'Otimize a distribui√ß√£o do seu conte√∫do.',
+    description: 'Otimize a distribuiÁ„o do seu conte˙do.',
     link: '#'
   },
 
-  // COMUNICA√á√ÉO E COLABORA√á√ÉO - Colaborar
+  // COMUNICA«√O E COLABORA«√O - Colaborar
   {
     id: '22',
-    title: 'Ferramentas de colabora√ß√£o online',
+    title: 'Ferramentas de colaboraÁ„o online',
     competency: 'Colaborar',
     level: 1,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
     format: 'Site',
-    description: 'Conhe√ßa Google Docs, Teams e outras ferramentas.',
+    description: 'ConheÁa Google Docs, Teams e outras ferramentas.',
     link: '#'
   },
   {
@@ -282,18 +282,18 @@ export const contentItems: ContentItem[] = [
     title: 'Trabalho em equipe remoto',
     competency: 'Colaborar',
     level: 2,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
-    format: 'V√≠deo',
-    description: 'T√©cnicas para colabora√ß√£o √† dist√¢ncia.',
+    format: 'VÌdeo',
+    description: 'TÈcnicas para colaboraÁ„o ‡ dist‚ncia.',
     link: '#'
   },
   {
     id: '24',
-    title: 'Gest√£o de projetos colaborativos',
+    title: 'Gest„o de projetos colaborativos',
     competency: 'Colaborar',
     level: 3,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
     format: 'Tutorial',
     description: 'Use Trello, Asana e outras plataformas.',
@@ -301,37 +301,37 @@ export const contentItems: ContentItem[] = [
   },
   {
     id: '25',
-    title: 'Lideran√ßa em equipes virtuais',
+    title: 'LideranÁa em equipes virtuais',
     competency: 'Colaborar',
     level: 4,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
     format: 'Curso',
-    description: 'Lidere equipes distribu√≠das com efic√°cia.',
+    description: 'Lidere equipes distribuÌdas com efic·cia.',
     link: '#'
   },
 
-  // CRIA√á√ÉO DE CONTE√öDO - Programar sistemas
+  // CRIA«√O DE CONTE⁄DO - Programar sistemas
   {
     id: '26',
-    title: 'Introdu√ß√£o √† l√≥gica de programa√ß√£o',
+    title: 'IntroduÁ„o ‡ lÛgica de programaÁ„o',
     competency: 'Programar sistemas',
     level: 1,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
-    format: 'V√≠deo',
-    description: 'Primeiros passos no mundo da programa√ß√£o.',
+    format: 'VÌdeo',
+    description: 'Primeiros passos no mundo da programaÁ„o.',
     link: '#'
   },
   {
     id: '27',
-    title: 'HTML e CSS b√°sico',
+    title: 'HTML e CSS b·sico',
     competency: 'Programar sistemas',
     level: 2,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
     format: 'Tutorial',
-    description: 'Crie suas primeiras p√°ginas web.',
+    description: 'Crie suas primeiras p·ginas web.',
     link: '#'
   },
   {
@@ -339,10 +339,10 @@ export const contentItems: ContentItem[] = [
     title: 'JavaScript e interatividade',
     competency: 'Programar sistemas',
     level: 3,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
     format: 'Curso',
-    description: 'Adicione comportamento din√¢mico √†s p√°ginas.',
+    description: 'Adicione comportamento din‚mico ‡s p·ginas.',
     link: '#'
   },
   {
@@ -350,66 +350,66 @@ export const contentItems: ContentItem[] = [
     title: 'Desenvolvimento full-stack',
     competency: 'Programar sistemas',
     level: 4,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
     format: 'Site',
-    description: 'Construa aplica√ß√µes completas.',
+    description: 'Construa aplicaÁıes completas.',
     link: '#'
   },
 
-  // CRIA√á√ÉO DE CONTE√öDO - Editar texto multim√≠dia
+  // CRIA«√O DE CONTE⁄DO - Editar texto multimÌdia
   {
     id: '30',
-    title: 'Edi√ß√£o de v√≠deos b√°sica',
-    competency: 'Editar texto multim√≠dia',
+    title: 'EdiÁ„o de vÌdeos b·sica',
+    competency: 'Editar texto multimÌdia',
     level: 1,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
-    format: 'V√≠deo',
-    description: 'Aprenda a editar v√≠deos simples.',
+    format: 'VÌdeo',
+    description: 'Aprenda a editar vÌdeos simples.',
     link: '#'
   },
   {
     id: '31',
-    title: 'Edi√ß√£o de √°udio e podcasts',
-    competency: 'Editar texto multim√≠dia',
+    title: 'EdiÁ„o de ·udio e podcasts',
+    competency: 'Editar texto multimÌdia',
     level: 2,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
     format: 'Tutorial',
-    description: 'Produza conte√∫do de √°udio profissional.',
+    description: 'Produza conte˙do de ·udio profissional.',
     link: '#'
   },
   {
     id: '32',
-    title: 'Anima√ß√µes e motion graphics',
-    competency: 'Editar texto multim√≠dia',
+    title: 'AnimaÁıes e motion graphics',
+    competency: 'Editar texto multimÌdia',
     level: 3,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
     format: 'Curso',
-    description: 'Crie anima√ß√µes e efeitos visuais.',
+    description: 'Crie animaÁıes e efeitos visuais.',
     link: '#'
   },
   {
     id: '33',
-    title: 'Produ√ß√£o audiovisual avan√ßada',
-    competency: 'Editar texto multim√≠dia',
+    title: 'ProduÁ„o audiovisual avanÁada',
+    competency: 'Editar texto multimÌdia',
     level: 4,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
     format: 'Site',
-    description: 'Domine t√©cnicas profissionais de produ√ß√£o.',
+    description: 'Domine tÈcnicas profissionais de produÁ„o.',
     link: '#'
   },
 
-  // CRIA√á√ÉO DE CONTE√öDO - Editar texto escrito
+  // CRIA«√O DE CONTE⁄DO - Editar texto escrito
   {
     id: '34',
-    title: 'Processadores de texto b√°sicos',
+    title: 'Processadores de texto b·sicos',
     competency: 'Editar texto escrito',
     level: 1,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
     format: 'Site',
     description: 'Domine Word, Google Docs e similares.',
@@ -417,45 +417,45 @@ export const contentItems: ContentItem[] = [
   },
   {
     id: '35',
-    title: 'Formata√ß√£o e estilos profissionais',
+    title: 'FormataÁ„o e estilos profissionais',
     competency: 'Editar texto escrito',
     level: 2,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
-    format: 'V√≠deo',
+    format: 'VÌdeo',
     description: 'Crie documentos bem formatados.',
     link: '#'
   },
   {
     id: '36',
-    title: 'Reda√ß√£o para web e SEO',
+    title: 'RedaÁ„o para web e SEO',
     competency: 'Editar texto escrito',
     level: 3,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
     format: 'Artigo',
-    description: 'Escreva conte√∫do otimizado para internet.',
+    description: 'Escreva conte˙do otimizado para internet.',
     link: '#'
   },
   {
     id: '37',
-    title: 'Escrita t√©cnica e documenta√ß√£o',
+    title: 'Escrita tÈcnica e documentaÁ„o',
     competency: 'Editar texto escrito',
     level: 4,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
     format: 'Curso',
-    description: 'Produza documenta√ß√£o t√©cnica de qualidade.',
+    description: 'Produza documentaÁ„o tÈcnica de qualidade.',
     link: '#'
   },
 
-  // CRIA√á√ÉO DE CONTE√öDO - Adaptar arquivos
+  // CRIA«√O DE CONTE⁄DO - Adaptar arquivos
   {
     id: '38',
-    title: 'Convers√£o b√°sica de formatos',
+    title: 'Convers„o b·sica de formatos',
     competency: 'Adaptar arquivos',
     level: 1,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
     format: 'Guia',
     description: 'Converta entre PDF, Word, imagens e outros.',
@@ -463,10 +463,10 @@ export const contentItems: ContentItem[] = [
   },
   {
     id: '39',
-    title: 'Compress√£o e otimiza√ß√£o de arquivos',
+    title: 'Compress„o e otimizaÁ„o de arquivos',
     competency: 'Adaptar arquivos',
     level: 2,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
     format: 'Tutorial',
     description: 'Reduza tamanho sem perder qualidade.',
@@ -474,34 +474,34 @@ export const contentItems: ContentItem[] = [
   },
   {
     id: '40',
-    title: 'Adapta√ß√£o para acessibilidade',
+    title: 'AdaptaÁ„o para acessibilidade',
     competency: 'Adaptar arquivos',
     level: 3,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
-    format: 'V√≠deo',
-    description: 'Torne documentos acess√≠veis a todos.',
+    format: 'VÌdeo',
+    description: 'Torne documentos acessÌveis a todos.',
     link: '#'
   },
   {
     id: '41',
-    title: 'Automa√ß√£o de convers√µes em lote',
+    title: 'AutomaÁ„o de conversıes em lote',
     competency: 'Adaptar arquivos',
     level: 4,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
     format: 'Site',
-    description: 'Processe m√∫ltiplos arquivos automaticamente.',
+    description: 'Processe m˙ltiplos arquivos automaticamente.',
     link: '#'
   },
 
-  // PROTE√á√ÉO E SEGURAN√áA - Proteger o ambiente digital
+  // PROTE«√O E SEGURAN«A - Proteger o ambiente digital
   {
     id: '42',
-    title: 'Antiv√≠rus e prote√ß√£o b√°sica',
+    title: 'AntivÌrus e proteÁ„o b·sica',
     competency: 'Proteger o ambiente digital',
     level: 1,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
     format: 'Artigo',
     description: 'Mantenha seus dispositivos seguros.',
@@ -509,45 +509,45 @@ export const contentItems: ContentItem[] = [
   },
   {
     id: '43',
-    title: 'Firewall e seguran√ßa de rede',
+    title: 'Firewall e seguranÁa de rede',
     competency: 'Proteger o ambiente digital',
     level: 2,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
-    format: 'V√≠deo',
-    description: 'Proteja sua rede dom√©stica.',
+    format: 'VÌdeo',
+    description: 'Proteja sua rede domÈstica.',
     link: '#'
   },
   {
     id: '44',
-    title: 'Detec√ß√£o e resposta a amea√ßas',
+    title: 'DetecÁ„o e resposta a ameaÁas',
     competency: 'Proteger o ambiente digital',
     level: 3,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
     format: 'Tutorial',
-    description: 'Identifique e neutralize amea√ßas digitais.',
+    description: 'Identifique e neutralize ameaÁas digitais.',
     link: '#'
   },
   {
     id: '45',
-    title: 'Seguran√ßa corporativa avan√ßada',
+    title: 'SeguranÁa corporativa avanÁada',
     competency: 'Proteger o ambiente digital',
     level: 4,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
     format: 'Curso',
-    description: 'Implemente pol√≠ticas de seguran√ßa empresarial.',
+    description: 'Implemente polÌticas de seguranÁa empresarial.',
     link: '#'
   },
 
-  // PROTE√á√ÉO E SEGURAN√áA - Proteger dados pessoais e privacidade
+  // PROTE«√O E SEGURAN«A - Proteger dados pessoais e privacidade
   {
     id: '46',
-    title: 'Senhas fortes e autentica√ß√£o',
+    title: 'Senhas fortes e autenticaÁ„o',
     competency: 'Proteger dados pessoais e privacidade',
     level: 1,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
     format: 'Guia',
     description: 'Crie e gerencie senhas seguras.',
@@ -555,10 +555,10 @@ export const contentItems: ContentItem[] = [
   },
   {
     id: '47',
-    title: 'LGPD e prote√ß√£o de dados',
+    title: 'LGPD e proteÁ„o de dados',
     competency: 'Proteger dados pessoais e privacidade',
     level: 2,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
     format: 'Site',
     description: 'Entenda seus direitos sobre dados pessoais.',
@@ -566,13 +566,13 @@ export const contentItems: ContentItem[] = [
   },
   {
     id: '48',
-    title: 'Criptografia e comunica√ß√£o segura',
+    title: 'Criptografia e comunicaÁ„o segura',
     competency: 'Proteger dados pessoais e privacidade',
     level: 3,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
-    format: 'V√≠deo',
-    description: 'Proteja suas comunica√ß√µes digitais.',
+    format: 'VÌdeo',
+    description: 'Proteja suas comunicaÁıes digitais.',
     link: '#'
   },
   {
@@ -580,88 +580,88 @@ export const contentItems: ContentItem[] = [
     title: 'Privacidade total e anonimato',
     competency: 'Proteger dados pessoais e privacidade',
     level: 4,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
     format: 'Curso',
-    description: 'T√©cnicas avan√ßadas de privacidade online.',
+    description: 'TÈcnicas avanÁadas de privacidade online.',
     link: '#'
   },
 
-  // PROTE√á√ÉO E SEGURAN√áA - Proteger a sa√∫de e o meio ambiente
+  // PROTE«√O E SEGURAN«A - Proteger a sa˙de e o meio ambiente
   {
     id: '50',
     title: 'Ergonomia digital e postura',
-    competency: 'Proteger a sa√∫de e o meio ambiente',
+    competency: 'Proteger a sa˙de e o meio ambiente',
     level: 1,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
     format: 'Artigo',
-    description: 'Cuide da sua sa√∫de no uso de tecnologia.',
+    description: 'Cuide da sua sa˙de no uso de tecnologia.',
     link: '#'
   },
   {
     id: '51',
     title: 'Sustentabilidade digital',
-    competency: 'Proteger a sa√∫de e o meio ambiente',
+    competency: 'Proteger a sa˙de e o meio ambiente',
     level: 2,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
-    format: 'V√≠deo',
+    format: 'VÌdeo',
     description: 'Reduza o impacto ambiental da tecnologia.',
     link: '#'
   },
   {
     id: '52',
     title: 'Detox digital e bem-estar',
-    competency: 'Proteger a sa√∫de e o meio ambiente',
+    competency: 'Proteger a sa˙de e o meio ambiente',
     level: 3,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
     format: 'Tutorial',
-    description: 'Equilibre vida digital e sa√∫de mental.',
+    description: 'Equilibre vida digital e sa˙de mental.',
     link: '#'
   },
   {
     id: '53',
-    title: 'Green IT e computa√ß√£o sustent√°vel',
-    competency: 'Proteger a sa√∫de e o meio ambiente',
+    title: 'Green IT e computaÁ„o sustent·vel',
+    competency: 'Proteger a sa˙de e o meio ambiente',
     level: 4,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
     format: 'Curso',
-    description: 'Implemente TI sustent√°vel.',
+    description: 'Implemente TI sustent·vel.',
     link: '#'
   },
 
-  // RESOLU√á√ÉO DE PROBLEMAS - Resolver problemas t√©cnicos
+  // RESOLU«√O DE PROBLEMAS - Resolver problemas tÈcnicos
   {
     id: '54',
-    title: 'Troubleshooting b√°sico',
-    competency: 'Resolver problemas t√©cnicos',
+    title: 'Troubleshooting b·sico',
+    competency: 'Resolver problemas tÈcnicos',
     level: 1,
-    category: 'RESOLU√á√ÉO DE PROBLEMAS',
+    category: 'RESOLU«√O DE PROBLEMAS',
     categoryColor: '#E91E63',
-    format: 'V√≠deo',
+    format: 'VÌdeo',
     description: 'Resolva problemas comuns de hardware e software.',
     link: '#'
   },
   {
     id: '55',
-    title: 'Diagn√≥stico de problemas de rede',
-    competency: 'Resolver problemas t√©cnicos',
+    title: 'DiagnÛstico de problemas de rede',
+    competency: 'Resolver problemas tÈcnicos',
     level: 2,
-    category: 'RESOLU√á√ÉO DE PROBLEMAS',
+    category: 'RESOLU«√O DE PROBLEMAS',
     categoryColor: '#E91E63',
     format: 'Site',
-    description: 'Identifique e corrija falhas de conex√£o.',
+    description: 'Identifique e corrija falhas de conex„o.',
     link: '#'
   },
   {
     id: '56',
-    title: 'Recupera√ß√£o de sistemas e dados',
-    competency: 'Resolver problemas t√©cnicos',
+    title: 'RecuperaÁ„o de sistemas e dados',
+    competency: 'Resolver problemas tÈcnicos',
     level: 3,
-    category: 'RESOLU√á√ÉO DE PROBLEMAS',
+    category: 'RESOLU«√O DE PROBLEMAS',
     categoryColor: '#E91E63',
     format: 'Tutorial',
     description: 'Recupere sistemas danificados.',
@@ -669,23 +669,23 @@ export const contentItems: ContentItem[] = [
   },
   {
     id: '57',
-    title: 'An√°lise forense e debugging avan√ßado',
-    competency: 'Resolver problemas t√©cnicos',
+    title: 'An·lise forense e debugging avanÁado',
+    competency: 'Resolver problemas tÈcnicos',
     level: 4,
-    category: 'RESOLU√á√ÉO DE PROBLEMAS',
+    category: 'RESOLU«√O DE PROBLEMAS',
     categoryColor: '#E91E63',
     format: 'Curso',
-    description: 'T√©cnicas avan√ßadas de an√°lise e corre√ß√£o.',
+    description: 'TÈcnicas avanÁadas de an·lise e correÁ„o.',
     link: '#'
   },
 
-  // RESOLU√á√ÉO DE PROBLEMAS - Evoluir em um ambiente digital
+  // RESOLU«√O DE PROBLEMAS - Evoluir em um ambiente digital
   {
     id: '58',
-    title: 'Aprendizado cont√≠nuo em tecnologia',
+    title: 'Aprendizado contÌnuo em tecnologia',
     competency: 'Evoluir em um ambiente digital',
     level: 1,
-    category: 'RESOLU√á√ÉO DE PROBLEMAS',
+    category: 'RESOLU«√O DE PROBLEMAS',
     categoryColor: '#E91E63',
     format: 'Artigo',
     description: 'Desenvolva mentalidade de crescimento digital.',
@@ -693,21 +693,21 @@ export const contentItems: ContentItem[] = [
   },
   {
     id: '59',
-    title: 'Acompanhando tend√™ncias tecnol√≥gicas',
+    title: 'Acompanhando tendÍncias tecnolÛgicas',
     competency: 'Evoluir em um ambiente digital',
     level: 2,
-    category: 'RESOLU√á√ÉO DE PROBLEMAS',
+    category: 'RESOLU«√O DE PROBLEMAS',
     categoryColor: '#E91E63',
-    format: 'V√≠deo',
-    description: 'Mantenha-se atualizado com inova√ß√µes.',
+    format: 'VÌdeo',
+    description: 'Mantenha-se atualizado com inovaÁıes.',
     link: '#'
   },
   {
     id: '60',
-    title: 'Adapta√ß√£o a novas ferramentas',
+    title: 'AdaptaÁ„o a novas ferramentas',
     competency: 'Evoluir em um ambiente digital',
     level: 3,
-    category: 'RESOLU√á√ÉO DE PROBLEMAS',
+    category: 'RESOLU«√O DE PROBLEMAS',
     categoryColor: '#E91E63',
     format: 'Guia',
     description: 'Aprenda rapidamente novas tecnologias.',
@@ -715,192 +715,193 @@ export const contentItems: ContentItem[] = [
   },
   {
     id: '61',
-    title: 'Inova√ß√£o e transforma√ß√£o digital',
+    title: 'InovaÁ„o e transformaÁ„o digital',
     competency: 'Evoluir em um ambiente digital',
     level: 4,
-    category: 'RESOLU√á√ÉO DE PROBLEMAS',
+    category: 'RESOLU«√O DE PROBLEMAS',
     categoryColor: '#E91E63',
     format: 'Curso',
-    description: 'Lidere processos de transforma√ß√£o digital.',
+    description: 'Lidere processos de transformaÁ„o digital.',
     link: '#'
   },
 
-  // ===== CONTE√öDOS N√çVEL 5 =====
+  // ===== CONTE⁄DOS NÕVEL 5 =====
 
-  // COMUNICA√á√ÉO E COLABORA√á√ÉO - Interagir - N√≠vel 5
+  // COMUNICA«√O E COLABORA«√O - Interagir - NÌvel 5
   {
     id: '13-5',
-    title: 'Estrat√©gias avan√ßadas de engajamento digital',
+    title: 'EstratÈgias avanÁadas de engajamento digital',
     competency: 'Interagir',
     level: 5,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
-    format: 'Especializa√ß√£o',
-    description: 'Domine t√©cnicas de influ√™ncia e engajamento em ambientes digitais complexos.',
+    format: 'EspecializaÁ„o',
+    description: 'Domine tÈcnicas de influÍncia e engajamento em ambientes digitais complexos.',
     link: '#'
   },
 
-  // COMUNICA√á√ÉO E COLABORA√á√ÉO - Gerir a identidade digital - N√≠vel 5
+  // COMUNICA«√O E COLABORA«√O - Gerir a identidade digital - NÌvel 5
   {
     id: '17-5',
-    title: 'Gest√£o estrat√©gica de reputa√ß√£o corporativa digital',
+    title: 'Gest„o estratÈgica de reputaÁ„o corporativa digital',
     competency: 'Gerir a identidade digital',
     level: 5,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
-    format: 'Especializa√ß√£o',
-    description: 'Construa e proteja reputa√ß√µes digitais de marcas e organiza√ß√µes.',
+    format: 'EspecializaÁ„o',
+    description: 'Construa e proteja reputaÁıes digitais de marcas e organizaÁıes.',
     link: '#'
   },
 
-  // COMUNICA√á√ÉO E COLABORA√á√ÉO - Compartilhar e publicar - N√≠vel 5
+  // COMUNICA«√O E COLABORA«√O - Compartilhar e publicar - NÌvel 5
   {
     id: '21-5',
-    title: 'Marketing de conte√∫do e viraliza√ß√£o',
+    title: 'Marketing de conte˙do e viralizaÁ„o',
     competency: 'Compartilhar e publicar',
     level: 5,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
-    format: 'Especializa√ß√£o',
-    description: 'Crie estrat√©gias de conte√∫do viral e campanhas digitais de alto impacto.',
+    format: 'EspecializaÁ„o',
+    description: 'Crie estratÈgias de conte˙do viral e campanhas digitais de alto impacto.',
     link: '#'
   },
 
-  // COMUNICA√á√ÉO E COLABORA√á√ÉO - Colaborar - N√≠vel 5
+  // COMUNICA«√O E COLABORA«√O - Colaborar - NÌvel 5
   {
     id: '25-5',
-    title: 'Gest√£o √°gil e DevOps em equipes globais',
+    title: 'Gest„o ·gil e DevOps em equipes globais',
     competency: 'Colaborar',
     level: 5,
-    category: 'COMUNICA√á√ÉO E COLABORA√á√ÉO',
+    category: 'COMUNICA«√O E COLABORA«√O',
     categoryColor: '#00BCD4',
-    format: 'Especializa√ß√£o',
-    description: 'Implemente metodologias √°geis em equipes distribu√≠das globalmente.',
+    format: 'EspecializaÁ„o',
+    description: 'Implemente metodologias ·geis em equipes distribuÌdas globalmente.',
     link: '#'
   },
 
-  // CRIA√á√ÉO DE CONTE√öDO - Programar sistemas - N√≠vel 5
+  // CRIA«√O DE CONTE⁄DO - Programar sistemas - NÌvel 5
   {
     id: '29-5',
-    title: 'Arquitetura de software e microsservi√ßos',
+    title: 'Arquitetura de software e microsserviÁos',
     competency: 'Programar sistemas',
     level: 5,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
-    format: 'Especializa√ß√£o',
-    description: 'Projete sistemas escal√°veis com arquiteturas modernas e cloud native.',
+    format: 'EspecializaÁ„o',
+    description: 'Projete sistemas escal·veis com arquiteturas modernas e cloud native.',
     link: '#'
   },
 
-  // CRIA√á√ÉO DE CONTE√öDO - Editar texto multim√≠dia - N√≠vel 5
+  // CRIA«√O DE CONTE⁄DO - Editar texto multimÌdia - NÌvel 5
   {
     id: '33-5',
-    title: 'Produ√ß√£o cinematogr√°fica e efeitos especiais',
-    competency: 'Editar texto multim√≠dia',
+    title: 'ProduÁ„o cinematogr·fica e efeitos especiais',
+    competency: 'Editar texto multimÌdia',
     level: 5,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
-    format: 'Especializa√ß√£o',
-    description: 'Crie produ√ß√µes de n√≠vel cinematogr√°fico com VFX e p√≥s-produ√ß√£o avan√ßada.',
+    format: 'EspecializaÁ„o',
+    description: 'Crie produÁıes de nÌvel cinematogr·fico com VFX e pÛs-produÁ„o avanÁada.',
     link: '#'
   },
 
-  // CRIA√á√ÉO DE CONTE√öDO - Editar texto escrito - N√≠vel 5
+  // CRIA«√O DE CONTE⁄DO - Editar texto escrito - NÌvel 5
   {
     id: '37-5',
     title: 'Copywriting persuasivo e storytelling',
     competency: 'Editar texto escrito',
     level: 5,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
-    format: 'Especializa√ß√£o',
-    description: 'Domine t√©cnicas avan√ßadas de escrita persuasiva e narrativas envolventes.',
+    format: 'EspecializaÁ„o',
+    description: 'Domine tÈcnicas avanÁadas de escrita persuasiva e narrativas envolventes.',
     link: '#'
   },
 
-  // CRIA√á√ÉO DE CONTE√öDO - Adaptar arquivos - N√≠vel 5
+  // CRIA«√O DE CONTE⁄DO - Adaptar arquivos - NÌvel 5
   {
     id: '41-5',
-    title: 'Transforma√ß√£o digital de documentos com IA',
+    title: 'TransformaÁ„o digital de documentos com IA',
     competency: 'Adaptar arquivos',
     level: 5,
-    category: 'CRIA√á√ÉO DE CONTE√öDO',
+    category: 'CRIA«√O DE CONTE⁄DO',
     categoryColor: '#FF9800',
-    format: 'Especializa√ß√£o',
-    description: 'Use intelig√™ncia artificial para processar e adaptar documentos em escala.',
+    format: 'EspecializaÁ„o',
+    description: 'Use inteligÍncia artificial para processar e adaptar documentos em escala.',
     link: '#'
   },
 
-  // PROTE√á√ÉO E SEGURAN√áA - Proteger o ambiente digital - N√≠vel 5
+  // PROTE«√O E SEGURAN«A - Proteger o ambiente digital - NÌvel 5
   {
     id: '45-5',
-    title: 'Seguran√ßa cibern√©tica e ethical hacking',
+    title: 'SeguranÁa cibernÈtica e ethical hacking',
     competency: 'Proteger o ambiente digital',
     level: 5,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
-    format: 'Especializa√ß√£o',
-    description: 'Torne-se especialista em seguran√ßa ofensiva e defensiva de sistemas.',
+    format: 'EspecializaÁ„o',
+    description: 'Torne-se especialista em seguranÁa ofensiva e defensiva de sistemas.',
     link: '#'
   },
 
-  // PROTE√á√ÉO E SEGURAN√áA - Proteger dados pessoais e privacidade - N√≠vel 5
+  // PROTE«√O E SEGURAN«A - Proteger dados pessoais e privacidade - NÌvel 5
   {
     id: '49-5',
     title: 'Privacidade por design e zero-trust',
     competency: 'Proteger dados pessoais e privacidade',
     level: 5,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
-    format: 'Especializa√ß√£o',
-    description: 'Implemente arquiteturas de seguran√ßa zero-trust e privacidade nativa.',
+    format: 'EspecializaÁ„o',
+    description: 'Implemente arquiteturas de seguranÁa zero-trust e privacidade nativa.',
     link: '#'
   },
 
-  // PROTE√á√ÉO E SEGURAN√áA - Proteger a sa√∫de e o meio ambiente - N√≠vel 5
+  // PROTE«√O E SEGURAN«A - Proteger a sa˙de e o meio ambiente - NÌvel 5
   {
     id: '53-5',
     title: 'Economia circular digital e ESG tech',
-    competency: 'Proteger a sa√∫de e o meio ambiente',
+    competency: 'Proteger a sa˙de e o meio ambiente',
     level: 5,
-    category: 'PROTE√á√ÉO E SEGURAN√áA',
+    category: 'PROTE«√O E SEGURAN«A',
     categoryColor: '#4CAF50',
-    format: 'Especializa√ß√£o',
+    format: 'EspecializaÁ„o',
     description: 'Lidere iniciativas de sustentabilidade digital e tecnologia ESG.',
     link: '#'
   },
 
-  // RESOLU√á√ÉO DE PROBLEMAS - Resolver problemas t√©cnicos - N√≠vel 5
+  // RESOLU«√O DE PROBLEMAS - Resolver problemas tÈcnicos - NÌvel 5
   {
     id: '57-5',
     title: 'Engenharia de confiabilidade de sites (SRE)',
-    competency: 'Resolver problemas t√©cnicos',
+    competency: 'Resolver problemas tÈcnicos',
     level: 5,
-    category: 'RESOLU√á√ÉO DE PROBLEMAS',
+    category: 'RESOLU«√O DE PROBLEMAS',
     categoryColor: '#E91E63',
-    format: 'Especializa√ß√£o',
-    description: 'Garanta alta disponibilidade e performance de sistemas cr√≠ticos.',
+    format: 'EspecializaÁ„o',
+    description: 'Garanta alta disponibilidade e performance de sistemas crÌticos.',
     link: '#'
   },
 
-  // RESOLU√á√ÉO DE PROBLEMAS - Evoluir em um ambiente digital - N√≠vel 5
+  // RESOLU«√O DE PROBLEMAS - Evoluir em um ambiente digital - NÌvel 5
   {
     id: '61-5',
-    title: 'Lideran√ßa em transforma√ß√£o digital e IA',
+    title: 'LideranÁa em transformaÁ„o digital e IA',
     competency: 'Evoluir em um ambiente digital',
     level: 5,
-    category: 'RESOLU√á√ÉO DE PROBLEMAS',
+    category: 'RESOLU«√O DE PROBLEMAS',
     categoryColor: '#E91E63',
-    format: 'Especializa√ß√£o',
-    description: 'Lidere organiza√ß√µes na era da intelig√™ncia artificial e automa√ß√£o.',
+    format: 'EspecializaÁ„o',
+    description: 'Lidere organizaÁıes na era da inteligÍncia artificial e automaÁ„o.',
     link: '#'
   },
 ];
 
 export const contentCategories: ContentCategory[] = [
-    { name: 'INFORMA√á√ïES E DADOS', color: '#FFD700', icon: Database },
-    { name: 'COMUNICA√á√ÉO E COLABORA√á√ÉO', color: '#00BCD4', icon: Users },
-    { name: 'CRIA√á√ÉO DE CONTE√öDO', color: '#FF9800', icon: FileEdit },
-    { name: 'PROTE√á√ÉO E SEGURAN√áA', color: '#4CAF50', icon: Shield },
-    { name: 'RESOLU√á√ÉO DE PROBLEMAS', color: '#E91E63', icon: Wrench },
+    { name: 'INFORMA«’ES E DADOS', color: '#FFD700', icon: Database },
+    { name: 'COMUNICA«√O E COLABORA«√O', color: '#00BCD4', icon: Users },
+    { name: 'CRIA«√O DE CONTE⁄DO', color: '#FF9800', icon: FileEdit },
+    { name: 'PROTE«√O E SEGURAN«A', color: '#4CAF50', icon: Shield },
+    { name: 'RESOLU«√O DE PROBLEMAS', color: '#E91E63', icon: Wrench },
   ];
+

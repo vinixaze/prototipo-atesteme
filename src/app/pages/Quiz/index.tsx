@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { toast, Toaster } from "sonner";
 import { quizQuestions } from "../../data/quizQuestions";
-import TestQuestion from "../../components/TestQuestion";
-import TestCongrats from "../../components/TestCongrats";
-import TestResult from "../../components/TestResult";
+import TestQuestion from "../shared/components/TestQuestion";
+import TestCongrats from "../shared/components/TestCongrats";
+import TestResult from "../shared/components/TestResult";
 
 const BACK_ROUTE_MAP: Record<string, string> = {
   transversalidade: 'transversality',
@@ -290,3 +290,4 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
     </>
   );
 }
+

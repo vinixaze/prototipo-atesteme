@@ -13,7 +13,7 @@ import {
   getUserInventory,
   usePowerUp,
   type PowerUp,
-} from "../utils/powerupsStorage";
+} from "../../../utils/powerupsStorage";
 
 type PowerUpDetail = {
   icon: typeof Sparkles;

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import TestResult from "../../components/TestResult";
+import TestResult from "../shared/components/TestResult";
 
 interface AssessmentResultPageProps {
   navigateTo: (page: string) => void;
@@ -69,3 +69,4 @@ export default function AssessmentResultPage({
     />
   );
 }
+

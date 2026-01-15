@@ -11,8 +11,8 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import Header from "../../components/Header";
-import Sidebar from "../../components/Sidebar";
+import Header from "../shared/components/Header";
+import Sidebar from "../shared/components/Sidebar";
 import {
   bnccCodeOptions,
   bnccTypeOptions,
@@ -960,6 +960,7 @@ export default function TransversalityPage({
     </div>
   );
 }
+
 
 
 

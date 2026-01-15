@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { ContentCategory } from '../../../types/content';
+import { ContentCategory } from '../types';
 
 interface EmptyStateProps {
   currentCategory?: ContentCategory;
@@ -32,3 +32,4 @@ export default function EmptyState({ currentCategory }: EmptyStateProps) {
     </motion.div>
   );
 }
+

@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { Calendar, Eye, Download, TrendingUp, Info } from 'lucide-react';
-import { Exam } from '../../../types/exams';
+import { Exam } from '../types';
 
 interface ExamListProps {
   exams: Exam[];
@@ -216,4 +216,5 @@ export default function ExamList({
     </div>
   );
 }
+
 

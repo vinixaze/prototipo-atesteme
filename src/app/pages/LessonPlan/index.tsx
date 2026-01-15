@@ -1,6 +1,6 @@
-ï»¿import React, { useEffect, useMemo, useRef, useState } from "react";
-import Header from "../../components/Header";
-import Sidebar from "../../components/Sidebar";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import Header from "../shared/components/Header";
+import Sidebar from "../shared/components/Sidebar";
 import { AnimatePresence, motion } from "motion/react";
 import {
   BookOpen,
@@ -45,12 +45,12 @@ interface PlanoAula {
 }
 
 interface FormData {
-  // Etapa 1: InformaÃ§Ãµes BÃ¡sicas
+  // Etapa 1: Informações Básicas
   componenteCurricular: string;
   ano: string;
   tema: string;
 
-  // Etapa 2: ConfiguraÃ§Ãµes da Aula
+  // Etapa 2: Configurações da Aula
   duracao: string;
   duracaoCustom: string;
   recursoDidatico: string[];
@@ -66,11 +66,11 @@ interface FormData {
   tempoAula: string;
   metodologia: string[];
 
-  // Etapa 5: Atividades e AdaptaÃ§Ãµes
+  // Etapa 5: Atividades e Adaptações
   tiposAtividades: string[];
   adaptacoes: string[];
 
-  // Etapa 6: LocalizaÃ§Ã£o (Opcional)
+  // Etapa 6: Localização (Opcional)
   unidadeFederativa: string;
   cidade: string;
   escola: string;
@@ -89,7 +89,7 @@ type BnccMultiSelectProps = {
 
 function BnccMultiSelect({
   label,
-  placeholder = "Digite um cÃ³digo ou palavra-chave...",
+  placeholder = "Digite um código ou palavra-chave...",
   type,
   selected,
   onChange,
@@ -266,7 +266,7 @@ export default function LessonPlanPage({
     const labels = {
       planejado: 'Planejado',
       'em-andamento': 'Em Andamento',
-      concluido: 'ConcluÃ­do',
+      concluido: 'Concluído',
     };
     return (
       <span className={`px-3 py-1 rounded-full text-xs font-bold ${styles[status as keyof typeof styles]}`}>
@@ -286,22 +286,22 @@ export default function LessonPlanPage({
   const generatePrompt = () => {
     setIsGenerating(true);
 
-    // Simular geraÃ§Ã£o de prompt
+    // Simular geração de prompt
     setTimeout(() => {
-      let prompt = `Crie um plano de aula completo e detalhado com as seguintes especificaÃ§Ãµes:\n\n`;
+      let prompt = `Crie um plano de aula completo e detalhado com as seguintes especificações:\n\n`;
 
-      // InformaÃ§Ãµes BÃ¡sicas
-      prompt += `INFORMAÃ‡Ã•ES BÃSICAS:\n`;
+      // Informações Básicas
+      prompt += `INFORMAÇÕES BÁSICAS:\n`;
       if (formData.componenteCurricular) prompt += `- Componente Curricular: ${formData.componenteCurricular}\n`;
-      if (formData.ano) prompt += `- Ano/SÃ©rie: ${formData.ano}\n`;
+      if (formData.ano) prompt += `- Ano/Série: ${formData.ano}\n`;
       if (formData.tema) prompt += `- Tema da Aula: ${formData.tema}\n`;
       prompt += `\n`;
 
-      // ConfiguraÃ§Ãµes da Aula
-      prompt += `CONFIGURAÃ‡Ã•ES DA AULA:\n`;
-      if (formData.duracao) prompt += `- DuraÃ§Ã£o: ${formData.duracao === 'outro' ? formData.duracaoCustom : formData.duracao}\n`;
-      if (formData.recursoDidatico.length > 0) prompt += `- Recursos DidÃ¡ticos: ${formData.recursoDidatico.join(', ')}\n`;
-      if (formData.formaAvaliacao.length > 0) prompt += `- Formas de AvaliaÃ§Ã£o: ${formData.formaAvaliacao.join(', ')}\n`;
+      // Configurações da Aula
+      prompt += `CONFIGURAÇÕES DA AULA:\n`;
+      if (formData.duracao) prompt += `- Duração: ${formData.duracao === 'outro' ? formData.duracaoCustom : formData.duracao}\n`;
+      if (formData.recursoDidatico.length > 0) prompt += `- Recursos Didáticos: ${formData.recursoDidatico.join(', ')}\n`;
+      if (formData.formaAvaliacao.length > 0) prompt += `- Formas de Avaliação: ${formData.formaAvaliacao.join(', ')}\n`;
       prompt += `\n`;
 
       // BNCC e Habilidades
@@ -309,7 +309,7 @@ export default function LessonPlanPage({
         prompt += `BNCC E HABILIDADES:\n`;
         if (formData.objetoConhecimento) prompt += `- Objeto de Conhecimento: ${formData.objetoConhecimento}\n`;
         if (formData.habilidadesBNCCGeral.length > 0) prompt += `- Habilidades BNCC Geral: ${formData.habilidadesBNCCGeral.join(', ')}\n`;
-        if (formData.habilidadesBNCCComputacao.length > 0) prompt += `- Habilidades BNCC ComputaÃ§Ã£o : ${formData.habilidadesBNCCComputacao.join(', ')}\n`;
+        if (formData.habilidadesBNCCComputacao.length > 0) prompt += `- Habilidades BNCC Computação : ${formData.habilidadesBNCCComputacao.join(', ')}\n`;
         prompt += `\n`;
       }
 
@@ -322,17 +322,17 @@ export default function LessonPlanPage({
         prompt += `\n`;
       }
 
-      // Atividades e AdaptaÃ§Ãµes
+      // Atividades e Adaptações
       if (formData.tiposAtividades.length > 0 || formData.adaptacoes.length > 0) {
-        prompt += `ATIVIDADES E ADAPTAÃ‡Ã•ES:\n`;
+        prompt += `ATIVIDADES E ADAPTAÇÕES:\n`;
         if (formData.tiposAtividades.length > 0) prompt += `- Tipos de Atividades: ${formData.tiposAtividades.join(', ')}\n`;
-        if (formData.adaptacoes.length > 0) prompt += `- AdaptaÃ§Ãµes NecessÃ¡rias: ${formData.adaptacoes.join(', ')}\n`;
+        if (formData.adaptacoes.length > 0) prompt += `- Adaptações Necessárias: ${formData.adaptacoes.join(', ')}\n`;
         prompt += `\n`;
       }
 
-      // LocalizaÃ§Ã£o
+      // Localização
       if (formData.unidadeFederativa || formData.cidade || formData.escola) {
-        prompt += `LOCALIZAÃ‡ÃƒO:\n`;
+        prompt += `LOCALIZAÇÃO:\n`;
         if (formData.unidadeFederativa) prompt += `- Estado: ${formData.unidadeFederativa}\n`;
         if (formData.cidade) prompt += `- Cidade: ${formData.cidade}\n`;
         if (formData.escola) prompt += `- Escola: ${formData.escola}\n`;
@@ -341,13 +341,13 @@ export default function LessonPlanPage({
 
       prompt += `\nPor favor, estruture o plano de aula incluindo:\n`;
       prompt += `1. Objetivos de Aprendizagem\n`;
-      prompt += `2. ConteÃºdos ProgramÃ¡ticos\n`;
+      prompt += `2. Conteúdos Programáticos\n`;
       prompt += `3. Metodologia Detalhada\n`;
-      prompt += `4. Recursos NecessÃ¡rios\n`;
+      prompt += `4. Recursos Necessários\n`;
       prompt += `5. Desenvolvimento da Aula (passo a passo)\n`;
-      prompt += `6. Atividades PrÃ¡ticas\n`;
-      prompt += `7. AvaliaÃ§Ã£o\n`;
-      prompt += `8. ReferÃªncias e Materiais de Apoio\n`;
+      prompt += `6. Atividades Práticas\n`;
+      prompt += `7. Avaliação\n`;
+      prompt += `8. Referências e Materiais de Apoio\n`;
 
       setGeneratedPrompt(prompt);
       setIsGenerating(false);
@@ -368,12 +368,12 @@ export default function LessonPlanPage({
     try {
       document.execCommand('copy');
       textArea.remove();
-      // VocÃª pode adicionar um feedback visual aqui
+      // Você pode adicionar um feedback visual aqui
       alert('Prompt copiado com sucesso!');
     } catch (err) {
       console.error('Erro ao copiar:', err);
       textArea.remove();
-      alert('NÃ£o foi possÃ­vel copiar. Por favor, selecione e copie manualmente.');
+      alert('Não foi possível copiar. Por favor, selecione e copie manualmente.');
     }
   };
 
@@ -390,8 +390,8 @@ export default function LessonPlanPage({
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">InformaÃ§Ãµes BÃ¡sicas</h3>
-              <p className="text-gray-600 dark:text-gray-400">Vamos comeÃ§ar com as informaÃ§Ãµes essenciais da sua aula</p>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Informações Básicas</h3>
+              <p className="text-gray-600 dark:text-gray-400">Vamos começar com as informações essenciais da sua aula</p>
             </div>
 
             <div className="space-y-4">
@@ -405,13 +405,13 @@ export default function LessonPlanPage({
                   className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
                 >
                   <option value="">Selecione...</option>
-                  <option value="MatemÃ¡tica">MatemÃ¡tica</option>
-                  <option value="PortuguÃªs">PortuguÃªs</option>
-                  <option value="HistÃ³ria">HistÃ³ria</option>
+                  <option value="Matemática">Matemática</option>
+                  <option value="Português">Português</option>
+                  <option value="História">História</option>
                   <option value="Geografia">Geografia</option>
-                  <option value="CiÃªncias">CiÃªncias</option>
-                  <option value="InglÃªs">InglÃªs</option>
-                  <option value="EducaÃ§Ã£o FÃ­sica">EducaÃ§Ã£o FÃ­sica</option>
+                  <option value="Ciências">Ciências</option>
+                  <option value="Inglês">Inglês</option>
+                  <option value="Educação Física">Educação Física</option>
                   <option value="Artes">Artes</option>
                   <option value="Tecnologia">Tecnologia</option>
                   <option value="Cultura Digital">Cultura Digital</option>
@@ -421,7 +421,7 @@ export default function LessonPlanPage({
 
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
-                  Ano/SÃ©rie
+                  Ano/Série
                 </label>
                 <select
                   value={formData.ano}
@@ -429,18 +429,18 @@ export default function LessonPlanPage({
                   className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
                 >
                   <option value="">Selecione...</option>
-                  <option value="1Âº Ano Fundamental">1Âº Ano Fundamental</option>
-                  <option value="2Âº Ano Fundamental">2Âº Ano Fundamental</option>
-                  <option value="3Âº Ano Fundamental">3Âº Ano Fundamental</option>
-                  <option value="4Âº Ano Fundamental">4Âº Ano Fundamental</option>
-                  <option value="5Âº Ano Fundamental">5Âº Ano Fundamental</option>
-                  <option value="6Âº Ano Fundamental">6Âº Ano Fundamental</option>
-                  <option value="7Âº Ano Fundamental">7Âº Ano Fundamental</option>
-                  <option value="8Âº Ano Fundamental">8Âº Ano Fundamental</option>
-                  <option value="9Âº Ano Fundamental">9Âº Ano Fundamental</option>
-                  <option value="1Âº Ano MÃ©dio">1Âº Ano MÃ©dio</option>
-                  <option value="2Âº Ano MÃ©dio">2Âº Ano MÃ©dio</option>
-                  <option value="3Âº Ano MÃ©dio">3Âº Ano MÃ©dio</option>
+                  <option value="1º Ano Fundamental">1º Ano Fundamental</option>
+                  <option value="2º Ano Fundamental">2º Ano Fundamental</option>
+                  <option value="3º Ano Fundamental">3º Ano Fundamental</option>
+                  <option value="4º Ano Fundamental">4º Ano Fundamental</option>
+                  <option value="5º Ano Fundamental">5º Ano Fundamental</option>
+                  <option value="6º Ano Fundamental">6º Ano Fundamental</option>
+                  <option value="7º Ano Fundamental">7º Ano Fundamental</option>
+                  <option value="8º Ano Fundamental">8º Ano Fundamental</option>
+                  <option value="9º Ano Fundamental">9º Ano Fundamental</option>
+                  <option value="1º Ano Médio">1º Ano Médio</option>
+                  <option value="2º Ano Médio">2º Ano Médio</option>
+                  <option value="3º Ano Médio">3º Ano Médio</option>
                 </select>
               </div>
 
@@ -452,7 +452,7 @@ export default function LessonPlanPage({
                   type="text"
                   value={formData.tema}
                   onChange={(e) => setFormData({ ...formData, tema: e.target.value })}
-                  placeholder="Ex: Ciclo da Ãgua, Verbos no Presente, RevoluÃ§Ã£o Francesa..."
+                  placeholder="Ex: Ciclo da Água, Verbos no Presente, Revolução Francesa..."
                   className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
                 />
               </div>
@@ -464,15 +464,15 @@ export default function LessonPlanPage({
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">ConfiguraÃ§Ãµes da Aula</h3>
-              <p className="text-gray-600 dark:text-gray-400">Defina duraÃ§Ã£o, recursos e formas de avaliaÃ§Ã£o</p>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Configurações da Aula</h3>
+              <p className="text-gray-600 dark:text-gray-400">Defina duração, recursos e formas de avaliação</p>
             </div>
 
             <div className="space-y-6">
-              {/* DuraÃ§Ã£o */}
+              {/* Duração */}
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
-                  DuraÃ§Ã£o da Aula
+                  Duração da Aula
                 </label>
                 <div className="space-y-2">
                   {['50 minutos', '100 minutos', '150 minutos', 'outro'].map((dur) => (
@@ -493,20 +493,20 @@ export default function LessonPlanPage({
                       type="text"
                       value={formData.duracaoCustom}
                       onChange={(e) => setFormData({ ...formData, duracaoCustom: e.target.value })}
-                      placeholder="Especifique a duraÃ§Ã£o..."
+                      placeholder="Especifique a duração..."
                       className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors mt-2"
                     />
                   )}
                 </div>
               </div>
 
-              {/* Recursos DidÃ¡ticos */}
+              {/* Recursos Didáticos */}
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
-                  Recursos DidÃ¡ticos
+                  Recursos Didáticos
                 </label>
                 <div className="grid grid-cols-2 gap-2">
-                  {['Livro didÃ¡tico', 'Slides', 'VÃ­deos', 'Jogos educativos', 'Computadores', 'Tablets', 'Lousa digital', 'Materiais impressos'].map((recurso) => (
+                  {['Livro didático', 'Slides', 'Vídeos', 'Jogos educativos', 'Computadores', 'Tablets', 'Lousa digital', 'Materiais impressos'].map((recurso) => (
                     <label key={recurso} className="flex items-center gap-3 p-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl hover:border-[#8B27FF] dark:hover:border-[#A855F7] cursor-pointer transition-colors">
                       <input
                         type="checkbox"
@@ -520,13 +520,13 @@ export default function LessonPlanPage({
                 </div>
               </div>
 
-              {/* Formas de AvaliaÃ§Ã£o */}
+              {/* Formas de Avaliação */}
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
-                  Formas de AvaliaÃ§Ã£o
+                  Formas de Avaliação
                 </label>
                 <div className="grid grid-cols-2 gap-2">
-                  {['ObservaÃ§Ã£o participativa', 'Atividade prÃ¡tica', 'Quiz rÃ¡pido', 'Trabalho em grupo', 'ApresentaÃ§Ã£o oral', 'PortfÃ³lio digital'].map((avaliacao) => (
+                  {['Observação participativa', 'Atividade prática', 'Quiz rápido', 'Trabalho em grupo', 'Apresentação oral', 'Portfólio digital'].map((avaliacao) => (
                     <label key={avaliacao} className="flex items-center gap-3 p-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl hover:border-[#8B27FF] dark:hover:border-[#A855F7] cursor-pointer transition-colors">
                       <input
                         type="checkbox"
@@ -561,7 +561,7 @@ export default function LessonPlanPage({
                   type="text"
                   value={formData.objetoConhecimento}
                   onChange={(e) => setFormData({ ...formData, objetoConhecimento: e.target.value })}
-                  placeholder="Ex: NÃºmeros inteiros, SeguranÃ§a digital..."
+                  placeholder="Ex: Números inteiros, Segurança digital..."
                   className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
                 />
               </div>
@@ -574,9 +574,9 @@ export default function LessonPlanPage({
                 onChange={(next) => setFormData({ ...formData, habilidadesBNCCGeral: next })}
               />
 
-              {/* Habilidades BNCC ComputaÃ§Ã£o (busca digitando) */}
+              {/* Habilidades BNCC Computação (busca digitando) */}
               <BnccMultiSelect
-                label="Habilidades da BNCC ComputaÃ§Ã£o"
+                label="Habilidades da BNCC Computação"
                 type="computacao"
                 selected={formData.habilidadesBNCCComputacao}
                 onChange={(next) => setFormData({ ...formData, habilidadesBNCCComputacao: next })}
@@ -591,7 +591,7 @@ export default function LessonPlanPage({
           <div className="space-y-6">
             <div>
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Contexto Educacional</h3>
-              <p className="text-gray-600 dark:text-gray-400">InformaÃ§Ãµes sobre etapa de ensino e metodologias</p>
+              <p className="text-gray-600 dark:text-gray-400">Informações sobre etapa de ensino e metodologias</p>
             </div>
 
             <div className="space-y-6">
@@ -621,7 +621,7 @@ export default function LessonPlanPage({
                   Metodologias de Ensino
                 </label>
                 <div className="space-y-2">
-                  {['Aula expositiva', 'Aprendizagem baseada em projetos', 'Sala de aula invertida', 'GamificaÃ§Ã£o', 'Aprendizagem colaborativa', 'Ensino hÃ­brido', 'STEAM', 'Metodologias ativas'].map((met) => (
+                  {['Aula expositiva', 'Aprendizagem baseada em projetos', 'Sala de aula invertida', 'Gamificação', 'Aprendizagem colaborativa', 'Ensino híbrido', 'STEAM', 'Metodologias ativas'].map((met) => (
                     <label key={met} className="flex items-center gap-3 p-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl hover:border-[#8B27FF] dark:hover:border-[#A855F7] cursor-pointer transition-colors">
                       <input
                         type="checkbox"
@@ -642,7 +642,7 @@ export default function LessonPlanPage({
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Atividades e AdaptaÃ§Ãµes</h3>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Atividades e Adaptações</h3>
               <p className="text-gray-600 dark:text-gray-400">Tipos de atividades e necessidades especiais</p>
             </div>
 
@@ -653,7 +653,7 @@ export default function LessonPlanPage({
                   Tipos de Atividades
                 </label>
                 <div className="space-y-2">
-                  {['Com atividades desplugadas', 'Com atividades plugadas', 'Atividades individuais', 'Atividades em grupo', 'Debates e discussÃµes', 'Pesquisa orientada', 'ProduÃ§Ã£o de conteÃºdo'].map((ativ) => (
+                  {['Com atividades desplugadas', 'Com atividades plugadas', 'Atividades individuais', 'Atividades em grupo', 'Debates e discussões', 'Pesquisa orientada', 'Produção de conteúdo'].map((ativ) => (
                     <label key={ativ} className="flex items-center gap-3 p-3 border-2 border-gray-200 dark:border-gray-600 rounded-xl hover:border-[#8B27FF] dark:hover:border-[#A855F7] cursor-pointer transition-colors">
                       <input
                         type="checkbox"
@@ -667,19 +667,19 @@ export default function LessonPlanPage({
                 </div>
               </div>
 
-              {/* AdaptaÃ§Ãµes */}
+              {/* Adaptações */}
               <div>
                 <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">
-                  AdaptaÃ§Ãµes para Necessidades Especiais
+                  Adaptações para Necessidades Especiais
                 </label>
                 <div className="space-y-2">
                   {[
-                    'DeficiÃªncia Visual (cegueira ou baixa visÃ£o)',
-                    'DeficiÃªncia Auditiva (surdez ou perda auditiva)',
-                    'DeficiÃªncia Intelectual',
-                    'DeficiÃªncia FÃ­sica (limitaÃ§Ãµes motoras)',
+                    'Deficiência Visual (cegueira ou baixa visão)',
+                    'Deficiência Auditiva (surdez ou perda auditiva)',
+                    'Deficiência Intelectual',
+                    'Deficiência Física (limitações motoras)',
                     'Autismo (TEA - Transtorno do Espectro Autista)',
-                    'SÃ­ndrome de Down (Trissomia do cromossomo 21)',
+                    'Síndrome de Down (Trissomia do cromossomo 21)',
                     'Dislexia',
                     'TDAH',
                   ].map((adapt) => (
@@ -703,8 +703,8 @@ export default function LessonPlanPage({
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">LocalizaÃ§Ã£o (Opcional)</h3>
-              <p className="text-gray-600 dark:text-gray-400">AdaptaÃ§Ã£o aos referenciais curriculares estaduais</p>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Localização (Opcional)</h3>
+              <p className="text-gray-600 dark:text-gray-400">Adaptação aos referenciais curriculares estaduais</p>
             </div>
 
             <div className="space-y-4">
@@ -720,29 +720,29 @@ export default function LessonPlanPage({
                   <option value="">Selecione...</option>
                   <option value="AC">Acre</option>
                   <option value="AL">Alagoas</option>
-                  <option value="AP">AmapÃ¡</option>
+                  <option value="AP">Amapá</option>
                   <option value="AM">Amazonas</option>
                   <option value="BA">Bahia</option>
-                  <option value="CE">CearÃ¡</option>
+                  <option value="CE">Ceará</option>
                   <option value="DF">Distrito Federal</option>
-                  <option value="ES">EspÃ­rito Santo</option>
-                  <option value="GO">GoiÃ¡s</option>
-                  <option value="MA">MaranhÃ£o</option>
+                  <option value="ES">Espírito Santo</option>
+                  <option value="GO">Goiás</option>
+                  <option value="MA">Maranhão</option>
                   <option value="MT">Mato Grosso</option>
                   <option value="MS">Mato Grosso do Sul</option>
                   <option value="MG">Minas Gerais</option>
-                  <option value="PA">ParÃ¡</option>
-                  <option value="PB">ParaÃ­ba</option>
-                  <option value="PR">ParanÃ¡</option>
+                  <option value="PA">Pará</option>
+                  <option value="PB">Paraíba</option>
+                  <option value="PR">Paraná</option>
                   <option value="PE">Pernambuco</option>
-                  <option value="PI">PiauÃ­</option>
+                  <option value="PI">Piauí</option>
                   <option value="RJ">Rio de Janeiro</option>
                   <option value="RN">Rio Grande do Norte</option>
                   <option value="RS">Rio Grande do Sul</option>
-                  <option value="RO">RondÃ´nia</option>
+                  <option value="RO">Rondônia</option>
                   <option value="RR">Roraima</option>
                   <option value="SC">Santa Catarina</option>
-                  <option value="SP">SÃ£o Paulo</option>
+                  <option value="SP">São Paulo</option>
                   <option value="SE">Sergipe</option>
                   <option value="TO">Tocantins</option>
                 </select>
@@ -756,7 +756,7 @@ export default function LessonPlanPage({
                   type="text"
                   value={formData.cidade}
                   onChange={(e) => setFormData({ ...formData, cidade: e.target.value })}
-                  placeholder="Ex: SÃ£o Paulo, Rio de Janeiro..."
+                  placeholder="Ex: São Paulo, Rio de Janeiro..."
                   className="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:border-[#8B27FF] dark:focus:border-[#A855F7] focus:outline-none transition-colors"
                 />
               </div>
@@ -795,7 +795,7 @@ export default function LessonPlanPage({
       <div className="flex-1 flex flex-col min-w-0 pt-20">
         <Header
           onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          userName="UsuÃ¡rio"
+          userName="Usuário"
           navigateTo={navigateTo}
           onLogout={() => navigateTo('login')}
         />
@@ -807,7 +807,7 @@ export default function LessonPlanPage({
               <div>
                 <h1 className="text-3xl text-[#8B27FF] mb-2">Plano de Aula</h1>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Organize e planeje suas aulas de competÃªncias digitais
+                  Organize e planeje suas aulas de competências digitais
                 </p>
               </div>
               <motion.button
@@ -1061,7 +1061,7 @@ export default function LessonPlanPage({
                       onClick={() => setCurrentStep(Math.min(totalSteps, currentStep + 1))}
                       className="flex items-center gap-2 bg-[#8B27FF] hover:bg-[#7B1FE8] text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg"
                     >
-                      PrÃ³ximo
+                      Próximo
                       <ChevronRight className="w-5 h-5" />
                     </motion.button>
                   ) : (
@@ -1094,3 +1094,4 @@ export default function LessonPlanPage({
     </div>
   );
 }
+

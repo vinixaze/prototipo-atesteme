@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import Header from "../../components/Header";
-import Sidebar from "../../components/Sidebar";
-import Toast from "../../components/Toast";
+import Header from "../shared/components/Header";
+import Sidebar from "../shared/components/Sidebar";
+import Toast from "./components/Toast";
 import { avatarOptions, bannerLevels, collectibleAvatars } from "./data";
 import {
   calcularIdade,
@@ -12,6 +12,7 @@ import {
   maskCPF,
   maskDate,
   maskPhone,
+  validateEmail,
   validateField,
 } from "./utils";
 import { FormData, FormErrors, ProfilePageProps, VerifiedState } from "./types";
@@ -318,6 +319,8 @@ export default function ProfilePage({
   const handleNavigate = (page: string) => {
     navigateTo(page);
   };
+
+  const identificadorPessoal = getIdentificadorPessoal(formData.cpf);
 
   const isFormValid = Object.values(errors).every(error => !error) &&
     formData.nome &&
@@ -1199,5 +1202,6 @@ export default function ProfilePage({
     </div>
   );
 }
+
 
 

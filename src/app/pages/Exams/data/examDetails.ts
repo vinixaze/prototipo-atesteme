@@ -1,4 +1,4 @@
-import { ExamDetails } from '../../../types/exams';
+import { ExamDetails } from '../types';
 
 export const examDetails: Record<string, ExamDetails> = {
     '1': {
@@ -738,3 +738,4 @@ export const examDetails: Record<string, ExamDetails> = {
       ],
     },
   };
+

@@ -1,4 +1,4 @@
-import TestResult from "../../components/TestResult";
+import TestResult from "../shared/components/TestResult";
 import { explanations, questions } from "../Basics/data";
 
 interface BasicsResultPageProps {
@@ -54,3 +54,4 @@ export default function BasicsResultPage({
     />
   );
 }
+

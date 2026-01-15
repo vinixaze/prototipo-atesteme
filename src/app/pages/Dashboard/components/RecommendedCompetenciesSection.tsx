@@ -1,7 +1,7 @@
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 import { PlayCircle } from 'lucide-react';
-import { CompetencyTimer } from '../../../components/CompetencyTimer';
+import { CompetencyTimer } from '../../shared/components/CompetencyTimer';
 import { RecommendedCompetency } from '../types';
 import { getCompetencyColors } from '../utils/competencyColors';
 
@@ -149,3 +149,4 @@ export function RecommendedCompetenciesSection({
     </div>
   );
 }
+

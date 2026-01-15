@@ -1,6 +1,6 @@
 import { Award, Calendar, Check, Clock, Coins, Eye, Layers, PlayCircle, Star } from 'lucide-react';
 import { Competency } from '../../types';
-import { CompetencyTimer } from '../../../../components/CompetencyTimer';
+import { CompetencyTimer } from '../../../shared/components/CompetencyTimer';
 
 interface CompetencyCardProps {
   competency: Competency;
@@ -220,3 +220,4 @@ export default function CompetencyCard({
     </div>
   );
 }
+

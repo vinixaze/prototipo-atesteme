@@ -1,6 +1,6 @@
-Ôªøimport { useState } from 'react';
-import Header from '../../components/Header';
-import Sidebar from '../../components/Sidebar';
+import { useState } from 'react';
+import Header from '../shared/components/Header';
+import Sidebar from '../shared/components/Sidebar';
 import RankingTab from './components/RankingTab';
 import AchievementsTab from './components/AchievementsTab';
 import LevelsTab from './components/LevelsTab';
@@ -53,7 +53,7 @@ interface ProgressPageProps {
   userRole?: 'admin' | 'user';
 }
 
-export default function ProgressPage({ navigateTo, initialTab = 'niveis', userName = 'Andr√©', userRole = 'user' }: ProgressPageProps) {
+export default function ProgressPage({ navigateTo, initialTab = 'niveis', userName = 'AndrÈ', userRole = 'user' }: ProgressPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [expandedLevel, setExpandedLevel] = useState<number | null>(1);
   const [activeTab, setActiveTab] = useState<'niveis' | 'conquistas' | 'ranking' | 'digcoins'>(initialTab);
@@ -68,32 +68,32 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
   // Dados de ranking mock
   const rankingData = {
     escola: [
-      { position: 1, name: 'Andr√© Silva', points: 895, digcoins: 143, level: 2, levelProgress: 43, medals: 5, avgTime: '45', isCurrentUser: true, avatar: 'A', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8¬∫A' },
-      { position: 2, name: 'Maria Santos', points: 870, digcoins: 137, level: 2, levelProgress: 38, medals: 4, avgTime: '42', isCurrentUser: false, avatar: 'M', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8¬∫B' },
-      { position: 3, name: 'Jo√£o Oliveira', points: 845, digcoins: 129, level: 2, levelProgress: 35, medals: 3, avgTime: '39', isCurrentUser: false, avatar: 'J', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '9¬∫A' },
-      { position: 4, name: 'Ana Costa', points: 820, digcoins: 125, level: 1, levelProgress: 87, medals: 4, avgTime: '36', isCurrentUser: false, avatar: 'A', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '7¬∫C' },
-      { position: 5, name: 'Pedro Lima', points: 795, digcoins: 118, level: 1, levelProgress: 81, medals: 3, avgTime: '33', isCurrentUser: false, avatar: 'P', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8¬∫A' },
-      { position: 6, name: 'Juliana Rocha', points: 770, digcoins: 112, level: 1, levelProgress: 75, medals: 2, avgTime: '30', isCurrentUser: false, avatar: 'J', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '9¬∫B' },
-      { position: 7, name: 'Carlos Ferreira', points: 745, digcoins: 105, level: 1, levelProgress: 68, medals: 2, avgTime: '27', isCurrentUser: false, avatar: 'C', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '6¬∫A' },
-      { position: 8, name: 'Beatriz Almeida', points: 720, digcoins: 98, level: 1, levelProgress: 62, medals: 1, avgTime: '24', isCurrentUser: false, avatar: 'B', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '7¬∫B' },
+      { position: 1, name: 'AndrÈ Silva', points: 895, digcoins: 143, level: 2, levelProgress: 43, medals: 5, avgTime: '45', isCurrentUser: true, avatar: 'A', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8∫A' },
+      { position: 2, name: 'Maria Santos', points: 870, digcoins: 137, level: 2, levelProgress: 38, medals: 4, avgTime: '42', isCurrentUser: false, avatar: 'M', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8∫B' },
+      { position: 3, name: 'Jo„o Oliveira', points: 845, digcoins: 129, level: 2, levelProgress: 35, medals: 3, avgTime: '39', isCurrentUser: false, avatar: 'J', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '9∫A' },
+      { position: 4, name: 'Ana Costa', points: 820, digcoins: 125, level: 1, levelProgress: 87, medals: 4, avgTime: '36', isCurrentUser: false, avatar: 'A', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '7∫C' },
+      { position: 5, name: 'Pedro Lima', points: 795, digcoins: 118, level: 1, levelProgress: 81, medals: 3, avgTime: '33', isCurrentUser: false, avatar: 'P', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8∫A' },
+      { position: 6, name: 'Juliana Rocha', points: 770, digcoins: 112, level: 1, levelProgress: 75, medals: 2, avgTime: '30', isCurrentUser: false, avatar: 'J', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '9∫B' },
+      { position: 7, name: 'Carlos Ferreira', points: 745, digcoins: 105, level: 1, levelProgress: 68, medals: 2, avgTime: '27', isCurrentUser: false, avatar: 'C', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '6∫A' },
+      { position: 8, name: 'Beatriz Almeida', points: 720, digcoins: 98, level: 1, levelProgress: 62, medals: 1, avgTime: '24', isCurrentUser: false, avatar: 'B', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '7∫B' },
     ],
     turma: [
-      { position: 1, name: 'Maria Santos', points: 870, digcoins: 137, level: 2, levelProgress: 38, medals: 4, avgTime: '42', isCurrentUser: false, avatar: 'M', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8¬∫A' },
-      { position: 2, name: 'Andr√© Silva', points: 820, digcoins: 125, level: 2, levelProgress: 43, medals: 5, avgTime: '45', isCurrentUser: true, avatar: 'A', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8¬∫A' },
-      { position: 3, name: 'Pedro Lima', points: 795, digcoins: 118, level: 1, levelProgress: 81, medals: 3, avgTime: '33', isCurrentUser: false, avatar: 'P', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8¬∫A' },
-      { position: 4, name: 'Juliana Rocha', points: 770, digcoins: 112, level: 1, levelProgress: 75, medals: 2, avgTime: '30', isCurrentUser: false, avatar: 'J', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8¬∫A' },
-      { position: 5, name: 'Carlos Ferreira', points: 745, digcoins: 105, level: 1, levelProgress: 68, medals: 2, avgTime: '27', isCurrentUser: false, avatar: 'C', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8¬∫A' },
-      { position: 6, name: 'Beatriz Almeida', points: 720, digcoins: 98, level: 1, levelProgress: 62, medals: 1, avgTime: '24', isCurrentUser: false, avatar: 'B', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8¬∫A' },
+      { position: 1, name: 'Maria Santos', points: 870, digcoins: 137, level: 2, levelProgress: 38, medals: 4, avgTime: '42', isCurrentUser: false, avatar: 'M', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8∫A' },
+      { position: 2, name: 'AndrÈ Silva', points: 820, digcoins: 125, level: 2, levelProgress: 43, medals: 5, avgTime: '45', isCurrentUser: true, avatar: 'A', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8∫A' },
+      { position: 3, name: 'Pedro Lima', points: 795, digcoins: 118, level: 1, levelProgress: 81, medals: 3, avgTime: '33', isCurrentUser: false, avatar: 'P', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8∫A' },
+      { position: 4, name: 'Juliana Rocha', points: 770, digcoins: 112, level: 1, levelProgress: 75, medals: 2, avgTime: '30', isCurrentUser: false, avatar: 'J', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8∫A' },
+      { position: 5, name: 'Carlos Ferreira', points: 745, digcoins: 105, level: 1, levelProgress: 68, medals: 2, avgTime: '27', isCurrentUser: false, avatar: 'C', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8∫A' },
+      { position: 6, name: 'Beatriz Almeida', points: 720, digcoins: 98, level: 1, levelProgress: 62, medals: 1, avgTime: '24', isCurrentUser: false, avatar: 'B', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8∫A' },
     ],
     rede: [
-      { position: 1, name: 'Rafael Mendes', points: 1250, digcoins: 198, level: 3, levelProgress: 72, medals: 8, avgTime: '48', isCurrentUser: false, avatar: 'R', school: 'Escola Municipal Castro Alves', seduc: 'Garanhuns', regional: 'Regional 2', schoolName: 'Escola Municipal Castro Alves', turma: '9¬∫C' },
-      { position: 2, name: 'Camila Souza', points: 1180, digcoins: 185, level: 3, levelProgress: 65, medals: 7, avgTime: '46', isCurrentUser: false, avatar: 'C', school: 'Escola Estadual Dom Pedro II', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Estadual Dom Pedro II', turma: '9¬∫A' },
-      { position: 3, name: 'Lucas Martins', points: 1120, digcoins: 175, level: 2, levelProgress: 95, medals: 6, avgTime: '44', isCurrentUser: false, avatar: 'L', school: 'Escola T√©cnica Federal', seduc: 'Garanhuns', regional: 'Regional 2', schoolName: 'Escola T√©cnica Federal', turma: '8¬∫B' },
-      { position: 4, name: 'Fernanda Dias', points: 1050, digcoins: 165, level: 2, levelProgress: 88, medals: 5, avgTime: '42', isCurrentUser: false, avatar: 'F', school: 'Escola Municipal Machado de Assis', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Machado de Assis', turma: '7¬∫A' },
-      { position: 5, name: 'Gustavo Pereira', points: 980, digcoins: 155, level: 2, levelProgress: 76, medals: 5, avgTime: '40', isCurrentUser: false, avatar: 'G', school: 'Escola Estadual Professor Jo√£o Silva', seduc: 'Garanhuns', regional: 'Regional 2', schoolName: 'Escola Estadual Professor Jo√£o Silva', turma: '8¬∫C' },
-      { position: 12, name: 'Andr√© Silva', points: 895, digcoins: 143, level: 2, levelProgress: 43, medals: 5, avgTime: '45', isCurrentUser: true, avatar: 'A', school: 'Escola Municipal Castro Alves', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8¬∫A' },
-      { position: 13, name: 'Isabela Gomes', points: 870, digcoins: 137, level: 2, levelProgress: 38, medals: 4, avgTime: '42', isCurrentUser: false, avatar: 'I', school: 'Escola Municipal Bar√£o do Rio Branco', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Bar√£o do Rio Branco', turma: '9¬∫B' },
-      { position: 14, name: 'Thiago Barbosa', points: 845, digcoins: 129, level: 2, levelProgress: 35, medals: 3, avgTime: '39', isCurrentUser: false, avatar: 'T', school: 'Escola Estadual Tiradentes', seduc: 'Garanhuns', regional: 'Regional 2', schoolName: 'Escola Estadual Tiradentes', turma: '6¬∫B' },
+      { position: 1, name: 'Rafael Mendes', points: 1250, digcoins: 198, level: 3, levelProgress: 72, medals: 8, avgTime: '48', isCurrentUser: false, avatar: 'R', school: 'Escola Municipal Castro Alves', seduc: 'Garanhuns', regional: 'Regional 2', schoolName: 'Escola Municipal Castro Alves', turma: '9∫C' },
+      { position: 2, name: 'Camila Souza', points: 1180, digcoins: 185, level: 3, levelProgress: 65, medals: 7, avgTime: '46', isCurrentUser: false, avatar: 'C', school: 'Escola Estadual Dom Pedro II', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Estadual Dom Pedro II', turma: '9∫A' },
+      { position: 3, name: 'Lucas Martins', points: 1120, digcoins: 175, level: 2, levelProgress: 95, medals: 6, avgTime: '44', isCurrentUser: false, avatar: 'L', school: 'Escola TÈcnica Federal', seduc: 'Garanhuns', regional: 'Regional 2', schoolName: 'Escola TÈcnica Federal', turma: '8∫B' },
+      { position: 4, name: 'Fernanda Dias', points: 1050, digcoins: 165, level: 2, levelProgress: 88, medals: 5, avgTime: '42', isCurrentUser: false, avatar: 'F', school: 'Escola Municipal Machado de Assis', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Machado de Assis', turma: '7∫A' },
+      { position: 5, name: 'Gustavo Pereira', points: 980, digcoins: 155, level: 2, levelProgress: 76, medals: 5, avgTime: '40', isCurrentUser: false, avatar: 'G', school: 'Escola Estadual Professor Jo„o Silva', seduc: 'Garanhuns', regional: 'Regional 2', schoolName: 'Escola Estadual Professor Jo„o Silva', turma: '8∫C' },
+      { position: 12, name: 'AndrÈ Silva', points: 895, digcoins: 143, level: 2, levelProgress: 43, medals: 5, avgTime: '45', isCurrentUser: true, avatar: 'A', school: 'Escola Municipal Castro Alves', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Castro Alves', turma: '8∫A' },
+      { position: 13, name: 'Isabela Gomes', points: 870, digcoins: 137, level: 2, levelProgress: 38, medals: 4, avgTime: '42', isCurrentUser: false, avatar: 'I', school: 'Escola Municipal Bar„o do Rio Branco', seduc: 'Garanhuns', regional: 'Regional 1', schoolName: 'Escola Municipal Bar„o do Rio Branco', turma: '9∫B' },
+      { position: 14, name: 'Thiago Barbosa', points: 845, digcoins: 129, level: 2, levelProgress: 35, medals: 3, avgTime: '39', isCurrentUser: false, avatar: 'T', school: 'Escola Estadual Tiradentes', seduc: 'Garanhuns', regional: 'Regional 2', schoolName: 'Escola Estadual Tiradentes', turma: '6∫B' },
     ],
   };
 
@@ -114,32 +114,32 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
   // Helper function to get category icon based on category name
   const getCategoryIcon = (categoryName: string) => {
     switch (categoryName) {
-      case 'INFORMA√á√ïES E DADOS':
+      case 'INFORMA«’ES E DADOS':
         return Database;
-      case 'COMUNICA√á√ÉO E COLABORA√á√ÉO':
+      case 'COMUNICA«√O E COLABORA«√O':
         return Users;
-      case 'CRIA√á√ÉO DE CONTE√öDO':
+      case 'CRIA«√O DE CONTE⁄DO':
         return FileEdit;
-      case 'PROTE√á√ÉO E SEGURAN√áA':
+      case 'PROTE«√O E SEGURAN«A':
         return Shield;
-      case 'RESOLU√á√ÉO DE PROBLEMAS':
+      case 'RESOLU«√O DE PROBLEMAS':
         return Wrench;
       default:
         return Database;
     }
   };
 
-  // Fun√ß√£o para visualizar resultado de uma compet√™ncia conclu√≠da
+  // FunÁ„o para visualizar resultado de uma competÍncia concluÌda
   const handleViewResult = (comp: Competency) => {
-    // Gerar quest√µes mockadas baseadas na compet√™ncia
+    // Gerar questıes mockadas baseadas na competÍncia
     const mockQuestions = [
       {
         id: 1,
-        text: `Quest√£o 1 sobre ${comp.title}`,
+        text: `Quest„o 1 sobre ${comp.title}`,
       },
     ];
 
-    // Simular respostas do usu√°rio (todas corretas para compet√™ncias com 3 estrelas)
+    // Simular respostas do usu·rio (todas corretas para competÍncias com 3 estrelas)
     const selectedAnswers: Record<number, string> = comp.starsEarned === 3
       ? { 1: 'b', 2: 'a', 3: 'c' } // Todas corretas
       : { 1: 'b', 2: 'c', 3: 'a' }; // Algumas erradas
@@ -157,9 +157,9 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
     });
   };
 
-  // Fun√ß√£o para iniciar/continuar desafio de uma compet√™ncia
+  // FunÁ„o para iniciar/continuar desafio de uma competÍncia
   const handleStartChallenge = (comp: Competency) => {
-    // Se n√£o est√° em progresso, iniciar timer
+    // Se n„o est· em progresso, iniciar timer
     if (comp.status !== 'in-progress') {
       startCompetencyTimer(comp.title, comp.category, comp.categoryColor);
     }
@@ -194,7 +194,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
 
         <main className="flex-1 overflow-auto">
           <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8">
-            {/* SE√á√ÉO 1 - CONTEXTO DO USU√ÅRIO E N√çVEL ATUAL */}
+            {/* SE«√O 1 - CONTEXTO DO USU¡RIO E NÕVEL ATUAL */}
             <div className="bg-gradient-to-br from-purple-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 md:p-8 mb-8 shadow-sm dark:shadow-gray-950">
               {/* Upper Part */}
               <div className="flex items-center gap-4 mb-6">
@@ -202,18 +202,18 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
                   <span className="text-white text-2xl">{firstName.charAt(0).toUpperCase()}</span>
                 </div>
                 <div>
-                  <h2 className="text-3xl text-[#8B27FF] mb-1">Ol√°, {firstName}!</h2>
+                  <h2 className="text-3xl text-[#8B27FF] mb-1">Ol·, {firstName}!</h2>
                   <p className="text-gray-600 dark:text-gray-300">Continue sua jornada de aprendizagem</p>
                 </div>
               </div>
 
               {/* Lower Part - Current Level Info */}
               <p className="text-lg text-gray-800 dark:text-gray-100">
-                Voc√™ est√° no <span>N√≠vel {currentLevel.number}</span>
+                VocÍ est· no <span>NÌvel {currentLevel.number}</span>
               </p>
             </div>
 
-            {/* SE√á√ÉO 2 - ABAS DE NAVEGA√á√ÉO */}
+            {/* SE«√O 2 - ABAS DE NAVEGA«√O */}
             <div className="bg-white dark:bg-gray-800 rounded-t-2xl shadow-sm dark:shadow-gray-950">
               <div className="border-b-2 border-gray-100 dark:border-gray-700 overflow-x-auto scrollbar-hide">
                 <div className="flex min-w-max sm:min-w-0">
@@ -227,7 +227,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
                       }
                     `}
                   >
-                    N√≠veis
+                    NÌveis
                     {activeTab === 'niveis' && (
                       <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#8B27FF]" />
                     )}
@@ -242,7 +242,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
                       }
                     `}
                   >
-                    Miss√µes
+                    Missıes
                     {activeTab === 'conquistas' && (
                       <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#8B27FF]" />
                     )}
@@ -282,7 +282,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
 
               {/* Tab Content */}
               <div className="p-4 md:p-6 lg:p-8">
-                {/* CONTE√öDO DA ABA N√çVEIS */}
+                {/* CONTE⁄DO DA ABA NÕVEIS */}
                 {activeTab === 'niveis' && (
                   <LevelsTab
                     levels={levels}
@@ -294,7 +294,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
                   />
                 )}
 
-                {/* CONTE√öDO DA ABA CONQUISTAS */}
+                {/* CONTE⁄DO DA ABA CONQUISTAS */}
                 {activeTab === 'conquistas' && (
                   <AchievementsTab
                     achievements={achievements}
@@ -302,7 +302,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
                   />
                 )}
 
-                {/* CONTE√öDO DA ABA RANKING */}
+                {/* CONTE⁄DO DA ABA RANKING */}
                 {activeTab === 'ranking' && (
                   <RankingTab 
                     rankingCategory={rankingCategory}
@@ -311,7 +311,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
                   />
                 )}
 
-                {/* CONTE√öDO DA ABA DIGCOINS */}
+                {/* CONTE⁄DO DA ABA DIGCOINS */}
                 {activeTab === 'digcoins' && (
                   <CoinsTab
                     totalDigcoins={143}
@@ -342,3 +342,4 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
     </div>
   );
 }
+
