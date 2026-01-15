@@ -1,4 +1,4 @@
-import { useState } from 'react';
+ï»¿import { useState } from 'react';
 import { toast } from 'sonner';
 import {
   PageState,
@@ -74,9 +74,9 @@ export default function useNocoesBasicasTest({ questions, explanations }: UseNoc
       if (unansweredQuestions.length > 0) {
         setIsFillingSkipped(true);
 
-        toast.warning('Você tem questões sem resposta!', {
+        toast.warning('VocÃª tem questÃµes sem resposta!', {
           description: `Complete as ${unansweredQuestions.length} quest${
-            unansweredQuestions.length > 1 ? 'ões' : 'ão'
+            unansweredQuestions.length > 1 ? 'Ãµes' : 'Ã£o'
           } restante${unansweredQuestions.length > 1 ? 's' : ''} para finalizar.`,
           duration: 5000
         });
@@ -138,9 +138,9 @@ export default function useNocoesBasicasTest({ questions, explanations }: UseNoc
     if (unansweredQuestions.length > 0) {
       setIsFillingSkipped(true);
 
-      toast.warning('Você tem questões sem resposta!', {
+      toast.warning('VocÃª tem questÃµes sem resposta!', {
         description: `Complete as ${unansweredQuestions.length} quest${
-          unansweredQuestions.length > 1 ? 'ões' : 'ão'
+          unansweredQuestions.length > 1 ? 'Ãµes' : 'Ã£o'
         } restante${unansweredQuestions.length > 1 ? 's' : ''} para finalizar.`,
         duration: 5000
       });
@@ -168,19 +168,21 @@ export default function useNocoesBasicasTest({ questions, explanations }: UseNoc
   const finalizeTest = (answers = selectedAnswers) => {
     const correctAnswers = questions.filter((q) => {
       const answer = answers[q.id];
-      return q.options.find((opt) => opt.isCorrect).letter === answer;
+      const correctOption = q.options.find((opt) => opt.isCorrect);
+      if (!correctOption) return false;
+      return correctOption.letter === answer;
     }).length;
 
     const results = questions.map((q) => {
       const userAnswer = answers[q.id];
       const correctOption = q.options.find((opt) => opt.isCorrect);
-      const isCorrect = userAnswer === correctOption.letter;
+      const isCorrect = userAnswer === (correctOption?.letter ?? '');
 
       return {
         questionId: q.id,
         questionText: q.text,
         userAnswer: userAnswer || '',
-        correctAnswer: correctOption.letter || '',
+        correctAnswer: correctOption?.letter || '',
         isCorrect,
         options: q.options,
         explanation: explanations[q.id - 1] || '',
@@ -217,5 +219,3 @@ export default function useNocoesBasicasTest({ questions, explanations }: UseNoc
     handleCongratsClick
   };
 }
-
-?
