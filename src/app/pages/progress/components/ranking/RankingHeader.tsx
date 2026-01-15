@@ -10,7 +10,7 @@ export default function RankingHeader() {
 
         <div className="flex items-center gap-2 text-sm text-[#8B27FF] dark:text-[#A855F7]">
           <Crown className="w-4 h-4" />
-          <span className="font-semibold">Veja sua posiÇõÇœo nos rankings da escola, turma e rede</span>
+          <span className="font-semibold">Veja sua posição nos rankings da escola, turma e rede</span>
         </div>
       </div>
     </div>

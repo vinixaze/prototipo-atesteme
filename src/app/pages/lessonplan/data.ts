@@ -1,14 +1,14 @@
 export type BnccSkill = { code: string; text: string; type: "geral" | "computacao" };
 
 export const BNCC_SKILLS: BnccSkill[] = [
-  { code: "CG01", text: "Pensamento cientÇðfico, crÇðtico e criativo", type: "geral" },
-  { code: "CG02", text: "RepertÇürio cultural", type: "geral" },
-  { code: "CG03", text: "ComunicaÇõÇœo", type: "geral" },
+  { code: "CG01", text: "Pensamento científico, crítico e criativo", type: "geral" },
+  { code: "CG02", text: "Repertório cultural", type: "geral" },
+  { code: "CG03", text: "Comunicação", type: "geral" },
   { code: "CG04", text: "Cultura digital", type: "geral" },
   { code: "CG05", text: "Trabalho e projeto de vida", type: "geral" },
-  { code: "CG06", text: "ArgumentaÇõÇœo", type: "geral" },
+  { code: "CG06", text: "Argumentação", type: "geral" },
   { code: "CG07", text: "Autoconhecimento e autocuidado", type: "geral" },
-  { code: "CG08", text: "Empatia e cooperaÇõÇœo", type: "geral" },
+  { code: "CG08", text: "Empatia e cooperação", type: "geral" },
   { code: "CG09", text: "Responsabilidade e cidadania", type: "geral" },
   { code: "CC01", text: "Cultura Digital - segurança e ética", type: "computacao" },
   { code: "CC02", text: "Pensamento Computacional - decomposição", type: "computacao" },

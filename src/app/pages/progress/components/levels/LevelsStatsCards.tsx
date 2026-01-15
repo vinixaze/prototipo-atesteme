@@ -30,7 +30,7 @@ export default function LevelsStatsCards({
             {completedCompetencies}/{totalCompetencies}
           </div>
           <div className="text-[13px] font-medium text-white/90">
-            CompetÇ¦ncias Conquistadas
+            Competências Conquistadas
           </div>
         </div>
       </div>
@@ -66,7 +66,7 @@ export default function LevelsStatsCards({
             {unlockedLevels}/{totalLevels}
           </div>
           <div className="text-[13px] font-medium text-white/90">
-            CompetÇ¦ncias Desbloqueadas
+            Competências Desbloqueadas
           </div>
         </div>
       </div>

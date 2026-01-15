@@ -36,10 +36,10 @@ export default function CollectibleAvatarModal({
               <div className="w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 dark:from-pink-900/40 dark:to-pink-800/40 rounded-full flex items-center justify-center">
                 <User className="w-6 h-6 text-[#E91E63]" strokeWidth={2} />
               </div>
-              Avatares ColecionÇ­veis
+              Avatares Colecionáveis
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 ml-15">
-              Figuras histÇüricas da tecnologia
+              Figuras históricas da tecnologia
             </p>
           </div>
           <div className="flex items-center gap-2">

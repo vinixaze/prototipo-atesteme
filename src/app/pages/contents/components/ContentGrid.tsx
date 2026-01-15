@@ -11,7 +11,7 @@ export default function ContentGrid({ contents, currentCategory }: ContentGridPr
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {contents.map((content, index) => {
-        const formatIcon = content.format === 'VÇðdeo'
+        const formatIcon = content.format === 'Vídeo'
           ? Play
           : content.format === 'Site'
             ? Globe
@@ -73,4 +73,3 @@ export default function ContentGrid({ contents, currentCategory }: ContentGridPr
     </div>
   );
 }
-

@@ -35,7 +35,7 @@ export const exams: Exam[] = [
     id: '4',
     date: '10/12/2025',
     time: '09:15:42',
-    name: 'AndrÇ¸ Silva',
+    name: 'André Silva',
     cpf: '126.XXX.XXX-11',
     status: 'Pendente',
     type: 'Exame de Certificação',
@@ -45,11 +45,10 @@ export const exams: Exam[] = [
     id: '5',
     date: '09/12/2025',
     time: '16:30:22',
-    name: 'AndrÇ¸ Silva',
+    name: 'André Silva',
     cpf: '126.XXX.XXX-11',
     status: 'Aprovado',
     type: 'Exame de Nível',
     score: 78,
   },
 ];
-

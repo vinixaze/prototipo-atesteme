@@ -129,9 +129,9 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
     }
   };
 
-  // Fun��o para visualizar resultado de uma compet�ncia conclu�da
+  // Função para visualizar resultado de uma competência concluída
   const handleViewResult = (comp: Competency) => {
-    // Gerar quest�es mockadas baseadas na compet�ncia
+    // Gerar questões mockadas baseadas na competência
     const mockQuestions = [
       {
         id: 1,
@@ -157,9 +157,9 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
     });
   };
 
-  // Fun��o para iniciar/continuar desafio de uma compet�ncia
+  // Função para iniciar/continuar desafio de uma competência
   const handleStartChallenge = (comp: Competency) => {
-    // Se n�o est� em progresso, iniciar timer
+    // Se não está em progresso, iniciar timer
     if (comp.status !== 'in-progress') {
       startCompetencyTimer(comp.title, comp.category, comp.categoryColor);
     }
@@ -194,7 +194,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
 
         <main className="flex-1 overflow-auto">
           <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8">
-            {/* SE��O 1 - CONTEXTO DO USU�RIO E N�VEL ATUAL */}
+            {/* SEÇÃO 1 - CONTEXTO DO USUÁRIO E NÍVEL ATUAL */}
             <div className="bg-gradient-to-br from-purple-50 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 md:p-8 mb-8 shadow-sm dark:shadow-gray-950">
               {/* Upper Part */}
               <div className="flex items-center gap-4 mb-6">
@@ -213,7 +213,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
               </p>
             </div>
 
-            {/* SEO 2 - ABAS DE NAVEGAO */}
+            {/* SEÇÃO 2 - ABAS DE NAVEGAÇÃO */}
             <div className="bg-white dark:bg-gray-800 rounded-t-2xl shadow-sm dark:shadow-gray-950">
               <div className="border-b-2 border-gray-100 dark:border-gray-700 overflow-x-auto scrollbar-hide">
                 <div className="flex min-w-max sm:min-w-0">
@@ -282,7 +282,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
 
               {/* Tab Content */}
               <div className="p-4 md:p-6 lg:p-8">
-                {/* CONTE�DO DA ABA N�VEIS */}
+                {/* CONTEÚDO DA ABA NÍVEIS */}
                 {activeTab === 'niveis' && (
                   <LevelsTab
                     levels={levels}
@@ -294,7 +294,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
                   />
                 )}
 
-                {/* CONTE�DO DA ABA CONQUISTAS */}
+                {/* CONTEÚDO DA ABA CONQUISTAS */}
                 {activeTab === 'conquistas' && (
                   <AchievementsTab
                     achievements={achievements}
@@ -302,7 +302,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
                   />
                 )}
 
-                {/* CONTE�DO DA ABA RANKING */}
+                {/* CONTEÚDO DA ABA RANKING */}
                 {activeTab === 'ranking' && (
                   <RankingTab 
                     rankingCategory={rankingCategory}
@@ -311,7 +311,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
                   />
                 )}
 
-                {/* CONTE�DO DA ABA DIGCOINS */}
+                {/* CONTEÚDO DA ABA DIGCOINS */}
                 {activeTab === 'digcoins' && (
                   <CoinsTab
                     totalDigcoins={143}
@@ -342,5 +342,3 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
     </div>
   );
 }
-
-
