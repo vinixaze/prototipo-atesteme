@@ -37,7 +37,7 @@ export default function BannerSelectionModal({
               <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-orange-200 dark:from-orange-900/40 dark:to-orange-800/40 rounded-full flex items-center justify-center">
                 <ImageIcon className="w-6 h-6 text-[#FF9800]" strokeWidth={2} />
               </div>
-              Banners de NÇðvel
+              Banners de Nível
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 ml-15">
               Personalize seu perfil com banners exclusivos
@@ -107,7 +107,7 @@ export default function BannerSelectionModal({
                       : "text-gray-800 dark:text-gray-200"
                   }`}
                 >
-                  NÇðvel {banner.level}
+                  Nível {banner.level}
                 </p>
                 {!banner.unlocked && (
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">

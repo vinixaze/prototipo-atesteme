@@ -113,7 +113,7 @@ export default function RankingList({
 
                     {user.isCurrentUser && (
                       <span className="px-2 sm:px-3 py-0.5 sm:py-1 bg-gradient-to-r from-[#8B27FF] to-[#A855F7] text-white text-[10px] sm:text-xs rounded-full font-bold shadow-md">
-                        VOCÇS
+                        VOCÊ
                       </span>
                     )}
 
@@ -140,7 +140,7 @@ export default function RankingList({
                     <div className="flex items-center gap-1 sm:gap-1.5 mb-0.5 sm:mb-1">
                       <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-600 dark:text-purple-400" />
                       <span className="text-[10px] sm:text-xs font-semibold text-purple-900 dark:text-purple-300">
-                        NÇðvel {user.level}
+                        Nível {user.level}
                       </span>
                     </div>
                     <div className="h-1 sm:h-1.5 bg-purple-200 dark:bg-purple-800 rounded-full overflow-hidden">

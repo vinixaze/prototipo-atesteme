@@ -1,3 +1,5 @@
+﻿import { Globe, School, Users } from 'lucide-react';
+
 interface RankingInfoModalProps {
   isOpen: boolean;
   rankingCategory: 'escola' | 'turma' | 'rede';
@@ -22,7 +24,7 @@ export default function RankingInfoModal({
       >
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-            OrganizaÇõÇœo
+            Organização
           </h3>
           <button
             onClick={onClose}
@@ -47,7 +49,7 @@ export default function RankingInfoModal({
         {rankingCategory === 'rede' && (
           <div className="space-y-2">
             <div className="flex items-center gap-2 p-2.5 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg border border-purple-200 dark:border-purple-600">
-              <span className="text-lg">ÐYO?</span>
+              <Globe className="w-5 h-5 text-purple-700 dark:text-purple-300" aria-hidden="true" />
               <span className="font-bold text-sm text-purple-900 dark:text-purple-300">
                 Ranking de Rede
               </span>
@@ -105,7 +107,7 @@ export default function RankingInfoModal({
         {rankingCategory === 'escola' && (
           <div className="space-y-2">
             <div className="flex items-center gap-2 p-2.5 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg border border-purple-200 dark:border-purple-600">
-              <span className="text-lg">ÐY?®</span>
+              <School className="w-5 h-5 text-purple-700 dark:text-purple-300" aria-hidden="true" />
               <span className="font-bold text-sm text-purple-900 dark:text-purple-300">
                 Ranking de Escola
               </span>
@@ -145,7 +147,7 @@ export default function RankingInfoModal({
         {rankingCategory === 'turma' && (
           <div className="space-y-2">
             <div className="flex items-center gap-2 p-2.5 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-lg border border-purple-200 dark:border-purple-600">
-              <span className="text-lg">ÐY'¾</span>
+              <Users className="w-5 h-5 text-purple-700 dark:text-purple-300" aria-hidden="true" />
               <span className="font-bold text-sm text-purple-900 dark:text-purple-300">
                 Ranking de Turma
               </span>

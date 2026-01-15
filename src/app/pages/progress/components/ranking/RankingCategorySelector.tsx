@@ -1,3 +1,4 @@
+﻿import { School, Users, Globe } from 'lucide-react';
 import { RankingData } from '../../types';
 
 interface RankingCategorySelectorProps {
@@ -29,7 +30,7 @@ export default function RankingCategorySelector({
               }
           `}
           >
-            <span className="flex-shrink-0 text-lg sm:text-xl">ÐY'¾</span>
+            <Users className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
             <span className="min-w-0 whitespace-nowrap leading-tight text-center">
               Turma
             </span>
@@ -49,7 +50,7 @@ export default function RankingCategorySelector({
               }
             `}
           >
-            <span className="flex-shrink-0 text-lg sm:text-xl">ÐY?®</span>
+            <School className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
             <span className="min-w-0 whitespace-nowrap leading-tight text-center">
               Escola
             </span>
@@ -69,7 +70,7 @@ export default function RankingCategorySelector({
               }
             `}
           >
-            <span className="flex-shrink-0 text-lg sm:text-xl">ÐYO?</span>
+            <Globe className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
             <span className="min-w-0 whitespace-nowrap leading-tight text-center">
               Rede
             </span>
@@ -79,6 +80,7 @@ export default function RankingCategorySelector({
         {rankingCategory === 'escola' && normalizedRankingData.escola.length > 0 && (
           <div className="hidden sm:flex items-center ml-auto px-4 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl border-2 border-purple-200 dark:border-purple-700">
             <span className="text-sm font-semibold text-purple-600 dark:text-purple-400">
+              <School className="inline-block w-4 h-4 align-[-2px] mr-1" aria-hidden="true" />
               {normalizedRankingData.escola[0].schoolName || 'Escola Municipal Castro Alves'}
             </span>
           </div>
@@ -88,12 +90,14 @@ export default function RankingCategorySelector({
           <div className="hidden sm:flex items-center gap-2 ml-auto">
             <div className="px-4 py-2 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl border-2 border-purple-200 dark:border-purple-700">
               <span className="text-sm font-semibold text-purple-600 dark:text-purple-400">
+                <School className="inline-block w-4 h-4 align-[-2px] mr-1" aria-hidden="true" />
                 {normalizedRankingData.turma[0].schoolName || 'Escola Municipal Castro Alves'}
               </span>
             </div>
             <div className="px-4 py-2 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/30 dark:to-orange-800/30 rounded-xl border-2 border-orange-200 dark:border-orange-700">
               <span className="text-sm font-semibold text-orange-600 dark:text-orange-400">
-                {normalizedRankingData.turma[0].turma || '8¶§A'}
+                <Users className="inline-block w-4 h-4 align-[-2px] mr-1" aria-hidden="true" />
+                {normalizedRankingData.turma[0].turma || '8A'}
               </span>
             </div>
           </div>
@@ -113,7 +117,7 @@ export default function RankingCategorySelector({
               whitespace-normal break-words
             "
           >
-            ÐY?®{' '}
+            <School className="inline-block w-4 h-4 align-[-2px] mr-1" aria-hidden="true" />
             {normalizedRankingData.escola[0].schoolName || 'Escola Municipal Castro Alves'}
           </div>
         )}
@@ -130,11 +134,12 @@ export default function RankingCategorySelector({
             "
           >
             <div className="whitespace-normal break-words">
-              ÐY?®{' '}
+              <School className="inline-block w-4 h-4 align-[-2px] mr-1" aria-hidden="true" />
               {normalizedRankingData.turma[0].schoolName || 'Escola Municipal Castro Alves'}
             </div>
             <div className="mt-1 whitespace-normal break-words">
-              ÐY'¾ {normalizedRankingData.turma[0].turma || '8¶§A'}
+              <Users className="inline-block w-4 h-4 align-[-2px] mr-1" aria-hidden="true" />
+              {normalizedRankingData.turma[0].turma || '8A'}
             </div>
           </div>
         )}

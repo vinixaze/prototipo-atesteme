@@ -59,7 +59,7 @@ export default function ContentGrid({ contents, currentCategory }: ContentGridPr
 
               <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
                 <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
-                  NÇðvel {content.level}
+                  Nível {content.level}
                 </span>
                 <div className="flex items-center gap-1 text-sm font-semibold text-[#8B27FF] dark:text-[#A855F7] group-hover:gap-2 transition-all">
                   <span>Acessar</span>

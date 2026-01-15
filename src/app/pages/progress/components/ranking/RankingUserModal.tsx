@@ -19,7 +19,7 @@ export default function RankingUserModal({ user, onClose }: RankingUserModalProp
       >
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-            InformaÇõÇæes do Aluno
+            Informações do Aluno
           </h3>
           <button
             onClick={onClose}

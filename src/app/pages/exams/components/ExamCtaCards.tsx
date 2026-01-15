@@ -47,7 +47,7 @@ export default function ExamCtaCards() {
             </div>
 
             <h2 className="flex-1 text-lg font-black tracking-tight uppercase text-center">
-              Exame de NÇðvel
+              Exame de Nível
             </h2>
 
             <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform flex-shrink-0">

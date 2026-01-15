@@ -160,7 +160,7 @@ export default function App() {
     [location.pathname]
   );
 
-  const [userName, setUserName] = useState("Andrゼ");
+  const [userName, setUserName] = useState("André");
   const [userRole, setUserRole] = useState<"admin" | "user">("user");
   const [testData, setTestData] = useState<any>(null);
   const [previousPage, setPreviousPage] = useState<Page>("dashboard");

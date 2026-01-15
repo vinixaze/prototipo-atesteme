@@ -51,13 +51,13 @@ export default function LevelCard({
 
         <div className="flex-shrink-0 text-left">
           <h3 className={`text-xl sm:text-2xl font-bold mb-1 ${level.unlocked ? 'text-gray-900 dark:text-white' : 'text-gray-400 dark:text-gray-500'}`}>
-            NÇðvel {level.number}
+            Nível {level.number}
           </h3>
           {level.unlocked && level.percentage === 100 && (
             <div className="flex items-center gap-1 mt-2">
               <Sparkles className="w-3 sm:w-4 h-3 sm:h-4 text-yellow-500 fill-yellow-500 animate-pulse" />
-              <span className="text-xs sm:text-sm text-green-600 font-bold">NÇðvel Completo!</span>
-            </div>
+                <span className="text-xs sm:text-sm text-green-600 font-bold">Nível Completo!</span>
+              </div>
           )}
         </div>
 
@@ -143,7 +143,7 @@ export default function LevelCard({
                 <Lock className="w-8 sm:w-10 h-8 sm:h-10 text-gray-400" />
               </div>
               <p className="text-gray-500 text-base sm:text-lg font-medium px-4">
-                Complete o nÇðvel anterior para desbloquear
+                Complete o nível anterior para desbloquear
               </p>
             </div>
           ) : (

@@ -71,7 +71,7 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
   ) => {
     setSelectedCompetency({ competency, category, categoryColor, competencyIcon, categoryIcon });
 
-    // vocÍ j· navega pro warning page (Ûtimo)
+    // vocÔøΩ jÔøΩ navega pro warning page (ÔøΩtimo)
     navigateTo("quiz-warning", {
       competency,
       category,
@@ -111,26 +111,26 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
       <div className="flex-1 flex flex-col min-w-0 pt-20">
         <Header
           onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          userName="Usu·rio"
+          userName="Usu√°rio"
           navigateTo={navigateTo}
           onLogout={() => navigateTo("login")}
         />
 
         <main className="flex-1 overflow-auto">
           <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-6">
-            {/* Header + Card NoÁıes B·sicas */}
+            {/* Header + Card NoÔøΩÔøΩes BÔøΩsicas */}
             <div className="flex flex-col lg:flex-row gap-6 mb-8 items-start">
-              {/* ESQUERDA - TÕTULO */}
+              {/* ESQUERDA - TÔøΩTULO */}
               <div className="w-full lg:w-[70%]">
                 <h1 className="text-3xl md:text-4xl font-semibold text-[#8B27FF] mb-2">
-                  CompetÍncias Digitais
+                  Compet√™ncias Digitais
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
-                  Desenvolva suas competÍncias nos eixos da BNCC ComputaÁ„o/Letramento Digital
+                  Desenvolva suas compet√™ncias nos eixos da BNCC Computa√ß√£o/Letramento Digital
                 </p>
               </div>
 
-              {/* NoÁıes B·sicas panel (desktop only, closable) */}
+              {/* No√ß√µes B√°sicas panel (desktop only, closable) */}
               {showNocoes && (
                 <div className="hidden lg:block w-full lg:w-[50%] relative">
                   <div className="bg-[#F3E8FF]/60 dark:bg-gray-800/60 backdrop-blur-md border border-purple-200 dark:border-gray-700/40 rounded-2xl p-6 shadow-sm">
@@ -149,10 +149,10 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
 
                       <div className="flex-1">
                         <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                          NoÁıes B·sicas
+                          No√ß√µes B√°sicas
                         </h3>
                         <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                          Conte˙do muito recomendado antes do NÌvel 01
+                          Conte√∫do muito recomendado antes do N√≠vel 01
                         </p>
 
                         <div className="mt-4">
@@ -161,7 +161,7 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
                             onClick={() => navigateTo("nocoes-basicas")}
                             className="px-4 py-2 rounded-xl bg-[#8B27FF] text-white hover:bg-[#7B1FE8] transition-all"
                           >
-                            ComeÁar
+                            Come√ßar
                           </button>
                         </div>
                       </div>
@@ -182,11 +182,11 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
                     className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B27FF] focus:border-transparent bg-gray-50 dark:bg-gray-700 dark:text-gray-200 transition-all"
                   >
                     <option>Todas</option>
-                    <option>INFORMA«’ES E DADOS</option>
-                    <option>COMUNICA«√O E COLABORA«√O</option>
-                    <option>CRIA«√O DE CONTE⁄DO</option>
-                    <option>PROTE«√O E SEGURAN«A</option>
-                    <option>RESOLU«√O DE PROBLEMAS</option>
+                    <option>INFORMA√á√ïES E DADOS</option>
+                    <option>COMUNICA√á√ÉO E COLABORA√á√ÉO</option>
+                    <option>CRIA√á√ÉO DE CONTE√öDO</option>
+                    <option>PROTE√á√ÉO E SEGURAN√áA</option>
+                    <option>RESOLU√á√ÉO DE PROBLEMAS</option>
                   </select>
                 </div>
 
@@ -195,7 +195,7 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Digite o nome da competÍncia"
+                    placeholder="Digite o nome da compet√™ncia"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-12 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B27FF] focus:border-transparent bg-gray-50 dark:bg-gray-700 dark:text-gray-200 transition-all"
@@ -221,7 +221,7 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
             {filteredCategories.length === 0 && (
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 text-center shadow-sm">
                 <p className="text-gray-500 dark:text-gray-400">
-                  Nenhuma competÍncia encontrada. Tente ajustar sua busca ou filtro.
+                  Nenhuma compet√™ncia encontrada. Tente ajustar sua busca ou filtro.
                 </p>
               </div>
             )}
@@ -278,7 +278,7 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
   );
 }
 
-/** Obs. Componente fora do map (evita hook dentro de loop e bugs aleatÛrios) */
+/** Obs. Componente fora do map (evita hook dentro de loop e bugs aleatÔøΩrios) */
 function CategorySection({
   category,
   categoryIndex,
@@ -330,7 +330,7 @@ function CategorySection({
           // Mock: manter seu teste
           const isInProgress = status?.status === "in-progress" || comp.title === "Compartilhar e publicar";
 
-          // Background do Ìcone (respeitando bloqueado)
+          // Background do ÔøΩcone (respeitando bloqueado)
           let iconBgClass = "";
           if (!isBlocked) {
             if (category.color === "#FFD700") iconBgClass = "bg-[#FFF9E6] dark:bg-yellow-900/30";
@@ -340,7 +340,7 @@ function CategorySection({
             else if (category.color === "#E91E63") iconBgClass = "bg-[#FCE4EC] dark:bg-pink-900/30";
           }
 
-          // Gradiente do bot„o (respeitando bloqueado)
+          // Gradiente do botÔøΩo (respeitando bloqueado)
           let buttonGradient = "";
           if (category.color === "#FFD700") buttonGradient = "linear-gradient(135deg, #FFE57F 0%, #FF9800 100%)";
           else if (category.color === "#00BCD4") buttonGradient = "linear-gradient(135deg, #4DD0E1 0%, #0288D1 100%)";
@@ -385,7 +385,7 @@ function CategorySection({
 
               {/* Body */}
               <div className="relative z-10 p-5 flex flex-col items-center gap-4">
-                {/* Õcone */}
+                {/* ÔøΩcone */}
                 <motion.div
                   whileHover={{
                     rotate: isBlocked ? 0 : [0, -10, 10, -10, 0],
@@ -404,7 +404,7 @@ function CategorySection({
                   />
                 </motion.div>
 
-                {/* TÌtulo */}
+                {/* TÔøΩtulo */}
                 <h4
                   className={`text-[15px] font-semibold text-center leading-[1.3] min-h-[40px] px-1 ${
                     isBlocked ? "text-gray-500 dark:text-gray-400" : "text-gray-800 dark:text-gray-200"
@@ -425,7 +425,7 @@ function CategorySection({
                   )}
                 </div>
 
-                {/* Bot„o */}
+                {/* BotÔøΩo */}
                 {isInProgress ? (
                   <motion.button
                     whileHover={{ scale: 1.05 }}
@@ -460,7 +460,7 @@ function CategorySection({
                   >
                     <span className="flex items-center justify-center gap-1.5">
                       {!isBlocked && <PlayCircle className="w-4 h-4" />}
-                      {isBlocked ? "REFOR«O NECESS¡RIO" : "INICIAR"}
+                      {isBlocked ? "REFOR√áO NECESS√ÅRIO" : "INICIAR"}
                     </span>
                   </motion.button>
                 )}
@@ -479,7 +479,7 @@ function WarningModal({ onClose, onConfirm }: { onClose: () => void; onConfirm: 
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl p-6 max-w-md w-full">
         <h3 className="text-xl font-bold mb-4">Aviso</h3>
-        <p className="text-gray-600 mb-6">VocÍ est· prestes a iniciar o quiz. Deseja continuar?</p>
+        <p className="text-gray-600 mb-6">Voc√™ est√° prestes a iniciar o quiz. Deseja continuar?</p>
         <div className="flex gap-3">
           <button
             onClick={onClose}
@@ -528,11 +528,11 @@ function BlockedCompetencyModal({
           <div className="w-12 h-12 rounded-full flex items-center justify-center bg-yellow-100 dark:bg-yellow-900/30">
             <AlertTriangle className="w-6 h-6 text-yellow-600 dark:text-yellow-500" />
           </div>
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white">ReforÁo Necess·rio</h3>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white">Refor√ßo Necess√°rio</h3>
         </div>
 
         <p className="text-gray-600 dark:text-gray-300 mb-4">
-          A competÍncia <strong>{competency}</strong> precisa de reforÁo. Acesse os conte˙dos relacionados antes
+          A compet√™ncia <strong>{competency}</strong> precisa de refor√ßo. Acesse os conte√∫dos relacionados antes
           de tentar novamente.
         </p>
 
@@ -541,7 +541,7 @@ function BlockedCompetencyModal({
             <div className="flex items-center justify-center gap-2">
               <Lock className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               <p className="text-sm text-gray-700 dark:text-gray-300">
-                DisponÌvel em{" "}
+                Dispon√≠vel em{" "}
                 <span className="font-bold text-[#8B27FF] dark:text-[#A855F7]">
                   {daysUntilUnblock} {daysUntilUnblock === 1 ? "dia" : "dias"}
                 </span>
@@ -561,7 +561,7 @@ function BlockedCompetencyModal({
             onClick={onGoToContents}
             className="flex-1 px-4 py-2 bg-[#8B27FF] text-white rounded-xl hover:bg-[#7B1FE8] transition-all"
           >
-            Ver Conte˙dos
+            Ver Conte√∫dos
           </button>
         </div>
       </div>
