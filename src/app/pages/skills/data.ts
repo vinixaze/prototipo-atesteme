@@ -16,17 +16,18 @@
   Users,
   Wrench,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export interface Competency {
   title: string;
-  icon: any;
+  icon: LucideIcon;
 }
 
 export interface Category {
   name: string;
   color: string;
   bgColor: string;
-  icon: any;
+  icon: LucideIcon;
   competencias: Competency[];
 }
 

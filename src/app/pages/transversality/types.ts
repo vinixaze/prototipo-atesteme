@@ -1,6 +1,8 @@
+import type { NavigateTo, PageId } from "../../../lib/navigation/routes";
+
 export interface TransversalityPageProps {
-  navigateTo: (page: string, data?: any) => void;
-  currentPage?: string;
+  navigateTo: NavigateTo;
+  currentPage?: PageId;
   userName?: string;
   onLogout?: () => void;
 }

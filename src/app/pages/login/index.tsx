@@ -4,16 +4,7 @@ import { Eye, EyeOff, Download, X } from "lucide-react";
 import backgroundImage from "../../../assets/934760553d44b42ec1dd098296a4a1143272299c.png";
 // @ts-expect-error: Image asset not found in dev environment, placeholder used for type safety.
 import logoImage from "../../../assets/bd6e15ee05cd5d9957a2d399e18c0693a6190505.png";
-
-interface LoginPageProps {
-  onLogin?: (name: string) => void;
-  navigateTo: (page: string) => void;
-}
-
-interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
-}
+import type { BeforeInstallPromptEvent, LoginPageProps } from "./types";
 
 export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
   const [email, setEmail] = useState("");

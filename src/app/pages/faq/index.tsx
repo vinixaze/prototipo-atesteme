@@ -10,11 +10,7 @@ import { AccordionSection } from './components/AccordionSection';
 import { ContactSection } from './components/ContactSection';
 import { categories, faqs, tips, videoChapters } from './data';
 import { FAQItem, VideoChapter } from './types';
-
-export interface FAQPageProps {
-  navigateTo: (page: string) => void;
-  userRole?: 'admin' | 'user';
-}
+import type { FAQPageProps } from "./types";
 
 export default function FAQPage({ navigateTo, userRole }: FAQPageProps) {
   const [searchQuery, setSearchQuery] = useState('');

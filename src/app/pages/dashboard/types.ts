@@ -1,6 +1,9 @@
+import type { NavigateTo } from "../../../lib/navigation/routes";
+import type { LucideIcon } from "lucide-react";
+
 export interface DashboardPageProps {
   userName: string;
-  navigateTo: (page: string, data?: any) => void;
+  navigateTo: NavigateTo;
   userRole?: 'admin' | 'user';
   onLogout?: () => void;
   activeModule?: 'atesteme' | 'prosaeb';
@@ -28,7 +31,7 @@ export interface Category {
 
 export interface RankingSlide {
   title: string;
-  icon: any;
+  icon: LucideIcon;
   position: string;
   total: string;
   color: string;
@@ -37,7 +40,7 @@ export interface RankingSlide {
 export interface RecommendedCompetency {
   category: string;
   title: string;
-  icon: any;
+  icon: LucideIcon;
   color: string;
   status?: string;
   isInProgress?: boolean;

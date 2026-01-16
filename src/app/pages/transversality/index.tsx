@@ -21,42 +21,12 @@ import {
   thematicOptionsByComponent,
   yearOptions,
 } from "./data";
-
-interface TransversalityPageProps {
-  navigateTo: (page: string, data?: any) => void;
-  currentPage?: string;
-  userName?: string;
-  onLogout?: () => void;
-}
-
-interface SelectedFilters {
-  filterType: '' | 'curricular' | 'bncc';
-
-  // Curricular
-  component?: string;
-  thematic?: string;
-  year?: string;
-
-  // BNCC (novo fluxo)
-  bnccType?: 'geral' | 'computacao';
-  bnccCode?: string; // apenas 1 código
-}
-
-
-
-type HistoryItem = {
-  date: Date;
-  filters: SelectedFilters;
-  label: string;
-};
-
-type BnccSingleSelectProps = {
-  label: string;
-  placeholder?: string;
-  options: { value: string; label: string }[];
-  value?: string; // selecionado (1)
-  onChange: (next?: string) => void; // undefined = limpar
-};
+import type {
+  BnccSingleSelectProps,
+  HistoryItem,
+  SelectedFilters,
+  TransversalityPageProps,
+} from "./types";
 
 function BnccSingleSelect({
   label,
@@ -269,13 +239,13 @@ export default function TransversalityPage({
     setIsSearching(false);
   };
 
-  const handleFilterSelect = (filterName: keyof SelectedFilters, value: any) => {
+  const handleFilterSelect = (filterName: keyof SelectedFilters, value: string | undefined) => {
     setSelectedFilters((prev) => {
       const next: SelectedFilters = { ...prev, [filterName]: value };
 
       // trocou tipo de fluxo
       if (filterName === 'filterType') {
-        return { filterType: value };
+        return { filterType: value ?? "" };
       }
 
       // CURRICULAR: ao trocar component limpa thematic/year
@@ -960,6 +930,7 @@ export default function TransversalityPage({
     </div>
   );
 }
+
 
 
 

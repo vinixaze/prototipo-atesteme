@@ -6,7 +6,7 @@ import AchievementsTab from './components/AchievementsTab';
 import LevelsTab from './components/LevelsTab';
 import CoinsTab from './components/CoinsTab';
 import { startCompetencyTimer, getCompetencyStatus } from '../../utils/competencyStorage';
-import { Achievement, Competency, Level } from './types';
+import { Achievement, Competency, Level, ProgressPageProps } from './types';
 import { achievements, baseLevels } from "./data";
 import {
   ChevronDown,
@@ -45,13 +45,7 @@ import {
   Crosshair,
   Database,
 } from 'lucide-react';
-
-interface ProgressPageProps {
-  navigateTo: (page: string, data?: any) => void;
-  initialTab?: 'niveis' | 'conquistas';
-  userName?: string;
-  userRole?: 'admin' | 'user';
-}
+import type { PageId } from "../../../lib/navigation/routes";
 
 export default function ProgressPage({ navigateTo, initialTab = 'niveis', userName = 'André', userRole = 'user' }: ProgressPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -104,7 +98,7 @@ export default function ProgressPage({ navigateTo, initialTab = 'niveis', userNa
     setExpandedLevel(expandedLevel === levelNumber ? null : levelNumber);
   };
 
-  const handleNavigate = (page: string) => {
+  const handleNavigate = (page: PageId) => {
     if (page === 'progresso') {
       return;
     }

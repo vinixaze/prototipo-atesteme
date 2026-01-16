@@ -15,6 +15,7 @@ import { getModuleColors } from './utils/moduleColors';
 import { progressData, currentLevel } from './utils/constants';
 import { baseRecommendedCompetencies } from './utils/recommendedCompetencies';
 import { DashboardPageProps, RecommendedCompetency } from './types';
+import type { PageId } from "../../../lib/navigation/routes";
 
 export default function DashboardPage({
   userName,
@@ -54,7 +55,7 @@ export default function DashboardPage({
     };
   });
 
-  const handleNavigate = (page: string) => {
+  const handleNavigate = (page: PageId) => {
     navigateTo(page);
   };
 

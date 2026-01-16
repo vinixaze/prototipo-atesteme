@@ -11,14 +11,16 @@ import {
   GitBranch,
   Grid3X3
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 import { useState, useEffect } from 'react';
+import type { PageId } from "../../../../lib/navigation/routes";
 
 interface SidebarProps {
   isOpen: boolean;
   onClose?: () => void;
-  currentPage?: string;
-  onNavigate?: (page: string) => void;
+  currentPage?: PageId;
+  onNavigate?: (page: PageId) => void;
   isAdmin?: boolean;
 }
 
@@ -53,7 +55,7 @@ export default function Sidebar({
       document.body.style.overflow = '';
     };
   }, []);
-  const menuItems = [
+  const menuItems: Array<{ id: PageId; icon: LucideIcon; label: string }> = [
     { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
     { id: 'habilidades', icon: Target, label: 'Competências' },
     { id: 'progresso', icon: TrendingUp, label: 'Progresso' },
@@ -63,7 +65,7 @@ export default function Sidebar({
     { id: 'exames', icon: FileCheck, label: 'Exames' },
   ];
 
-  const bottomItems: { id: string; icon: any; label: string }[] = [
+  const bottomItems: Array<{ id: PageId; icon: LucideIcon; label: string }> = [
     // FAQ e Acessibilidade foram movidos para o dropdown do usuário no Header
   ];
 

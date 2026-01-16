@@ -1,9 +1,6 @@
 import type { NavigateTo } from "../../../lib/navigation/routes";
 
-export interface ContentsPageProps {
+export interface SkillsPageProps {
   navigateTo: NavigateTo;
-  filterData?: {
-    category?: string;
-  };
   userRole?: "admin" | "user";
 }

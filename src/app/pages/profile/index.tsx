@@ -18,6 +18,7 @@ import {
 import { FormData, FormErrors, ProfilePageProps, VerifiedState } from "./types";
 import AvatarGalleryModal from "./components/AvatarGalleryModal";
 import BannerSelectionModal from "./components/BannerSelectionModal";
+import type { PageId } from "../../../lib/navigation/routes";
 import CollectibleAvatarModal from "./components/CollectibleAvatarModal";
 import ProfileStyles from "./components/ProfileStyles";
 import WebcamModal from "./components/WebcamModal";
@@ -316,7 +317,7 @@ export default function ProfilePage({
     setToast({ message: 'Foto atualizada com sucesso!', type: 'success' });
   };
 
-  const handleNavigate = (page: string) => {
+  const handleNavigate = (page: PageId) => {
     navigateTo(page);
   };
 

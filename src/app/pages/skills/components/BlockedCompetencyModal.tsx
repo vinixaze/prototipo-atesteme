@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { AlertCircle, BookOpen, X } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 interface BlockedCompetencyModalProps {
   isOpen: boolean;
@@ -8,7 +9,7 @@ interface BlockedCompetencyModalProps {
   competency: string;
   category: string;
   categoryColor: string;
-  icon: any;
+  icon: LucideIcon;
 }
 
 export default function BlockedCompetencyModal({

@@ -1,13 +1,7 @@
 import { ArrowRight, Star, Trophy } from "lucide-react";
 import { useEffect, useState } from "react";
 import { questions } from "../basics/data";
-
-interface BasicsCongratsPageProps {
-  navigateTo: (page: string, data?: any) => void;
-  testData?: {
-    selectedAnswers: Record<number, string>;
-  };
-}
+import type { BasicsCongratsPageProps } from "./types";
 
 export default function BasicsCongratsPage({
   navigateTo,

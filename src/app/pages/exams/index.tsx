@@ -9,11 +9,7 @@ import ExamList from './components/ExamList';
 import ExamDetailsModal from './components/ExamDetailsModal';
 import { exams } from './data/exams';
 import { examDetails } from './data/examDetails';
-
-interface ExamsPageProps {
-  navigateTo: (page: string) => void;
-  userRole?: 'admin' | 'user';
-}
+import type { ExamsPageProps } from "./types";
 
 export default function ExamsPage({ navigateTo, userRole }: ExamsPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

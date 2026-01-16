@@ -25,59 +25,7 @@ import {
 
 } from "lucide-react";
 import { BNCC_SKILLS, initialPlans } from "./data";
-
-interface LessonPlanPageProps {
-  navigateTo: (page: string) => void;
-  userRole?: 'admin' | 'user';
-  filterData?: any;
-}
-
-interface PlanoAula {
-  id: number;
-  titulo: string;
-  descricao: string;
-  duracao: string;
-  turma: string;
-  materia: string;
-  codigoBNCC: string;
-  data: string;
-  anoescolar: string;
-}
-
-interface FormData {
-  // Etapa 1: Informações Básicas
-  componenteCurricular: string;
-  ano: string;
-  tema: string;
-
-  // Etapa 2: Configurações da Aula
-  duracao: string;
-  duracaoCustom: string;
-  recursoDidatico: string[];
-  formaAvaliacao: string[];
-
-  // Etapa 3: BNCC e Habilidades
-  objetoConhecimento: string;
-  habilidadesBNCCGeral: string[];
-  habilidadesBNCCComputacao: string[];
-
-  // Etapa 4: Contexto Educacional
-  etapaEnsino: string;
-  tempoAula: string;
-  metodologia: string[];
-
-  // Etapa 5: Atividades e Adaptações
-  tiposAtividades: string[];
-  adaptacoes: string[];
-
-  // Etapa 6: Localização (Opcional)
-  unidadeFederativa: string;
-  cidade: string;
-  escola: string;
-}
-
-
-
+import type { FormData, LessonPlanPageProps, PlanoAula } from "./types";
 
 type BnccMultiSelectProps = {
   label: string;

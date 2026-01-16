@@ -2,11 +2,7 @@ import { useState } from "react";
 import Header from "../shared/components/Header";
 import Sidebar from "../shared/components/Sidebar";
 import { Award, Flame, Lock, Medal, Star, Target, Trophy, Zap } from "lucide-react";
-
-interface AchievementsPageProps {
-  navigateTo: (page: string) => void;
-  userRole?: 'admin' | 'user';
-}
+import type { AchievementsPageProps } from "./types";
 
 export default function AchievementsPage({
   navigateTo,

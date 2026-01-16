@@ -1,5 +1,5 @@
 import type { NavigateTo } from "../../../lib/navigation/routes";
 
-export interface BasicsPageProps {
+export interface AssessmentPageProps {
   navigateTo: NavigateTo;
 }

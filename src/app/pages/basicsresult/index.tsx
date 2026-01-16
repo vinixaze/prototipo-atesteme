@@ -1,25 +1,6 @@
 import TestResult from "../shared/components/TestResult";
 import { explanations, questions } from "../basics/data";
-
-interface BasicsResultPageProps {
-  navigateTo: (page: string, data?: any) => void;
-  testData?: {
-    correctAnswers: number;
-    totalQuestions: number;
-    results: Array<{
-      questionId: number;
-      questionText: string;
-      userAnswer: string;
-      correctAnswer: string;
-      isCorrect: boolean;
-      options: Array<{
-        letter: string;
-        text: string;
-        isCorrect: boolean;
-      }>;
-    }>;
-  };
-}
+import type { BasicsResultPageProps } from "./types";
 
 export default function BasicsResultPage({
   navigateTo,

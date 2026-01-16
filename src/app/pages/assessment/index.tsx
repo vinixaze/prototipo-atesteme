@@ -5,13 +5,36 @@ import TestCongrats from "../shared/components/TestCongrats";
 import TestResult from "../shared/components/TestResult";
 import { saveCompetencyResult } from "../../utils/competencyStorage";
 import { questions } from "./data";
-
-interface AssessmentPageProps {
-  navigateTo: (page: string, data?: any) => void;
-}
+import type { AssessmentPageProps } from "./types";
 
 
 type PageState = 'question' | 'congrats' | 'result';
+
+type AssessmentResultItem = {
+  questionId: number;
+  questionText: string;
+  userAnswer: string;
+  correctAnswer: string;
+  isCorrect: boolean;
+  options: (typeof questions)[number]["options"];
+  explanation: string;
+  category: string;
+  categoryColor: string;
+  competency: string;
+};
+
+type AssessmentResults = {
+  results: AssessmentResultItem[];
+  correctAnswers: number;
+  totalQuestions: number;
+};
+
+type CompetencyGroup = {
+  correct: number;
+  errors: number;
+  cat: string;
+  col: string;
+};
 
 export default function AssessmentPage({ navigateTo }: AssessmentPageProps) {
   const [pageState, setPageState] = useState<PageState>('question');
@@ -24,7 +47,7 @@ export default function AssessmentPage({ navigateTo }: AssessmentPageProps) {
       status: i === 0 ? 'current' : 'future'
     }))
   );
-  const [testResults, setTestResults] = useState<any>(null);
+  const [testResults, setTestResults] = useState<AssessmentResults | null>(null);
 
   const currentQuestionData = questions[currentQuestion - 1];
 
@@ -193,7 +216,7 @@ export default function AssessmentPage({ navigateTo }: AssessmentPageProps) {
       };
     });
 
-    const competencyGroups = questions.reduce((acc, q) => {
+    const competencyGroups = questions.reduce<Record<string, CompetencyGroup>>((acc, q) => {
       if (!acc[q.competency]) {
         acc[q.competency] = { correct: 0, errors: 0, cat: q.category, col: q.categoryColor };
       }
@@ -202,7 +225,7 @@ export default function AssessmentPage({ navigateTo }: AssessmentPageProps) {
       if (isCorrect) acc[q.competency].correct++;
       else acc[q.competency].errors++;
       return acc;
-    }, {} as Record<string, any>);
+    }, {});
 
     Object.keys(competencyGroups).forEach(compName => {
       const group = competencyGroups[compName];

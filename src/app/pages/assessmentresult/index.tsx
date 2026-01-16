@@ -1,15 +1,6 @@
 import { useEffect } from "react";
 import TestResult from "../shared/components/TestResult";
-
-interface AssessmentResultPageProps {
-  navigateTo: (page: string) => void;
-  testData?: {
-    answered: number;
-    correct: number;
-    total: number;
-    selectedAnswers: Record<number, string>;
-  };
-}
+import type { AssessmentResultPageProps } from "./types";
 
 // Importar questões
 import { questions } from "../assessment/data";

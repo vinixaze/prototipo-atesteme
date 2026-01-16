@@ -18,6 +18,13 @@ export default function ExamFilters({
   onFilterChange,
   onToggleDropdown,
 }: ExamFiltersProps) {
+  const statusOptions: ExamFiltersProps["filterStatus"][] = [
+    "all",
+    "Aprovado",
+    "Reprovado",
+    "Pendente",
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -53,11 +60,11 @@ export default function ExamFilters({
               animate={{ opacity: 1, y: 0 }}
               className="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 py-2 z-10"
             >
-              {['all', 'Aprovado', 'Reprovado', 'Pendente'].map((status) => (
+              {statusOptions.map((status) => (
                 <button
                   key={status}
                   onClick={() => {
-                    onFilterChange(status as any);
+                    onFilterChange(status);
                     onToggleDropdown();
                   }}
                   className={`w-full px-4 py-2 text-left hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-colors ${

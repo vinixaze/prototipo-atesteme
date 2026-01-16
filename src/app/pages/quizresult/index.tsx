@@ -2,27 +2,7 @@ import { AlertTriangle } from "lucide-react";
 import { useEffect } from "react";
 import TestResult from "../shared/components/TestResult";
 import { saveCompetencyResult } from "../../utils/competencyStorage";
-
-interface QuizResultPageProps {
-  navigateTo: (page: string, data?: any) => void;
-  previousPage?: string;
-  testData?: {
-    competency: string;
-    category: string;
-    categoryColor: string;
-    categoryIcon?: any;
-    competencyIcon?: any;
-    selectedAnswers: Record<number, string>;
-    questions: Array<{
-      id: number;
-      text: string;
-      options?: Array<{ letter: string; text: string; isCorrect?: boolean }>;
-      explanation?: string;
-      bncc?: string;
-    }>;
-    returnTo?: string;
-  };
-}
+import type { QuizResultPageProps } from "./types";
 
 export default function QuizResultPage({ navigateTo, testData }: QuizResultPageProps) {
   if (!testData || !testData.questions || testData.questions.length === 0) {
@@ -43,7 +23,14 @@ export default function QuizResultPage({ navigateTo, testData }: QuizResultPageP
     );
   }
 
-  const { competency, category, categoryColor, selectedAnswers, questions, returnTo } = testData;
+  const {
+    competency = "",
+    category = "",
+    categoryColor = "",
+    selectedAnswers = {},
+    questions = [],
+    returnTo,
+  } = testData;
 
   const results = questions.map((q) => {
     const userAnswer = selectedAnswers[q.id];

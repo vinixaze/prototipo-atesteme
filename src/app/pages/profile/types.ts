@@ -1,5 +1,7 @@
+import type { NavigateTo } from "../../../lib/navigation/routes";
+
 export interface ProfilePageProps {
-  navigateTo: (page: string) => void;
+  navigateTo: NavigateTo;
   userName?: string;
   userRole?: "admin" | "user";
 }

@@ -4,26 +4,22 @@ import { quizQuestions } from "../../data/quizQuestions";
 import TestQuestion from "../shared/components/TestQuestion";
 import TestCongrats from "../shared/components/TestCongrats";
 import TestResult from "../shared/components/TestResult";
+import type { PageId } from "../../../lib/navigation/routes";
+import type { QuizPageProps, QuizQuestion, QuizQuestionOption, QuizResults } from "./types";
 
-const BACK_ROUTE_MAP: Record<string, string> = {
+const BACK_ROUTE_MAP: Record<string, PageId> = {
   transversalidade: 'transversality',
   transversality: 'transversality',
   habilidades: 'habilidades',
   dashboard: 'dashboard',
 };
 
-interface QuizPageProps {
-  navigateTo: (page: string, data?: any) => void;
-  competencyData?: any;
-  quizData?: any;
-}
-
 type PageState = 'question' | 'congrats' | 'result';
 
 export default function QuizPage({ navigateTo, competencyData, quizData }: QuizPageProps) {
   const quizMeta = quizData || competencyData;
 
-  const questions = useMemo(() => {
+  const questions = useMemo<QuizQuestion[]>(() => {
     const qs =
       quizMeta?.questions && quizMeta.questions.length > 0
         ? quizMeta.questions
@@ -41,7 +37,7 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
   const [selectedAnswer, setSelectedAnswer] = useState<string>('');
 
   // respostas por ID real da questão (pode ser number ou string)
-  const [selectedAnswers, setSelectedAnswers] = useState<Record<string | number, string>>({});
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
 
   const [isFillingSkipped, setIsFillingSkipped] = useState(false);
 
@@ -53,7 +49,7 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
   );
 
   const [eliminatedOptions] = useState<string[]>([]);
-  const [testResults, setTestResults] = useState<any>(null);
+  const [testResults, setTestResults] = useState<QuizResults | null>(null);
 
   const currentQuestionData = questions[currentIndex];
 
@@ -86,22 +82,29 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
     setCurrentIndex(nextIndex);
   };
 
-  const findFirstUnansweredIndex = (answers: Record<string | number, string>) => {
-    return questions.findIndex((q: any) => !answers[q.id]);
+  const findFirstUnansweredIndex = (answers: Record<number, string>) => {
+    return questions.findIndex((q) => !answers[q.id]);
   };
 
   const handleSelectAnswer = (letter: string) => setSelectedAnswer(letter);
 
-  const finalizarTeste = (answers: Record<string | number, string>) => {
-    const correctAnswers = questions.filter((q: any) => {
+  const finalizarTeste = (answers: Record<number, string>) => {
+    const correctAnswers = questions.filter((q) => {
       const answer = answers[q.id];
-      return q.options.find((opt: any) => opt.letter === answer)?.isCorrect;
+      const options = q.options ?? [];
+      return options.find((opt) => opt.letter === answer)?.isCorrect;
     }).length;
 
-    const results = questions.map((q: any) => {
+    const results = questions.map((q) => {
       const userAnswer = answers[q.id];
-      const correctOption = q.options.find((opt: any) => opt.isCorrect);
+      const options = q.options ?? [];
+      const correctOption = options.find((opt) => opt.isCorrect);
       const isCorrect = userAnswer === correctOption?.letter;
+      const resultOptions = options.map((opt) => ({
+        letter: opt.letter,
+        text: opt.text,
+        isCorrect: Boolean(opt.isCorrect),
+      }));
 
       return {
         questionId: q.id,
@@ -109,7 +112,7 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
         userAnswer: userAnswer || '',
         correctAnswer: correctOption?.letter || '',
         isCorrect,
-        options: q.options,
+        options: resultOptions,
         explanation: q.explanation || '',
         category: quizMeta?.category,
         categoryColor: quizMeta?.categoryColor,

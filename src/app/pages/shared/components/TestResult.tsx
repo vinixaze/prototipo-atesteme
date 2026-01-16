@@ -1,9 +1,10 @@
 ﻿import { CheckCircle2, XCircle, ArrowRight, BookOpen, MessageSquare, Eye, X, Layers, Target, Database, Users, FileEdit, Shield } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'motion/react';
+import type { NavigateTo } from "../../../../lib/navigation/routes";
 
 interface TestResultProps {
-  navigateTo: (page: string, data?: any) => void;
+  navigateTo: NavigateTo;
   testName: string;
   correctAnswers: number;
   totalQuestions: number;
@@ -27,6 +28,8 @@ interface TestResultProps {
   explanations?: string[];
 }
 
+type ResultItem = TestResultProps["results"][number];
+
 export default function TestResult({
   navigateTo,
   testName,
@@ -38,7 +41,7 @@ export default function TestResult({
 }: TestResultProps) {
   const [challengePopup, setChallengePopup] = useState<{
     isOpen: boolean;
-    question: any;
+    question: ResultItem | null;
     index: number;
   }>({ isOpen: false, question: null, index: -1 });
 
@@ -315,7 +318,7 @@ export default function TestResult({
                 {/* Opções */}
                 <div className="space-y-2">
                   <h4 className="font-semibold text-gray-700 dark:text-gray-300">Opções:</h4>
-                  {challengePopup.question.options.map((opt: any) => (
+                  {challengePopup.question.options.map((opt) => (
                     <div
                       key={opt.letter}
                       className={`p-3 rounded-lg border-2 ${

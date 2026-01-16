@@ -1,4 +1,10 @@
-import { LucideIcon } from 'lucide-react';
+import type { NavigateTo } from "../../../lib/navigation/routes";
+import type { LucideIcon } from "lucide-react";
+
+export interface FAQPageProps {
+  navigateTo: NavigateTo;
+  userRole?: "admin" | "user";
+}
 
 export interface TipCard {
   id: number;
@@ -8,14 +14,6 @@ export interface TipCard {
   gradient: string;
 }
 
-export type VideoChapterCategory =
-  | 'intro'
-  | 'cadastro'
-  | 'navegacao'
-  | 'desafios'
-  | 'certificacao'
-  | 'dicas';
-
 export interface VideoChapter {
   id: number;
   title: string;
@@ -24,11 +22,11 @@ export interface VideoChapter {
   duration: string;
   icon: LucideIcon;
   gradient: string;
-  category: VideoChapterCategory;
+  category: string;
 }
 
 export interface FAQItem {
   question: string;
   answer: string;
-  category?: string;
+  category: string;
 }

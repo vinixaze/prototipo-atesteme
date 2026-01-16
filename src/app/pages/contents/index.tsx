@@ -7,14 +7,7 @@ import ContentFilters from './components/ContentFilters';
 import ContentGrid from './components/ContentGrid';
 import EmptyState from './components/EmptyState';
 import { contentCategories, contentItems } from './data';
-
-interface ContentsPageProps {
-  navigateTo: (page: string) => void;
-  filterData?: {
-    category?: string;
-  };
-  userRole?: 'admin' | 'user';
-}
+import type { ContentsPageProps } from "./types";
 
 export default function ContentsPage({ navigateTo, filterData, userRole }: ContentsPageProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);

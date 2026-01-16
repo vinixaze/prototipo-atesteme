@@ -2,13 +2,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, Book, Calendar, CheckCircle, Tag, XCircle } from "lucide-react";
 import Header from "../shared/components/Header";
-
-interface SingleQuestionPageProps {
-  navigateTo: (page: string) => void;
-  userName?: string;
-  onLogout?: () => void;
-  questionData?: any;
-}
+import type { SingleQuestionPageProps } from "./types";
 
 export default function SingleQuestionPage({
   navigateTo,
@@ -152,7 +146,7 @@ export default function SingleQuestionPage({
 
             {/* Alternativas */}
             <div className="space-y-4 mb-8">
-              {question.options.map((option: any) => (
+              {question.options.map((option) => (
                 <motion.button
                   key={option.letter}
                   whileHover={!showResult ? { scale: 1.02 } : {}}

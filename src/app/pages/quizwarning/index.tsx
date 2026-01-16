@@ -1,18 +1,7 @@
 import { AlertTriangle, ArrowRight, X, BookOpen, Info } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-
-interface QuizWarningPageProps {
-  navigateTo: (page: string, data?: any) => void;
-  competencyData?: {
-    competency: string;
-    category: string;
-    categoryColor: string;
-    competencyIcon?: any;
-    categoryIcon?: any;
-    fromPage?: string;
-  };
-}
+import type { QuizWarningPageProps } from "./types";
 
 export default function QuizWarningPage({
   navigateTo,

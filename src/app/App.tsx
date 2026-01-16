@@ -1,11 +1,13 @@
-import { useMemo, useState, type ReactElement } from "react";
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { useState } from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { AuthProvider, useAuth } from "../lib/auth/AuthContext";
+import { ProtectedRoute } from "../lib/auth/ProtectedRoute";
+import { useAppNavigation } from "../lib/navigation/useNavigation";
+import { ROUTES } from "../lib/navigation/routes";
+import type { PageId } from "../lib/navigation/routes";
+import FloatingChatButton from "./components/FloatingChatButton";
+
+// Import pages
 import LoginPage from "./pages/login";
 import WelcomePage from "./pages/welcome";
 import DashboardPage from "./pages/dashboard";
@@ -29,91 +31,63 @@ import AccessibilityPage from "./pages/accessibility";
 import ProfilePage from "./pages/profile";
 import TransversalityPage from "./pages/transversality";
 import SingleQuestionPage from "./pages/singlequestion";
-import FloatingChatButton from "./pages/shared/components/FloatingChatButton";
-// Temporarily disabled to isolate Invalid Hook Call during dev
-// import PWAManager from "./pages/shared/components/PWAManager";
 
-type Page =
-  | "login"
-  | "signup"
-  | "forgot-password"
-  | "welcome"
-  | "dashboard"
-  | "conquistas"
-  | "habilidades"
-  | "progresso"
-  | "progresso-conquistas"
-  | "nocoes-basicas"
-  | "nocoes-basicas-congrats"
-  | "nocoes-basicas-result"
-  | "teste-competencias"
-  | "teste-competencias-congrats"
-  | "teste-competencias-result"
-  | "quiz-warning"
-  | "quiz"
-  | "quiz-result"
-  | "conteudos"
-  | "conteudo"
-  | "plano-aula"
-  | "exames"
-  | "transversality"
-  | "single-question"
-  | "faq"
-  | "acessibilidade"
-  | "perfil"
-  | "support"
-  | "privacy"
-  | "terms";
+interface BasicsAnswersData {
+  selectedAnswers: Record<number, string>;
+}
 
-const PAGE_ROUTES: Record<Page, string> = {
-  login: "/login",
-  signup: "/signup",
-  "forgot-password": "/forgot-password",
-  welcome: "/welcome",
-  dashboard: "/dashboard",
-  conquistas: "/progress/achievements",
-  habilidades: "/skills",
-  progresso: "/progress/ranking",
-  "progresso-conquistas": "/progress/conquests",
-  "nocoes-basicas": "/basics",
-  "nocoes-basicas-congrats": "/basics/congrats",
-  "nocoes-basicas-result": "/basics/result",
-  "teste-competencias": "/assessment",
-  "teste-competencias-congrats": "/assessment/congrats",
-  "teste-competencias-result": "/assessment/result",
-  "quiz-warning": "/quiz/warning",
-  quiz: "/quiz",
-  "quiz-result": "/quiz/result",
-  conteudos: "/contents",
-  conteudo: "/contents",
-  "plano-aula": "/lesson-plan",
-  exames: "/exams",
-  transversality: "/transversality",
-  "single-question": "/question",
-  faq: "/faq",
-  acessibilidade: "/accessibility",
-  perfil: "/profile",
-  support: "/support",
-  privacy: "/privacy",
-  terms: "/terms",
-};
+interface BasicsResultData {
+  correctAnswers: number;
+  totalQuestions: number;
+  results: Array<{
+    questionId: number;
+    questionText: string;
+    userAnswer: string;
+    correctAnswer: string;
+    isCorrect: boolean;
+    options: Array<{
+      letter: string;
+      text: string;
+      isCorrect: boolean;
+    }>;
+  }>;
+}
 
-const normalizePath = (value: string) => value.replace(/\/$/, "") || "/";
+interface AssessmentTestData {
+  answered: number;
+  correct: number;
+  total: number;
+  selectedAnswers: Record<number, string>;
+}
 
-const ROUTE_TO_PAGE: Record<string, Page> = Object.entries(PAGE_ROUTES).reduce(
-  (acc, [page, path]) => {
-    acc[normalizePath(path)] = page as Page;
-    return acc;
-  },
-  {} as Record<string, Page>
-);
+interface QuizMetaData {
+  competency?: string;
+  category?: string;
+  categoryColor?: string;
+  fromPage?: PageId;
+  questions?: Array<{
+    id: number;
+    text: string;
+    htmlContent?: string;
+    options?: Array<{ letter: string; text: string; isCorrect?: boolean }>;
+    explanation?: string;
+    bncc?: string;
+    correctAnswer?: string;
+    transversality?: {
+      curricular?: string;
+      component?: string;
+      year?: string;
+      bnccType?: string;
+      bnccCode?: string;
+    };
+  }>;
+  selectedAnswers?: Record<number, string>;
+  returnTo?: PageId;
+}
 
-ROUTE_TO_PAGE["/"] = "login";
-
-const resolvePageFromPath = (path: string): Page => {
-  const normalized = normalizePath(path);
-  return ROUTE_TO_PAGE[normalized] ?? "login";
-};
+interface ContentFilterData {
+  category?: string;
+}
 
 function PlaceholderPage({
   title,
@@ -126,7 +100,7 @@ function PlaceholderPage({
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
         <h2 className="text-2xl text-[#8B27FF] mb-4">{title}</h2>
-        <p className="text-gray-600 mb-6">Esta página está em desenvolvimento.</p>
+        <p className="text-gray-600 mb-6">Esta pagina esta em desenvolvimento.</p>
         <button
           onClick={onBack}
           className="px-6 py-3 bg-[#8B27FF] text-white rounded-xl hover:bg-[#7B1FE8] transition-all"
@@ -138,460 +112,407 @@ function PlaceholderPage({
   );
 }
 
-function RequireAuth({
-  isAuthenticated,
-  children,
-}: {
-  isAuthenticated: boolean;
-  children: ReactElement;
-}) {
+function AppRoutes() {
+  const { user, permissions, login, logout } = useAuth();
+  const { navigateTo } = useAppNavigation();
   const location = useLocation();
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
-  }
-  return children;
-}
-
-function RequireQuizWarning({
-  isAuthenticated,
-  quizData,
-  children,
-}: {
-  isAuthenticated: boolean;
-  quizData: any;
-  children: ReactElement;
-}) {
-  const location = useLocation();
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
-  }
-  if (!quizData) {
-    return <Navigate to="/skills" replace />;
-  }
-  return children;
-}
-
-function RequireQuizStart({
-  isAuthenticated,
-  quizData,
-  quizAccessGranted,
-  children,
-}: {
-  isAuthenticated: boolean;
-  quizData: any;
-  quizAccessGranted: boolean;
-  children: ReactElement;
-}) {
-  const location = useLocation();
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
-  }
-  if (!quizData) {
-    return <Navigate to="/skills" replace />;
-  }
-  if (!quizAccessGranted) {
-    return <Navigate to="/quiz/warning" replace />;
-  }
-  return children;
-}
-
-function RequireAssessmentStart({
-  isAuthenticated,
-  assessmentAccessGranted,
-  children,
-}: {
-  isAuthenticated: boolean;
-  assessmentAccessGranted: boolean;
-  children: ReactElement;
-}) {
-  const location = useLocation();
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
-  }
-  if (!assessmentAccessGranted) {
-    return <Navigate to="/welcome" replace />;
-  }
-  return children;
-}
-
-export default function App() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const currentPage = useMemo(
-    () => resolvePageFromPath(location.pathname),
-    [location.pathname]
-  );
-
-  const [userName, setUserName] = useState("");
-  const [userRole, setUserRole] = useState<"admin" | "user">("user");
-  const [testData, setTestData] = useState<any>(null);
-  const [quizData, setQuizData] = useState<any>(null);
-  const [previousPage, setPreviousPage] = useState<Page>("dashboard");
-  const [quizAccessGranted, setQuizAccessGranted] = useState(false);
-  const [assessmentAccessGranted, setAssessmentAccessGranted] = useState(false);
   const [activeModule, setActiveModule] = useState<"atesteme" | "prosaeb">(
     "atesteme"
   );
-  const isAuthenticated = userName.trim().length > 0;
-
-  const navigateTo = (page: string, data?: any) => {
-    setPreviousPage(currentPage);
-    if (data) {
-      if (["quiz-warning", "quiz", "quiz-result"].includes(page)) {
-        setQuizData(data);
-      } else {
-        setTestData(data);
-      }
-    }
-
-    if (page === "quiz-warning") {
-      setQuizAccessGranted(false);
-    }
-    if (page === "quiz") {
-      setQuizAccessGranted(currentPage === "quiz-warning");
-    }
-    if (page === "teste-competencias") {
-      setAssessmentAccessGranted(currentPage === "welcome");
-    }
-
-    const targetRoute = PAGE_ROUTES[page as Page];
-    if (targetRoute) {
-      navigate(targetRoute);
-    }
-  };
 
   const handleLogin = (name: string) => {
-    setUserName(name);
-    setUserRole("user");
+    login(name);
     navigateTo("welcome");
   };
 
   const handleLogout = () => {
-    setUserName("");
-    setTestData(null);
-    setQuizData(null);
-    setQuizAccessGranted(false);
-    setAssessmentAccessGranted(false);
+    logout();
     navigateTo("login");
   };
 
-  const switchModule = (module: "atesteme" | "prosaeb") => {
-    setActiveModule(module);
-  };
-
-  const hideChatButton =
-    currentPage.includes("teste") ||
-    currentPage.includes("quiz") ||
-    currentPage.includes("nocoes-basicas") ||
-    currentPage === "single-question";
+  const hideChatButton = ["/assessment", "/quiz", "/basics", "/question"].some(
+    (path) => location.pathname.startsWith(path)
+  );
 
   return (
     <div className="min-h-screen">
-      {/* PWA Manager temporarily disabled for debugging Invalid Hook Call */}
-      {/* <PWAManager /> */}
-
       {!hideChatButton && <FloatingChatButton />}
 
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
 
         <Route
-          path="/login"
+          path={ROUTES.login.path}
           element={<LoginPage onLogin={handleLogin} navigateTo={navigateTo} />}
         />
         <Route
-          path="/signup"
-          element={
-            <PlaceholderPage
-              title="Criar Conta"
-              onBack={() => navigateTo("login")}
-            />
-          }
+          path={ROUTES.signup.path}
+          element={<PlaceholderPage title="Criar Conta" onBack={() => navigateTo("login")} />}
         />
         <Route
-          path="/forgot-password"
-          element={
-            <PlaceholderPage
-              title="Recuperar Senha"
-              onBack={() => navigateTo("login")}
-            />
-          }
+          path={ROUTES["forgot-password"].path}
+          element={<PlaceholderPage title="Recuperar Senha" onBack={() => navigateTo("login")} />}
         />
         <Route
-          path="/support"
-          element={
-            <PlaceholderPage
-              title="Atendimento ao Usuケrio"
-              onBack={() => navigateTo("login")}
-            />
-          }
+          path={ROUTES.support.path}
+          element={<PlaceholderPage title="Atendimento ao Usuario" onBack={() => navigateTo("login")} />}
         />
         <Route
-          path="/privacy"
-          element={
-            <PlaceholderPage
-              title="Polヴticas de Privacidade"
-              onBack={() => navigateTo("login")}
-            />
-          }
+          path={ROUTES.privacy.path}
+          element={<PlaceholderPage title="Politicas de Privacidade" onBack={() => navigateTo("login")} />}
         />
         <Route
-          path="/terms"
+          path={ROUTES.terms.path}
+          element={<PlaceholderPage title="Termos e Condicoes" onBack={() => navigateTo("login")} />}
+        />
+        <Route
+          path={ROUTES.chatbot.path}
           element={
-            <PlaceholderPage
-              title="Termos e CondiВリes"
-              onBack={() => navigateTo("login")}
-            />
+            <ProtectedRoute guards={ROUTES.chatbot.guards}>
+              <PlaceholderPage title="Chatbot" onBack={() => navigateTo("dashboard")} />
+            </ProtectedRoute>
           }
         />
 
         <Route
-          path="/welcome"
+          path={ROUTES.welcome.path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <ProtectedRoute guards={ROUTES.welcome.guards}>
               <WelcomePage
-                userName={userName}
+                userName={user?.name || ""}
                 onStartQuiz={() => navigateTo("teste-competencias")}
                 onGoToDashboard={() => navigateTo("dashboard")}
               />
-            </RequireAuth>
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/dashboard"
+          path={ROUTES.dashboard.path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <ProtectedRoute guards={ROUTES.dashboard.guards}>
               <DashboardPage
-                userName={userName}
+                userName={user?.name || ""}
                 navigateTo={navigateTo}
-                userRole={userRole}
+                userRole={user?.role || "user"}
                 onLogout={handleLogout}
                 activeModule={activeModule}
-                onModuleChange={switchModule}
+                onModuleChange={setActiveModule}
               />
-            </RequireAuth>
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/progress/achievements"
+          path={ROUTES.conquistas.path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
-              <AchievementsPage navigateTo={navigateTo} userRole={userRole} />
-            </RequireAuth>
+            <ProtectedRoute guards={ROUTES.conquistas.guards}>
+              <AchievementsPage navigateTo={navigateTo} userRole={user?.role || "user"} />
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/skills"
+          path={ROUTES.habilidades.path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
-              <SkillsPage navigateTo={navigateTo} userRole={userRole} />
-            </RequireAuth>
+            <ProtectedRoute guards={ROUTES.habilidades.guards}>
+              <SkillsPage navigateTo={navigateTo} userRole={user?.role || "user"} />
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/progress/ranking"
+          path={ROUTES.progresso.path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <ProtectedRoute guards={ROUTES.progresso.guards}>
               <ProgressPage
                 navigateTo={navigateTo}
-                userName={userName}
+                userName={user?.name || ""}
                 initialTab="niveis"
-                userRole={userRole}
+                userRole={user?.role || "user"}
               />
-            </RequireAuth>
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/progress/conquests"
+          path={ROUTES["progresso-conquistas"].path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <ProtectedRoute guards={ROUTES["progresso-conquistas"].guards}>
               <ProgressPage
                 navigateTo={navigateTo}
-                userName={userName}
+                userName={user?.name || ""}
                 initialTab="conquistas"
-                userRole={userRole}
+                userRole={user?.role || "user"}
               />
-            </RequireAuth>
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/basics"
+          path={ROUTES.digcoins.path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <ProtectedRoute guards={ROUTES.digcoins.guards}>
+              <ProgressPage
+                navigateTo={navigateTo}
+                userName={user?.name || ""}
+                initialTab="digcoins"
+                userRole={user?.role || "user"}
+              />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path={ROUTES["nocoes-basicas"].path}
+          element={
+            <ProtectedRoute guards={ROUTES["nocoes-basicas"].guards}>
               <BasicsPage navigateTo={navigateTo} />
-            </RequireAuth>
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/basics/congrats"
+          path={ROUTES["nocoes-basicas-congrats"].path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
-              <BasicsCongratsPage navigateTo={navigateTo} testData={testData} />
-            </RequireAuth>
+            <ProtectedRoute guards={ROUTES["nocoes-basicas-congrats"].guards}>
+              <BasicsCongratsPage
+                navigateTo={navigateTo}
+                testData={
+                  permissions.testData
+                    ? (permissions.testData as BasicsAnswersData)
+                    : undefined
+                }
+              />
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/basics/result"
+          path={ROUTES["nocoes-basicas-result"].path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
-              <BasicsResultPage navigateTo={navigateTo} testData={testData} />
-            </RequireAuth>
+            <ProtectedRoute guards={ROUTES["nocoes-basicas-result"].guards}>
+              <BasicsResultPage
+                navigateTo={navigateTo}
+                testData={
+                  permissions.testData
+                    ? (permissions.testData as BasicsResultData)
+                    : undefined
+                }
+              />
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/assessment"
+          path={ROUTES["teste-competencias"].path}
           element={
-            <RequireAssessmentStart
-              isAuthenticated={isAuthenticated}
-              assessmentAccessGranted={assessmentAccessGranted}
-            >
+            <ProtectedRoute guards={ROUTES["teste-competencias"].guards}>
               <AssessmentPage navigateTo={navigateTo} />
-            </RequireAssessmentStart>
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/assessment/congrats"
+          path={ROUTES["teste-competencias-congrats"].path}
           element={
-            <RequireAssessmentStart
-              isAuthenticated={isAuthenticated}
-              assessmentAccessGranted={assessmentAccessGranted}
-            >
-              <AssessmentCongratsPage navigateTo={navigateTo} testData={testData} />
-            </RequireAssessmentStart>
+            <ProtectedRoute guards={ROUTES["teste-competencias-congrats"].guards}>
+              <AssessmentCongratsPage
+                navigateTo={navigateTo}
+                testData={
+                  permissions.testData
+                    ? (permissions.testData as AssessmentTestData)
+                    : undefined
+                }
+              />
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/assessment/result"
+          path={ROUTES["teste-competencias-result"].path}
           element={
-            <RequireAssessmentStart
-              isAuthenticated={isAuthenticated}
-              assessmentAccessGranted={assessmentAccessGranted}
-            >
-              <AssessmentResultPage navigateTo={navigateTo} testData={testData} />
-            </RequireAssessmentStart>
+            <ProtectedRoute guards={ROUTES["teste-competencias-result"].guards}>
+              <AssessmentResultPage
+                navigateTo={navigateTo}
+                testData={
+                  permissions.testData
+                    ? (permissions.testData as AssessmentTestData)
+                    : undefined
+                }
+              />
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/quiz/warning"
+          path={ROUTES["quiz-warning"].path}
           element={
-            <RequireQuizWarning isAuthenticated={isAuthenticated} quizData={quizData}>
-              <QuizWarningPage navigateTo={navigateTo} competencyData={quizData} />
-            </RequireQuizWarning>
+            <ProtectedRoute guards={ROUTES["quiz-warning"].guards}>
+              <QuizWarningPage
+                navigateTo={navigateTo}
+                competencyData={
+                  permissions.quizAccess?.data
+                    ? (permissions.quizAccess.data as QuizMetaData)
+                    : undefined
+                }
+              />
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/quiz"
+          path={ROUTES.quiz.path}
           element={
-            <RequireQuizStart
-              isAuthenticated={isAuthenticated}
-              quizData={quizData}
-              quizAccessGranted={quizAccessGranted}
-            >
-              <QuizPage navigateTo={navigateTo} competencyData={quizData} />
-            </RequireQuizStart>
+            <ProtectedRoute guards={ROUTES.quiz.guards}>
+              <QuizPage
+                navigateTo={navigateTo}
+                competencyData={
+                  permissions.quizAccess?.data
+                    ? (permissions.quizAccess.data as QuizMetaData)
+                    : undefined
+                }
+                quizData={
+                  permissions.quizAccess?.data
+                    ? (permissions.quizAccess.data as QuizMetaData)
+                    : undefined
+                }
+              />
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/quiz/result"
+          path={ROUTES["quiz-result"].path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <ProtectedRoute guards={ROUTES["quiz-result"].guards}>
               <QuizResultPage
                 navigateTo={navigateTo}
-                testData={quizData}
-                previousPage={previousPage}
+                testData={
+                  permissions.quizAccess?.data
+                    ? (permissions.quizAccess.data as QuizMetaData)
+                    : undefined
+                }
               />
-            </RequireAuth>
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/contents"
+          path={ROUTES.conteudos.path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <ProtectedRoute guards={ROUTES.conteudos.guards}>
               <ConteudosPage
                 navigateTo={navigateTo}
-                filterData={testData}
-                userRole={userRole}
+                filterData={
+                  permissions.testData
+                    ? (permissions.testData as ContentFilterData)
+                    : undefined
+                }
+                userRole={user?.role || "user"}
               />
-            </RequireAuth>
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/lesson-plan"
+          path={ROUTES["plano-aula"].path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <ProtectedRoute guards={ROUTES["plano-aula"].guards}>
               <LessonPlanPage
                 navigateTo={navigateTo}
-                filterData={testData}
-                userRole={userRole}
+                filterData={
+                  permissions.testData
+                    ? (permissions.testData as ContentFilterData)
+                    : undefined
+                }
+                userRole={user?.role || "user"}
               />
-            </RequireAuth>
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/exams"
+          path={ROUTES.exames.path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
-              <ExamesPage navigateTo={navigateTo} userRole={userRole} />
-            </RequireAuth>
+            <ProtectedRoute guards={ROUTES.exames.guards}>
+              <ExamesPage navigateTo={navigateTo} userRole={user?.role || "user"} />
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/transversality"
+          path={ROUTES.transversality.path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <ProtectedRoute guards={ROUTES.transversality.guards}>
               <TransversalityPage
                 navigateTo={navigateTo}
-                currentPage={currentPage}
-                userName={userName}
+                userName={user?.name || ""}
                 onLogout={handleLogout}
               />
-            </RequireAuth>
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/question"
+          path={ROUTES["single-question"].path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <ProtectedRoute guards={ROUTES["single-question"].guards}>
               <SingleQuestionPage
                 navigateTo={navigateTo}
-                userName={userName}
+                userName={user?.name || ""}
                 onLogout={handleLogout}
-                questionData={testData}
+                questionData={
+                  permissions.testData
+                    ? (permissions.testData as QuizMetaData)
+                    : undefined
+                }
               />
-            </RequireAuth>
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/faq"
+          path={ROUTES.faq.path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
-              <FAQPage navigateTo={navigateTo} userRole={userRole} />
-            </RequireAuth>
+            <ProtectedRoute guards={ROUTES.faq.guards}>
+              <FAQPage navigateTo={navigateTo} userRole={user?.role || "user"} />
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/accessibility"
+          path={ROUTES.acessibilidade.path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
-              <AccessibilityPage navigateTo={navigateTo} userRole={userRole} />
-            </RequireAuth>
+            <ProtectedRoute guards={ROUTES.acessibilidade.guards}>
+              <AccessibilityPage navigateTo={navigateTo} userRole={user?.role || "user"} />
+            </ProtectedRoute>
           }
         />
+
         <Route
-          path="/profile"
+          path={ROUTES.perfil.path}
           element={
-            <RequireAuth isAuthenticated={isAuthenticated}>
+            <ProtectedRoute guards={ROUTES.perfil.guards}>
               <ProfilePage
-                userName={userName}
+                userName={user?.name || ""}
                 navigateTo={navigateTo}
-                userRole={userRole}
+                userRole={user?.role || "user"}
               />
-            </RequireAuth>
+            </ProtectedRoute>
           }
         />
 
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppRoutes />
+    </AuthProvider>
   );
 }

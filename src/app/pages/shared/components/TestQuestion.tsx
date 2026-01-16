@@ -1,9 +1,9 @@
 import { MessageSquare } from 'lucide-react';
-import AnswerOption from './AnswerOption';
-import PowerUpsButton from './PowerUpsButton';
-import ProgressStepper from './ProgressStepper';
-import TestHeader from './TestHeader';
-import InteractiveHTMLWindow from './InteractiveHTMLWindow'; 
+import AnswerOption from './test-question/AnswerOption';
+import PowerUpsButton from './test-question/PowerUpsButton';
+import ProgressStepper from './test-question/ProgressStepper';
+import TestHeader from './test-question/TestHeader';
+import InteractiveHTMLWindow from './test-question/InteractiveHTMLWindow'; 
 
 interface TestQuestionProps {
   // Question Data

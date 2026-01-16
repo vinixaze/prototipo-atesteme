@@ -1,4 +1,12 @@
-import { LucideIcon } from 'lucide-react';
+import type { NavigateTo } from "../../../lib/navigation/routes";
+import type { LucideIcon } from "lucide-react";
+
+export interface ProgressPageProps {
+  navigateTo: NavigateTo;
+  initialTab?: "niveis" | "conquistas";
+  userName?: string;
+  userRole?: "admin" | "user";
+}
 
 export interface Competency {
   id: number;
@@ -8,8 +16,8 @@ export interface Competency {
   icon: LucideIcon;
   completed: boolean;
   starsEarned: number;
-  totalStars: 3;
-  status: 'completed' | 'in-progress' | 'not-started';
+  totalStars: number;
+  status: "completed" | "in-progress" | "not-started" | "attempted";
   completedDate?: string;
   timeSpent?: string;
   digcoinsEarned?: number;
@@ -25,39 +33,13 @@ export interface Level {
   competencias: Competency[];
 }
 
-export type AchievementRarity = 'comum' | 'raro' | 'épico' | 'lendário';
-
 export interface Achievement {
   id: number;
   title: string;
   description: string;
   icon: LucideIcon;
   unlocked: boolean;
-  date?: string;
-  color: string;
-  rarity: AchievementRarity;
-}
-
-export interface RankingUser {
-  position: number;
-  name: string;
-  points: number;
-  digcoins: number;
-  level: number;
-  levelProgress: number;
-  medals: number;
-  avgTime: string;
-  isCurrentUser: boolean;
-  avatar: string;
-  school?: string;
-  seduc?: string;
-  regional?: string;
-  schoolName?: string;
-  turma?: string;
-}
-
-export interface RankingData {
-  escola: RankingUser[];
-  turma: RankingUser[];
-  rede: RankingUser[];
+  progress: number;
+  total: number;
+  reward: string;
 }

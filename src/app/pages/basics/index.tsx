@@ -4,13 +4,25 @@ import TestQuestion from "../shared/components/TestQuestion";
 import TestCongrats from "../shared/components/TestCongrats";
 import TestResult from "../shared/components/TestResult";
 import { explanations, questions } from "./data";
-
-interface BasicsPageProps {
-  navigateTo: (page: string, data?: any) => void;
-}
+import type { BasicsPageProps } from "./types";
 
 
 type PageState = 'question' | 'congrats' | 'result';
+
+type BasicsResultItem = {
+  questionId: number;
+  questionText: string;
+  userAnswer: string;
+  correctAnswer: string;
+  isCorrect: boolean;
+  options: (typeof questions)[number]["options"];
+};
+
+type BasicsResults = {
+  results: BasicsResultItem[];
+  correctAnswers: number;
+  totalQuestions: number;
+};
 
 export default function BasicsPage({ navigateTo }: BasicsPageProps) {
   const [pageState, setPageState] = useState<PageState>('question');
@@ -23,7 +35,7 @@ export default function BasicsPage({ navigateTo }: BasicsPageProps) {
       status: i === 0 ? 'current' : 'future'
     }))
   );
-  const [testResults, setTestResults] = useState<any>(null);
+  const [testResults, setTestResults] = useState<BasicsResults | null>(null);
 
   const currentQuestionData = questions[currentQuestion - 1];
 

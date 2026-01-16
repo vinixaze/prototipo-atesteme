@@ -13,24 +13,7 @@ import {
   ChevronRight,
   Accessibility
 } from "lucide-react";
-
-interface AccessibilityPageProps {
-  navigateTo: (page: string) => void;
-  userRole?: 'admin' | 'user';
-}
-
-interface AccessibilityTool {
-  id: string;
-  name: string;
-  description: string;
-  fullDescription: string;
-  icon: any;
-  gradient: string;
-  platforms: string[];
-  downloadLink: string;
-  learnMoreLink?: string;
-  features: string[];
-}
+import type { AccessibilityPageProps, AccessibilityTool } from "./types";
 
 export default function AccessibilityPage({
   navigateTo,

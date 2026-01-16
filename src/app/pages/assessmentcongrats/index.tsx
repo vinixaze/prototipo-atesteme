@@ -1,15 +1,6 @@
 import { ArrowRight, Rocket, Star, Trophy } from "lucide-react";
 import { useEffect, useState } from "react";
-
-interface AssessmentCongratsPageProps {
-  navigateTo: (page: string, data?: any) => void;
-  testData?: {
-    answered: number;
-    correct: number;
-    total: number;
-    selectedAnswers: Record<number, string>;
-  };
-}
+import type { AssessmentCongratsPageProps } from "./types";
 
 export default function AssessmentCongratsPage({
   navigateTo,

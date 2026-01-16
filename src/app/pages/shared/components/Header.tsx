@@ -26,6 +26,7 @@ import {
   ChevronLeft,
   ArrowRight,
 } from "lucide-react";
+import type { NavigateTo } from "../../../../lib/navigation/routes";
 
 import prosaebLogo from "../../../../assets/c8fa7f66c2fe8238b13cdb022c41e85fac6b0ed1.png";
 import logoDarkMode from "../../../../assets/logo-darkmode.png";
@@ -34,7 +35,7 @@ import logoLightMode from "../../../../assets/logo-lightmode.png";
 interface HeaderProps {
   onMenuClick?: () => void;
   userName?: string;
-  navigateTo?: (page: string) => void;
+  navigateTo?: NavigateTo;
   onLogout?: () => void;
   activeModule?: "atesteme" | "prosaeb";
   onModuleChange?: (module: "atesteme" | "prosaeb") => void;

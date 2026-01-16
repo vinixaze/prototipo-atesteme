@@ -9,7 +9,7 @@ import BlockCompetencyModal from "./components/BlockedCompetencyModal";
 import Sidebar from "../shared/components/Sidebar";
 import { CompetencyTimer } from "../shared/components/CompetencyTimer";
 import { motion, useInView } from "motion/react";
-import { categories } from "./data";
+import { categories, type Category, type Competency } from "./data";
 import {
   AlertTriangle,
   ArrowUp,
@@ -19,11 +19,17 @@ import {
   Search,
   X,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import type { PageId } from "../../../lib/navigation/routes";
+import type { SkillsPageProps } from "./types";
 
-interface SkillsPageProps {
-  navigateTo: (page: string, data?: any) => void;
-  userRole?: "admin" | "user";
-}
+type SelectedCompetency = {
+  competency: string;
+  category: string;
+  categoryColor: string;
+  competencyIcon: LucideIcon;
+  categoryIcon: LucideIcon;
+};
 
 export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -31,18 +37,18 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
   const [selectedArea, setSelectedArea] = useState("Todas");
 
   const [showWarningModal, setShowWarningModal] = useState(false);
-  const [selectedCompetency, setSelectedCompetency] = useState<any>(null);
+  const [selectedCompetency, setSelectedCompetency] = useState<SelectedCompetency | null>(null);
   const [showBlockedModal, setShowBlockedModal] = useState(false);
 
   const [showNocoes, setShowNocoes] = useState(true);
-  const [selectedBlockedComp, setSelectedBlockedComp] = useState<any>(null);
+  const [selectedBlockedComp, setSelectedBlockedComp] = useState<Competency | null>(null);
 
-  const handleCompetencyClick = (comp: any) => {
-    if (isCompetencyBlocked(comp.name)) {
+  const handleCompetencyClick = (comp: Competency) => {
+    if (isCompetencyBlocked(comp.title)) {
       setSelectedBlockedComp(comp);
       return;
     }
-    navigateTo("quiz", { competency: comp });
+    navigateTo("quiz", { competency: comp.title });
   };
 
   const filteredCategories = categories
@@ -57,7 +63,7 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
       return category.name === selectedArea && category.competencias.length > 0;
     });
 
-  const handleNavigate = (page: string) => {
+  const handleNavigate = (page: PageId) => {
     if (page === "habilidades") return;
     navigateTo(page);
   };
@@ -66,8 +72,8 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
     competency: string,
     category: string,
     categoryColor: string,
-    competencyIcon: any,
-    categoryIcon: any
+    competencyIcon: LucideIcon,
+    categoryIcon: LucideIcon
   ) => {
     setSelectedCompetency({ competency, category, categoryColor, competencyIcon, categoryIcon });
 
@@ -84,15 +90,17 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
 
   const handleConfirmWarning = () => {
     setShowWarningModal(false);
-    navigateTo("quiz", selectedCompetency);
+    if (selectedCompetency) {
+      navigateTo("quiz", selectedCompetency);
+    }
   };
 
   const handleShowBlockedModal = (
     competency: string,
     category: string,
     categoryColor: string,
-    competencyIcon: any,
-    categoryIcon: any
+    competencyIcon: LucideIcon,
+    categoryIcon: LucideIcon
   ) => {
     setSelectedCompetency({ competency, category, categoryColor, competencyIcon, categoryIcon });
     setShowBlockedModal(true);
@@ -291,15 +299,15 @@ function CategorySection({
     competency: string,
     category: string,
     categoryColor: string,
-    competencyIcon: any,
-    categoryIcon: any
+    competencyIcon: LucideIcon,
+    categoryIcon: LucideIcon
   ) => void;
   onShowBlocked: (
     competency: string,
     category: string,
     categoryColor: string,
-    competencyIcon: any,
-    categoryIcon: any
+    competencyIcon: LucideIcon,
+    categoryIcon: LucideIcon
   ) => void;
 }) {
   const categoryRef = useRef<HTMLDivElement | null>(null);
@@ -515,7 +523,7 @@ function BlockedCompetencyModal({
   competency: string;
   category: string;
   categoryColor: string;
-  icon: any;
+  icon: LucideIcon;
 }) {
   if (!isOpen) return null;
 

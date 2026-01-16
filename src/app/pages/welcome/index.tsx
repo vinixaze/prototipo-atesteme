@@ -1,12 +1,7 @@
 import { useEffect } from "react";
 import { HeroBackground } from "./components/HeroBackground";
 import { HeroCard } from "./components/HeroCard";
-
-interface WelcomePageProps {
-  userName?: string;
-  onStartQuiz: () => void;
-  onGoToDashboard: () => void;
-}
+import type { WelcomePageProps } from "./types";
 
 export default function WelcomePage({
   userName,
