@@ -4,8 +4,16 @@ import { AuthProvider, useAuth } from "../lib/auth/AuthContext";
 import { ProtectedRoute } from "../lib/auth/ProtectedRoute";
 import { useAppNavigation } from "../lib/navigation/useNavigation";
 import { ROUTES } from "../lib/navigation/routes";
-import type { PageId } from "../lib/navigation/routes";
 import FloatingChatButton from "./components/FloatingChatButton";
+import PlaceholderPage from "./components/PlaceholderPage";
+import {
+  isAssessmentTestData,
+  isBasicsAnswersData,
+  isBasicsResultData,
+  isContentFilterData,
+  isQuestionData,
+  isQuizMetaData,
+} from "./types/app";
 
 // Import pages
 import LoginPage from "./pages/login";
@@ -31,86 +39,6 @@ import AccessibilityPage from "./pages/accessibility";
 import ProfilePage from "./pages/profile";
 import TransversalityPage from "./pages/transversality";
 import SingleQuestionPage from "./pages/singlequestion";
-
-interface BasicsAnswersData {
-  selectedAnswers: Record<number, string>;
-}
-
-interface BasicsResultData {
-  correctAnswers: number;
-  totalQuestions: number;
-  results: Array<{
-    questionId: number;
-    questionText: string;
-    userAnswer: string;
-    correctAnswer: string;
-    isCorrect: boolean;
-    options: Array<{
-      letter: string;
-      text: string;
-      isCorrect: boolean;
-    }>;
-  }>;
-}
-
-interface AssessmentTestData {
-  answered: number;
-  correct: number;
-  total: number;
-  selectedAnswers: Record<number, string>;
-}
-
-interface QuizMetaData {
-  competency?: string;
-  category?: string;
-  categoryColor?: string;
-  fromPage?: PageId;
-  questions?: Array<{
-    id: number;
-    text: string;
-    htmlContent?: string;
-    options?: Array<{ letter: string; text: string; isCorrect?: boolean }>;
-    explanation?: string;
-    bncc?: string;
-    correctAnswer?: string;
-    transversality?: {
-      curricular?: string;
-      component?: string;
-      year?: string;
-      bnccType?: string;
-      bnccCode?: string;
-    };
-  }>;
-  selectedAnswers?: Record<number, string>;
-  returnTo?: PageId;
-}
-
-interface ContentFilterData {
-  category?: string;
-}
-
-function PlaceholderPage({
-  title,
-  onBack,
-}: {
-  title: string;
-  onBack: () => void;
-}) {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
-        <h2 className="text-2xl text-[#8B27FF] mb-4">{title}</h2>
-        <p className="text-gray-600 mb-6">Esta pagina esta em desenvolvimento.</p>
-        <button
-          onClick={onBack}
-          className="px-6 py-3 bg-[#8B27FF] text-white rounded-xl hover:bg-[#7B1FE8] transition-all"
-        >
-          Voltar ao Login
-        </button>
-      </div>
-    </div>
-  );
-}
 
 function AppRoutes() {
   const { user, permissions, login, logout } = useAuth();
@@ -279,8 +207,8 @@ function AppRoutes() {
               <BasicsCongratsPage
                 navigateTo={navigateTo}
                 testData={
-                  permissions.testData
-                    ? (permissions.testData as BasicsAnswersData)
+                  isBasicsAnswersData(permissions.testData)
+                    ? permissions.testData
                     : undefined
                 }
               />
@@ -295,8 +223,8 @@ function AppRoutes() {
               <BasicsResultPage
                 navigateTo={navigateTo}
                 testData={
-                  permissions.testData
-                    ? (permissions.testData as BasicsResultData)
+                  isBasicsResultData(permissions.testData)
+                    ? permissions.testData
                     : undefined
                 }
               />
@@ -320,8 +248,8 @@ function AppRoutes() {
               <AssessmentCongratsPage
                 navigateTo={navigateTo}
                 testData={
-                  permissions.testData
-                    ? (permissions.testData as AssessmentTestData)
+                  isAssessmentTestData(permissions.testData)
+                    ? permissions.testData
                     : undefined
                 }
               />
@@ -336,8 +264,8 @@ function AppRoutes() {
               <AssessmentResultPage
                 navigateTo={navigateTo}
                 testData={
-                  permissions.testData
-                    ? (permissions.testData as AssessmentTestData)
+                  isAssessmentTestData(permissions.testData)
+                    ? permissions.testData
                     : undefined
                 }
               />
@@ -352,8 +280,8 @@ function AppRoutes() {
               <QuizWarningPage
                 navigateTo={navigateTo}
                 competencyData={
-                  permissions.quizAccess?.data
-                    ? (permissions.quizAccess.data as QuizMetaData)
+                  isQuizMetaData(permissions.quizAccess?.data)
+                    ? permissions.quizAccess?.data
                     : undefined
                 }
               />
@@ -368,13 +296,13 @@ function AppRoutes() {
               <QuizPage
                 navigateTo={navigateTo}
                 competencyData={
-                  permissions.quizAccess?.data
-                    ? (permissions.quizAccess.data as QuizMetaData)
+                  isQuizMetaData(permissions.quizAccess?.data)
+                    ? permissions.quizAccess?.data
                     : undefined
                 }
                 quizData={
-                  permissions.quizAccess?.data
-                    ? (permissions.quizAccess.data as QuizMetaData)
+                  isQuizMetaData(permissions.quizAccess?.data)
+                    ? permissions.quizAccess?.data
                     : undefined
                 }
               />
@@ -389,8 +317,8 @@ function AppRoutes() {
               <QuizResultPage
                 navigateTo={navigateTo}
                 testData={
-                  permissions.quizAccess?.data
-                    ? (permissions.quizAccess.data as QuizMetaData)
+                  isQuizMetaData(permissions.quizAccess?.data)
+                    ? permissions.quizAccess?.data
                     : undefined
                 }
               />
@@ -405,8 +333,8 @@ function AppRoutes() {
               <ConteudosPage
                 navigateTo={navigateTo}
                 filterData={
-                  permissions.testData
-                    ? (permissions.testData as ContentFilterData)
+                  isContentFilterData(permissions.testData)
+                    ? permissions.testData
                     : undefined
                 }
                 userRole={user?.role || "user"}
@@ -422,8 +350,8 @@ function AppRoutes() {
               <LessonPlanPage
                 navigateTo={navigateTo}
                 filterData={
-                  permissions.testData
-                    ? (permissions.testData as ContentFilterData)
+                  isContentFilterData(permissions.testData)
+                    ? permissions.testData
                     : undefined
                 }
                 userRole={user?.role || "user"}
@@ -463,8 +391,8 @@ function AppRoutes() {
                 userName={user?.name || ""}
                 onLogout={handleLogout}
                 questionData={
-                  permissions.testData
-                    ? (permissions.testData as QuizMetaData)
+                  isQuestionData(permissions.testData)
+                    ? permissions.testData
                     : undefined
                 }
               />

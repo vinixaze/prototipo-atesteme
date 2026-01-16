@@ -3,7 +3,7 @@ import type { LucideIcon } from "lucide-react";
 
 export interface ProgressPageProps {
   navigateTo: NavigateTo;
-  initialTab?: "niveis" | "conquistas";
+  initialTab?: "niveis" | "conquistas" | "digcoins";
   userName?: string;
   userRole?: "admin" | "user";
 }
