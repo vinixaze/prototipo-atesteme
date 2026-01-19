@@ -5,6 +5,7 @@ import backgroundImage from "../../../assets/934760553d44b42ec1dd098296a4a114327
 // @ts-expect-error: Image asset not found in dev environment, placeholder used for type safety.
 import logoImage from "../../../assets/bd6e15ee05cd5d9957a2d399e18c0693a6190505.png";
 import type { PageId } from "../../../lib/navigation/routes";
+import { useAuthApi } from "../../../lib/auth/useAuthApi";
 import type { BeforeInstallPromptEvent, LoginPageProps } from "./types";
 import InstallBanner from "./components/InstallBanner";
 import DesktopLogo from "./components/DesktopLogo";
@@ -12,13 +13,13 @@ import MobileLogo from "./components/MobileLogo";
 import MobileLinks from "./components/MobileLinks";
 import DesktopFooterLinks from "./components/DesktopFooterLinks";
 
-export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
+export default function LoginPage({ navigateTo }: LoginPageProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const { loginWithPassword, beginGoogleOAuth, isLoading, error } = useAuthApi();
   const [showInstallBanner, setShowInstallBanner] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [canInstall, setCanInstall] = useState(false);
@@ -114,23 +115,16 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
       return;
     }
 
-    setIsLoading(true);
-
-    // Simular chamada de API
-    setTimeout(() => {
-      setIsLoading(false);
-      // Extrair nome do email ou usar nome padrão
-      const name = email.split("@")[0] || "Usuário";
-      onLogin?.(name);
-    }, 1500);
+    try {
+      await loginWithPassword(email, password);
+      navigateTo("welcome");
+    } catch {
+      // Erro já tratado no hook.
+    }
   };
 
   const handleGoogleLogin = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      onLogin?.("Usuário");
-    }, 1500);
+    beginGoogleOAuth();
   };
 
   return (
@@ -280,6 +274,11 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
             >
               {isLoading ? "Entrando..." : "Continuar"}
             </button>
+            {error && (
+              <p className="text-red-500 text-xs mt-2" role="alert">
+                {error}
+              </p>
+            )}
           </form>
 
           {/* Divisor */}

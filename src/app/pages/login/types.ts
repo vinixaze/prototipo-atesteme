@@ -1,7 +1,6 @@
 import type { NavigateTo } from "../../../lib/navigation/routes";
 
 export interface LoginPageProps {
-  onLogin?: (name: string) => void;
   navigateTo: NavigateTo;
 }
 

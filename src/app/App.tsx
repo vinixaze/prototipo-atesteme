@@ -41,17 +41,12 @@ import TransversalityPage from "./pages/transversality";
 import SingleQuestionPage from "./pages/singlequestion";
 
 function AppRoutes() {
-  const { user, permissions, login, logout } = useAuth();
+  const { user, permissions, logout } = useAuth();
   const { navigateTo } = useAppNavigation();
   const location = useLocation();
   const [activeModule, setActiveModule] = useState<"atesteme" | "prosaeb">(
     "atesteme"
   );
-
-  const handleLogin = (name: string) => {
-    login(name);
-    navigateTo("welcome");
-  };
 
   const handleLogout = () => {
     logout();
@@ -71,7 +66,7 @@ function AppRoutes() {
 
         <Route
           path={ROUTES.login.path}
-          element={<LoginPage onLogin={handleLogin} navigateTo={navigateTo} />}
+          element={<LoginPage navigateTo={navigateTo} />}
         />
         <Route
           path={ROUTES.signup.path}

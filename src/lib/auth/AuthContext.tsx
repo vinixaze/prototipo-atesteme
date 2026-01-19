@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useState, type ReactNode } from "react";
+import { signOut } from "./authService";
 import type { NavigationData, PermissionState, User } from "./types";
 
 interface AuthContextValue {
@@ -28,6 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
+    signOut();
     setUser(null);
     setPermissions({
       quizAccess: null,
