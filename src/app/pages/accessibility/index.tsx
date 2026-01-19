@@ -2,18 +2,16 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Header from "../shared/components/Header";
 import Sidebar from "../shared/components/Sidebar";
-import { 
-  Eye, 
-  Volume2, 
-  Smartphone, 
-  Monitor, 
+import {
+  Eye,
   Download,
   ExternalLink,
   CheckCircle,
   ChevronRight,
-  Accessibility
+  Accessibility,
 } from "lucide-react";
-import type { AccessibilityPageProps, AccessibilityTool } from "./types";
+import type { AccessibilityPageProps } from "./types";
+import { accessibilityTools } from "./accessibilityTools";
 
 export default function AccessibilityPage({
   navigateTo,
@@ -21,99 +19,6 @@ export default function AccessibilityPage({
 }: AccessibilityPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedTool, setSelectedTool] = useState<string>('vlibras');
-
-  const accessibilityTools: AccessibilityTool[] = [
-    {
-      id: 'vlibras',
-      name: 'VLibras',
-      description: 'Tradutor de conteúdo digital para Libras',
-      fullDescription: 'As aplicações da Suíte VLibras permitem que pessoas surdas acessem conteúdo multimídia em sua língua natural de comunicação, o que contribui para com a acessibilidade de computadores, dispositivos móveis e páginas Web.',
-      icon: Eye,
-      gradient: 'from-[#1E40AF] to-[#3B82F6]',
-      platforms: ['Windows', 'Linux', 'macOS', 'Android', 'Chrome', 'Firefox'],
-      downloadLink: 'https://www.gov.br/governodigital/pt-br/vlibras',
-      learnMoreLink: 'https://www.gov.br/governodigital/pt-br/vlibras',
-      features: [
-        'Tradução automática de texto para Libras',
-        'Avatar 3D realista',
-        'Compatível com navegadores web',
-        'Aplicativo móvel disponível',
-        'Software gratuito e open source'
-      ]
-    },
-    {
-      id: 'talkback',
-      name: 'Google TalkBack',
-      description: 'Leitor de tela para Android',
-      fullDescription: 'O TalkBack é o leitor de tela do Google incluído em dispositivos Android. O TalkBack oferece feedback falado para que você possa usar seu dispositivo sem olhar para a tela.',
-      icon: Volume2,
-      gradient: 'from-[#7C3AED] to-[#A855F7]',
-      platforms: ['Android'],
-      downloadLink: 'https://play.google.com/store/apps/details?id=com.google.android.marvin.talkback',
-      learnMoreLink: 'https://support.google.com/accessibility/android/answer/6283677',
-      features: [
-        'Feedback por voz de ações na tela',
-        'Gestos de navegação personalizáveis',
-        'Suporte a braille',
-        'Controle de velocidade de fala',
-        'Integrado ao Android'
-      ]
-    },
-    {
-      id: 'voiceover',
-      name: 'VoiceOver',
-      description: 'Leitor de tela da Apple',
-      fullDescription: 'O VoiceOver é um leitor de tela líder do setor baseado em gestos que permite aproveitar o iPhone, iPad e iPod touch mesmo que você não consiga ver a tela.',
-      icon: Smartphone,
-      gradient: 'from-[#059669] to-[#10B981]',
-      platforms: ['iOS', 'macOS'],
-      downloadLink: 'https://www.apple.com/br/accessibility/voiceover/',
-      learnMoreLink: 'https://support.apple.com/pt-br/guide/iphone/iph3e2e415f/ios',
-      features: [
-        'Descrição de elementos na tela',
-        'Gestos intuitivos para navegação',
-        'Rotor para acesso rápido',
-        'Suporte a mais de 30 idiomas',
-        'Pré-instalado em dispositivos Apple'
-      ]
-    },
-    {
-      id: 'narrador',
-      name: 'Narrador do Windows',
-      description: 'Leitor de tela integrado ao Windows',
-      fullDescription: 'O Narrador é um leitor de tela integrado ao Windows 10 e Windows 11 que lê o texto na tela e descreve eventos, como notificações e compromissos do calendário.',
-      icon: Monitor,
-      gradient: 'from-[#DC2626] to-[#EF4444]',
-      platforms: ['Windows 10', 'Windows 11'],
-      downloadLink: 'https://support.microsoft.com/pt-br/windows/guia-completo-do-narrador-e4397a0d-ef4f-b386-d8ae-c172f109bdb1',
-      learnMoreLink: 'https://support.microsoft.com/pt-br/windows/cap%C3%ADtulo-1-introdu%C3%A7%C3%A3o-ao-narrador-7fe8fd72-541f-4536-7658-bfc37ddaf9c6',
-      features: [
-        'Leitura de texto e descrição de eventos',
-        'Comandos de teclado para navegação',
-        'Suporte a displays braille',
-        'Vozes naturais em múltiplos idiomas',
-        'Integrado ao sistema operacional'
-      ]
-    },
-    {
-      id: 'ubuntu',
-      name: 'Acessibilidade no Ubuntu',
-      description: 'Recursos de acessibilidade do Ubuntu',
-      fullDescription: 'O Ubuntu oferece um conjunto completo de ferramentas de acessibilidade, incluindo leitor de tela Orca, ampliação de tela, teclado na tela e muito mais para tornar o sistema operacional acessível a todos.',
-      icon: Monitor,
-      gradient: 'from-[#EA580C] to-[#F97316]',
-      platforms: ['Ubuntu', 'Linux'],
-      downloadLink: 'https://help.ubuntu.com/stable/ubuntu-help/a11y.html.pt_BR',
-      learnMoreLink: 'https://ubuntu.com/accessibility',
-      features: [
-        'Leitor de tela Orca integrado',
-        'Ampliador de tela',
-        'Teclado virtual na tela',
-        'Alto contraste e temas acessíveis',
-        'Software livre e gratuito'
-      ]
-    }
-  ];
 
   const currentTool = accessibilityTools.find(tool => tool.id === selectedTool) || accessibilityTools[0];
 

@@ -1,18 +1,6 @@
 ﻿import { Trophy, Star, Lock, Sparkles, Crown, Award, Zap, Medal, Flag, Users, PieChart, Target, TrendingUp, ChevronDown, ChevronUp, LockOpen } from 'lucide-react';
-import { LucideIcon } from 'lucide-react';
 import { useState } from 'react';
-
-interface Achievement {
-  id: number;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  color: string;
-  unlocked: boolean;
-  date?: string;
-  category?: string;
-  rarity?: 'comum' | 'raro' | 'épico' | 'lendário';
-}
+import type { Achievement } from "../types";
 
 interface AchievementsTabProps {
   achievements: Achievement[];
@@ -23,7 +11,7 @@ export default function AchievementsTab({ achievements, unlockedAchievements }: 
   const progressPercentage = Math.round((unlockedAchievements / achievements.length) * 100);
 
   // Função para retornar pontos baseado na raridade
-  const getPointsByRarity = (rarity?: 'comum' | 'raro' | 'épico' | 'lendário'): number => {
+  const getPointsByRarity = (rarity?: Achievement["rarity"]): number => {
     switch (rarity) {
       case 'comum': return 10;
       case 'raro': return 25;
@@ -337,3 +325,6 @@ export default function AchievementsTab({ achievements, unlockedAchievements }: 
     </div>
   );
 }
+
+
+

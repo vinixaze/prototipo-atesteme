@@ -1,23 +1,20 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import Header from "../shared/components/Header";
 import {
   isCompetencyBlocked,
 } from "../../utils/competencyStorage";
 import Sidebar from "../shared/components/Sidebar";
-import { motion } from "motion/react";
 import { categories, type Competency } from "./data";
-import {
-  ArrowUp,
-  Award,
-  Search,
-  X,
-} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { PageId } from "../../../lib/navigation/routes";
 import type { SelectedCompetency, SkillsPageProps } from "./types";
 import CategorySection from "./components/CategorySection";
 import SkillsBlockedCompetencyModal from "./components/SkillsBlockedCompetencyModal";
 import SkillsWarningModal from "./components/SkillsWarningModal";
+import SkillsHeaderSection from "./components/SkillsHeaderSection";
+import SkillsFilters from "./components/SkillsFilters";
+import SkillsEmptyState from "./components/SkillsEmptyState";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 
 export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -65,7 +62,7 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
   ) => {
     setSelectedCompetency({ competency, category, categoryColor, competencyIcon, categoryIcon });
 
-    // você já navega pro warning page (ótimo)
+    // vocÃª jÃ¡ navega pro warning page (Ã³timo)
     navigateTo("quiz-warning", {
       competency,
       category,
@@ -107,98 +104,27 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
       <div className="flex-1 flex flex-col min-w-0 pt-20">
         <Header
           onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          userName="Usuário"
+          userName="UsuÃ¡rio"
           navigateTo={navigateTo}
           onLogout={() => navigateTo("login")}
         />
 
         <main className="flex-1 overflow-auto">
           <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-6">
-            {/* Header + Card Noções Básicas */}
-            <div className="flex flex-col lg:flex-row gap-6 mb-8 items-start">
-              {/* ESQUERDA - TÍTULO */}
-              <div className="w-full lg:w-[70%]">
-                <h1 className="text-3xl md:text-4xl font-semibold text-[#8B27FF] mb-2">
-                  Competências Digitais
-                </h1>
-                <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
-                  Desenvolva suas competências nos eixos da BNCC Computação/Letramento Digital
-                </p>
-              </div>
-
-              {/* Noções Básicas panel (desktop only, closable) */}
-              {showNocoes && (
-                <div className="hidden lg:block w-full lg:w-[50%] relative">
-                  <div className="bg-[#F3E8FF]/60 dark:bg-gray-800/60 backdrop-blur-md border border-purple-200 dark:border-gray-700/40 rounded-2xl p-6 shadow-sm">
-                    <button
-                      type="button"
-                      onClick={() => setShowNocoes(false)}
-                      className="absolute top-3 right-3 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      <X className="w-4 h-4 text-gray-600 dark:text-gray-200" />
-                    </button>
-
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-[#F3E8FF] flex items-center justify-center">
-                        <Award className="w-6 h-6 text-[#8B27FF]" />
-                      </div>
-
-                      <div className="flex-1">
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                          Noções Básicas
-                        </h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                          Conteúdo muito recomendado antes do Nível 01
-                        </p>
-
-                        <div className="mt-4">
-                          <button
-                            type="button"
-                            onClick={() => navigateTo("nocoes-basicas")}
-                            className="px-4 py-2 rounded-xl bg-[#8B27FF] text-white hover:bg-[#7B1FE8] transition-all"
-                          >
-                            Começar
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
+            {/* Header + Card Nocoes Basicas */}
+            <SkillsHeaderSection
+              showNocoes={showNocoes}
+              onCloseNocoes={() => setShowNocoes(false)}
+              onStartNocoes={() => navigateTo("nocoes-basicas")}
+            />
 
             {/* Search and Filter */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
-              <div className="flex flex-col md:flex-row gap-4">
-                {/* Select */}
-                <div className="w-full md:w-1/4">
-                  <select
-                    value={selectedArea}
-                    onChange={(e) => setSelectedArea(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B27FF] focus:border-transparent bg-gray-50 dark:bg-gray-700 dark:text-gray-200 transition-all"
-                  >
-                    <option>Todas</option>
-                    <option>INFORMAÇÕES E DADOS</option>
-                    <option>COMUNICAÇÃO E COLABORAÇÃO</option>
-                    <option>CRIAÇÃO DE CONTEÚDO</option>
-                    <option>PROTEÇÃO E SEGURANÇA</option>
-                    <option>RESOLUÇÃO DE PROBLEMAS</option>
-                  </select>
-                </div>
-
-                {/* Search */}
-                <div className="w-full md:w-3/4 relative">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Digite o nome da competência"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-12 pr-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B27FF] focus:border-transparent bg-gray-50 dark:bg-gray-700 dark:text-gray-200 transition-all"
-                  />
-                </div>
-              </div>
-            </div>
+            <SkillsFilters
+              selectedArea={selectedArea}
+              onSelectedAreaChange={setSelectedArea}
+              searchTerm={searchTerm}
+              onSearchTermChange={setSearchTerm}
+            />
 
             {/* Categories and Skills */}
             <div className="space-y-12">
@@ -214,29 +140,13 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
             </div>
 
             {/* No Results */}
-            {filteredCategories.length === 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 text-center shadow-sm">
-                <p className="text-gray-500 dark:text-gray-400">
-                  Nenhuma competência encontrada. Tente ajustar sua busca ou filtro.
-                </p>
-              </div>
-            )}
+            {filteredCategories.length === 0 && <SkillsEmptyState />}
           </div>
         </main>
       </div>
 
       {/* Scroll to top button */}
-      <motion.button
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="fixed bottom-24 md:bottom-6 left-4 md:left-6 z-50 bg-gray-500 hover:bg-gray-600 text-white p-3 md:p-4 rounded-full shadow-2xl transition-all"
-        title="Ir para o topo"
-      >
-        <ArrowUp className="w-6 h-6" />
-      </motion.button>
+      <ScrollToTopButton onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} />
 
       {/* Warning Modal (opcional, mantido) */}
       {showWarningModal && selectedCompetency && (
@@ -273,3 +183,8 @@ export default function SkillsPage({ navigateTo, userRole }: SkillsPageProps) {
     </div>
   );
 }
+
+
+
+
+

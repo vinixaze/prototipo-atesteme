@@ -1,79 +1,27 @@
 import { ArrowRight, Star, Trophy } from "lucide-react";
-import { useEffect, useState } from "react";
-import { questions } from "../basics/data";
 import type { BasicsCongratsPageProps } from "./types";
+import Confetti from "./components/Confetti";
+import { buildBasicsResults } from "./buildBasicsResults";
 
 export default function BasicsCongratsPage({
   navigateTo,
   testData,
 }: BasicsCongratsPageProps) {
-  const [showConfetti, setShowConfetti] = useState(true);
-
-  useEffect(() => {
-    // Confetti por 3 segundos
-    setTimeout(() => setShowConfetti(false), 3000);
-  }, []);
-
   const handleContinue = () => {
-    // Calcular resultados
-    const selectedAnswers = testData?.selectedAnswers || {};
-    const results = questions.map((q) => {
-      const userAnswer = selectedAnswers[q.id];
-      const correctOption = q.options.find((opt) => opt.isCorrect);
-      const isCorrect = userAnswer === correctOption?.letter;
-      
-      return {
-        questionId: q.id,
-        questionText: q.text,
-        userAnswer: userAnswer || '',
-        correctAnswer: correctOption?.letter || '',
-        isCorrect,
-        options: q.options,
-      };
-    });
-
-    const correctCount = results.filter((r) => r.isCorrect).length;
+    const { results, correctAnswers, totalQuestions } = buildBasicsResults(testData);
 
     // Navegar para tela de resultado detalhado
-    navigateTo('nocoes-basicas-result', {
+    navigateTo("nocoes-basicas-result", {
       results,
-      correctAnswers: correctCount,
-      totalQuestions: 3,
+      correctAnswers,
+      totalQuestions,
     });
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#8B27FF] via-[#7B1FE8] to-[#6B17D0] dark:from-[#581C87] dark:via-[#6B21A8] dark:to-[#7E22CE] flex items-center justify-center p-4 relative overflow-hidden">
       {/* Confetti Animation */}
-      {showConfetti && (
-        <div className="absolute inset-0 pointer-events-none">
-          {Array.from({ length: 50 }, (_, i) => (
-            <div
-              key={i}
-              className="absolute animate-confetti"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: '-10px',
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${3 + Math.random() * 2}s`,
-              }}
-            >
-              <div
-                className="w-3 h-3 rounded-full"
-                style={{
-                  backgroundColor: [
-                    '#FFD700',
-                    '#FF9800',
-                    '#E91E63',
-                    '#00BCD4',
-                    '#4CAF50',
-                  ][Math.floor(Math.random() * 5)],
-                }}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      <Confetti />
 
       {/* Main Content */}
       <div className="max-w-2xl w-full animate-scaleUp">

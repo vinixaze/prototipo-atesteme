@@ -4,8 +4,8 @@ import { AuthProvider, useAuth } from "../lib/auth/AuthContext";
 import { ProtectedRoute } from "../lib/auth/ProtectedRoute";
 import { useAppNavigation } from "../lib/navigation/useNavigation";
 import { ROUTES } from "../lib/navigation/routes";
-import FloatingChatButton from "./components/FloatingChatButton";
-import PlaceholderPage from "./components/PlaceholderPage";
+import FloatingChatButton from "./FloatingChatButton";
+import PlaceholderPage from "./PlaceholderPage";
 import {
   isAssessmentTestData,
   isBasicsAnswersData,

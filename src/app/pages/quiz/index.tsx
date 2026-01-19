@@ -107,7 +107,7 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
       }));
 
       return {
-        questionId: q.id,
+        questionId: Number(q.id),
         questionText: q.text,
         userAnswer: userAnswer || '',
         correctAnswer: correctOption?.letter || '',
@@ -272,11 +272,11 @@ export default function QuizPage({ navigateTo, competencyData, quizData }: QuizP
     <>
       <Toaster position="top-center" />
       <TestQuestion
-        currentQuestion={currentIndex + 1}          // número para UI
+        currentQuestion={currentIndex + 1}
         totalQuestions={questions.length}
         questionText={currentQuestionData?.text}
         questionHtml={currentQuestionData?.htmlContent}
-        options={currentQuestionData?.options}
+        options={currentQuestionData?.options ?? []}
         selectedAnswer={selectedAnswer}
         onSelectAnswer={handleSelectAnswer}
         onSaveAnswer={handleSaveAnswer}

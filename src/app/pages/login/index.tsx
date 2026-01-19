@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Eye, EyeOff, Download, X } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 // @ts-expect-error: Image asset not found in dev environment, placeholder used for type safety.
 import backgroundImage from "../../../assets/934760553d44b42ec1dd098296a4a1143272299c.png";
 // @ts-expect-error: Image asset not found in dev environment, placeholder used for type safety.
 import logoImage from "../../../assets/bd6e15ee05cd5d9957a2d399e18c0693a6190505.png";
+import type { PageId } from "../../../lib/navigation/routes";
 import type { BeforeInstallPromptEvent, LoginPageProps } from "./types";
+import InstallBanner from "./components/InstallBanner";
+import DesktopLogo from "./components/DesktopLogo";
+import MobileLogo from "./components/MobileLogo";
+import MobileLinks from "./components/MobileLinks";
+import DesktopFooterLinks from "./components/DesktopFooterLinks";
 
 export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
   const [email, setEmail] = useState("");
@@ -16,6 +22,11 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
   const [showInstallBanner, setShowInstallBanner] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [canInstall, setCanInstall] = useState(false);
+  const footerLinks: { label: string; page: PageId }[] = [
+    { label: "Atendimento ao usuário", page: "support" },
+    { label: "Políticas de privacidade", page: "privacy" },
+    { label: "Termos e condições", page: "terms" },
+  ];
 
   // Detectar prompt de instalação PWA
   useEffect(() => {
@@ -125,39 +136,14 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
   return (
     <div className="min-h-screen w-screen overflow-x-hidden flex items-center justify-center relative dark:bg-gray-900">
       {/* Barra de Instalação PWA - Fina no topo (similar a aviso de cookie) */}
-      {showInstallBanner && (
-        <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#8B27FF] to-[#A855F7] text-white shadow-lg">
-          <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-2 flex-1 min-w-0">
-              <Download className="w-4 h-4 flex-shrink-0" />
-              <p className="text-sm font-medium truncate">
-                Instale o ATESTEME para acesso rápido e experiência completa
-              </p>
-            </div>
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <button
-                onClick={handleInstallClick}
-                disabled={!canInstall}
-                className={`px-3 py-1 rounded-lg text-sm font-bold transition-colors whitespace-nowrap
-                  ${canInstall
-                    ? "bg-white text-[#8B27FF] hover:bg-white/90"
-                    : "bg-white/60 text-[#8B27FF]/60 cursor-not-allowed"
-                  }
-              `}
-              >
-                Instalar
-              </button>
-
-              <button
-                onClick={handleDismissInstall}
-                className="w-6 h-6 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <InstallBanner
+        visible={showInstallBanner}
+        canInstall={canInstall}
+        message="Instale o ATESTEME para acesso rápido e experiência completa"
+        installLabel="Instalar"
+        onInstallClick={handleInstallClick}
+        onDismiss={handleDismissInstall}
+      />
 
       {/* Imagem de Fundo - Tela Cheia - Posicionada mais à esquerda */}
       <div
@@ -172,22 +158,11 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
       <div className="absolute inset-0 bg-black/30 dark:bg-black/60" />
 
       {/* Logo Atesteme - Desktop */}
-      <div className="absolute left-[4%] top-[20%] z-10 hidden lg:flex flex-col items-center">
-        <img
-          src={logoImage}
-          alt="Atesteme Logo"
-          className="block w-[400px] h-auto drop-shadow-2xl"
-        />
+      <DesktopLogo logoImage={logoImage} subtitle="Plataforma Educacional" />
 
-        <span className="-mt-[2px] w-full text-center text-white/90 text-lg font-medium leading-none tracking-wide drop-shadow-lg">
-          Plataforma Educacional
-        </span>
-
-      </div>
-
-
-
-
+      
+      
+      
       {/* Card de Login Flutuante */}
       <div className="relative z-20 w-full max-w-[520px] px-4 lg:absolute lg:right-[3%] lg:top-1/2 lg:-translate-y-1/2 lg:px-0 mt-44 sm:mt-52 lg:mt-0">
         <div className="bg-white dark:bg-gray-800 rounded-[20px] p-6 sm:p-8 lg:p-10 shadow-[0_2px_8px_rgba(0,0,0,0.06),0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.3),0_8px_32px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_2px_8px_rgba(0,0,0,0.08),0_12px_48px_rgba(0,0,0,0.18)] dark:hover:shadow-[0_2px_8px_rgba(0,0,0,0.4),0_12px_48px_rgba(0,0,0,0.6)]">
@@ -351,73 +326,13 @@ export default function LoginPage({ onLogin, navigateTo }: LoginPageProps) {
         </div>
 
         {/* Links Mobile - Abaixo do Card */}
-        <div className="lg:hidden mt-6 mb-6">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm">
-            <button
-              onClick={() => navigateTo("support")}
-              className="text-white hover:text-white/80 hover:underline transition-colors font-medium drop-shadow-lg"
-            >
-              Atendimento ao usuário
-            </button>
-            <span className="text-white/60 hidden sm:inline">|</span>
-            <button
-              onClick={() => navigateTo("privacy")}
-              className="text-white hover:text-white/80 hover:underline transition-colors font-medium drop-shadow-lg"
-            >
-              Políticas de privacidade
-            </button>
-            <span className="text-white/60 hidden sm:inline">|</span>
-            <button
-              onClick={() => navigateTo("terms")}
-              className="text-white hover:text-white/80 hover:underline transition-colors font-medium drop-shadow-lg"
-            >
-              Termos e condições
-            </button>
-          </div>
-        </div>
+        <MobileLinks navigateTo={navigateTo} links={footerLinks} />
       </div>
       {/* Logo Mobile */}
-      <div className="absolute top-20 sm:top-24 left-1/2 -translate-x-1/2 lg:hidden z-10 flex flex-col items-center">
-        <img
-          src={logoImage}
-          alt="Atesteme Logo"
-          className="block w-[180px] sm:w-[250px] h-auto drop-shadow-lg"
-        />
-
-        <span className="mt-1 text-white/90 text-sm sm:text-base font-medium leading-none tracking-wide text-center drop-shadow">
-          Plataforma da Educação Digital
-        </span>
-
-      </div>
-
-
-
+      <MobileLogo logoImage={logoImage} subtitle="Plataforma da Educação Digital" />
 
       {/* Links de Rodapé Desktop - Embaixo da Logo */}
-      <div className="absolute left-[8%] bottom-6 z-10 hidden lg:block">
-        <div className="flex items-center justify-center gap-3 text-sm">
-          <button
-            onClick={() => navigateTo("support")}
-            className="text-white hover:text-white/80 hover:underline transition-colors font-medium drop-shadow-lg"
-          >
-            Atendimento ao usuário
-          </button>
-          <span className="text-white/60">|</span>
-          <button
-            onClick={() => navigateTo("privacy")}
-            className="text-white hover:text-white/80 hover:underline transition-colors font-medium drop-shadow-lg"
-          >
-            Políticas de privacidade
-          </button>
-          <span className="text-white/60">|</span>
-          <button
-            onClick={() => navigateTo("terms")}
-            className="text-white hover:text-white/80 hover:underline transition-colors font-medium drop-shadow-lg"
-          >
-            Termos e condições
-          </button>
-        </div>
-      </div>
+      <DesktopFooterLinks navigateTo={navigateTo} links={footerLinks} />
     </div>
   );
 }

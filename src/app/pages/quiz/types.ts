@@ -22,7 +22,7 @@ export type QuizQuestion = {
 
 export type QuizResults = {
   results: Array<{
-    questionId: number | string;
+    questionId: number;
     questionText: string;
     userAnswer: string;
     correctAnswer: string;

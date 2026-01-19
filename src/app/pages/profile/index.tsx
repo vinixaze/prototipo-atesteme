@@ -22,6 +22,9 @@ import type { PageId } from "../../../lib/navigation/routes";
 import CollectibleAvatarModal from "./components/CollectibleAvatarModal";
 import ProfileStyles from "./components/ProfileStyles";
 import WebcamModal from "./components/WebcamModal";
+import ProfileHeaderSection from "./components/ProfileHeaderSection";
+import ProfilePhotoCard from "./components/ProfilePhotoCard";
+import ProfileTypeBar from "./components/ProfileTypeBar";
 import {
   User,
   Mail,
@@ -322,6 +325,9 @@ export default function ProfilePage({
   };
 
   const identificadorPessoal = getIdentificadorPessoal(formData.cpf);
+  const isMenorDeIdade =
+    isDataNascimentoValida(formData.dataNascimento) &&
+    calcularIdade(formData.dataNascimento) < 18;
 
   const isFormValid = Object.values(errors).every(error => !error) &&
     formData.nome &&
@@ -356,141 +362,23 @@ export default function ProfilePage({
         <main className="flex-1 overflow-auto">
           <div className="max-w-[1200px] mx-auto p-6 md:p-8 lg:p-10">
             {/* Header da Página */}
-            <div className="mb-10 animate-fadeIn">
-              <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">Meu Perfil</h1>
-              <p className="text-gray-600 dark:text-gray-400">
-                Dashboard <span className="text-gray-400 dark:text-gray-500 mx-2">›</span>
-                <span className="text-[#8B27FF] dark:text-[#A855F7] font-medium">Perfil</span>
-              </p>
-            </div>
+            <ProfileHeaderSection />
 
             {/* Card de Foto de Perfil */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 md:p-10 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 mb-8 animate-slideUp" style={{ animationDelay: '100ms' }}>
-              <div className="flex flex-col md:flex-row items-center gap-8">
-                {/* Avatar */}
-                <div className="relative group cursor-pointer" onClick={() => setPhotoMode('webcam')}>
-                  <div className="w-36 h-36 md:w-40 md:h-40 rounded-full border-4 border-purple-200 dark:border-purple-800 shadow-lg shadow-purple-500/20 overflow-hidden transition-all duration-300 group-hover:scale-105 group-hover:border-[#8B27FF] dark:group-hover:border-[#A855F7]">
-                    <img
-                      src={photoUrl}
-                      alt={userName}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-
-                  {/* Badge de Status */}
-                  <div
-                    className={`
-                      absolute bottom-1 right-1 w-8 h-8 rounded-full 
-                      border-3 border-white dark:border-gray-800 shadow-lg
-                      flex items-center justify-center
-                      ${photoStatus === 'uploaded' ? 'bg-[#4CAF50]' : 'bg-[#FFD700]'}
-                    `}
-                  >
-                    {photoStatus === 'uploaded' ? (
-                      <Check className="w-4 h-4 text-white" strokeWidth={3} />
-                    ) : (
-                      <Clock className="w-4 h-4 text-white" strokeWidth={3} />
-                    )}
-                  </div>
-
-                  {/* Overlay de Edição */}
-                  <div className="absolute inset-0 bg-[#8B27FF]/90 dark:bg-[#A855F7]/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <Camera className="w-12 h-12 text-white" strokeWidth={2} />
-                  </div>
-                </div>
-
-                {/* Informações e Botões */}
-                <div className="flex-1 text-center md:text-left">
-                  <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">{userName}</h2>
-                  <div className="flex items-center justify-center md:justify-start gap-2 text-gray-600 dark:text-gray-400 mb-3">
-                    <Mail className="w-4 h-4" />
-                    <span className="text-sm">{formData.email}</span>
-                  </div>
-                  <div
-                    className={`
-                      inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6
-                      ${isProfileComplete
-                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-                        : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
-                      }
-                    `}
-                  >
-                    {isProfileComplete ? (
-                      <>
-                        <CheckCircle2 className="w-4 h-4" />
-                        Perfil completo
-                      </>
-                    ) : (
-                      <>
-                        <AlertCircle className="w-4 h-4" />
-                        Complete seu perfil
-                      </>
-                    )}
-                  </div>
-
-                  {/* Botões de Ação */}
-                  <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-                    <button
-                      onClick={() => {
-                        setPhotoMode('webcam');
-                      }}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-[#8B27FF] text-white rounded-xl font-bold shadow-lg shadow-purple-500/30 hover:bg-[#6B1FBF] hover:-translate-y-0.5 transition-all duration-300"
-                    >
-                      <Camera className="w-5 h-5" />
-                      Tirar foto
-                    </button>
-                    <button
-                      onClick={() => fileInputRef.current?.click()}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-xl font-medium hover:border-[#8B27FF] dark:hover:border-[#A855F7] hover:text-[#8B27FF] dark:hover:text-[#A855F7] hover:bg-purple-50/50 dark:hover:bg-purple-900/30 transition-all duration-300"
-                    >
-                      <Upload className="w-5 h-5" />
-                      Selecionar foto
-                    </button>
-                    <button
-                      onClick={() => setShowAvatarsModal(true)}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-xl font-medium hover:border-[#8B27FF] dark:hover:border-[#A855F7] hover:text-[#8B27FF] dark:hover:text-[#A855F7] hover:bg-purple-50/50 dark:hover:bg-purple-900/30 transition-all duration-300"
-                    >
-                      <User className="w-5 h-5" />
-                      Avatares
-                    </button>
-                    <button
-                      onClick={() => setShowBannersModal(true)}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-xl font-medium hover:border-[#8B27FF] dark:hover:border-[#A855F7] hover:text-[#8B27FF] dark:hover:text-[#A855F7] hover:bg-purple-50/50 dark:hover:bg-purple-900/30 transition-all duration-300"
-                    >
-                      <ImageIcon className="w-5 h-5" />
-                      Banners
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ProfilePhotoCard
+              userName={userName}
+              email={formData.email}
+              photoUrl={photoUrl}
+              photoStatus={photoStatus}
+              isProfileComplete={Boolean(isProfileComplete)}
+              onOpenWebcam={() => setPhotoMode('webcam')}
+              onOpenFile={() => fileInputRef.current?.click()}
+              onOpenAvatars={() => setShowAvatarsModal(true)}
+              onOpenBanners={() => setShowBannersModal(true)}
+            />
 
             {/* Barra de Tipo de Perfil - Compacta */}
-            <div className="relative mb-8 animate-slideUp" style={{ animationDelay: '150ms' }}>
-              {/* Brilho de fundo sutil */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl blur opacity-20"></div>
-
-              {/* Barra principal */}
-              <div className="relative bg-gradient-to-r from-white via-purple-50/50 to-white dark:from-gray-800 dark:via-purple-900/20 dark:to-gray-800 rounded-2xl p-6 shadow-lg border-2 border-purple-200 dark:border-purple-800/60">
-                <div className="flex items-center gap-4">
-                  {/* Ícone com gradiente */}
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-purple-400 rounded-full blur-md opacity-40"></div>
-                    <div className="relative w-14 h-14 rounded-full flex items-center justify-center bg-gradient-to-br from-[#8B27FF] to-purple-600 dark:from-[#A855F7] dark:to-purple-500 shadow-lg">
-                      <GraduationCap className="w-7 h-7 text-white" strokeWidth={2.5} />
-                    </div>
-                  </div>
-
-                  {/* Textos */}
-                  <div>
-                    <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Tipo de Perfil</p>
-                    <h4 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#8B27FF] to-purple-600 dark:from-[#A855F7] dark:to-purple-400">
-                      Estudante
-                    </h4>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ProfileTypeBar />
 
             {/* Grid de Cards */}
             <div className="grid lg:grid-cols-2 gap-6 mb-8">
@@ -1088,14 +976,14 @@ export default function ProfilePage({
           setPhotoMode(null);
         }}
       />
-{/* Avatar Selection Overlay */}
+      {/* Avatar Selection Overlay */}
       <AvatarGalleryModal
         isOpen={photoMode === 'avatar'}
         avatarOptions={avatarOptions}
         onSelect={(url) => confirmPhoto(url)}
         onClose={() => setPhotoMode(null)}
       />
-{/* Modal de Banners */}
+      {/* Modal de Banners */}
       <BannerSelectionModal
         isOpen={showBannersModal}
         bannerLevels={bannerLevels}
@@ -1107,97 +995,18 @@ export default function ProfilePage({
         onClose={() => setShowBannersModal(false)}
         onNavigateToCoins={() => navigateTo('digcoins')}
       />
-{/* Modal de Avatares */}
-      {showAvatarsModal && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/70 animate-fadeIn">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-scaleIn">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6 pb-5 border-b-2 border-gray-100 dark:border-gray-700">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 dark:from-pink-900/40 dark:to-pink-800/40 rounded-full flex items-center justify-center">
-                    <User className="w-6 h-6 text-[#E91E63]" strokeWidth={2} />
-                  </div>
-                  Avatares Colecionáveis
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2 ml-15">Figuras históricas da tecnologia</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => navigateTo('digcoins')}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#8B27FF] text-white rounded-xl font-medium text-sm hover:bg-[#6B1FBF] transition-all duration-300 hover:scale-105"
-                >
-                  <RefreshCcw className="w-4 h-4" />
-                  <span className="sm:hidden">Mais</span>
-                  <span className="hidden sm:inline">Obter Mais</span>
-                </button>
-
-
-                <button
-                  onClick={() => setShowAvatarsModal(false)}
-                  className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300"
-                >
-                  <X className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                </button>
-              </div>
-            </div>
-
-            {/* Grid de Avatares */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {collectibleAvatars.map((avatar) => (
-                <button
-                  key={avatar.id}
-                  onClick={() => {
-                    if (avatar.unlocked) {
-                      setSelectedAvatar(avatar.id);
-                      setHasChanges(true);
-                    }
-                  }}
-                  disabled={!avatar.unlocked}
-                  className={`
-                    relative p-3 rounded-xl border-2 transition-all duration-300 group
-                    ${!avatar.unlocked
-                      ? 'border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-700/50 opacity-60 cursor-not-allowed'
-                      : selectedAvatar === avatar.id
-                        ? 'border-[#8B27FF] dark:border-[#A855F7] bg-purple-50 dark:bg-purple-900/30 shadow-lg shadow-purple-500/20 scale-105'
-                        : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-700 hover:border-purple-300 dark:hover:border-purple-600 hover:scale-105'
-                    }
-                  `}
-                >
-                  {!avatar.unlocked && (
-                    <div className="absolute top-2 right-2 z-10 bg-gray-600 dark:bg-gray-800 rounded-full p-1">
-                      <Lock className="w-3 h-3 text-white" />
-                    </div>
-                  )}
-
-                  <div className={`w-full aspect-square rounded-lg overflow-hidden mb-2 ${!avatar.unlocked ? 'grayscale' : ''}`}>
-                    <img
-                      src={avatar.url}
-                      alt={avatar.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-
-                  <p className={`text-xs font-medium text-center line-clamp-2 ${selectedAvatar === avatar.id ? 'text-[#8B27FF] dark:text-[#A855F7]' : 'text-gray-700 dark:text-gray-300'}`}>
-                    {avatar.name}
-                  </p>
-
-                  {!avatar.unlocked && (
-                    <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-1">
-                      {avatar.cost} DC
-                    </p>
-                  )}
-                  {avatar.unlocked && selectedAvatar === avatar.id && (
-                    <div className="flex items-center justify-center gap-1 mt-1">
-                      <Check className="w-3 h-3 text-[#8B27FF] dark:text-[#A855F7]" />
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Modal de Avatares */}
+      <CollectibleAvatarModal
+        isOpen={showAvatarsModal}
+        collectibleAvatars={collectibleAvatars}
+        selectedAvatar={selectedAvatar}
+        onSelectAvatar={(id) => {
+          setSelectedAvatar(id);
+          setHasChanges(true);
+        }}
+        onClose={() => setShowAvatarsModal(false)}
+        onNavigateToCoins={() => navigateTo('digcoins')}
+      />
 
       <ProfileStyles />
     </div>

@@ -11,7 +11,7 @@ interface VideoModalProps {
   expandedChapter: number | null;
   onChapterToggle: (chapterId: number) => void;
   onJump: (timestamp: number, chapterId: number) => void;
-  iframeRef: React.RefObject<HTMLIFrameElement>;
+  iframeRef: React.RefObject<HTMLIFrameElement | null>;
 }
 
 export function VideoModal({

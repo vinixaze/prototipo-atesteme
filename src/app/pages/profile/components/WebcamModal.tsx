@@ -3,7 +3,7 @@ import { Camera, Check, X } from "lucide-react";
 interface WebcamModalProps {
   isOpen: boolean;
   capturedImage: string | null;
-  videoRef: React.RefObject<HTMLVideoElement>;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
   onClose: () => void;
   onCapture: () => void;
   onConfirm: (photoUrl: string) => void;

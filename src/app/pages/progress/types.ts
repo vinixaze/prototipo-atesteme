@@ -38,8 +38,9 @@ export interface Achievement {
   title: string;
   description: string;
   icon: LucideIcon;
+  color: string;
   unlocked: boolean;
-  progress: number;
-  total: number;
-  reward: string;
+  date?: string;
+  category?: string;
+  rarity?: string;
 }

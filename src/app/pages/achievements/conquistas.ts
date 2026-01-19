@@ -1,0 +1,61 @@
+import { Award, Flame, Medal, Star, Target, Trophy, Zap } from "lucide-react";
+
+export const conquistas = [
+  {
+    id: 1,
+    title: 'Primeira Conquista',
+    description: 'Complete sua primeira competência',
+    unlocked: true,
+    date: '14/11/2024',
+    icon: Trophy,
+    color: 'yellow',
+  },
+  {
+    id: 2,
+    title: 'Sequência de 7 dias',
+    description: 'Acesse a plataforma por 7 dias seguidos',
+    unlocked: false,
+    icon: Flame,
+    color: 'orange',
+  },
+  {
+    id: 3,
+    title: 'Nível Básico',
+    description: 'Complete o nível 1',
+    unlocked: false,
+    icon: Award,
+    color: 'blue',
+  },
+  {
+    id: 4,
+    title: 'Nível Intermediário',
+    description: 'Complete o nível 2',
+    unlocked: false,
+    icon: Star,
+    color: 'purple',
+  },
+  {
+    id: 5,
+    title: 'Mestre Digital',
+    description: 'Complete todos os 3 níveis',
+    unlocked: false,
+    icon: Medal,
+    color: 'gold',
+  },
+  {
+    id: 6,
+    title: 'Aprendiz Dedicado',
+    description: 'Complete 10 competências',
+    unlocked: false,
+    icon: Target,
+    color: 'green',
+  },
+  {
+    id: 7,
+    title: 'Velocista',
+    description: 'Complete 5 competências em um dia',
+    unlocked: false,
+    icon: Zap,
+    color: 'cyan',
+  },
+];
